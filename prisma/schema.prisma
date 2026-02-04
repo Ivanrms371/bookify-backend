@@ -1,0 +1,883 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                String              @id @default(uuid())
+  name              String
+  email             String              @unique
+  emailVerifiedAt   DateTime?           @map("email_verified_at")
+  phone             String?             @unique
+  phoneVerifiedAt   DateTime?           @map("phone_verified_at")
+  password          String?
+
+  googleId          String?             @unique @map("google_id") 
+  lastLoginAt       DateTime?           @map("last_login_at")
+  tokenVersion      Int                 @default(0) @map("token_version")
+
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  
+  businesses        Business[]           @relation("BusinessOwner")
+  invites           MemberInvite[]
+  refreshTokens     RefreshToken[]
+  staffs            Staff[]
+  customers         Customer[]
+  platformAdmin     PlatformAdmin?
+  scheduledNotifications ScheduledNotification[]
+  verifications     Verification[]
+  verificationLocks VerificationLock[]
+
+  @@index([email])
+  @@index([phone])
+  @@index([googleId])
+  @@map("users")
+}
+
+model RefreshToken {
+  id         String    @id @default(uuid())
+  jti        String    @unique
+  userId     String    @map("user_id")
+  token      String
+  ipAddress  String?   @map("ip_address")
+  userAgent  String?   @map("user_agent")
+  lastUsedAt DateTime? @map("last_used_at")
+  revokedAt  DateTime? @map("revoked_at")
+  expiresAt  DateTime  @map("expires_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@map("refresh_tokens")
+}
+
+model Verification {
+  id            String                    @id @default(uuid())
+  type          VerificationType
+  userId        String                    @unique @map("user_id")
+  address       String
+  ipAtCreated   String?                   @map("ip_at_created")
+  token         String?                   @unique
+  codeHash      String?                   @map("code_hash")
+  attempts      Int                       @default(0)
+  maxAttempts   Int                       @default(3) @map("max_attempts")
+  expiresAt     DateTime                  @map("expires_at")
+  verifiedAt    DateTime?                 @map("verified_at")
+  lockedAt      DateTime?                 @map("locked_at")
+  createdAt     DateTime                  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([address])
+  @@map("verifications")
+}
+
+model VerificationLock {
+  id            String                    @id @default(uuid())
+  userId        String                    @unique @map("user_id")
+  address       String
+  lockedUntil   DateTime                  @map("locked_until")
+  reason        String?                   @map("reason")
+  createdAt     DateTime                  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([address])
+  @@map("verification_locks")
+}
+
+model MagicLink {
+  id         String    @id @default(uuid())
+  email      String
+  tokenHash  String    @map("token_hash")
+  ipAddress  String?   @map("ip_address")
+  expiresAt  DateTime  @map("expires_at")
+  usedAt     DateTime? @map("used_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  @@index([email])
+  @@index([expiresAt])
+  @@map("magic_links")
+}
+
+model Business {
+  id                  String                 @id @default(uuid())
+  ownerId             String                 @unique @map("owner_id")
+  name                String?
+  slug                String?                @unique
+  type                BusinessType?
+  description         String?
+  addressLine1        String?               @map("address_line_1")
+  addressLine2        String?               @map("address_line_2")
+  phone               String?
+  logoUrl             String?                @map("logo_url")
+  logoPublicId        String?                @map("logo_public_id")
+  coverUrl            String?                @map("cover_url")
+  coverPublicId       String?                @map("cover_public_id")
+  onboardingStep      Int                    @default(1) @map("onboarding_step")
+  onboardingCompleted Boolean                @default(false) @map("onboarding_completed")
+  createdAt           DateTime               @default(now()) @map("created_at")
+  updatedAt           DateTime               @updatedAt @map("updated_at")
+  deletedAt           DateTime?              @map("deleted_at")
+
+
+  appointments        Appointment[]
+  scheduledNotifications ScheduledNotification[]
+  notificationLogs NotificationLog[]
+  limits BusinessLimits[]
+  dailyStats          BusinessDailyStats[]
+  dailyUsage          BusinessDailyUsage[]
+  lifetimeStats       BusinessLifetimeStats?
+  settings            BusinessSettings?
+  usage               BusinessUsage[]
+  owner               User                   @relation("BusinessOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  customers           Customer[]
+  memberInvites       MemberInvite[]
+  payments            Payment[]
+  scheduleExceptions  ScheduleException[]
+  services            Service[]
+  staffs              Staff[]
+  subscriptions       Subscription?
+  workingHours        WorkingHours[]
+
+  @@index([ownerId])
+  @@map("businesses")
+}
+
+model BusinessSettings {
+  id                        String   @id @default(uuid())
+  businessId                String   @unique @map("business_id")
+
+  // Scheduling
+  slotIntervalMinutes       Int      @default(30) @map("slot_interval_minutes")
+  maxAdvancedDays           Int      @default(30) @map("max_advanced_days")
+  minAdvancedMinutes        Int      @default(30) @map("min_advanced_minutes")
+  bufferTimeMinutes         Int      @default(0) @map("buffer_time_minutes")
+
+  // Cancellations
+  cancellationWindowMinutes Int      @default(30) @map("cancellation_window_minutes")
+
+  // Internationalization
+  timezone                  String   @default("America/Montevideo")
+  currency                  String   @default("UYU")
+
+  // Clients rules
+  maxPendingApptsPerClient  Int      @default(10) @map("max_pending_appts_per_client")
+  requireConfirmation       Boolean  @default(false) @map("require_confirmation")
+
+  holidayClosureAutoApply   Boolean  @default(false) @map("holiday_closure_auto_apply")
+
+  business                  Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@map("business_settings")
+}
+
+model Service {
+  id                   String        @id @default(uuid())
+  businessId           String        @map("business_id")
+
+  name                 String
+  image                String?
+  description          String?
+
+  price                Decimal       @db.Decimal(10, 2)
+  discountPercentage   Decimal?      @default(0) @map("discount_percentage")
+  discountFixed        Decimal?      @db.Decimal(10, 2) @default(0) @map("discount_fixed")
+
+  initialActiveMinutes Int           @default(0) @map("initial_active_minutes")
+  passiveTimeMinutes   Int           @default(0) @map("passive_time_minutes")
+  finalActiveMinutes   Int           @default(0) @map("final_active_minutes")
+  durationMinutes      Int           @default(30) @map("duration_minutes")
+
+  isActive             Boolean       @default(true) @map("is_active")
+  displayOrder         Int           @default(0) @map("display_order")
+
+  createdAt            DateTime      @default(now()) @map("created_at")
+  updatedAt            DateTime      @updatedAt @map("updated_at")
+  deletedAt            DateTime?     @map("deleted_at")
+
+  assignments          ServiceAssignment[]
+  business             Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+
+  @@index([businessId])
+  @@map("services")
+}
+
+model ServiceAssignment {
+  staffId String @map("staff_id")
+  serviceId     String @map("service_id")
+
+  customPrice Decimal? @db.Decimal(10, 2)
+  customDiscountPercentage   Decimal?      @default(0) @map("custom_discount_percentage")
+  customDiscountFixed        Decimal?      @db.Decimal(10, 2) @default(0) @map("custom_discount_fixed")
+
+  customDurationMinutes Int? @map("custom_duration_minutes")
+  isActive Boolean @default(true) @map("is_active")
+
+
+  staff Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  service     Service      @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@index([staffId, isActive])
+  @@id([staffId, serviceId])
+  @@map("service_assigments")
+}
+
+model Staff {
+  id                  String                   @id @default(uuid())
+  userId              String                   @unique @map("user_id")
+  businessId          String                   @map("business_id")
+
+
+  slotIntervalMinutes Int                      @default(30) @map("slot_interval_minutes")
+  maxAdvancedDays     Int                      @default(30) @map("max_advanced_days")
+  minAdvancedMinutes  Int                      @default(30) @map("min_advanced_minutes")
+
+  title               String?
+  bio                 String?
+  role       StaffRole @default(PROFESSIONAL)
+  avatarUrl           String?                  @map("avatar_url")
+  avatarPublicId      String?                  @map("avatar_public_id")
+
+  isActive            Boolean                  @default(true) @map("is_active")
+  isProfessional      Boolean                  @default(true) @map("is_professional")
+
+  displayName         String                   @map("display_name")
+  displayOrder        Int                      @default(0) @map("display_order")
+
+  createdAt           DateTime                 @default(now()) @map("created_at")
+  updatedAt           DateTime                 @updatedAt @map("updated_at")
+  deletedAt           DateTime?                @map("deleted_at")
+  
+  appointments        Appointment[]
+  assignments         ServiceAssignment[]
+  lifetimeStats       StaffLifetime?
+  stats               StaffDailyStats[]
+  business            Business                 @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  user                User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workingHours        WorkingHours[]
+
+  @@index([businessId])
+  @@map("staffs")
+}
+
+model MemberInvite {
+  id         String    @id @default(uuid())
+  email      String
+  role       StaffRole @default(PROFESSIONAL)
+  businessId String    @map("business_id")
+  inviterId  String    @map("inviter_id")
+  token      String    @unique
+  expiresAt  DateTime  @map("expires_at")
+  acceptedAt DateTime? @map("accepted_at")
+  business   Business  @relation(fields: [businessId], references: [id])
+  inviter    User      @relation(fields: [inviterId], references: [id])
+
+  @@index([email])
+  @@map("member_invites")
+}
+
+model WorkingHours {
+  id             String        @id @default(uuid())
+  businessId     String        @map("business_id")
+  staffId String?       @map("staff_member_id")
+  dayOfWeek      Int           @map("day_of_week")
+  startTime      DateTime      @db.Time(6)
+  endTime        DateTime      @db.Time(6)
+  isActive       Boolean       @default(true) @map("is_active")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  business       Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  staff   Staff? @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, dayOfWeek])
+  @@index([staffId])
+  @@map("working_hours")
+}
+
+model ScheduleException {
+  id              String   @id @default(uuid())
+  businessId      String   @map("business_id")
+  staffId  String?  @map("staff_member_id")
+  date            DateTime @db.Date
+  isClosed        Boolean  @map("is_closed")
+  customStartTime DateTime?  @map("custom_start_time")
+  customEndTime   DateTime?  @map("custom_end_time")
+  reason          String?
+  createdAt       DateTime @default(now()) @map("created_at")
+  business        Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, date])
+  @@map("schedule_exceptions")
+}
+
+model Customer {
+  id                String        @id @default(uuid())
+  userId            String        @map("user_id")
+  businessId        String        @map("business_id")
+
+  notes             String?
+  internalNotes     String?       @map("internal_notes")
+
+  totalNoShows      Int           @default(0) @map("total_no_shows")
+  totalCancellations Int           @default(0) @map("total_cancellations")
+  totalAppointments Int           @default(0) @map("total_appointments")
+  totalRevenue      Float         @default(0) @map("total_revenue")
+  lastAppointmentAt DateTime?     @map("last_appointment_at")
+
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @updatedAt @map("updated_at")
+  deletedAt         DateTime?     @map("deleted_at")
+  appointments      Appointment[]
+  business          Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([businessId, userId])
+  @@index([businessId])
+  @@map("customers")
+}
+
+model Appointment {
+  id                 String            @id @default(uuid())
+  businessId         String            @map("business_id")
+  serviceId          String            @map("service_id")
+  customerId         String            @map("customer_id")
+  staffId            String            @map("staff_member_id")
+
+  startTime          DateTime          @map("start_time")
+  endTime            DateTime          @map("end_time")
+  status             AppointmentStatus @default(CONFIRMED)
+
+  customerName       String            @map("customer_name")
+  customerPhone      String            @map("customer_phone")
+  customerEmail      String?           @map("customer_email")
+
+  notes              String?
+  internalNotes      String?           @map("internal_notes")
+
+  confirmationCode   String            @unique @map("confirmation_code")
+  cancelledAt        DateTime?         @map("cancelled_at")
+  cancellationReason String?           @map("cancellation_reason")
+
+  createdAt          DateTime          @default(now()) @map("created_at")
+  updatedAt          DateTime          @updatedAt @map("updated_at")
+  
+  business           Business          @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  customer           Customer          @relation(fields: [customerId], references: [id])
+  staff       Staff     @relation(fields: [staffId], references: [id])
+  scheduledNotifications ScheduledNotification[]
+
+  @@unique([staffId, startTime, status])
+  @@index([businessId, startTime])
+  @@index([businessId, status])
+  @@index([customerId])
+  @@index([confirmationCode])
+  @@index([startTime, status])
+  @@map("appointments")
+}
+
+model BusinessDailyStats {
+  id           String   @id @default(uuid())
+  businessId   String   @map("business_id")
+  date         DateTime @db.Date
+  appointments Int      @default(0)
+  confirmed    Int      @default(0)
+  cancelled    Int      @default(0)
+  completed    Int      @default(0)
+  noShow       Int      @default(0) @map("no_show")
+  revenue      Decimal  @default(0) @db.Decimal(10, 2)
+  business     Business @relation(fields: [businessId], references: [id])
+
+  @@unique([businessId, date])
+  @@index([businessId, date])
+  @@map("business_daily_stats")
+}
+
+model BusinessLifetimeStats {
+  id                String   @id @default(uuid())
+  businessId        String   @unique @map("business_id")
+  totalAppointments Int      @default(0) @map("total_appointments")
+  totalRevenue      Decimal  @default(0) @map("total_revenue") @db.Decimal(10, 2)
+  totalCustomers    Int      @default(0) @map("total_customers")
+  cancellationRate  Decimal  @default(0) @map("cancellation_rate") @db.Decimal(5, 2)
+  noShowRate        Decimal  @default(0) @map("no_show_rate") @db.Decimal(5, 2)
+  business          Business @relation(fields: [businessId], references: [id])
+
+  @@map("business_lifetime_stats")
+}
+
+model StaffDailyStats {
+  id                String       @id @default(uuid())
+  staffId    String       @map("staff_member_id")
+  date              DateTime     @db.Date
+  appointmentsCount Int          @default(0) @map("appointments_count")
+  revenue           Decimal      @default(0) @db.Decimal(10, 2)
+  mostSoldServiceId String?      @map("most_sold_service_id")
+  newCustomersCount Int          @map("new_customers_count")
+  staff      Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@unique([staffId, date])
+  @@index([date, staffId])
+  @@map("staff_stats")
+}
+
+model StaffLifetime {
+  id                String       @id @default(uuid())
+  staffId    String       @unique @map("staff_member_id")
+  totalRevenue      Decimal      @default(0) @map("total_revenue") @db.Decimal(12, 2)
+  totalAppointments Int          @default(0) @map("total_appointments")
+  noShowCount       Int          @default(0) @map("no_show_count")
+  staff      Staff @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@map("staff_lifetime_stats")
+}
+
+model ScheduledNotification {
+  id String @id @default(uuid())
+
+  type NotificationType 
+  layer NotificationLayer 
+
+  businessId String? @map("business_id")
+  userId String? @map("user_id")
+  recipientEmail String? @map("recipient_email")
+  recipientPhone String? @map("recipient_phone")
+
+  appointmentId String? @map("appointment_id")
+
+  scheduledFor DateTime @map("scheduled_for")
+
+  status String @db.Char(50)
+  sentAt DateTime? @map("sent_at")
+  failedAt DateTime? @map("failed_at")
+  error String? @map("error")
+  retryCount Int @default(0) @map("retry_count")
+
+  templateVariables Json @map("template_variables")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  business Business? @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  appointment Appointment? @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  logs NotificationLog[]
+  
+  @@index([userId])
+  @@index([status, scheduledFor])
+  @@index([businessId])
+  @@index([appointmentId])
+  @@map("scheduled_notifications")
+}
+
+model NotificationLog {
+  id String @id @default(uuid())
+  type String 
+  channel NotificationChannel
+  layer NotificationLayer
+  businessId String? @map("business_id")
+  recipientId String? @map("recipient_id")
+  status NotificationStatus
+  cost Decimal @db.Decimal(6, 4)
+  error String?
+  provider String?
+  providerMessageId String?
+
+  scheduledNotificationId String? @map("scheduled_notification_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  business Business? @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  scheduledNotification ScheduledNotification? @relation(fields: [scheduledNotificationId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, createdAt])
+  @@index([status])
+  @@map("notification_logs")
+}
+
+model BusinessLimits {
+  id String @id @default(uuid())
+  businessId String @unique @map("business_id")
+  plan String @default("free")
+  whatsappLimit Int @default(0)
+  professionalLimit Int @default(1)
+  whatsappCount Int @default(0)
+  emailCount Int @default(0)
+  whatsappCost Decimal @default(0) @db.Decimal(6, 4)
+
+  periodMonth Int @map("period_month")
+  periodYear Int @map("period_year")
+  lastResetAt DateTime @map("last_reset_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  business Business? @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId])
+  @@map("business_limits")
+}
+
+model Subscription {
+  id                 String             @id @default(uuid())
+  businessId         String             @unique @map("business_id")
+  planId             String             @map("plan_id")
+  status             SubscriptionStatus @default(TRIAL)
+  amount             Decimal            @db.Decimal(10, 2)
+  currency           String             @default("USD")
+  billingCycle       BillingCycle?      @map("billing_cycle")
+  currentPeriodStart DateTime?          @map("current_period_start")
+  currentPeriodEnd   DateTime?          @map("current_period_end")
+  nextPaymentDate    DateTime?          @map("next_payment_date")
+  trialEndsAt        DateTime?          @map("trial_ends_at")
+  trialUsedAt        DateTime?          @map("trial_used_at")
+  discountPercent    Int                @default(0) @map("discount_percent")
+  discountAmount     Decimal            @default(0) @map("discount_amount")
+  discountExpiresAt  DateTime?          @map("discount_expires_at")
+  cancelledAt        DateTime?          @map("cancelled_at")
+  cancelReason       String?            @map("cancel_reason")
+  paymentMethod      String?            @map("payment_method")
+  paymentProvider    String?            @map("payment_provider")
+  externalId         String?            @map("external_id")
+  createdAt          DateTime           @default(now()) @map("created_at")
+  updatedAt          DateTime           @updatedAt @map("updated_at")
+  deletedAt          DateTime?          @map("deleted_at")
+  payments           Payment[]
+  business           Business           @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  plan               Plan               @relation(fields: [planId], references: [id])
+
+  @@index([businessId, status])
+  @@index([status, currentPeriodEnd])
+  @@index([status, trialEndsAt])
+  @@map("subscriptions")
+}
+
+model Plan {
+  id                String         @id @default(uuid())
+  name              String
+  planType          PlanType       @default(FREE) @map("plan_type")
+  billingCycle      BillingCycle?  @map("billing_cycle")
+  trialDays         Int            @default(14) @map("trial_days")
+  isActive          Boolean        @default(true) @map("is_active")
+  isPublic          Boolean        @default(true) @map("is_public")
+  description       String?
+  price             Decimal        @db.Decimal(10, 2)
+  currency          String         @default("UYU")
+  duration          Int
+  features          Json?
+  createdAt         DateTime       @default(now()) @map("created_at")
+  updatedAt         DateTime       @updatedAt @map("updated_at")
+  externalReference String?        @unique @map("external_reference")
+  limits            PlanLimits?
+  stats             PlanStats[]
+  subscriptions     Subscription[]
+
+  @@map("plans")
+}
+
+model PlanLimits {
+  id                 String  @id @default(uuid())
+  planId             String  @unique @map("plan_id")
+  softMonthlyLimit   Int     @map("soft_monthly_limit")
+  hardMonthlyLimit   Int     @map("hard_monthly_limit")
+  dailyOtpLimit      Int     @map("daily_otp_limit")
+  dailyMessagesLimit Int     @map("daily_messages_limit")
+  maxMonthlyCost     Decimal @default(12.00) @map("max_monthly_cost") @db.Decimal(10, 2)
+  plan               Plan    @relation(fields: [planId], references: [id])
+
+  @@map("plan_limits")
+}
+
+model BusinessUsage {
+  id            String   @id @default(uuid())
+  businessId    String   @map("business_id")
+  month         Int
+  year          Int
+  messagesUsage Int      @default(0) @map("messages_usage")
+  otpUsage      Int      @default(0) @map("otp_usage")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  business      Business @relation(fields: [businessId], references: [id])
+
+  @@unique([businessId, month, year])
+  @@index([businessId, month, year])
+  @@map("business_usage")
+}
+
+model BusinessDailyUsage {
+  id            String   @id @default(uuid())
+  businessId    String   @map("business_id")
+  day           Int
+  month         Int
+  year          Int
+  messagesUsage Int      @default(0)
+  otpUsage      Int      @default(0)
+  createdAt     DateTime @default(now())
+  business      Business @relation(fields: [businessId], references: [id])
+
+  @@unique([businessId, day, month, year])
+  @@index([businessId, day, month, year])
+  @@map("business_daily_usage")
+}
+
+model PlanStats {
+  id                String   @id @default(uuid())
+  planId            String   @map("plan_id")
+  date              DateTime @db.Date
+  newSubscribers    Int      @default(0) @map("new_subscribers")
+  canceledToday     Int      @default(0) @map("canceled_today")
+  revenueToday      Decimal  @default(0) @map("revenue_today") @db.Decimal(12, 2)
+  activeSubscribers Int      @default(0) @map("active_subscribers")
+  totalRevenue      Decimal  @default(0) @map("total_revenue") @db.Decimal(12, 2)
+  updatedAt         DateTime @updatedAt
+  plan              Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@unique([planId, date])
+  @@index([date])
+  @@map("plan_stats")
+}
+
+model Payment {
+  id                  String        @id @default(uuid())
+  businessId          String        @map("business_id")
+  subscriptionId      String?       @map("subscription_id")
+  referenceCode       String        @unique @map("reference_code")
+  sequenceNumber      Int           @unique @map("sequence_number")
+  status              PaymentStatus @default(PENDING)
+  statusDetails       String?       @map("status_details")
+  transactionAmount   Decimal       @map("transaction_amount") @db.Decimal(10, 2)
+  netReceivedAmount   Decimal       @map("net_received_amount") @db.Decimal(10, 2)
+  transactionCurrency String        @default("UYU") @map("transaction_currency")
+  issuedAt            DateTime      @default(now()) @map("issued_at")
+  paidAt              DateTime?     @map("paid_at")
+  dueAt               DateTime?     @map("due_at")
+  externalId          String        @unique @map("external_id")
+  createdAt           DateTime      @default(now()) @map("created_at")
+  updatedAt           DateTime      @updatedAt @map("updated_at")
+  deletedAt           DateTime?     @map("deleted_at")
+  business            Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  subscription        Subscription? @relation(fields: [subscriptionId], references: [id])
+
+  @@index([businessId])
+  @@index([status])
+  @@map("payments")
+}
+
+model PlatformStats {
+  id                       String   @id @default(uuid())
+  date                     DateTime @unique @db.Date
+  newBusinessesToday       Int      @default(0) @map("new_businesses_today")
+  churnedBusinessesToday   Int      @default(0) @map("churned_businesses_today")
+  appointmentsToday        Int      @default(0) @map("appointments_today")
+  revenueToday             Decimal  @default(0) @map("revenue_today") @db.Decimal(10, 2)
+  mrrLostToday             Decimal  @default(0) @map("mrr_lost_today") @db.Decimal(10, 2)
+  costsToday               Decimal  @default(0) @map("costs_today") @db.Decimal(10, 2)
+  totalBusinesses          Int      @default(0) @map("total_businesses")
+  totalActiveSubscriptions Int      @default(0) @map("total_active_subs")
+  mrrTotal                 Decimal  @default(0) @map("mrr_total") @db.Decimal(10, 2)
+  notificationsSent        Int      @default(0) @map("notifications_sent")
+  notificationsFailed      Int      @default(0) @map("notifications_failed")
+  updatedAt                DateTime @updatedAt @map("updated_at")
+  createdAt                DateTime @default(now()) @map("created_at")
+
+  @@index([date])
+  @@map("platform_stats")
+}
+
+model PlatformAdmin {
+  id String @id @default(uuid())
+  userId String @unique @map("user_id")
+  level PlatformAdminLevel
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("platform_admins")
+}
+
+model WebhookLog {
+  id          String        @id @default(uuid())
+  provider    String
+  requestId   String        @unique @map("request_id")
+  type        String
+  resourceId  String?       @map("resource_id")
+  status      WebhookStatus
+  error       String?
+  payload     Json?
+  receivedAt  DateTime      @default(now()) @map("received_at")
+  processedAt DateTime?     @map("processed_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@unique([provider, requestId])
+  @@index([provider, requestId])
+  @@index([status])
+  @@index([receivedAt])
+  @@map("webhook_logs")
+}
+
+model AdminEvent {
+  id         String    @id @default(uuid())
+  eventType  EventType @map("event_type")
+  entityType String    @map("entity_type")
+  entityId   String    @map("entity_id")
+  userId     String?   @map("user_id")
+  ipAddress  String?   @map("ip_address")
+  userAgent  String?   @map("user_agent")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  @@index([eventType])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@map("admin_events")
+}
+
+// Auth & Access
+
+
+enum AuthProvider {
+  EMAIL
+  GOOGLE
+}
+
+enum VerificationType {
+  AUTH_CODE
+  APPOINTMENT
+  PASSWORD_RESET
+  EMAIL_CONFIRM
+  PHONE_CONFIRM
+}
+
+enum StaffRole {
+  OWNER // Everything included in Admin and Subscriptions
+  ADMIN // Everything included in Professional and can manage cash 
+  PROFESSIONAL // Manage his own appointments and services
+}
+
+enum PlatformAdminLevel {
+  GOD
+  MODERATOR
+  SUPPORTY
+}
+
+// Business & Billing
+
+enum BusinessType {
+  BARBERSHOP
+  HAIRDRESSING_SALON
+  AESTHETIC_CENTER
+  SPA_SALON
+  BEAUTY_SALON
+  NAIL_SALON
+  TATTOO_AND_PIERCING
+  OTHER
+}
+
+enum PlanType {
+  FREE
+  PRO
+  TEAM
+}
+
+enum BillingCycle {
+  MONTHLY
+  YEARLY
+}
+
+enum SubscriptionStatus {
+  TRIAL
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  EXPIRED
+  SUSPENDED
+  PENDING_PAYMENT
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+// Core Operations
+
+enum AppointmentStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+// Notifications
+
+enum NotificationLayer {
+  PLATFORM
+  BUSINESS
+}
+
+enum NotificationChannel {
+  WHATSAPP
+  EMAIL
+  SMS
+}
+
+enum NotificationType {
+  ACCOUNT_CONFIRMATION
+  WELCOME
+  PASSWORD_RESET
+  PLAN_EXPIRES_7D
+  PLAN_EXPIRES_3D
+  PLAN_EXPIRED
+
+  APPOINTMENT_CONFIRMATION
+  APPOINTMENT_REMINDER_24H
+  APPOINTMENT_REMINDER_2H
+  APPOINTMENT_CANCELLED
+  POST_APPOINTMENT_THANKYOU
+  AUTH_OTP
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  CANCELLED
+}
+
+enum ScheduledNotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  CANCELLED
+}
+
+// System & Logs
+
+enum EventType {
+  BUSINESS_CREATED
+  BUSINESS_DELETED
+  SUBSCRIPTION_UPGRADED
+  SUBSCRIPTION_DOWNGRADED
+  SUBSCRIPTION_CANCELLED
+  PAYMENT_SUCCESS
+  PAYMENT_FAILED
+  LIMIT_EXCEEDED
+  FEATURE_USED
+  ERROR_OCCURRED
+}
+
+enum WebhookStatus {
+  PENDING
+  PROCESSING
+  PROCESSED
+  FAILED
+  ERROR
+}
