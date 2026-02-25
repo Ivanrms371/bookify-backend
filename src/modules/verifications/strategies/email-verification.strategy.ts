@@ -1,59 +1,43 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { VerificationService } from '../core/verification.service';
-import { UserService } from '../../users/services/user.service';
-import { PlatformNotifications } from 'src/modules/notifications/facades/platform-notification';
+import { VerificationsService } from '../core/verifications.service';
+import { UsersService } from '../../users/users.service';
 import { VerificationType } from 'src/generated/prisma/enums';
 import { SendVerificationEmailParams } from '../types/verification.interface';
 
 @Injectable()
 export class EmailVerificationStrategy {
   constructor(
-    private readonly verificationService: VerificationService,
-    private readonly userService: UserService,
-    private readonly platformNotifications: PlatformNotifications,
+    private readonly userService: UsersService,
+    private readonly verificationsService: VerificationsService,
   ) {}
 
-  async sendVerificationEmail({ userId, email, name, ip }: SendVerificationEmailParams) {
-    const { token } = await this.verificationService.createTokenVerification({
-      ip,
+  async sendVerificationEmail({ userId, email, name }: SendVerificationEmailParams) {
+    const token = await this.verificationsService.createTokenVerification({
       userId,
       type: VerificationType.EMAIL_CONFIRM,
       address: email,
     });
 
-    await this.platformNotifications.sendAccountConfirmation({
-      userId,
-      name,
-      email,
-      token,
-    });
-
+    //end
     return { message: 'Hemos enviado un correo de verificación' };
   }
 
   async confirmEmail(token: string) {
-    const verification = await this.verificationService.verifyToken(token);
-
-    const user = await this.userService.markEmailVerified(verification.userId);
-
+    const verification = await this.verificationsService.verifyToken(token);
+    const user = await this.userService.markUserEmailVerified(verification.userId);
     return user;
   }
 
   async resendVerificationEmail(email: string) {
-    const user = await this.userService.findByEmailOrFail(email);
+    const user = await this.userService.findUserByEmailOrFail(email);
 
-    const verification = await this.verificationService.resendCode({
+    const token = await this.verificationsService.resendCode({
       userId: user.id,
       type: VerificationType.EMAIL_CONFIRM,
       address: email,
     });
 
-    this.platformNotifications.sendAccountConfirmation({
-      userId: user.id,
-      name: user.name,
-      token: verification.token,
-      email,
-    });
+    //resend email
 
     return { message: 'Hemos enviado un nuevo correo de verificación' };
   }

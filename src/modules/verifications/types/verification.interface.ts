@@ -4,8 +4,6 @@ export interface CreateVerificationParams {
   userId: string;
   type: VerificationType;
   address: string;
-  ip?: string;
-  userAgent?: string;
 }
 
 export interface LockVerificationParams {
@@ -18,5 +16,10 @@ export interface SendVerificationEmailParams {
   userId: string;
   email: string;
   name: string;
-  ip?: string;
+}
+
+export interface RequestResetPasswordParams {
+  userId: string;
+  email: string;
+  name: string;
 }

@@ -321,7 +321,7 @@ export type PlatformStatsWhereInput = {
   AND?: Prisma.PlatformStatsWhereInput | Prisma.PlatformStatsWhereInput[]
   OR?: Prisma.PlatformStatsWhereInput[]
   NOT?: Prisma.PlatformStatsWhereInput | Prisma.PlatformStatsWhereInput[]
-  id?: Prisma.StringFilter<"PlatformStats"> | string
+  id?: Prisma.UuidFilter<"PlatformStats"> | string
   date?: Prisma.DateTimeFilter<"PlatformStats"> | Date | string
   newBusinessesToday?: Prisma.IntFilter<"PlatformStats"> | number
   churnedBusinessesToday?: Prisma.IntFilter<"PlatformStats"> | number
@@ -404,7 +404,7 @@ export type PlatformStatsScalarWhereWithAggregatesInput = {
   AND?: Prisma.PlatformStatsScalarWhereWithAggregatesInput | Prisma.PlatformStatsScalarWhereWithAggregatesInput[]
   OR?: Prisma.PlatformStatsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PlatformStatsScalarWhereWithAggregatesInput | Prisma.PlatformStatsScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"PlatformStats"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"PlatformStats"> | string
   date?: Prisma.DateTimeWithAggregatesFilter<"PlatformStats"> | Date | string
   newBusinessesToday?: Prisma.IntWithAggregatesFilter<"PlatformStats"> | number
   churnedBusinessesToday?: Prisma.IntWithAggregatesFilter<"PlatformStats"> | number

@@ -1,4 +1,4 @@
-export interface AuthContext {
-  ip?: string;
-  userAgent?: string;
-}
+export type AuthContext = {
+  ip: string;
+  userAgent: string;
+};

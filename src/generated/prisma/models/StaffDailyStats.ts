@@ -233,8 +233,8 @@ export type StaffDailyStatsWhereInput = {
   AND?: Prisma.StaffDailyStatsWhereInput | Prisma.StaffDailyStatsWhereInput[]
   OR?: Prisma.StaffDailyStatsWhereInput[]
   NOT?: Prisma.StaffDailyStatsWhereInput | Prisma.StaffDailyStatsWhereInput[]
-  id?: Prisma.StringFilter<"StaffDailyStats"> | string
-  staffId?: Prisma.StringFilter<"StaffDailyStats"> | string
+  id?: Prisma.UuidFilter<"StaffDailyStats"> | string
+  staffId?: Prisma.UuidFilter<"StaffDailyStats"> | string
   date?: Prisma.DateTimeFilter<"StaffDailyStats"> | Date | string
   appointmentsCount?: Prisma.IntFilter<"StaffDailyStats"> | number
   revenue?: Prisma.DecimalFilter<"StaffDailyStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -260,7 +260,7 @@ export type StaffDailyStatsWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.StaffDailyStatsWhereInput | Prisma.StaffDailyStatsWhereInput[]
   OR?: Prisma.StaffDailyStatsWhereInput[]
   NOT?: Prisma.StaffDailyStatsWhereInput | Prisma.StaffDailyStatsWhereInput[]
-  staffId?: Prisma.StringFilter<"StaffDailyStats"> | string
+  staffId?: Prisma.UuidFilter<"StaffDailyStats"> | string
   date?: Prisma.DateTimeFilter<"StaffDailyStats"> | Date | string
   appointmentsCount?: Prisma.IntFilter<"StaffDailyStats"> | number
   revenue?: Prisma.DecimalFilter<"StaffDailyStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -288,8 +288,8 @@ export type StaffDailyStatsScalarWhereWithAggregatesInput = {
   AND?: Prisma.StaffDailyStatsScalarWhereWithAggregatesInput | Prisma.StaffDailyStatsScalarWhereWithAggregatesInput[]
   OR?: Prisma.StaffDailyStatsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.StaffDailyStatsScalarWhereWithAggregatesInput | Prisma.StaffDailyStatsScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"StaffDailyStats"> | string
-  staffId?: Prisma.StringWithAggregatesFilter<"StaffDailyStats"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"StaffDailyStats"> | string
+  staffId?: Prisma.UuidWithAggregatesFilter<"StaffDailyStats"> | string
   date?: Prisma.DateTimeWithAggregatesFilter<"StaffDailyStats"> | Date | string
   appointmentsCount?: Prisma.IntWithAggregatesFilter<"StaffDailyStats"> | number
   revenue?: Prisma.DecimalWithAggregatesFilter<"StaffDailyStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -513,8 +513,8 @@ export type StaffDailyStatsScalarWhereInput = {
   AND?: Prisma.StaffDailyStatsScalarWhereInput | Prisma.StaffDailyStatsScalarWhereInput[]
   OR?: Prisma.StaffDailyStatsScalarWhereInput[]
   NOT?: Prisma.StaffDailyStatsScalarWhereInput | Prisma.StaffDailyStatsScalarWhereInput[]
-  id?: Prisma.StringFilter<"StaffDailyStats"> | string
-  staffId?: Prisma.StringFilter<"StaffDailyStats"> | string
+  id?: Prisma.UuidFilter<"StaffDailyStats"> | string
+  staffId?: Prisma.UuidFilter<"StaffDailyStats"> | string
   date?: Prisma.DateTimeFilter<"StaffDailyStats"> | Date | string
   appointmentsCount?: Prisma.IntFilter<"StaffDailyStats"> | number
   revenue?: Prisma.DecimalFilter<"StaffDailyStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string

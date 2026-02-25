@@ -33,6 +33,7 @@ export type BusinessDailyStatsAvgAggregateOutputType = {
   completed: number | null
   noShow: number | null
   revenue: runtime.Decimal | null
+  customers: number | null
 }
 
 export type BusinessDailyStatsSumAggregateOutputType = {
@@ -42,6 +43,7 @@ export type BusinessDailyStatsSumAggregateOutputType = {
   completed: number | null
   noShow: number | null
   revenue: runtime.Decimal | null
+  customers: number | null
 }
 
 export type BusinessDailyStatsMinAggregateOutputType = {
@@ -54,6 +56,7 @@ export type BusinessDailyStatsMinAggregateOutputType = {
   completed: number | null
   noShow: number | null
   revenue: runtime.Decimal | null
+  customers: number | null
 }
 
 export type BusinessDailyStatsMaxAggregateOutputType = {
@@ -66,6 +69,7 @@ export type BusinessDailyStatsMaxAggregateOutputType = {
   completed: number | null
   noShow: number | null
   revenue: runtime.Decimal | null
+  customers: number | null
 }
 
 export type BusinessDailyStatsCountAggregateOutputType = {
@@ -78,6 +82,7 @@ export type BusinessDailyStatsCountAggregateOutputType = {
   completed: number
   noShow: number
   revenue: number
+  customers: number
   _all: number
 }
 
@@ -89,6 +94,7 @@ export type BusinessDailyStatsAvgAggregateInputType = {
   completed?: true
   noShow?: true
   revenue?: true
+  customers?: true
 }
 
 export type BusinessDailyStatsSumAggregateInputType = {
@@ -98,6 +104,7 @@ export type BusinessDailyStatsSumAggregateInputType = {
   completed?: true
   noShow?: true
   revenue?: true
+  customers?: true
 }
 
 export type BusinessDailyStatsMinAggregateInputType = {
@@ -110,6 +117,7 @@ export type BusinessDailyStatsMinAggregateInputType = {
   completed?: true
   noShow?: true
   revenue?: true
+  customers?: true
 }
 
 export type BusinessDailyStatsMaxAggregateInputType = {
@@ -122,6 +130,7 @@ export type BusinessDailyStatsMaxAggregateInputType = {
   completed?: true
   noShow?: true
   revenue?: true
+  customers?: true
 }
 
 export type BusinessDailyStatsCountAggregateInputType = {
@@ -134,6 +143,7 @@ export type BusinessDailyStatsCountAggregateInputType = {
   completed?: true
   noShow?: true
   revenue?: true
+  customers?: true
   _all?: true
 }
 
@@ -233,6 +243,7 @@ export type BusinessDailyStatsGroupByOutputType = {
   completed: number
   noShow: number
   revenue: runtime.Decimal
+  customers: number
   _count: BusinessDailyStatsCountAggregateOutputType | null
   _avg: BusinessDailyStatsAvgAggregateOutputType | null
   _sum: BusinessDailyStatsSumAggregateOutputType | null
@@ -259,8 +270,8 @@ export type BusinessDailyStatsWhereInput = {
   AND?: Prisma.BusinessDailyStatsWhereInput | Prisma.BusinessDailyStatsWhereInput[]
   OR?: Prisma.BusinessDailyStatsWhereInput[]
   NOT?: Prisma.BusinessDailyStatsWhereInput | Prisma.BusinessDailyStatsWhereInput[]
-  id?: Prisma.StringFilter<"BusinessDailyStats"> | string
-  businessId?: Prisma.StringFilter<"BusinessDailyStats"> | string
+  id?: Prisma.UuidFilter<"BusinessDailyStats"> | string
+  businessId?: Prisma.UuidFilter<"BusinessDailyStats"> | string
   date?: Prisma.DateTimeFilter<"BusinessDailyStats"> | Date | string
   appointments?: Prisma.IntFilter<"BusinessDailyStats"> | number
   confirmed?: Prisma.IntFilter<"BusinessDailyStats"> | number
@@ -268,6 +279,7 @@ export type BusinessDailyStatsWhereInput = {
   completed?: Prisma.IntFilter<"BusinessDailyStats"> | number
   noShow?: Prisma.IntFilter<"BusinessDailyStats"> | number
   revenue?: Prisma.DecimalFilter<"BusinessDailyStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: Prisma.IntFilter<"BusinessDailyStats"> | number
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
 }
 
@@ -281,6 +293,7 @@ export type BusinessDailyStatsOrderByWithRelationInput = {
   completed?: Prisma.SortOrder
   noShow?: Prisma.SortOrder
   revenue?: Prisma.SortOrder
+  customers?: Prisma.SortOrder
   business?: Prisma.BusinessOrderByWithRelationInput
 }
 
@@ -290,7 +303,7 @@ export type BusinessDailyStatsWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.BusinessDailyStatsWhereInput | Prisma.BusinessDailyStatsWhereInput[]
   OR?: Prisma.BusinessDailyStatsWhereInput[]
   NOT?: Prisma.BusinessDailyStatsWhereInput | Prisma.BusinessDailyStatsWhereInput[]
-  businessId?: Prisma.StringFilter<"BusinessDailyStats"> | string
+  businessId?: Prisma.UuidFilter<"BusinessDailyStats"> | string
   date?: Prisma.DateTimeFilter<"BusinessDailyStats"> | Date | string
   appointments?: Prisma.IntFilter<"BusinessDailyStats"> | number
   confirmed?: Prisma.IntFilter<"BusinessDailyStats"> | number
@@ -298,6 +311,7 @@ export type BusinessDailyStatsWhereUniqueInput = Prisma.AtLeast<{
   completed?: Prisma.IntFilter<"BusinessDailyStats"> | number
   noShow?: Prisma.IntFilter<"BusinessDailyStats"> | number
   revenue?: Prisma.DecimalFilter<"BusinessDailyStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: Prisma.IntFilter<"BusinessDailyStats"> | number
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
 }, "id" | "businessId_date">
 
@@ -311,6 +325,7 @@ export type BusinessDailyStatsOrderByWithAggregationInput = {
   completed?: Prisma.SortOrder
   noShow?: Prisma.SortOrder
   revenue?: Prisma.SortOrder
+  customers?: Prisma.SortOrder
   _count?: Prisma.BusinessDailyStatsCountOrderByAggregateInput
   _avg?: Prisma.BusinessDailyStatsAvgOrderByAggregateInput
   _max?: Prisma.BusinessDailyStatsMaxOrderByAggregateInput
@@ -322,8 +337,8 @@ export type BusinessDailyStatsScalarWhereWithAggregatesInput = {
   AND?: Prisma.BusinessDailyStatsScalarWhereWithAggregatesInput | Prisma.BusinessDailyStatsScalarWhereWithAggregatesInput[]
   OR?: Prisma.BusinessDailyStatsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.BusinessDailyStatsScalarWhereWithAggregatesInput | Prisma.BusinessDailyStatsScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"BusinessDailyStats"> | string
-  businessId?: Prisma.StringWithAggregatesFilter<"BusinessDailyStats"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"BusinessDailyStats"> | string
+  businessId?: Prisma.UuidWithAggregatesFilter<"BusinessDailyStats"> | string
   date?: Prisma.DateTimeWithAggregatesFilter<"BusinessDailyStats"> | Date | string
   appointments?: Prisma.IntWithAggregatesFilter<"BusinessDailyStats"> | number
   confirmed?: Prisma.IntWithAggregatesFilter<"BusinessDailyStats"> | number
@@ -331,6 +346,7 @@ export type BusinessDailyStatsScalarWhereWithAggregatesInput = {
   completed?: Prisma.IntWithAggregatesFilter<"BusinessDailyStats"> | number
   noShow?: Prisma.IntWithAggregatesFilter<"BusinessDailyStats"> | number
   revenue?: Prisma.DecimalWithAggregatesFilter<"BusinessDailyStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: Prisma.IntWithAggregatesFilter<"BusinessDailyStats"> | number
 }
 
 export type BusinessDailyStatsCreateInput = {
@@ -342,6 +358,7 @@ export type BusinessDailyStatsCreateInput = {
   completed?: number
   noShow?: number
   revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: number
   business: Prisma.BusinessCreateNestedOneWithoutDailyStatsInput
 }
 
@@ -355,6 +372,7 @@ export type BusinessDailyStatsUncheckedCreateInput = {
   completed?: number
   noShow?: number
   revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: number
 }
 
 export type BusinessDailyStatsUpdateInput = {
@@ -366,6 +384,7 @@ export type BusinessDailyStatsUpdateInput = {
   completed?: Prisma.IntFieldUpdateOperationsInput | number
   noShow?: Prisma.IntFieldUpdateOperationsInput | number
   revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: Prisma.IntFieldUpdateOperationsInput | number
   business?: Prisma.BusinessUpdateOneRequiredWithoutDailyStatsNestedInput
 }
 
@@ -379,6 +398,7 @@ export type BusinessDailyStatsUncheckedUpdateInput = {
   completed?: Prisma.IntFieldUpdateOperationsInput | number
   noShow?: Prisma.IntFieldUpdateOperationsInput | number
   revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type BusinessDailyStatsCreateManyInput = {
@@ -391,6 +411,7 @@ export type BusinessDailyStatsCreateManyInput = {
   completed?: number
   noShow?: number
   revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: number
 }
 
 export type BusinessDailyStatsUpdateManyMutationInput = {
@@ -402,6 +423,7 @@ export type BusinessDailyStatsUpdateManyMutationInput = {
   completed?: Prisma.IntFieldUpdateOperationsInput | number
   noShow?: Prisma.IntFieldUpdateOperationsInput | number
   revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type BusinessDailyStatsUncheckedUpdateManyInput = {
@@ -414,6 +436,7 @@ export type BusinessDailyStatsUncheckedUpdateManyInput = {
   completed?: Prisma.IntFieldUpdateOperationsInput | number
   noShow?: Prisma.IntFieldUpdateOperationsInput | number
   revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type BusinessDailyStatsListRelationFilter = {
@@ -441,6 +464,7 @@ export type BusinessDailyStatsCountOrderByAggregateInput = {
   completed?: Prisma.SortOrder
   noShow?: Prisma.SortOrder
   revenue?: Prisma.SortOrder
+  customers?: Prisma.SortOrder
 }
 
 export type BusinessDailyStatsAvgOrderByAggregateInput = {
@@ -450,6 +474,7 @@ export type BusinessDailyStatsAvgOrderByAggregateInput = {
   completed?: Prisma.SortOrder
   noShow?: Prisma.SortOrder
   revenue?: Prisma.SortOrder
+  customers?: Prisma.SortOrder
 }
 
 export type BusinessDailyStatsMaxOrderByAggregateInput = {
@@ -462,6 +487,7 @@ export type BusinessDailyStatsMaxOrderByAggregateInput = {
   completed?: Prisma.SortOrder
   noShow?: Prisma.SortOrder
   revenue?: Prisma.SortOrder
+  customers?: Prisma.SortOrder
 }
 
 export type BusinessDailyStatsMinOrderByAggregateInput = {
@@ -474,6 +500,7 @@ export type BusinessDailyStatsMinOrderByAggregateInput = {
   completed?: Prisma.SortOrder
   noShow?: Prisma.SortOrder
   revenue?: Prisma.SortOrder
+  customers?: Prisma.SortOrder
 }
 
 export type BusinessDailyStatsSumOrderByAggregateInput = {
@@ -483,6 +510,7 @@ export type BusinessDailyStatsSumOrderByAggregateInput = {
   completed?: Prisma.SortOrder
   noShow?: Prisma.SortOrder
   revenue?: Prisma.SortOrder
+  customers?: Prisma.SortOrder
 }
 
 export type BusinessDailyStatsCreateNestedManyWithoutBusinessInput = {
@@ -536,6 +564,7 @@ export type BusinessDailyStatsCreateWithoutBusinessInput = {
   completed?: number
   noShow?: number
   revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: number
 }
 
 export type BusinessDailyStatsUncheckedCreateWithoutBusinessInput = {
@@ -547,6 +576,7 @@ export type BusinessDailyStatsUncheckedCreateWithoutBusinessInput = {
   completed?: number
   noShow?: number
   revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: number
 }
 
 export type BusinessDailyStatsCreateOrConnectWithoutBusinessInput = {
@@ -579,8 +609,8 @@ export type BusinessDailyStatsScalarWhereInput = {
   AND?: Prisma.BusinessDailyStatsScalarWhereInput | Prisma.BusinessDailyStatsScalarWhereInput[]
   OR?: Prisma.BusinessDailyStatsScalarWhereInput[]
   NOT?: Prisma.BusinessDailyStatsScalarWhereInput | Prisma.BusinessDailyStatsScalarWhereInput[]
-  id?: Prisma.StringFilter<"BusinessDailyStats"> | string
-  businessId?: Prisma.StringFilter<"BusinessDailyStats"> | string
+  id?: Prisma.UuidFilter<"BusinessDailyStats"> | string
+  businessId?: Prisma.UuidFilter<"BusinessDailyStats"> | string
   date?: Prisma.DateTimeFilter<"BusinessDailyStats"> | Date | string
   appointments?: Prisma.IntFilter<"BusinessDailyStats"> | number
   confirmed?: Prisma.IntFilter<"BusinessDailyStats"> | number
@@ -588,6 +618,7 @@ export type BusinessDailyStatsScalarWhereInput = {
   completed?: Prisma.IntFilter<"BusinessDailyStats"> | number
   noShow?: Prisma.IntFilter<"BusinessDailyStats"> | number
   revenue?: Prisma.DecimalFilter<"BusinessDailyStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: Prisma.IntFilter<"BusinessDailyStats"> | number
 }
 
 export type BusinessDailyStatsCreateManyBusinessInput = {
@@ -599,6 +630,7 @@ export type BusinessDailyStatsCreateManyBusinessInput = {
   completed?: number
   noShow?: number
   revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: number
 }
 
 export type BusinessDailyStatsUpdateWithoutBusinessInput = {
@@ -610,6 +642,7 @@ export type BusinessDailyStatsUpdateWithoutBusinessInput = {
   completed?: Prisma.IntFieldUpdateOperationsInput | number
   noShow?: Prisma.IntFieldUpdateOperationsInput | number
   revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type BusinessDailyStatsUncheckedUpdateWithoutBusinessInput = {
@@ -621,6 +654,7 @@ export type BusinessDailyStatsUncheckedUpdateWithoutBusinessInput = {
   completed?: Prisma.IntFieldUpdateOperationsInput | number
   noShow?: Prisma.IntFieldUpdateOperationsInput | number
   revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type BusinessDailyStatsUncheckedUpdateManyWithoutBusinessInput = {
@@ -632,6 +666,7 @@ export type BusinessDailyStatsUncheckedUpdateManyWithoutBusinessInput = {
   completed?: Prisma.IntFieldUpdateOperationsInput | number
   noShow?: Prisma.IntFieldUpdateOperationsInput | number
   revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  customers?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -646,6 +681,7 @@ export type BusinessDailyStatsSelect<ExtArgs extends runtime.Types.Extensions.In
   completed?: boolean
   noShow?: boolean
   revenue?: boolean
+  customers?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["businessDailyStats"]>
 
@@ -659,6 +695,7 @@ export type BusinessDailyStatsSelectCreateManyAndReturn<ExtArgs extends runtime.
   completed?: boolean
   noShow?: boolean
   revenue?: boolean
+  customers?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["businessDailyStats"]>
 
@@ -672,6 +709,7 @@ export type BusinessDailyStatsSelectUpdateManyAndReturn<ExtArgs extends runtime.
   completed?: boolean
   noShow?: boolean
   revenue?: boolean
+  customers?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["businessDailyStats"]>
 
@@ -685,9 +723,10 @@ export type BusinessDailyStatsSelectScalar = {
   completed?: boolean
   noShow?: boolean
   revenue?: boolean
+  customers?: boolean
 }
 
-export type BusinessDailyStatsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "date" | "appointments" | "confirmed" | "cancelled" | "completed" | "noShow" | "revenue", ExtArgs["result"]["businessDailyStats"]>
+export type BusinessDailyStatsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "date" | "appointments" | "confirmed" | "cancelled" | "completed" | "noShow" | "revenue" | "customers", ExtArgs["result"]["businessDailyStats"]>
 export type BusinessDailyStatsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }
@@ -713,6 +752,7 @@ export type $BusinessDailyStatsPayload<ExtArgs extends runtime.Types.Extensions.
     completed: number
     noShow: number
     revenue: runtime.Decimal
+    customers: number
   }, ExtArgs["result"]["businessDailyStats"]>
   composites: {}
 }
@@ -1146,6 +1186,7 @@ export interface BusinessDailyStatsFieldRefs {
   readonly completed: Prisma.FieldRef<"BusinessDailyStats", 'Int'>
   readonly noShow: Prisma.FieldRef<"BusinessDailyStats", 'Int'>
   readonly revenue: Prisma.FieldRef<"BusinessDailyStats", 'Decimal'>
+  readonly customers: Prisma.FieldRef<"BusinessDailyStats", 'Int'>
 }
     
 

@@ -1,40 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { PlatformNotifications } from 'src/modules/notifications/facades/platform-notification';
-import { VerificationService } from '../core/verification.service';
+import { VerificationsService } from '../core/verifications.service';
 import { VerificationType } from 'src/generated/prisma/enums';
-import { UserService } from '../../users/services/user.service';
+import { RequestResetPasswordParams } from '../types/verification.interface';
 
 @Injectable()
 export class PasswordResetStrategy {
-  constructor(
-    private readonly verificationService: VerificationService,
-    private readonly userService: UserService,
-    private readonly platformNotifications: PlatformNotifications,
-  ) {}
+  constructor(private readonly verificationsService: VerificationsService) {}
 
-  async requestReset(email: string, ip?: string) {
-    const user = await this.userService.findByEmailOrFail(email);
-    const userId = user.id;
-    const name = user.name;
-
-    const { token } = await this.verificationService.createTokenVerification({
-      ip,
+  async requestReset({ userId, email, name }: RequestResetPasswordParams) {
+    const token = await this.verificationsService.createTokenVerification({
       userId,
       address: email,
       type: VerificationType.PASSWORD_RESET,
     });
 
-    await this.platformNotifications.sendPasswordReset({
-      userId,
-      name,
-      email,
-      token,
-    });
-
+    //send
     return { message: 'Hemos enviado un correo de verificación' };
   }
 
   async verifyResetToken(token: string) {
-    return this.verificationService.verifyToken(token);
+    return this.verificationsService.verifyToken(token);
   }
 }

@@ -4,7 +4,7 @@ export type MercadoPagoAutoRecurringSubscription = {
   frequency: number;
   frequency_type: 'days' | 'months' | 'years';
   start_date: string;
-  end_date: string;
+  end_date?: string;
 };
 
 export type MercadoPagoCreateSubscriptionRequest = {

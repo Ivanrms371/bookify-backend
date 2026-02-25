@@ -3,10 +3,10 @@ import { SubscriptionService } from '../services/subscription.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { BusinessGuard } from 'src/auth/guards/business.guard';
 import { BusinessRoles } from 'src/auth/decorators/business-roles.decorator';
-import { StaffRole } from 'src/generated/prisma/enums';
+import { PlanType, BusinessRole } from 'src/generated/prisma/enums';
 
 @UseGuards(JwtAuthGuard, BusinessGuard)
-@BusinessRoles(StaffRole.OWNER)
+@BusinessRoles(BusinessRole.OWNER)
 @Controller('subscriptions')
 export class SubscriptionController {
   private readonly logger = new Logger(SubscriptionController.name);
@@ -27,8 +27,8 @@ export class SubscriptionController {
    * Start a trial
    */
   @Post('trial')
-  async startTrial(@Body() body: { businessId: string; planId: string }) {
-    return this.subscriptionService.startTrial(body.businessId, body.planId);
+  async startTrial(@Body() body: { businessId: string; planType: PlanType }) {
+    return this.subscriptionService.startTrial(body.businessId, body.planType);
   }
 
   /**
@@ -36,8 +36,8 @@ export class SubscriptionController {
    * Create a paid subscription
    */
   @Post('paid')
-  async createPaid(@Body() body: { businessId: string; planId: string }) {
-    return this.subscriptionService.createPaidSubscription(body.businessId, body.planId);
+  async createPaid(@Body() body: { businessId: string; planType: PlanType }) {
+    return this.subscriptionService.createPaidSubscription(body.businessId, body.planType);
   }
 
   /**

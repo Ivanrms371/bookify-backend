@@ -1,26 +1,24 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { PlanService } from 'src/modules/plans/plan.service';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PlansService } from 'src/modules/plans/plans.service';
 import { SubscriptionRepository } from '../repositories/subscription.repository';
 import { MercadoPagoService } from 'src/mercadopago/mercadopago.service';
-import { generateEndDate } from 'src/common/utils/dates.util';
 import { addDays } from 'date-fns';
 import { MercadoPagoPreapproval } from 'src/mercadopago/types/preapproval-subscription.type';
-import { SubscriptionStatus } from 'src/generated/prisma/enums';
-import { BusinessService } from 'src/modules/businesses/services/business.service';
+import { PlanType, SubscriptionStatus } from 'src/generated/prisma/enums';
+import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 import { Subscription } from 'src/generated/prisma/client';
-import { BusinessOnboardingService } from 'src/modules/businesses/services/business-onboarding.service';
 
 @Injectable()
 export class SubscriptionService {
   constructor(
-    private readonly prisma: PrismaService,
-    private readonly onboardingService: BusinessOnboardingService,
-    private readonly businessService: BusinessService,
     private readonly mercadoPagoService: MercadoPagoService,
     private readonly subscriptionRepository: SubscriptionRepository,
-    private readonly planService: PlanService,
+    private readonly plansService: PlansService,
   ) {}
+
+  private isFree(planType: PlanType) {
+    return planType === PlanType.FREE;
+  }
 
   async findSubscriptionByBusinessId(businessId: string) {
     const subscription = await this.subscriptionRepository.findUnique({
@@ -32,113 +30,74 @@ export class SubscriptionService {
     return subscription;
   }
 
-  async createFreeSubscription(businessId: string) {
-    const existingSubscription = await this.subscriptionRepository.findUnique({
-      where: { businessId },
-    });
-
-    if (existingSubscription) {
-      throw new BadRequestException('Este negocio ya tiene una suscripción.');
+  async createSubscription(businessId: string, planKey: PlanType, tx: TransactionClient) {
+    if (this.isFree(planKey)) {
+      return this.createFreeSubscription(businessId, tx);
     }
+    return this.startTrial(businessId, planKey, tx);
+  }
 
-    const freePlan = await this.planService.findFreePlan();
+  async createFreeSubscription(businessId: string, tx?: TransactionClient) {
+    const freePlan = await this.plansService.findFreePlan();
 
-    const subscription = await this.prisma.$transaction(async (tx) => {
-      const subscription = await this.subscriptionRepository.create({
-        data: {
-          businessId,
-          planId: freePlan.id,
-          status: 'ACTIVE',
-          amount: freePlan.price,
-          currency: freePlan.currency,
-          billingCycle: null,
-          currentPeriodStart: new Date(),
-          currentPeriodEnd: null,
-          nextPaymentDate: null,
-          trialEndsAt: null,
-          trialUsedAt: null,
-        },
-        include: {
-          plan: true,
-          business: true,
-        },
-      });
-
-      await this.onboardingService.markOnboardingAsCompleted(businessId, tx);
-
-      return subscription;
-    });
+    const subscription = await this.subscriptionRepository.upsert(
+      businessId,
+      {
+        business: { connect: { id: businessId } },
+        plan: { connect: { id: freePlan.id } },
+        status: 'ACTIVE',
+        amount: freePlan.price,
+        currency: freePlan.currency,
+        billingCycle: null,
+        currentPeriodStart: new Date(),
+        currentPeriodEnd: null,
+        nextPaymentDate: null,
+        trialEndsAt: null,
+        trialUsedAt: null,
+      },
+      tx,
+    );
 
     return subscription;
   }
 
-  async startTrial(businessId: string, planId: string) {
-    const existingSubscription = await this.subscriptionRepository.findUnique({
-      where: { businessId },
-    });
-
-    if (existingSubscription) {
-      throw new BadRequestException('Este negocio ya tiene una suscripción.');
-    }
-
-    const plan = await this.planService.findPlanById(planId);
-
+  async startTrial(businessId: string, planKey: PlanType, tx?: TransactionClient) {
+    const plan = await this.plansService.findPlanByKey(planKey);
     const trialEndsAt = addDays(new Date(), plan.trialDays);
 
-    const subscription = await this.subscriptionRepository.upsert({
-      where: { businessId },
-      create: {
-        businessId,
-        planId: plan.id,
-        status: 'TRIAL',
-        amount: plan.price,
-        currency: plan.currency,
-        billingCycle: plan.billingCycle,
-        currentPeriodStart: new Date(),
-        currentPeriodEnd: trialEndsAt,
-        nextPaymentDate: trialEndsAt,
-        trialEndsAt,
-        trialUsedAt: new Date(),
-      },
-      update: {
-        planId: plan.id,
-        status: 'ACTIVE',
-        amount: plan.price,
-        currency: plan.currency,
-        billingCycle: plan.billingCycle,
-        currentPeriodStart: new Date(),
-        currentPeriodEnd: trialEndsAt,
-        nextPaymentDate: trialEndsAt,
-        trialEndsAt,
-        trialUsedAt: new Date(),
-      },
-      include: {
-        plan: true,
-      },
+    const subscription = await this.subscriptionRepository.upsert(businessId, {
+      business: { connect: { id: businessId } },
+      plan: { connect: { id: plan.id } },
+      status: 'TRIAL',
+      amount: plan.price,
+      currency: plan.currency,
+      billingCycle: plan.billingCycle,
+      currentPeriodStart: new Date(),
+      currentPeriodEnd: trialEndsAt,
+      nextPaymentDate: trialEndsAt,
+      trialEndsAt,
+      trialUsedAt: new Date(),
     });
-
-    // TODO: Program emails reminder of trial
-    // await this.scheduleTrialReminders(subscription);
 
     return subscription;
   }
 
-  async createPaidSubscription(businessId: string, planId: string) {
-    const plan = await this.planService.findPlanById(planId);
+  async createPaidSubscription(businessId: string, planKey: PlanType) {
+    const plan = await this.plansService.findPlanByKey(planKey);
 
-    if (this.planService.isFreePlan(plan)) {
+    if (this.plansService.isFreePlan(plan)) {
       throw new BadRequestException('Este plan es gratuito.');
     }
 
-    const business = await this.businessService.findBusinessById(businessId);
+    // await this.businessService.(businessId);
 
-    const existingSubscription = await this.subscriptionRepository.findUnique({
-      where: { businessId },
-    });
+    const existingSubscription = await this.subscriptionRepository.findByBusinessId(businessId);
 
     // frequency in base billin cycle
     const frequency = plan.billingCycle === 'MONTHLY' ? 1 : 12;
     const frequencyType = plan.billingCycle === 'MONTHLY' ? 'months' : 'years';
+    const trialEndsAt = existingSubscription?.trialEndsAt ?? addDays(new Date(), plan.trialDays);
+    const startDate = existingSubscription?.trialUsedAt ? trialEndsAt : new Date();
 
     // create preapproval (subscription) in mercadopago
     const preapproval = await this.mercadoPagoService.createSubscription({
@@ -148,41 +107,27 @@ export class SubscriptionService {
         frequency_type: frequencyType,
         transaction_amount: plan.price.toNumber(),
         currency_id: plan.currency,
-        start_date: new Date().toISOString(),
-        end_date: generateEndDate().toISOString(),
+        start_date: startDate.toISOString(),
       },
       back_url: 'https://turnify.com',
       payer_email: '[EMAIL_ADDRESS]',
       external_reference: businessId,
     });
 
-    const subscription = await this.subscriptionRepository.upsert({
-      where: { businessId },
-      create: {
-        businessId,
-        planId: plan.id,
-        status: 'PENDING_PAYMENT',
-        amount: plan.price,
-        currency: plan.currency,
-        billingCycle: plan.billingCycle,
-        externalId: preapproval.id,
-        paymentProvider: 'mercadopago',
-        trialEndsAt: existingSubscription?.trialEndsAt,
-        trialUsedAt: existingSubscription?.trialUsedAt,
-      },
-      update: {
-        planId: plan.id,
-        status: 'PENDING_PAYMENT',
-        amount: plan.price,
-        currency: plan.currency,
-        billingCycle: plan.billingCycle,
-        externalId: preapproval.id,
-        paymentProvider: 'mercadopago',
-      },
-      include: {
-        plan: true,
-        business: true,
-      },
+    const subscription = await this.subscriptionRepository.upsert(businessId, {
+      business: { connect: { id: businessId } },
+      plan: { connect: { id: plan.id } },
+      status: 'PENDING_PAYMENT',
+      amount: plan.price,
+      currency: plan.currency,
+      billingCycle: plan.billingCycle,
+      externalId: preapproval.id,
+      paymentProvider: 'mercadopago',
+      trialEndsAt: existingSubscription?.trialEndsAt,
+      trialUsedAt: existingSubscription?.trialUsedAt,
+      currentPeriodStart: new Date(),
+      currentPeriodEnd: null,
+      nextPaymentDate: null,
     });
 
     return {
@@ -196,19 +141,14 @@ export class SubscriptionService {
    */
 
   async cancelSubscription(subscriptionId: string, reason?: string) {
-    const subscription = await this.subscriptionRepository.findUnique({
-      where: { id: subscriptionId },
-    });
+    const subscription = await this.subscriptionRepository.findById(subscriptionId);
     if (!subscription) {
       throw new NotFoundException('Subscription not found');
     }
 
     if (subscription.externalId) {
       try {
-        await this.mercadoPagoService.updateSubscriptionStatus(
-          subscription.externalId,
-          'cancelled',
-        );
+        await this.mercadoPagoService.updateSubscriptionStatus(subscription.externalId, 'cancelled');
       } catch (error) {
         console.log('Error cancelling subscription in Mercado Pago', error);
       }
@@ -238,7 +178,7 @@ export class SubscriptionService {
    */
 
   async downgradeToFree(businessId: string) {
-    const freePlan = await this.planService.findFreePlan();
+    const freePlan = await this.plansService.findFreePlan();
 
     return await this.subscriptionRepository.update({
       where: { businessId },

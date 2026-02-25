@@ -12,11 +12,19 @@ export class CodeGeneratorService {
   }
 
   /**
-   * Generates a safe token of urls
+   * Generate token and token hash to save on db
    */
-  generateToken(): string {
-    const randomBytes = crypto.randomBytes(32);
-    return randomBytes.toString('hex');
+  generateTokenAndHash(): { token: string; tokenHash: string } {
+    const token = crypto.randomBytes(32).toString('hex');
+    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+    return { token, tokenHash };
+  }
+
+  /**
+   * Generate hash to compare
+   */
+  hashToken(token: string): string {
+    return crypto.createHash('sha256').update(token).digest('hex');
   }
 
   /**

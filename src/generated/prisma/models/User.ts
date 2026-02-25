@@ -42,6 +42,9 @@ export type UserMinAggregateOutputType = {
   phone: string | null
   phoneVerifiedAt: Date | null
   password: string | null
+  avatarUrl: string | null
+  ipAddress: string | null
+  userAgent: string | null
   googleId: string | null
   lastLoginAt: Date | null
   tokenVersion: number | null
@@ -57,6 +60,9 @@ export type UserMaxAggregateOutputType = {
   phone: string | null
   phoneVerifiedAt: Date | null
   password: string | null
+  avatarUrl: string | null
+  ipAddress: string | null
+  userAgent: string | null
   googleId: string | null
   lastLoginAt: Date | null
   tokenVersion: number | null
@@ -72,6 +78,9 @@ export type UserCountAggregateOutputType = {
   phone: number
   phoneVerifiedAt: number
   password: number
+  avatarUrl: number
+  ipAddress: number
+  userAgent: number
   googleId: number
   lastLoginAt: number
   tokenVersion: number
@@ -97,6 +106,9 @@ export type UserMinAggregateInputType = {
   phone?: true
   phoneVerifiedAt?: true
   password?: true
+  avatarUrl?: true
+  ipAddress?: true
+  userAgent?: true
   googleId?: true
   lastLoginAt?: true
   tokenVersion?: true
@@ -112,6 +124,9 @@ export type UserMaxAggregateInputType = {
   phone?: true
   phoneVerifiedAt?: true
   password?: true
+  avatarUrl?: true
+  ipAddress?: true
+  userAgent?: true
   googleId?: true
   lastLoginAt?: true
   tokenVersion?: true
@@ -127,6 +142,9 @@ export type UserCountAggregateInputType = {
   phone?: true
   phoneVerifiedAt?: true
   password?: true
+  avatarUrl?: true
+  ipAddress?: true
+  userAgent?: true
   googleId?: true
   lastLoginAt?: true
   tokenVersion?: true
@@ -229,6 +247,9 @@ export type UserGroupByOutputType = {
   phone: string | null
   phoneVerifiedAt: Date | null
   password: string | null
+  avatarUrl: string | null
+  ipAddress: string | null
+  userAgent: string | null
   googleId: string | null
   lastLoginAt: Date | null
   tokenVersion: number
@@ -260,27 +281,30 @@ export type UserWhereInput = {
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
-  id?: Prisma.StringFilter<"User"> | string
+  id?: Prisma.UuidFilter<"User"> | string
   name?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
   emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   phone?: Prisma.StringNullableFilter<"User"> | string | null
   phoneVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   password?: Prisma.StringNullableFilter<"User"> | string | null
+  avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  ipAddress?: Prisma.StringNullableFilter<"User"> | string | null
+  userAgent?: Prisma.StringNullableFilter<"User"> | string | null
   googleId?: Prisma.StringNullableFilter<"User"> | string | null
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   tokenVersion?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  businesses?: Prisma.BusinessListRelationFilter
+  businessMembers?: Prisma.BusinessMemberListRelationFilter
+  business?: Prisma.XOR<Prisma.BusinessNullableScalarRelationFilter, Prisma.BusinessWhereInput> | null
+  inAppNotifications?: Prisma.InAppNotificationListRelationFilter
   invites?: Prisma.MemberInviteListRelationFilter
-  refreshTokens?: Prisma.RefreshTokenListRelationFilter
-  staffs?: Prisma.StaffListRelationFilter
-  customers?: Prisma.CustomerListRelationFilter
   platformAdmin?: Prisma.XOR<Prisma.PlatformAdminNullableScalarRelationFilter, Prisma.PlatformAdminWhereInput> | null
-  scheduledNotifications?: Prisma.ScheduledNotificationListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
+  staff?: Prisma.XOR<Prisma.StaffNullableScalarRelationFilter, Prisma.StaffWhereInput> | null
+  verificationLocks?: Prisma.XOR<Prisma.VerificationLockNullableScalarRelationFilter, Prisma.VerificationLockWhereInput> | null
   verifications?: Prisma.VerificationListRelationFilter
-  verificationLocks?: Prisma.VerificationLockListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -291,48 +315,54 @@ export type UserOrderByWithRelationInput = {
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   phoneVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  ipAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  userAgent?: Prisma.SortOrderInput | Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   tokenVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  businesses?: Prisma.BusinessOrderByRelationAggregateInput
+  businessMembers?: Prisma.BusinessMemberOrderByRelationAggregateInput
+  business?: Prisma.BusinessOrderByWithRelationInput
+  inAppNotifications?: Prisma.InAppNotificationOrderByRelationAggregateInput
   invites?: Prisma.MemberInviteOrderByRelationAggregateInput
-  refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
-  staffs?: Prisma.StaffOrderByRelationAggregateInput
-  customers?: Prisma.CustomerOrderByRelationAggregateInput
   platformAdmin?: Prisma.PlatformAdminOrderByWithRelationInput
-  scheduledNotifications?: Prisma.ScheduledNotificationOrderByRelationAggregateInput
+  sessions?: Prisma.SessionOrderByRelationAggregateInput
+  staff?: Prisma.StaffOrderByWithRelationInput
+  verificationLocks?: Prisma.VerificationLockOrderByWithRelationInput
   verifications?: Prisma.VerificationOrderByRelationAggregateInput
-  verificationLocks?: Prisma.VerificationLockOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   email?: string
-  phone?: string
   googleId?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringFilter<"User"> | string
   emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  phone?: Prisma.StringNullableFilter<"User"> | string | null
   phoneVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   password?: Prisma.StringNullableFilter<"User"> | string | null
+  avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  ipAddress?: Prisma.StringNullableFilter<"User"> | string | null
+  userAgent?: Prisma.StringNullableFilter<"User"> | string | null
   lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   tokenVersion?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  businesses?: Prisma.BusinessListRelationFilter
+  businessMembers?: Prisma.BusinessMemberListRelationFilter
+  business?: Prisma.XOR<Prisma.BusinessNullableScalarRelationFilter, Prisma.BusinessWhereInput> | null
+  inAppNotifications?: Prisma.InAppNotificationListRelationFilter
   invites?: Prisma.MemberInviteListRelationFilter
-  refreshTokens?: Prisma.RefreshTokenListRelationFilter
-  staffs?: Prisma.StaffListRelationFilter
-  customers?: Prisma.CustomerListRelationFilter
   platformAdmin?: Prisma.XOR<Prisma.PlatformAdminNullableScalarRelationFilter, Prisma.PlatformAdminWhereInput> | null
-  scheduledNotifications?: Prisma.ScheduledNotificationListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
+  staff?: Prisma.XOR<Prisma.StaffNullableScalarRelationFilter, Prisma.StaffWhereInput> | null
+  verificationLocks?: Prisma.XOR<Prisma.VerificationLockNullableScalarRelationFilter, Prisma.VerificationLockWhereInput> | null
   verifications?: Prisma.VerificationListRelationFilter
-  verificationLocks?: Prisma.VerificationLockListRelationFilter
-}, "id" | "email" | "phone" | "googleId">
+}, "id" | "email" | "googleId">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -342,6 +372,9 @@ export type UserOrderByWithAggregationInput = {
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   phoneVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   password?: Prisma.SortOrderInput | Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  ipAddress?: Prisma.SortOrderInput | Prisma.SortOrder
+  userAgent?: Prisma.SortOrderInput | Prisma.SortOrder
   googleId?: Prisma.SortOrderInput | Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   tokenVersion?: Prisma.SortOrder
@@ -358,13 +391,16 @@ export type UserScalarWhereWithAggregatesInput = {
   AND?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   OR?: Prisma.UserScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"User"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"User"> | string
   name?: Prisma.StringWithAggregatesFilter<"User"> | string
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   emailVerifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   phoneVerifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   password?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  ipAddress?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  userAgent?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   googleId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   lastLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   tokenVersion?: Prisma.IntWithAggregatesFilter<"User"> | number
@@ -380,20 +416,23 @@ export type UserCreateInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessCreateNestedManyWithoutOwnerInput
+  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -404,20 +443,23 @@ export type UserUncheckedCreateInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessUncheckedCreateNestedManyWithoutOwnerInput
+  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -428,20 +470,23 @@ export type UserUpdateInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUpdateManyWithoutOwnerNestedInput
+  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -452,20 +497,23 @@ export type UserUncheckedUpdateInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUncheckedUpdateManyWithoutOwnerNestedInput
+  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -476,6 +524,9 @@ export type UserCreateManyInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
@@ -491,6 +542,9 @@ export type UserUpdateManyMutationInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
@@ -506,6 +560,9 @@ export type UserUncheckedUpdateManyInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
@@ -521,6 +578,9 @@ export type UserCountOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   phoneVerifiedAt?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrder
+  ipAddress?: Prisma.SortOrder
+  userAgent?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   tokenVersion?: Prisma.SortOrder
@@ -540,6 +600,9 @@ export type UserMaxOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   phoneVerifiedAt?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrder
+  ipAddress?: Prisma.SortOrder
+  userAgent?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   tokenVersion?: Prisma.SortOrder
@@ -555,6 +618,9 @@ export type UserMinOrderByAggregateInput = {
   phone?: Prisma.SortOrder
   phoneVerifiedAt?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrder
+  ipAddress?: Prisma.SortOrder
+  userAgent?: Prisma.SortOrder
   googleId?: Prisma.SortOrder
   lastLoginAt?: Prisma.SortOrder
   tokenVersion?: Prisma.SortOrder
@@ -569,11 +635,6 @@ export type UserSumOrderByAggregateInput = {
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
-}
-
-export type UserNullableScalarRelationFilter = {
-  is?: Prisma.UserWhereInput | null
-  isNot?: Prisma.UserWhereInput | null
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -600,18 +661,32 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type UserCreateNestedOneWithoutRefreshTokensInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokensInput
+export type UserCreateNestedOneWithoutBusinessMembersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBusinessMembersInput, Prisma.UserUncheckedCreateWithoutBusinessMembersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBusinessMembersInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutRefreshTokensNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokensInput
-  upsert?: Prisma.UserUpsertWithoutRefreshTokensInput
+export type UserUpdateOneRequiredWithoutBusinessMembersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBusinessMembersInput, Prisma.UserUncheckedCreateWithoutBusinessMembersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBusinessMembersInput
+  upsert?: Prisma.UserUpsertWithoutBusinessMembersInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRefreshTokensInput, Prisma.UserUpdateWithoutRefreshTokensInput>, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBusinessMembersInput, Prisma.UserUpdateWithoutBusinessMembersInput>, Prisma.UserUncheckedUpdateWithoutBusinessMembersInput>
+}
+
+export type UserCreateNestedOneWithoutSessionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
+  upsert?: Prisma.UserUpsertWithoutSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
 }
 
 export type UserCreateNestedOneWithoutVerificationsInput = {
@@ -642,32 +717,32 @@ export type UserUpdateOneRequiredWithoutVerificationLocksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVerificationLocksInput, Prisma.UserUpdateWithoutVerificationLocksInput>, Prisma.UserUncheckedUpdateWithoutVerificationLocksInput>
 }
 
-export type UserCreateNestedOneWithoutBusinessesInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutBusinessesInput, Prisma.UserUncheckedCreateWithoutBusinessesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBusinessesInput
+export type UserCreateNestedOneWithoutBusinessInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBusinessInput, Prisma.UserUncheckedCreateWithoutBusinessInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBusinessInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutBusinessesNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutBusinessesInput, Prisma.UserUncheckedCreateWithoutBusinessesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBusinessesInput
-  upsert?: Prisma.UserUpsertWithoutBusinessesInput
+export type UserUpdateOneRequiredWithoutBusinessNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBusinessInput, Prisma.UserUncheckedCreateWithoutBusinessInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBusinessInput
+  upsert?: Prisma.UserUpsertWithoutBusinessInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBusinessesInput, Prisma.UserUpdateWithoutBusinessesInput>, Prisma.UserUncheckedUpdateWithoutBusinessesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBusinessInput, Prisma.UserUpdateWithoutBusinessInput>, Prisma.UserUncheckedUpdateWithoutBusinessInput>
 }
 
-export type UserCreateNestedOneWithoutStaffsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutStaffsInput, Prisma.UserUncheckedCreateWithoutStaffsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStaffsInput
+export type UserCreateNestedOneWithoutStaffInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStaffInput, Prisma.UserUncheckedCreateWithoutStaffInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStaffInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutStaffsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutStaffsInput, Prisma.UserUncheckedCreateWithoutStaffsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStaffsInput
-  upsert?: Prisma.UserUpsertWithoutStaffsInput
+export type UserUpdateOneRequiredWithoutStaffNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStaffInput, Prisma.UserUncheckedCreateWithoutStaffInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStaffInput
+  upsert?: Prisma.UserUpsertWithoutStaffInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStaffsInput, Prisma.UserUpdateWithoutStaffsInput>, Prisma.UserUncheckedUpdateWithoutStaffsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStaffInput, Prisma.UserUpdateWithoutStaffInput>, Prisma.UserUncheckedUpdateWithoutStaffInput>
 }
 
 export type UserCreateNestedOneWithoutInvitesInput = {
@@ -684,34 +759,18 @@ export type UserUpdateOneRequiredWithoutInvitesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInvitesInput, Prisma.UserUpdateWithoutInvitesInput>, Prisma.UserUncheckedUpdateWithoutInvitesInput>
 }
 
-export type UserCreateNestedOneWithoutCustomersInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutCustomersInput, Prisma.UserUncheckedCreateWithoutCustomersInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCustomersInput
+export type UserCreateNestedOneWithoutInAppNotificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInAppNotificationsInput, Prisma.UserUncheckedCreateWithoutInAppNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInAppNotificationsInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutCustomersNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutCustomersInput, Prisma.UserUncheckedCreateWithoutCustomersInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCustomersInput
-  upsert?: Prisma.UserUpsertWithoutCustomersInput
+export type UserUpdateOneRequiredWithoutInAppNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInAppNotificationsInput, Prisma.UserUncheckedCreateWithoutInAppNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInAppNotificationsInput
+  upsert?: Prisma.UserUpsertWithoutInAppNotificationsInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCustomersInput, Prisma.UserUpdateWithoutCustomersInput>, Prisma.UserUncheckedUpdateWithoutCustomersInput>
-}
-
-export type UserCreateNestedOneWithoutScheduledNotificationsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutScheduledNotificationsInput, Prisma.UserUncheckedCreateWithoutScheduledNotificationsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutScheduledNotificationsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneWithoutScheduledNotificationsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutScheduledNotificationsInput, Prisma.UserUncheckedCreateWithoutScheduledNotificationsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutScheduledNotificationsInput
-  upsert?: Prisma.UserUpsertWithoutScheduledNotificationsInput
-  disconnect?: Prisma.UserWhereInput | boolean
-  delete?: Prisma.UserWhereInput | boolean
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutScheduledNotificationsInput, Prisma.UserUpdateWithoutScheduledNotificationsInput>, Prisma.UserUncheckedUpdateWithoutScheduledNotificationsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInAppNotificationsInput, Prisma.UserUpdateWithoutInAppNotificationsInput>, Prisma.UserUncheckedUpdateWithoutInAppNotificationsInput>
 }
 
 export type UserCreateNestedOneWithoutPlatformAdminInput = {
@@ -728,7 +787,7 @@ export type UserUpdateOneRequiredWithoutPlatformAdminNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPlatformAdminInput, Prisma.UserUpdateWithoutPlatformAdminInput>, Prisma.UserUncheckedUpdateWithoutPlatformAdminInput>
 }
 
-export type UserCreateWithoutRefreshTokensInput = {
+export type UserCreateWithoutBusinessMembersInput = {
   id?: string
   name: string
   email: string
@@ -736,22 +795,25 @@ export type UserCreateWithoutRefreshTokensInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessCreateNestedManyWithoutOwnerInput
+  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutRefreshTokensInput = {
+export type UserUncheckedCreateWithoutBusinessMembersInput = {
   id?: string
   name: string
   email: string
@@ -759,38 +821,41 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessUncheckedCreateNestedManyWithoutOwnerInput
+  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutRefreshTokensInput = {
+export type UserCreateOrConnectWithoutBusinessMembersInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBusinessMembersInput, Prisma.UserUncheckedCreateWithoutBusinessMembersInput>
 }
 
-export type UserUpsertWithoutRefreshTokensInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutRefreshTokensInput, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+export type UserUpsertWithoutBusinessMembersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBusinessMembersInput, Prisma.UserUncheckedUpdateWithoutBusinessMembersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBusinessMembersInput, Prisma.UserUncheckedCreateWithoutBusinessMembersInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutRefreshTokensInput = {
+export type UserUpdateToOneWithWhereWithoutBusinessMembersInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutRefreshTokensInput, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBusinessMembersInput, Prisma.UserUncheckedUpdateWithoutBusinessMembersInput>
 }
 
-export type UserUpdateWithoutRefreshTokensInput = {
+export type UserUpdateWithoutBusinessMembersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -798,22 +863,25 @@ export type UserUpdateWithoutRefreshTokensInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUpdateManyWithoutOwnerNestedInput
+  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutRefreshTokensInput = {
+export type UserUncheckedUpdateWithoutBusinessMembersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -821,19 +889,142 @@ export type UserUncheckedUpdateWithoutRefreshTokensInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUncheckedUpdateManyWithoutOwnerNestedInput
+  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSessionsInput = {
+  id?: string
+  name: string
+  email: string
+  emailVerifiedAt?: Date | string | null
+  phone?: string | null
+  phoneVerifiedAt?: Date | string | null
+  password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
+  googleId?: string | null
+  lastLoginAt?: Date | string | null
+  tokenVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
+  invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
+  platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
+  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
+  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSessionsInput = {
+  id?: string
+  name: string
+  email: string
+  emailVerifiedAt?: Date | string | null
+  phone?: string | null
+  phoneVerifiedAt?: Date | string | null
+  password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
+  googleId?: string | null
+  lastLoginAt?: Date | string | null
+  tokenVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
+  invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
+  platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
+  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
+  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSessionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+}
+
+export type UserUpsertWithoutSessionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSessionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+}
+
+export type UserUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
+  invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
+  platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
+  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
+  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
+  invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
+  platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
+  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
+  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutVerificationsInput = {
@@ -844,19 +1035,22 @@ export type UserCreateWithoutVerificationsInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessCreateNestedManyWithoutOwnerInput
+  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutVerificationsInput = {
@@ -867,19 +1061,22 @@ export type UserUncheckedCreateWithoutVerificationsInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessUncheckedCreateNestedManyWithoutOwnerInput
+  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutVerificationsInput = {
@@ -906,19 +1103,22 @@ export type UserUpdateWithoutVerificationsInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUpdateManyWithoutOwnerNestedInput
+  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutVerificationsInput = {
@@ -929,19 +1129,22 @@ export type UserUncheckedUpdateWithoutVerificationsInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUncheckedUpdateManyWithoutOwnerNestedInput
+  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutVerificationLocksInput = {
@@ -952,18 +1155,21 @@ export type UserCreateWithoutVerificationLocksInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessCreateNestedManyWithoutOwnerInput
+  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
 }
 
@@ -975,18 +1181,21 @@ export type UserUncheckedCreateWithoutVerificationLocksInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessUncheckedCreateNestedManyWithoutOwnerInput
+  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1014,18 +1223,21 @@ export type UserUpdateWithoutVerificationLocksInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUpdateManyWithoutOwnerNestedInput
+  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
 }
 
@@ -1037,22 +1249,25 @@ export type UserUncheckedUpdateWithoutVerificationLocksInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUncheckedUpdateManyWithoutOwnerNestedInput
+  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
-export type UserCreateWithoutBusinessesInput = {
+export type UserCreateWithoutBusinessInput = {
   id?: string
   name: string
   email: string
@@ -1060,22 +1275,25 @@ export type UserCreateWithoutBusinessesInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutBusinessesInput = {
+export type UserUncheckedCreateWithoutBusinessInput = {
   id?: string
   name: string
   email: string
@@ -1083,38 +1301,41 @@ export type UserUncheckedCreateWithoutBusinessesInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutBusinessesInput = {
+export type UserCreateOrConnectWithoutBusinessInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutBusinessesInput, Prisma.UserUncheckedCreateWithoutBusinessesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBusinessInput, Prisma.UserUncheckedCreateWithoutBusinessInput>
 }
 
-export type UserUpsertWithoutBusinessesInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutBusinessesInput, Prisma.UserUncheckedUpdateWithoutBusinessesInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutBusinessesInput, Prisma.UserUncheckedCreateWithoutBusinessesInput>
+export type UserUpsertWithoutBusinessInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBusinessInput, Prisma.UserUncheckedUpdateWithoutBusinessInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBusinessInput, Prisma.UserUncheckedCreateWithoutBusinessInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutBusinessesInput = {
+export type UserUpdateToOneWithWhereWithoutBusinessInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutBusinessesInput, Prisma.UserUncheckedUpdateWithoutBusinessesInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBusinessInput, Prisma.UserUncheckedUpdateWithoutBusinessInput>
 }
 
-export type UserUpdateWithoutBusinessesInput = {
+export type UserUpdateWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1122,22 +1343,25 @@ export type UserUpdateWithoutBusinessesInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutBusinessesInput = {
+export type UserUncheckedUpdateWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1145,22 +1369,25 @@ export type UserUncheckedUpdateWithoutBusinessesInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUncheckedUpdateManyWithoutUserNestedInput
 }
 
-export type UserCreateWithoutStaffsInput = {
+export type UserCreateWithoutStaffInput = {
   id?: string
   name: string
   email: string
@@ -1168,22 +1395,25 @@ export type UserCreateWithoutStaffsInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessCreateNestedManyWithoutOwnerInput
+  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutStaffsInput = {
+export type UserUncheckedCreateWithoutStaffInput = {
   id?: string
   name: string
   email: string
@@ -1191,38 +1421,41 @@ export type UserUncheckedCreateWithoutStaffsInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessUncheckedCreateNestedManyWithoutOwnerInput
+  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutStaffsInput = {
+export type UserCreateOrConnectWithoutStaffInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutStaffsInput, Prisma.UserUncheckedCreateWithoutStaffsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutStaffInput, Prisma.UserUncheckedCreateWithoutStaffInput>
 }
 
-export type UserUpsertWithoutStaffsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutStaffsInput, Prisma.UserUncheckedUpdateWithoutStaffsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutStaffsInput, Prisma.UserUncheckedCreateWithoutStaffsInput>
+export type UserUpsertWithoutStaffInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutStaffInput, Prisma.UserUncheckedUpdateWithoutStaffInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutStaffInput, Prisma.UserUncheckedCreateWithoutStaffInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutStaffsInput = {
+export type UserUpdateToOneWithWhereWithoutStaffInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutStaffsInput, Prisma.UserUncheckedUpdateWithoutStaffsInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutStaffInput, Prisma.UserUncheckedUpdateWithoutStaffInput>
 }
 
-export type UserUpdateWithoutStaffsInput = {
+export type UserUpdateWithoutStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1230,22 +1463,25 @@ export type UserUpdateWithoutStaffsInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUpdateManyWithoutOwnerNestedInput
+  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutStaffsInput = {
+export type UserUncheckedUpdateWithoutStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1253,19 +1489,22 @@ export type UserUncheckedUpdateWithoutStaffsInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUncheckedUpdateManyWithoutOwnerNestedInput
+  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutInvitesInput = {
@@ -1276,19 +1515,22 @@ export type UserCreateWithoutInvitesInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessCreateNestedManyWithoutOwnerInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
+  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInvitesInput = {
@@ -1299,19 +1541,22 @@ export type UserUncheckedCreateWithoutInvitesInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessUncheckedCreateNestedManyWithoutOwnerInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
+  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInvitesInput = {
@@ -1338,19 +1583,22 @@ export type UserUpdateWithoutInvitesInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUpdateManyWithoutOwnerNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
+  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInvitesInput = {
@@ -1361,22 +1609,25 @@ export type UserUncheckedUpdateWithoutInvitesInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUncheckedUpdateManyWithoutOwnerNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
+  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUncheckedUpdateManyWithoutUserNestedInput
 }
 
-export type UserCreateWithoutCustomersInput = {
+export type UserCreateWithoutInAppNotificationsInput = {
   id?: string
   name: string
   email: string
@@ -1384,22 +1635,25 @@ export type UserCreateWithoutCustomersInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessCreateNestedManyWithoutOwnerInput
+  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
   invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutCustomersInput = {
+export type UserUncheckedCreateWithoutInAppNotificationsInput = {
   id?: string
   name: string
   email: string
@@ -1407,38 +1661,41 @@ export type UserUncheckedCreateWithoutCustomersInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessUncheckedCreateNestedManyWithoutOwnerInput
+  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
   invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutCustomersInput = {
+export type UserCreateOrConnectWithoutInAppNotificationsInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutCustomersInput, Prisma.UserUncheckedCreateWithoutCustomersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutInAppNotificationsInput, Prisma.UserUncheckedCreateWithoutInAppNotificationsInput>
 }
 
-export type UserUpsertWithoutCustomersInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutCustomersInput, Prisma.UserUncheckedUpdateWithoutCustomersInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutCustomersInput, Prisma.UserUncheckedCreateWithoutCustomersInput>
+export type UserUpsertWithoutInAppNotificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutInAppNotificationsInput, Prisma.UserUncheckedUpdateWithoutInAppNotificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutInAppNotificationsInput, Prisma.UserUncheckedCreateWithoutInAppNotificationsInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutCustomersInput = {
+export type UserUpdateToOneWithWhereWithoutInAppNotificationsInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutCustomersInput, Prisma.UserUncheckedUpdateWithoutCustomersInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutInAppNotificationsInput, Prisma.UserUncheckedUpdateWithoutInAppNotificationsInput>
 }
 
-export type UserUpdateWithoutCustomersInput = {
+export type UserUpdateWithoutInAppNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1446,22 +1703,25 @@ export type UserUpdateWithoutCustomersInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUpdateManyWithoutOwnerNestedInput
+  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
   invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutCustomersInput = {
+export type UserUncheckedUpdateWithoutInAppNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1469,127 +1729,22 @@ export type UserUncheckedUpdateWithoutCustomersInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUncheckedUpdateManyWithoutOwnerNestedInput
+  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
   invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutScheduledNotificationsInput = {
-  id?: string
-  name: string
-  email: string
-  emailVerifiedAt?: Date | string | null
-  phone?: string | null
-  phoneVerifiedAt?: Date | string | null
-  password?: string | null
-  googleId?: string | null
-  lastLoginAt?: Date | string | null
-  tokenVersion?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  businesses?: Prisma.BusinessCreateNestedManyWithoutOwnerInput
-  invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
-  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutScheduledNotificationsInput = {
-  id?: string
-  name: string
-  email: string
-  emailVerifiedAt?: Date | string | null
-  phone?: string | null
-  phoneVerifiedAt?: Date | string | null
-  password?: string | null
-  googleId?: string | null
-  lastLoginAt?: Date | string | null
-  tokenVersion?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  businesses?: Prisma.BusinessUncheckedCreateNestedManyWithoutOwnerInput
-  invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
-  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutScheduledNotificationsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutScheduledNotificationsInput, Prisma.UserUncheckedCreateWithoutScheduledNotificationsInput>
-}
-
-export type UserUpsertWithoutScheduledNotificationsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutScheduledNotificationsInput, Prisma.UserUncheckedUpdateWithoutScheduledNotificationsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutScheduledNotificationsInput, Prisma.UserUncheckedCreateWithoutScheduledNotificationsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutScheduledNotificationsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutScheduledNotificationsInput, Prisma.UserUncheckedUpdateWithoutScheduledNotificationsInput>
-}
-
-export type UserUpdateWithoutScheduledNotificationsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUpdateManyWithoutOwnerNestedInput
-  invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
-  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutScheduledNotificationsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUncheckedUpdateManyWithoutOwnerNestedInput
-  invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
-  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPlatformAdminInput = {
@@ -1600,19 +1755,22 @@ export type UserCreateWithoutPlatformAdminInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessCreateNestedManyWithoutOwnerInput
+  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPlatformAdminInput = {
@@ -1623,19 +1781,22 @@ export type UserUncheckedCreateWithoutPlatformAdminInput = {
   phone?: string | null
   phoneVerifiedAt?: Date | string | null
   password?: string | null
+  avatarUrl?: string | null
+  ipAddress?: string | null
+  userAgent?: string | null
   googleId?: string | null
   lastLoginAt?: Date | string | null
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  businesses?: Prisma.BusinessUncheckedCreateNestedManyWithoutOwnerInput
+  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
+  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutUserInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPlatformAdminInput = {
@@ -1662,19 +1823,22 @@ export type UserUpdateWithoutPlatformAdminInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUpdateManyWithoutOwnerNestedInput
+  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPlatformAdminInput = {
@@ -1685,19 +1849,22 @@ export type UserUncheckedUpdateWithoutPlatformAdminInput = {
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businesses?: Prisma.BusinessUncheckedUpdateManyWithoutOwnerNestedInput
+  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
+  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutUserNestedInput
-  scheduledNotifications?: Prisma.ScheduledNotificationUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1706,25 +1873,19 @@ export type UserUncheckedUpdateWithoutPlatformAdminInput = {
  */
 
 export type UserCountOutputType = {
-  businesses: number
+  businessMembers: number
+  inAppNotifications: number
   invites: number
-  refreshTokens: number
-  staffs: number
-  customers: number
-  scheduledNotifications: number
+  sessions: number
   verifications: number
-  verificationLocks: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  businesses?: boolean | UserCountOutputTypeCountBusinessesArgs
+  businessMembers?: boolean | UserCountOutputTypeCountBusinessMembersArgs
+  inAppNotifications?: boolean | UserCountOutputTypeCountInAppNotificationsArgs
   invites?: boolean | UserCountOutputTypeCountInvitesArgs
-  refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
-  staffs?: boolean | UserCountOutputTypeCountStaffsArgs
-  customers?: boolean | UserCountOutputTypeCountCustomersArgs
-  scheduledNotifications?: boolean | UserCountOutputTypeCountScheduledNotificationsArgs
+  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   verifications?: boolean | UserCountOutputTypeCountVerificationsArgs
-  verificationLocks?: boolean | UserCountOutputTypeCountVerificationLocksArgs
 }
 
 /**
@@ -1740,8 +1901,15 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountBusinessesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.BusinessWhereInput
+export type UserCountOutputTypeCountBusinessMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BusinessMemberWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountInAppNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InAppNotificationWhereInput
 }
 
 /**
@@ -1754,29 +1922,8 @@ export type UserCountOutputTypeCountInvitesArgs<ExtArgs extends runtime.Types.Ex
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.RefreshTokenWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountStaffsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.StaffWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountCustomersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CustomerWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountScheduledNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ScheduledNotificationWhereInput
+export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionWhereInput
 }
 
 /**
@@ -1784,13 +1931,6 @@ export type UserCountOutputTypeCountScheduledNotificationsArgs<ExtArgs extends r
  */
 export type UserCountOutputTypeCountVerificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.VerificationWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountVerificationLocksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.VerificationLockWhereInput
 }
 
 
@@ -1802,20 +1942,23 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   phone?: boolean
   phoneVerifiedAt?: boolean
   password?: boolean
+  avatarUrl?: boolean
+  ipAddress?: boolean
+  userAgent?: boolean
   googleId?: boolean
   lastLoginAt?: boolean
   tokenVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  businesses?: boolean | Prisma.User$businessesArgs<ExtArgs>
+  businessMembers?: boolean | Prisma.User$businessMembersArgs<ExtArgs>
+  business?: boolean | Prisma.User$businessArgs<ExtArgs>
+  inAppNotifications?: boolean | Prisma.User$inAppNotificationsArgs<ExtArgs>
   invites?: boolean | Prisma.User$invitesArgs<ExtArgs>
-  refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
-  staffs?: boolean | Prisma.User$staffsArgs<ExtArgs>
-  customers?: boolean | Prisma.User$customersArgs<ExtArgs>
   platformAdmin?: boolean | Prisma.User$platformAdminArgs<ExtArgs>
-  scheduledNotifications?: boolean | Prisma.User$scheduledNotificationsArgs<ExtArgs>
-  verifications?: boolean | Prisma.User$verificationsArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  staff?: boolean | Prisma.User$staffArgs<ExtArgs>
   verificationLocks?: boolean | Prisma.User$verificationLocksArgs<ExtArgs>
+  verifications?: boolean | Prisma.User$verificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1827,6 +1970,9 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   phone?: boolean
   phoneVerifiedAt?: boolean
   password?: boolean
+  avatarUrl?: boolean
+  ipAddress?: boolean
+  userAgent?: boolean
   googleId?: boolean
   lastLoginAt?: boolean
   tokenVersion?: boolean
@@ -1842,6 +1988,9 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   phone?: boolean
   phoneVerifiedAt?: boolean
   password?: boolean
+  avatarUrl?: boolean
+  ipAddress?: boolean
+  userAgent?: boolean
   googleId?: boolean
   lastLoginAt?: boolean
   tokenVersion?: boolean
@@ -1857,6 +2006,9 @@ export type UserSelectScalar = {
   phone?: boolean
   phoneVerifiedAt?: boolean
   password?: boolean
+  avatarUrl?: boolean
+  ipAddress?: boolean
+  userAgent?: boolean
   googleId?: boolean
   lastLoginAt?: boolean
   tokenVersion?: boolean
@@ -1864,17 +2016,17 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerifiedAt" | "phone" | "phoneVerifiedAt" | "password" | "googleId" | "lastLoginAt" | "tokenVersion" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerifiedAt" | "phone" | "phoneVerifiedAt" | "password" | "avatarUrl" | "ipAddress" | "userAgent" | "googleId" | "lastLoginAt" | "tokenVersion" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  businesses?: boolean | Prisma.User$businessesArgs<ExtArgs>
+  businessMembers?: boolean | Prisma.User$businessMembersArgs<ExtArgs>
+  business?: boolean | Prisma.User$businessArgs<ExtArgs>
+  inAppNotifications?: boolean | Prisma.User$inAppNotificationsArgs<ExtArgs>
   invites?: boolean | Prisma.User$invitesArgs<ExtArgs>
-  refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
-  staffs?: boolean | Prisma.User$staffsArgs<ExtArgs>
-  customers?: boolean | Prisma.User$customersArgs<ExtArgs>
   platformAdmin?: boolean | Prisma.User$platformAdminArgs<ExtArgs>
-  scheduledNotifications?: boolean | Prisma.User$scheduledNotificationsArgs<ExtArgs>
-  verifications?: boolean | Prisma.User$verificationsArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  staff?: boolean | Prisma.User$staffArgs<ExtArgs>
   verificationLocks?: boolean | Prisma.User$verificationLocksArgs<ExtArgs>
+  verifications?: boolean | Prisma.User$verificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1883,15 +2035,15 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    businesses: Prisma.$BusinessPayload<ExtArgs>[]
+    businessMembers: Prisma.$BusinessMemberPayload<ExtArgs>[]
+    business: Prisma.$BusinessPayload<ExtArgs> | null
+    inAppNotifications: Prisma.$InAppNotificationPayload<ExtArgs>[]
     invites: Prisma.$MemberInvitePayload<ExtArgs>[]
-    refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
-    staffs: Prisma.$StaffPayload<ExtArgs>[]
-    customers: Prisma.$CustomerPayload<ExtArgs>[]
     platformAdmin: Prisma.$PlatformAdminPayload<ExtArgs> | null
-    scheduledNotifications: Prisma.$ScheduledNotificationPayload<ExtArgs>[]
+    sessions: Prisma.$SessionPayload<ExtArgs>[]
+    staff: Prisma.$StaffPayload<ExtArgs> | null
+    verificationLocks: Prisma.$VerificationLockPayload<ExtArgs> | null
     verifications: Prisma.$VerificationPayload<ExtArgs>[]
-    verificationLocks: Prisma.$VerificationLockPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1901,6 +2053,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     phone: string | null
     phoneVerifiedAt: Date | null
     password: string | null
+    avatarUrl: string | null
+    ipAddress: string | null
+    userAgent: string | null
     googleId: string | null
     lastLoginAt: Date | null
     tokenVersion: number
@@ -2300,15 +2455,15 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  businesses<T extends Prisma.User$businessesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$businessesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  businessMembers<T extends Prisma.User$businessMembersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$businessMembersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BusinessMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  business<T extends Prisma.User$businessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$businessArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  inAppNotifications<T extends Prisma.User$inAppNotificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$inAppNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   invites<T extends Prisma.User$invitesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invitesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MemberInvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  refreshTokens<T extends Prisma.User$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  staffs<T extends Prisma.User$staffsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$staffsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StaffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  customers<T extends Prisma.User$customersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$customersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   platformAdmin<T extends Prisma.User$platformAdminArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$platformAdminArgs<ExtArgs>>): Prisma.Prisma__PlatformAdminClient<runtime.Types.Result.GetResult<Prisma.$PlatformAdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  scheduledNotifications<T extends Prisma.User$scheduledNotificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$scheduledNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduledNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  staff<T extends Prisma.User$staffArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$staffArgs<ExtArgs>>): Prisma.Prisma__StaffClient<runtime.Types.Result.GetResult<Prisma.$StaffPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  verificationLocks<T extends Prisma.User$verificationLocksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationLocksArgs<ExtArgs>>): Prisma.Prisma__VerificationLockClient<runtime.Types.Result.GetResult<Prisma.$VerificationLockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   verifications<T extends Prisma.User$verificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  verificationLocks<T extends Prisma.User$verificationLocksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationLocksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VerificationLockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2345,6 +2500,9 @@ export interface UserFieldRefs {
   readonly phone: Prisma.FieldRef<"User", 'String'>
   readonly phoneVerifiedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly password: Prisma.FieldRef<"User", 'String'>
+  readonly avatarUrl: Prisma.FieldRef<"User", 'String'>
+  readonly ipAddress: Prisma.FieldRef<"User", 'String'>
+  readonly userAgent: Prisma.FieldRef<"User", 'String'>
   readonly googleId: Prisma.FieldRef<"User", 'String'>
   readonly lastLoginAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly tokenVersion: Prisma.FieldRef<"User", 'Int'>
@@ -2738,9 +2896,33 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.businesses
+ * User.businessMembers
  */
-export type User$businessesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$businessMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BusinessMember
+   */
+  select?: Prisma.BusinessMemberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BusinessMember
+   */
+  omit?: Prisma.BusinessMemberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BusinessMemberInclude<ExtArgs> | null
+  where?: Prisma.BusinessMemberWhereInput
+  orderBy?: Prisma.BusinessMemberOrderByWithRelationInput | Prisma.BusinessMemberOrderByWithRelationInput[]
+  cursor?: Prisma.BusinessMemberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BusinessMemberScalarFieldEnum | Prisma.BusinessMemberScalarFieldEnum[]
+}
+
+/**
+ * User.business
+ */
+export type User$businessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Business
    */
@@ -2754,11 +2936,30 @@ export type User$businessesArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   include?: Prisma.BusinessInclude<ExtArgs> | null
   where?: Prisma.BusinessWhereInput
-  orderBy?: Prisma.BusinessOrderByWithRelationInput | Prisma.BusinessOrderByWithRelationInput[]
-  cursor?: Prisma.BusinessWhereUniqueInput
+}
+
+/**
+ * User.inAppNotifications
+ */
+export type User$inAppNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InAppNotification
+   */
+  select?: Prisma.InAppNotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InAppNotification
+   */
+  omit?: Prisma.InAppNotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InAppNotificationInclude<ExtArgs> | null
+  where?: Prisma.InAppNotificationWhereInput
+  orderBy?: Prisma.InAppNotificationOrderByWithRelationInput | Prisma.InAppNotificationOrderByWithRelationInput[]
+  cursor?: Prisma.InAppNotificationWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.BusinessScalarFieldEnum | Prisma.BusinessScalarFieldEnum[]
+  distinct?: Prisma.InAppNotificationScalarFieldEnum | Prisma.InAppNotificationScalarFieldEnum[]
 }
 
 /**
@@ -2786,78 +2987,6 @@ export type User$invitesArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 }
 
 /**
- * User.refreshTokens
- */
-export type User$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the RefreshToken
-   */
-  select?: Prisma.RefreshTokenSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the RefreshToken
-   */
-  omit?: Prisma.RefreshTokenOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RefreshTokenInclude<ExtArgs> | null
-  where?: Prisma.RefreshTokenWhereInput
-  orderBy?: Prisma.RefreshTokenOrderByWithRelationInput | Prisma.RefreshTokenOrderByWithRelationInput[]
-  cursor?: Prisma.RefreshTokenWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.RefreshTokenScalarFieldEnum | Prisma.RefreshTokenScalarFieldEnum[]
-}
-
-/**
- * User.staffs
- */
-export type User$staffsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Staff
-   */
-  select?: Prisma.StaffSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Staff
-   */
-  omit?: Prisma.StaffOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.StaffInclude<ExtArgs> | null
-  where?: Prisma.StaffWhereInput
-  orderBy?: Prisma.StaffOrderByWithRelationInput | Prisma.StaffOrderByWithRelationInput[]
-  cursor?: Prisma.StaffWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.StaffScalarFieldEnum | Prisma.StaffScalarFieldEnum[]
-}
-
-/**
- * User.customers
- */
-export type User$customersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Customer
-   */
-  select?: Prisma.CustomerSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Customer
-   */
-  omit?: Prisma.CustomerOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.CustomerInclude<ExtArgs> | null
-  where?: Prisma.CustomerWhereInput
-  orderBy?: Prisma.CustomerOrderByWithRelationInput | Prisma.CustomerOrderByWithRelationInput[]
-  cursor?: Prisma.CustomerWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.CustomerScalarFieldEnum | Prisma.CustomerScalarFieldEnum[]
-}
-
-/**
  * User.platformAdmin
  */
 export type User$platformAdminArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2877,27 +3006,65 @@ export type User$platformAdminArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
- * User.scheduledNotifications
+ * User.sessions
  */
-export type User$scheduledNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ScheduledNotification
+   * Select specific fields to fetch from the Session
    */
-  select?: Prisma.ScheduledNotificationSelect<ExtArgs> | null
+  select?: Prisma.SessionSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ScheduledNotification
+   * Omit specific fields from the Session
    */
-  omit?: Prisma.ScheduledNotificationOmit<ExtArgs> | null
+  omit?: Prisma.SessionOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ScheduledNotificationInclude<ExtArgs> | null
-  where?: Prisma.ScheduledNotificationWhereInput
-  orderBy?: Prisma.ScheduledNotificationOrderByWithRelationInput | Prisma.ScheduledNotificationOrderByWithRelationInput[]
-  cursor?: Prisma.ScheduledNotificationWhereUniqueInput
+  include?: Prisma.SessionInclude<ExtArgs> | null
+  where?: Prisma.SessionWhereInput
+  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
+  cursor?: Prisma.SessionWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.ScheduledNotificationScalarFieldEnum | Prisma.ScheduledNotificationScalarFieldEnum[]
+  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
+}
+
+/**
+ * User.staff
+ */
+export type User$staffArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Staff
+   */
+  select?: Prisma.StaffSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Staff
+   */
+  omit?: Prisma.StaffOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StaffInclude<ExtArgs> | null
+  where?: Prisma.StaffWhereInput
+}
+
+/**
+ * User.verificationLocks
+ */
+export type User$verificationLocksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VerificationLock
+   */
+  select?: Prisma.VerificationLockSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VerificationLock
+   */
+  omit?: Prisma.VerificationLockOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VerificationLockInclude<ExtArgs> | null
+  where?: Prisma.VerificationLockWhereInput
 }
 
 /**
@@ -2922,30 +3089,6 @@ export type User$verificationsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.VerificationScalarFieldEnum | Prisma.VerificationScalarFieldEnum[]
-}
-
-/**
- * User.verificationLocks
- */
-export type User$verificationLocksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the VerificationLock
-   */
-  select?: Prisma.VerificationLockSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the VerificationLock
-   */
-  omit?: Prisma.VerificationLockOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.VerificationLockInclude<ExtArgs> | null
-  where?: Prisma.VerificationLockWhereInput
-  orderBy?: Prisma.VerificationLockOrderByWithRelationInput | Prisma.VerificationLockOrderByWithRelationInput[]
-  cursor?: Prisma.VerificationLockWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.VerificationLockScalarFieldEnum | Prisma.VerificationLockScalarFieldEnum[]
 }
 
 /**

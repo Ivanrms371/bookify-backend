@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { AuthenticatedRequest } from '../types/express-request.type';
-import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class PlatformAdminGuard implements CanActivate {

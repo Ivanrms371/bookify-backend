@@ -1,43 +1,31 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { BusinessNotifications } from 'src/modules/notifications/facades/business-notification';
-import { VerificationService } from '../core/verification.service';
+import { Injectable } from '@nestjs/common';
+import { VerificationsService } from '../core/verifications.service';
 import { VerificationType } from 'src/generated/prisma/enums';
-import { UserService } from '../../users/services/user.service';
+import { UsersService } from '../../users/users.service';
 
 @Injectable()
 export class PhoneVerificationStrategy {
   constructor(
-    private readonly verificationService: VerificationService,
-    private readonly userService: UserService,
-    private readonly businessNotifications: BusinessNotifications,
+    private readonly verificationsService: VerificationsService,
+    private readonly usersService: UsersService,
   ) {}
 
-  async sendVerificationCode(userId: string, phone: string, businessId: string, ip: string) {
-    const { code } = await this.verificationService.createCodeVerification({
-      ip,
+  async sendVerificationCode(userId: string, phone: string, businessId: string) {
+    const { code } = await this.verificationsService.createCodeVerification({
       userId,
       address: phone,
       type: VerificationType.PHONE_CONFIRM,
     });
 
-    await this.businessNotifications.sendAuthOTP({
-      userId,
-      businessId,
-      phone,
-      code,
-    });
+    //send code to whatsapp
 
     return { message: 'Hemos enviado un código de verificación a tu Whatsapp' };
   }
 
   async verifyPhone(userId: string, code: string) {
-    const verification = await this.verificationService.verifyCode(
-      userId,
-      VerificationType.PHONE_CONFIRM,
-      code,
-    );
+    const verification = await this.verificationsService.verifyCode(userId, VerificationType.PHONE_CONFIRM, code);
 
-    await this.userService.markPhoneVerified(userId);
+    await this.usersService.markUserPhoneVerified(userId);
 
     return verification;
   }

@@ -28,7 +28,7 @@ export type AggregateService = {
 
 export type ServiceAvgAggregateOutputType = {
   price: runtime.Decimal | null
-  discountPercentage: runtime.Decimal | null
+  discountPercentage: number | null
   discountFixed: runtime.Decimal | null
   initialActiveMinutes: number | null
   passiveTimeMinutes: number | null
@@ -39,7 +39,7 @@ export type ServiceAvgAggregateOutputType = {
 
 export type ServiceSumAggregateOutputType = {
   price: runtime.Decimal | null
-  discountPercentage: runtime.Decimal | null
+  discountPercentage: number | null
   discountFixed: runtime.Decimal | null
   initialActiveMinutes: number | null
   passiveTimeMinutes: number | null
@@ -55,7 +55,7 @@ export type ServiceMinAggregateOutputType = {
   image: string | null
   description: string | null
   price: runtime.Decimal | null
-  discountPercentage: runtime.Decimal | null
+  discountPercentage: number | null
   discountFixed: runtime.Decimal | null
   initialActiveMinutes: number | null
   passiveTimeMinutes: number | null
@@ -75,7 +75,7 @@ export type ServiceMaxAggregateOutputType = {
   image: string | null
   description: string | null
   price: runtime.Decimal | null
-  discountPercentage: runtime.Decimal | null
+  discountPercentage: number | null
   discountFixed: runtime.Decimal | null
   initialActiveMinutes: number | null
   passiveTimeMinutes: number | null
@@ -286,7 +286,7 @@ export type ServiceGroupByOutputType = {
   image: string | null
   description: string | null
   price: runtime.Decimal
-  discountPercentage: runtime.Decimal | null
+  discountPercentage: number | null
   discountFixed: runtime.Decimal | null
   initialActiveMinutes: number
   passiveTimeMinutes: number
@@ -323,13 +323,13 @@ export type ServiceWhereInput = {
   AND?: Prisma.ServiceWhereInput | Prisma.ServiceWhereInput[]
   OR?: Prisma.ServiceWhereInput[]
   NOT?: Prisma.ServiceWhereInput | Prisma.ServiceWhereInput[]
-  id?: Prisma.StringFilter<"Service"> | string
-  businessId?: Prisma.StringFilter<"Service"> | string
+  id?: Prisma.UuidFilter<"Service"> | string
+  businessId?: Prisma.UuidFilter<"Service"> | string
   name?: Prisma.StringFilter<"Service"> | string
   image?: Prisma.StringNullableFilter<"Service"> | string | null
   description?: Prisma.StringNullableFilter<"Service"> | string | null
   price?: Prisma.DecimalFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: Prisma.DecimalNullableFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: Prisma.IntNullableFilter<"Service"> | number | null
   discountFixed?: Prisma.DecimalNullableFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   initialActiveMinutes?: Prisma.IntFilter<"Service"> | number
   passiveTimeMinutes?: Prisma.IntFilter<"Service"> | number
@@ -340,6 +340,7 @@ export type ServiceWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
+  appointments?: Prisma.AppointmentListRelationFilter
   assignments?: Prisma.ServiceAssignmentListRelationFilter
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
 }
@@ -362,6 +363,7 @@ export type ServiceOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  appointments?: Prisma.AppointmentOrderByRelationAggregateInput
   assignments?: Prisma.ServiceAssignmentOrderByRelationAggregateInput
   business?: Prisma.BusinessOrderByWithRelationInput
 }
@@ -371,12 +373,12 @@ export type ServiceWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ServiceWhereInput | Prisma.ServiceWhereInput[]
   OR?: Prisma.ServiceWhereInput[]
   NOT?: Prisma.ServiceWhereInput | Prisma.ServiceWhereInput[]
-  businessId?: Prisma.StringFilter<"Service"> | string
+  businessId?: Prisma.UuidFilter<"Service"> | string
   name?: Prisma.StringFilter<"Service"> | string
   image?: Prisma.StringNullableFilter<"Service"> | string | null
   description?: Prisma.StringNullableFilter<"Service"> | string | null
   price?: Prisma.DecimalFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: Prisma.DecimalNullableFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: Prisma.IntNullableFilter<"Service"> | number | null
   discountFixed?: Prisma.DecimalNullableFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   initialActiveMinutes?: Prisma.IntFilter<"Service"> | number
   passiveTimeMinutes?: Prisma.IntFilter<"Service"> | number
@@ -387,6 +389,7 @@ export type ServiceWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
+  appointments?: Prisma.AppointmentListRelationFilter
   assignments?: Prisma.ServiceAssignmentListRelationFilter
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
 }, "id">
@@ -420,13 +423,13 @@ export type ServiceScalarWhereWithAggregatesInput = {
   AND?: Prisma.ServiceScalarWhereWithAggregatesInput | Prisma.ServiceScalarWhereWithAggregatesInput[]
   OR?: Prisma.ServiceScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ServiceScalarWhereWithAggregatesInput | Prisma.ServiceScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"Service"> | string
-  businessId?: Prisma.StringWithAggregatesFilter<"Service"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"Service"> | string
+  businessId?: Prisma.UuidWithAggregatesFilter<"Service"> | string
   name?: Prisma.StringWithAggregatesFilter<"Service"> | string
   image?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
   price?: Prisma.DecimalWithAggregatesFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: Prisma.DecimalNullableWithAggregatesFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: Prisma.IntNullableWithAggregatesFilter<"Service"> | number | null
   discountFixed?: Prisma.DecimalNullableWithAggregatesFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   initialActiveMinutes?: Prisma.IntWithAggregatesFilter<"Service"> | number
   passiveTimeMinutes?: Prisma.IntWithAggregatesFilter<"Service"> | number
@@ -445,17 +448,18 @@ export type ServiceCreateInput = {
   image?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: number | null
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  initialActiveMinutes?: number
+  initialActiveMinutes: number
   passiveTimeMinutes?: number
   finalActiveMinutes?: number
-  durationMinutes?: number
+  durationMinutes: number
   isActive?: boolean
   displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutServiceInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutServiceInput
   business: Prisma.BusinessCreateNestedOneWithoutServicesInput
 }
@@ -467,17 +471,18 @@ export type ServiceUncheckedCreateInput = {
   image?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: number | null
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  initialActiveMinutes?: number
+  initialActiveMinutes: number
   passiveTimeMinutes?: number
   finalActiveMinutes?: number
-  durationMinutes?: number
+  durationMinutes: number
   isActive?: boolean
   displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutServiceInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutServiceInput
 }
 
@@ -487,7 +492,7 @@ export type ServiceUpdateInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   initialActiveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   passiveTimeMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -498,6 +503,7 @@ export type ServiceUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointments?: Prisma.AppointmentUpdateManyWithoutServiceNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutServiceNestedInput
   business?: Prisma.BusinessUpdateOneRequiredWithoutServicesNestedInput
 }
@@ -509,7 +515,7 @@ export type ServiceUncheckedUpdateInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   initialActiveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   passiveTimeMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -520,6 +526,7 @@ export type ServiceUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutServiceNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutServiceNestedInput
 }
 
@@ -530,12 +537,12 @@ export type ServiceCreateManyInput = {
   image?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: number | null
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  initialActiveMinutes?: number
+  initialActiveMinutes: number
   passiveTimeMinutes?: number
   finalActiveMinutes?: number
-  durationMinutes?: number
+  durationMinutes: number
   isActive?: boolean
   displayOrder?: number
   createdAt?: Date | string
@@ -549,7 +556,7 @@ export type ServiceUpdateManyMutationInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   initialActiveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   passiveTimeMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -569,7 +576,7 @@ export type ServiceUncheckedUpdateManyInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   initialActiveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   passiveTimeMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -729,6 +736,14 @@ export type DecimalFieldUpdateOperationsInput = {
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type NullableDecimalFieldUpdateOperationsInput = {
   set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -751,23 +766,38 @@ export type ServiceUpdateOneRequiredWithoutAssignmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ServiceUpdateToOneWithWhereWithoutAssignmentsInput, Prisma.ServiceUpdateWithoutAssignmentsInput>, Prisma.ServiceUncheckedUpdateWithoutAssignmentsInput>
 }
 
+export type ServiceCreateNestedOneWithoutAppointmentsInput = {
+  create?: Prisma.XOR<Prisma.ServiceCreateWithoutAppointmentsInput, Prisma.ServiceUncheckedCreateWithoutAppointmentsInput>
+  connectOrCreate?: Prisma.ServiceCreateOrConnectWithoutAppointmentsInput
+  connect?: Prisma.ServiceWhereUniqueInput
+}
+
+export type ServiceUpdateOneRequiredWithoutAppointmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.ServiceCreateWithoutAppointmentsInput, Prisma.ServiceUncheckedCreateWithoutAppointmentsInput>
+  connectOrCreate?: Prisma.ServiceCreateOrConnectWithoutAppointmentsInput
+  upsert?: Prisma.ServiceUpsertWithoutAppointmentsInput
+  connect?: Prisma.ServiceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ServiceUpdateToOneWithWhereWithoutAppointmentsInput, Prisma.ServiceUpdateWithoutAppointmentsInput>, Prisma.ServiceUncheckedUpdateWithoutAppointmentsInput>
+}
+
 export type ServiceCreateWithoutBusinessInput = {
   id?: string
   name: string
   image?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: number | null
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  initialActiveMinutes?: number
+  initialActiveMinutes: number
   passiveTimeMinutes?: number
   finalActiveMinutes?: number
-  durationMinutes?: number
+  durationMinutes: number
   isActive?: boolean
   displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutServiceInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutServiceInput
 }
 
@@ -777,17 +807,18 @@ export type ServiceUncheckedCreateWithoutBusinessInput = {
   image?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: number | null
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  initialActiveMinutes?: number
+  initialActiveMinutes: number
   passiveTimeMinutes?: number
   finalActiveMinutes?: number
-  durationMinutes?: number
+  durationMinutes: number
   isActive?: boolean
   displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutServiceInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutServiceInput
 }
 
@@ -821,13 +852,13 @@ export type ServiceScalarWhereInput = {
   AND?: Prisma.ServiceScalarWhereInput | Prisma.ServiceScalarWhereInput[]
   OR?: Prisma.ServiceScalarWhereInput[]
   NOT?: Prisma.ServiceScalarWhereInput | Prisma.ServiceScalarWhereInput[]
-  id?: Prisma.StringFilter<"Service"> | string
-  businessId?: Prisma.StringFilter<"Service"> | string
+  id?: Prisma.UuidFilter<"Service"> | string
+  businessId?: Prisma.UuidFilter<"Service"> | string
   name?: Prisma.StringFilter<"Service"> | string
   image?: Prisma.StringNullableFilter<"Service"> | string | null
   description?: Prisma.StringNullableFilter<"Service"> | string | null
   price?: Prisma.DecimalFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: Prisma.DecimalNullableFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: Prisma.IntNullableFilter<"Service"> | number | null
   discountFixed?: Prisma.DecimalNullableFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   initialActiveMinutes?: Prisma.IntFilter<"Service"> | number
   passiveTimeMinutes?: Prisma.IntFilter<"Service"> | number
@@ -846,17 +877,18 @@ export type ServiceCreateWithoutAssignmentsInput = {
   image?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: number | null
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  initialActiveMinutes?: number
+  initialActiveMinutes: number
   passiveTimeMinutes?: number
   finalActiveMinutes?: number
-  durationMinutes?: number
+  durationMinutes: number
   isActive?: boolean
   displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutServiceInput
   business: Prisma.BusinessCreateNestedOneWithoutServicesInput
 }
 
@@ -867,17 +899,18 @@ export type ServiceUncheckedCreateWithoutAssignmentsInput = {
   image?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: number | null
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  initialActiveMinutes?: number
+  initialActiveMinutes: number
   passiveTimeMinutes?: number
   finalActiveMinutes?: number
-  durationMinutes?: number
+  durationMinutes: number
   isActive?: boolean
   displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutServiceInput
 }
 
 export type ServiceCreateOrConnectWithoutAssignmentsInput = {
@@ -902,7 +935,7 @@ export type ServiceUpdateWithoutAssignmentsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   initialActiveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   passiveTimeMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -913,6 +946,7 @@ export type ServiceUpdateWithoutAssignmentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointments?: Prisma.AppointmentUpdateManyWithoutServiceNestedInput
   business?: Prisma.BusinessUpdateOneRequiredWithoutServicesNestedInput
 }
 
@@ -923,7 +957,7 @@ export type ServiceUncheckedUpdateWithoutAssignmentsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   initialActiveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   passiveTimeMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -934,34 +968,74 @@ export type ServiceUncheckedUpdateWithoutAssignmentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutServiceNestedInput
 }
 
-export type ServiceCreateManyBusinessInput = {
+export type ServiceCreateWithoutAppointmentsInput = {
   id?: string
   name: string
   image?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: number | null
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  initialActiveMinutes?: number
+  initialActiveMinutes: number
   passiveTimeMinutes?: number
   finalActiveMinutes?: number
-  durationMinutes?: number
+  durationMinutes: number
   isActive?: boolean
   displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutServiceInput
+  business: Prisma.BusinessCreateNestedOneWithoutServicesInput
 }
 
-export type ServiceUpdateWithoutBusinessInput = {
+export type ServiceUncheckedCreateWithoutAppointmentsInput = {
+  id?: string
+  businessId: string
+  name: string
+  image?: string | null
+  description?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountPercentage?: number | null
+  discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  initialActiveMinutes: number
+  passiveTimeMinutes?: number
+  finalActiveMinutes?: number
+  durationMinutes: number
+  isActive?: boolean
+  displayOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutServiceInput
+}
+
+export type ServiceCreateOrConnectWithoutAppointmentsInput = {
+  where: Prisma.ServiceWhereUniqueInput
+  create: Prisma.XOR<Prisma.ServiceCreateWithoutAppointmentsInput, Prisma.ServiceUncheckedCreateWithoutAppointmentsInput>
+}
+
+export type ServiceUpsertWithoutAppointmentsInput = {
+  update: Prisma.XOR<Prisma.ServiceUpdateWithoutAppointmentsInput, Prisma.ServiceUncheckedUpdateWithoutAppointmentsInput>
+  create: Prisma.XOR<Prisma.ServiceCreateWithoutAppointmentsInput, Prisma.ServiceUncheckedCreateWithoutAppointmentsInput>
+  where?: Prisma.ServiceWhereInput
+}
+
+export type ServiceUpdateToOneWithWhereWithoutAppointmentsInput = {
+  where?: Prisma.ServiceWhereInput
+  data: Prisma.XOR<Prisma.ServiceUpdateWithoutAppointmentsInput, Prisma.ServiceUncheckedUpdateWithoutAppointmentsInput>
+}
+
+export type ServiceUpdateWithoutAppointmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   initialActiveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   passiveTimeMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -973,15 +1047,17 @@ export type ServiceUpdateWithoutBusinessInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutServiceNestedInput
+  business?: Prisma.BusinessUpdateOneRequiredWithoutServicesNestedInput
 }
 
-export type ServiceUncheckedUpdateWithoutBusinessInput = {
+export type ServiceUncheckedUpdateWithoutAppointmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  businessId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   initialActiveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   passiveTimeMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -995,13 +1071,74 @@ export type ServiceUncheckedUpdateWithoutBusinessInput = {
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutServiceNestedInput
 }
 
+export type ServiceCreateManyBusinessInput = {
+  id?: string
+  name: string
+  image?: string | null
+  description?: string | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountPercentage?: number | null
+  discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  initialActiveMinutes: number
+  passiveTimeMinutes?: number
+  finalActiveMinutes?: number
+  durationMinutes: number
+  isActive?: boolean
+  displayOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+}
+
+export type ServiceUpdateWithoutBusinessInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  initialActiveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  passiveTimeMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  finalActiveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointments?: Prisma.AppointmentUpdateManyWithoutServiceNestedInput
+  assignments?: Prisma.ServiceAssignmentUpdateManyWithoutServiceNestedInput
+}
+
+export type ServiceUncheckedUpdateWithoutBusinessInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  initialActiveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  passiveTimeMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  finalActiveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutServiceNestedInput
+  assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutServiceNestedInput
+}
+
 export type ServiceUncheckedUpdateManyWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  discountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   initialActiveMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   passiveTimeMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1020,10 +1157,12 @@ export type ServiceUncheckedUpdateManyWithoutBusinessInput = {
  */
 
 export type ServiceCountOutputType = {
+  appointments: number
   assignments: number
 }
 
 export type ServiceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  appointments?: boolean | ServiceCountOutputTypeCountAppointmentsArgs
   assignments?: boolean | ServiceCountOutputTypeCountAssignmentsArgs
 }
 
@@ -1035,6 +1174,13 @@ export type ServiceCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
    * Select specific fields to fetch from the ServiceCountOutputType
    */
   select?: Prisma.ServiceCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ServiceCountOutputType without action
+ */
+export type ServiceCountOutputTypeCountAppointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AppointmentWhereInput
 }
 
 /**
@@ -1063,6 +1209,7 @@ export type ServiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
+  appointments?: boolean | Prisma.Service$appointmentsArgs<ExtArgs>
   assignments?: boolean | Prisma.Service$assignmentsArgs<ExtArgs>
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.ServiceCountOutputTypeDefaultArgs<ExtArgs>
@@ -1132,6 +1279,7 @@ export type ServiceSelectScalar = {
 
 export type ServiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "name" | "image" | "description" | "price" | "discountPercentage" | "discountFixed" | "initialActiveMinutes" | "passiveTimeMinutes" | "finalActiveMinutes" | "durationMinutes" | "isActive" | "displayOrder" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["service"]>
 export type ServiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  appointments?: boolean | Prisma.Service$appointmentsArgs<ExtArgs>
   assignments?: boolean | Prisma.Service$assignmentsArgs<ExtArgs>
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.ServiceCountOutputTypeDefaultArgs<ExtArgs>
@@ -1146,6 +1294,7 @@ export type ServiceIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 export type $ServicePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Service"
   objects: {
+    appointments: Prisma.$AppointmentPayload<ExtArgs>[]
     assignments: Prisma.$ServiceAssignmentPayload<ExtArgs>[]
     business: Prisma.$BusinessPayload<ExtArgs>
   }
@@ -1156,7 +1305,7 @@ export type $ServicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     image: string | null
     description: string | null
     price: runtime.Decimal
-    discountPercentage: runtime.Decimal | null
+    discountPercentage: number | null
     discountFixed: runtime.Decimal | null
     initialActiveMinutes: number
     passiveTimeMinutes: number
@@ -1561,6 +1710,7 @@ readonly fields: ServiceFieldRefs;
  */
 export interface Prisma__ServiceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  appointments<T extends Prisma.Service$appointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Service$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignments<T extends Prisma.Service$assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Service$assignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServiceAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   business<T extends Prisma.BusinessDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BusinessDefaultArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1598,7 +1748,7 @@ export interface ServiceFieldRefs {
   readonly image: Prisma.FieldRef<"Service", 'String'>
   readonly description: Prisma.FieldRef<"Service", 'String'>
   readonly price: Prisma.FieldRef<"Service", 'Decimal'>
-  readonly discountPercentage: Prisma.FieldRef<"Service", 'Decimal'>
+  readonly discountPercentage: Prisma.FieldRef<"Service", 'Int'>
   readonly discountFixed: Prisma.FieldRef<"Service", 'Decimal'>
   readonly initialActiveMinutes: Prisma.FieldRef<"Service", 'Int'>
   readonly passiveTimeMinutes: Prisma.FieldRef<"Service", 'Int'>
@@ -2002,6 +2152,30 @@ export type ServiceDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Services to delete.
    */
   limit?: number
+}
+
+/**
+ * Service.appointments
+ */
+export type Service$appointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Appointment
+   */
+  select?: Prisma.AppointmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Appointment
+   */
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AppointmentInclude<ExtArgs> | null
+  where?: Prisma.AppointmentWhereInput
+  orderBy?: Prisma.AppointmentOrderByWithRelationInput | Prisma.AppointmentOrderByWithRelationInput[]
+  cursor?: Prisma.AppointmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AppointmentScalarFieldEnum | Prisma.AppointmentScalarFieldEnum[]
 }
 
 /**

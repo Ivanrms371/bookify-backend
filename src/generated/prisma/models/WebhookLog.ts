@@ -222,7 +222,7 @@ export type WebhookLogWhereInput = {
   AND?: Prisma.WebhookLogWhereInput | Prisma.WebhookLogWhereInput[]
   OR?: Prisma.WebhookLogWhereInput[]
   NOT?: Prisma.WebhookLogWhereInput | Prisma.WebhookLogWhereInput[]
-  id?: Prisma.StringFilter<"WebhookLog"> | string
+  id?: Prisma.UuidFilter<"WebhookLog"> | string
   provider?: Prisma.StringFilter<"WebhookLog"> | string
   requestId?: Prisma.StringFilter<"WebhookLog"> | string
   type?: Prisma.StringFilter<"WebhookLog"> | string
@@ -292,7 +292,7 @@ export type WebhookLogScalarWhereWithAggregatesInput = {
   AND?: Prisma.WebhookLogScalarWhereWithAggregatesInput | Prisma.WebhookLogScalarWhereWithAggregatesInput[]
   OR?: Prisma.WebhookLogScalarWhereWithAggregatesInput[]
   NOT?: Prisma.WebhookLogScalarWhereWithAggregatesInput | Prisma.WebhookLogScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"WebhookLog"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"WebhookLog"> | string
   provider?: Prisma.StringWithAggregatesFilter<"WebhookLog"> | string
   requestId?: Prisma.StringWithAggregatesFilter<"WebhookLog"> | string
   type?: Prisma.StringWithAggregatesFilter<"WebhookLog"> | string

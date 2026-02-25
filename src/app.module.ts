@@ -1,20 +1,32 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { PrismaModule } from './prisma/prisma.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { PrismaModule } from './shared/prisma/prisma.module';
+import { CloudinaryModule } from './shared/cloudinary/cloudinary.module';
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from './modules/users/user.module';
-import { CloudinaryModule } from './cloudinary/cloudinary.module';
-import { BusinessModule } from './modules/businesses/business.module';
-import { PlanModule } from './modules/plans/plan.module';
-import { PlatformStatsModule } from './modules/platform-stats/platform-stats.module';
+import { UsersModule } from './modules/users/users.module';
+import { BusinessesModule } from './modules/businesses/businesses.module';
+import { PlansModule } from './modules/plans/plans.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { PaymentsModule } from './modules/payments/payments.module';
-import { NotificationModule } from './modules/notifications/notification.module';
-import { SubscriptionModule } from './modules/subscriptions/subscription.module';
-import { VerificationModule } from './modules/verifications/verification.module';
+import { VerificationsModule } from './modules/verifications/verifications.module';
 import { WebhookModule } from './common/webhooks/webhook.module';
-import { ServiceModule } from './modules/services/service.module';
-import { InvitationModule } from './modules/invitations/invitation.module';
+import { CookieModule } from './shared/cookies/cookie.module';
+import { AppointmentsModule } from './modules/appointments/appointments.module';
+import { AvailabilityModule } from './modules/availability/availability.module';
+import { CustomersModule } from './modules/customers/customers.module';
+import { ServicesModule } from './modules/services/services/services.module';
+import { StaffsModule } from './modules/staffs/staffs.module';
+import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
+import { InvitationsModule } from './modules/businesses/features/invitations/invitations.module';
+import { BusinessLimitsModule } from './modules/businesses/features/limits/business-limits.module';
+import { MembersModule } from './modules/businesses/features/members/members.module';
+import { OnboardingModule } from './modules/businesses/features/onboarding/onboarding.module';
+import { SettingsModule } from './modules/businesses/features/settings/settings.module';
+import { BusinessStatsModule } from './modules/businesses/features/stats/business-stats.module';
+import { ServiceAssignmentsModule } from './modules/services/service-assigments/service-assignments.module';
+import { InfrastructureModule } from './shared/infrastructure/infrastructure.module';
 
 @Module({
   imports: [
@@ -22,21 +34,32 @@ import { InvitationModule } from './modules/invitations/invitation.module';
       isGlobal: true,
     }),
     ScheduleModule.forRoot(),
-    PrismaModule,
+    EventEmitterModule.forRoot(),
     CloudinaryModule,
+    CookieModule,
+    InfrastructureModule,
+    PrismaModule,
     AuthModule,
-    UserModule,
-    BusinessModule,
-    PlanModule,
+    AppointmentsModule,
+    InvitationsModule,
+    BusinessLimitsModule,
+    MembersModule,
+    OnboardingModule,
+    SettingsModule,
+    BusinessStatsModule,
+    AvailabilityModule,
+    BusinessesModule,
+    CustomersModule,
+    PlansModule,
+    NotificationsModule,
     PaymentsModule,
-    PlatformStatsModule,
-    NotificationModule,
-    SubscriptionModule,
-    VerificationModule,
+    ServicesModule,
+    ServiceAssignmentsModule,
+    StaffsModule,
+    SubscriptionsModule,
+    UsersModule,
+    VerificationsModule,
     WebhookModule,
-    ServiceModule,
-    InvitationModule,
-    NotificationModule,
   ],
   controllers: [],
   providers: [],

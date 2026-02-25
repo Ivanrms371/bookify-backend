@@ -28,86 +28,94 @@ export type AggregateWorkingHours = {
 
 export type WorkingHoursAvgAggregateOutputType = {
   dayOfWeek: number | null
+  endMinutes: number | null
+  startMinutes: number | null
 }
 
 export type WorkingHoursSumAggregateOutputType = {
   dayOfWeek: number | null
+  endMinutes: number | null
+  startMinutes: number | null
 }
 
 export type WorkingHoursMinAggregateOutputType = {
   id: string | null
   businessId: string | null
-  staffId: string | null
   dayOfWeek: number | null
-  startTime: Date | null
-  endTime: Date | null
   isActive: boolean | null
   createdAt: Date | null
+  staffId: string | null
+  endMinutes: number | null
+  startMinutes: number | null
 }
 
 export type WorkingHoursMaxAggregateOutputType = {
   id: string | null
   businessId: string | null
-  staffId: string | null
   dayOfWeek: number | null
-  startTime: Date | null
-  endTime: Date | null
   isActive: boolean | null
   createdAt: Date | null
+  staffId: string | null
+  endMinutes: number | null
+  startMinutes: number | null
 }
 
 export type WorkingHoursCountAggregateOutputType = {
   id: number
   businessId: number
-  staffId: number
   dayOfWeek: number
-  startTime: number
-  endTime: number
   isActive: number
   createdAt: number
+  staffId: number
+  endMinutes: number
+  startMinutes: number
   _all: number
 }
 
 
 export type WorkingHoursAvgAggregateInputType = {
   dayOfWeek?: true
+  endMinutes?: true
+  startMinutes?: true
 }
 
 export type WorkingHoursSumAggregateInputType = {
   dayOfWeek?: true
+  endMinutes?: true
+  startMinutes?: true
 }
 
 export type WorkingHoursMinAggregateInputType = {
   id?: true
   businessId?: true
-  staffId?: true
   dayOfWeek?: true
-  startTime?: true
-  endTime?: true
   isActive?: true
   createdAt?: true
+  staffId?: true
+  endMinutes?: true
+  startMinutes?: true
 }
 
 export type WorkingHoursMaxAggregateInputType = {
   id?: true
   businessId?: true
-  staffId?: true
   dayOfWeek?: true
-  startTime?: true
-  endTime?: true
   isActive?: true
   createdAt?: true
+  staffId?: true
+  endMinutes?: true
+  startMinutes?: true
 }
 
 export type WorkingHoursCountAggregateInputType = {
   id?: true
   businessId?: true
-  staffId?: true
   dayOfWeek?: true
-  startTime?: true
-  endTime?: true
   isActive?: true
   createdAt?: true
+  staffId?: true
+  endMinutes?: true
+  startMinutes?: true
   _all?: true
 }
 
@@ -200,12 +208,12 @@ export type WorkingHoursGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 export type WorkingHoursGroupByOutputType = {
   id: string
   businessId: string
-  staffId: string | null
   dayOfWeek: number
-  startTime: Date
-  endTime: Date
   isActive: boolean
   createdAt: Date
+  staffId: string | null
+  endMinutes: number
+  startMinutes: number
   _count: WorkingHoursCountAggregateOutputType | null
   _avg: WorkingHoursAvgAggregateOutputType | null
   _sum: WorkingHoursSumAggregateOutputType | null
@@ -232,14 +240,14 @@ export type WorkingHoursWhereInput = {
   AND?: Prisma.WorkingHoursWhereInput | Prisma.WorkingHoursWhereInput[]
   OR?: Prisma.WorkingHoursWhereInput[]
   NOT?: Prisma.WorkingHoursWhereInput | Prisma.WorkingHoursWhereInput[]
-  id?: Prisma.StringFilter<"WorkingHours"> | string
-  businessId?: Prisma.StringFilter<"WorkingHours"> | string
-  staffId?: Prisma.StringNullableFilter<"WorkingHours"> | string | null
+  id?: Prisma.UuidFilter<"WorkingHours"> | string
+  businessId?: Prisma.UuidFilter<"WorkingHours"> | string
   dayOfWeek?: Prisma.IntFilter<"WorkingHours"> | number
-  startTime?: Prisma.DateTimeFilter<"WorkingHours"> | Date | string
-  endTime?: Prisma.DateTimeFilter<"WorkingHours"> | Date | string
   isActive?: Prisma.BoolFilter<"WorkingHours"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WorkingHours"> | Date | string
+  staffId?: Prisma.UuidNullableFilter<"WorkingHours"> | string | null
+  endMinutes?: Prisma.IntFilter<"WorkingHours"> | number
+  startMinutes?: Prisma.IntFilter<"WorkingHours"> | number
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
   staff?: Prisma.XOR<Prisma.StaffNullableScalarRelationFilter, Prisma.StaffWhereInput> | null
 }
@@ -247,12 +255,12 @@ export type WorkingHoursWhereInput = {
 export type WorkingHoursOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  staffId?: Prisma.SortOrderInput | Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  staffId?: Prisma.SortOrderInput | Prisma.SortOrder
+  endMinutes?: Prisma.SortOrder
+  startMinutes?: Prisma.SortOrder
   business?: Prisma.BusinessOrderByWithRelationInput
   staff?: Prisma.StaffOrderByWithRelationInput
 }
@@ -262,13 +270,13 @@ export type WorkingHoursWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.WorkingHoursWhereInput | Prisma.WorkingHoursWhereInput[]
   OR?: Prisma.WorkingHoursWhereInput[]
   NOT?: Prisma.WorkingHoursWhereInput | Prisma.WorkingHoursWhereInput[]
-  businessId?: Prisma.StringFilter<"WorkingHours"> | string
-  staffId?: Prisma.StringNullableFilter<"WorkingHours"> | string | null
+  businessId?: Prisma.UuidFilter<"WorkingHours"> | string
   dayOfWeek?: Prisma.IntFilter<"WorkingHours"> | number
-  startTime?: Prisma.DateTimeFilter<"WorkingHours"> | Date | string
-  endTime?: Prisma.DateTimeFilter<"WorkingHours"> | Date | string
   isActive?: Prisma.BoolFilter<"WorkingHours"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WorkingHours"> | Date | string
+  staffId?: Prisma.UuidNullableFilter<"WorkingHours"> | string | null
+  endMinutes?: Prisma.IntFilter<"WorkingHours"> | number
+  startMinutes?: Prisma.IntFilter<"WorkingHours"> | number
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
   staff?: Prisma.XOR<Prisma.StaffNullableScalarRelationFilter, Prisma.StaffWhereInput> | null
 }, "id">
@@ -276,12 +284,12 @@ export type WorkingHoursWhereUniqueInput = Prisma.AtLeast<{
 export type WorkingHoursOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  staffId?: Prisma.SortOrderInput | Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  staffId?: Prisma.SortOrderInput | Prisma.SortOrder
+  endMinutes?: Prisma.SortOrder
+  startMinutes?: Prisma.SortOrder
   _count?: Prisma.WorkingHoursCountOrderByAggregateInput
   _avg?: Prisma.WorkingHoursAvgOrderByAggregateInput
   _max?: Prisma.WorkingHoursMaxOrderByAggregateInput
@@ -293,23 +301,23 @@ export type WorkingHoursScalarWhereWithAggregatesInput = {
   AND?: Prisma.WorkingHoursScalarWhereWithAggregatesInput | Prisma.WorkingHoursScalarWhereWithAggregatesInput[]
   OR?: Prisma.WorkingHoursScalarWhereWithAggregatesInput[]
   NOT?: Prisma.WorkingHoursScalarWhereWithAggregatesInput | Prisma.WorkingHoursScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"WorkingHours"> | string
-  businessId?: Prisma.StringWithAggregatesFilter<"WorkingHours"> | string
-  staffId?: Prisma.StringNullableWithAggregatesFilter<"WorkingHours"> | string | null
+  id?: Prisma.UuidWithAggregatesFilter<"WorkingHours"> | string
+  businessId?: Prisma.UuidWithAggregatesFilter<"WorkingHours"> | string
   dayOfWeek?: Prisma.IntWithAggregatesFilter<"WorkingHours"> | number
-  startTime?: Prisma.DateTimeWithAggregatesFilter<"WorkingHours"> | Date | string
-  endTime?: Prisma.DateTimeWithAggregatesFilter<"WorkingHours"> | Date | string
   isActive?: Prisma.BoolWithAggregatesFilter<"WorkingHours"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"WorkingHours"> | Date | string
+  staffId?: Prisma.UuidNullableWithAggregatesFilter<"WorkingHours"> | string | null
+  endMinutes?: Prisma.IntWithAggregatesFilter<"WorkingHours"> | number
+  startMinutes?: Prisma.IntWithAggregatesFilter<"WorkingHours"> | number
 }
 
 export type WorkingHoursCreateInput = {
   id?: string
   dayOfWeek: number
-  startTime: Date | string
-  endTime: Date | string
   isActive?: boolean
   createdAt?: Date | string
+  endMinutes: number
+  startMinutes: number
   business: Prisma.BusinessCreateNestedOneWithoutWorkingHoursInput
   staff?: Prisma.StaffCreateNestedOneWithoutWorkingHoursInput
 }
@@ -317,21 +325,21 @@ export type WorkingHoursCreateInput = {
 export type WorkingHoursUncheckedCreateInput = {
   id?: string
   businessId: string
-  staffId?: string | null
   dayOfWeek: number
-  startTime: Date | string
-  endTime: Date | string
   isActive?: boolean
   createdAt?: Date | string
+  staffId?: string | null
+  endMinutes: number
+  startMinutes: number
 }
 
 export type WorkingHoursUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   business?: Prisma.BusinessUpdateOneRequiredWithoutWorkingHoursNestedInput
   staff?: Prisma.StaffUpdateOneWithoutWorkingHoursNestedInput
 }
@@ -339,43 +347,43 @@ export type WorkingHoursUpdateInput = {
 export type WorkingHoursUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   businessId?: Prisma.StringFieldUpdateOperationsInput | string
-  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type WorkingHoursCreateManyInput = {
   id?: string
   businessId: string
-  staffId?: string | null
   dayOfWeek: number
-  startTime: Date | string
-  endTime: Date | string
   isActive?: boolean
   createdAt?: Date | string
+  staffId?: string | null
+  endMinutes: number
+  startMinutes: number
 }
 
 export type WorkingHoursUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type WorkingHoursUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   businessId?: Prisma.StringFieldUpdateOperationsInput | string
-  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type WorkingHoursListRelationFilter = {
@@ -391,42 +399,46 @@ export type WorkingHoursOrderByRelationAggregateInput = {
 export type WorkingHoursCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  staffId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  staffId?: Prisma.SortOrder
+  endMinutes?: Prisma.SortOrder
+  startMinutes?: Prisma.SortOrder
 }
 
 export type WorkingHoursAvgOrderByAggregateInput = {
   dayOfWeek?: Prisma.SortOrder
+  endMinutes?: Prisma.SortOrder
+  startMinutes?: Prisma.SortOrder
 }
 
 export type WorkingHoursMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  staffId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  staffId?: Prisma.SortOrder
+  endMinutes?: Prisma.SortOrder
+  startMinutes?: Prisma.SortOrder
 }
 
 export type WorkingHoursMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  staffId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  staffId?: Prisma.SortOrder
+  endMinutes?: Prisma.SortOrder
+  startMinutes?: Prisma.SortOrder
 }
 
 export type WorkingHoursSumOrderByAggregateInput = {
   dayOfWeek?: Prisma.SortOrder
+  endMinutes?: Prisma.SortOrder
+  startMinutes?: Prisma.SortOrder
 }
 
 export type WorkingHoursCreateNestedManyWithoutBusinessInput = {
@@ -516,21 +528,21 @@ export type WorkingHoursUncheckedUpdateManyWithoutStaffNestedInput = {
 export type WorkingHoursCreateWithoutBusinessInput = {
   id?: string
   dayOfWeek: number
-  startTime: Date | string
-  endTime: Date | string
   isActive?: boolean
   createdAt?: Date | string
+  endMinutes: number
+  startMinutes: number
   staff?: Prisma.StaffCreateNestedOneWithoutWorkingHoursInput
 }
 
 export type WorkingHoursUncheckedCreateWithoutBusinessInput = {
   id?: string
-  staffId?: string | null
   dayOfWeek: number
-  startTime: Date | string
-  endTime: Date | string
   isActive?: boolean
   createdAt?: Date | string
+  staffId?: string | null
+  endMinutes: number
+  startMinutes: number
 }
 
 export type WorkingHoursCreateOrConnectWithoutBusinessInput = {
@@ -563,23 +575,23 @@ export type WorkingHoursScalarWhereInput = {
   AND?: Prisma.WorkingHoursScalarWhereInput | Prisma.WorkingHoursScalarWhereInput[]
   OR?: Prisma.WorkingHoursScalarWhereInput[]
   NOT?: Prisma.WorkingHoursScalarWhereInput | Prisma.WorkingHoursScalarWhereInput[]
-  id?: Prisma.StringFilter<"WorkingHours"> | string
-  businessId?: Prisma.StringFilter<"WorkingHours"> | string
-  staffId?: Prisma.StringNullableFilter<"WorkingHours"> | string | null
+  id?: Prisma.UuidFilter<"WorkingHours"> | string
+  businessId?: Prisma.UuidFilter<"WorkingHours"> | string
   dayOfWeek?: Prisma.IntFilter<"WorkingHours"> | number
-  startTime?: Prisma.DateTimeFilter<"WorkingHours"> | Date | string
-  endTime?: Prisma.DateTimeFilter<"WorkingHours"> | Date | string
   isActive?: Prisma.BoolFilter<"WorkingHours"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WorkingHours"> | Date | string
+  staffId?: Prisma.UuidNullableFilter<"WorkingHours"> | string | null
+  endMinutes?: Prisma.IntFilter<"WorkingHours"> | number
+  startMinutes?: Prisma.IntFilter<"WorkingHours"> | number
 }
 
 export type WorkingHoursCreateWithoutStaffInput = {
   id?: string
   dayOfWeek: number
-  startTime: Date | string
-  endTime: Date | string
   isActive?: boolean
   createdAt?: Date | string
+  endMinutes: number
+  startMinutes: number
   business: Prisma.BusinessCreateNestedOneWithoutWorkingHoursInput
 }
 
@@ -587,10 +599,10 @@ export type WorkingHoursUncheckedCreateWithoutStaffInput = {
   id?: string
   businessId: string
   dayOfWeek: number
-  startTime: Date | string
-  endTime: Date | string
   isActive?: boolean
   createdAt?: Date | string
+  endMinutes: number
+  startMinutes: number
 }
 
 export type WorkingHoursCreateOrConnectWithoutStaffInput = {
@@ -621,61 +633,61 @@ export type WorkingHoursUpdateManyWithWhereWithoutStaffInput = {
 
 export type WorkingHoursCreateManyBusinessInput = {
   id?: string
-  staffId?: string | null
   dayOfWeek: number
-  startTime: Date | string
-  endTime: Date | string
   isActive?: boolean
   createdAt?: Date | string
+  staffId?: string | null
+  endMinutes: number
+  startMinutes: number
 }
 
 export type WorkingHoursUpdateWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   staff?: Prisma.StaffUpdateOneWithoutWorkingHoursNestedInput
 }
 
 export type WorkingHoursUncheckedUpdateWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type WorkingHoursUncheckedUpdateManyWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type WorkingHoursCreateManyStaffInput = {
   id?: string
   businessId: string
   dayOfWeek: number
-  startTime: Date | string
-  endTime: Date | string
   isActive?: boolean
   createdAt?: Date | string
+  endMinutes: number
+  startMinutes: number
 }
 
 export type WorkingHoursUpdateWithoutStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   business?: Prisma.BusinessUpdateOneRequiredWithoutWorkingHoursNestedInput
 }
 
@@ -683,20 +695,20 @@ export type WorkingHoursUncheckedUpdateWithoutStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   businessId?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type WorkingHoursUncheckedUpdateManyWithoutStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   businessId?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -704,12 +716,12 @@ export type WorkingHoursUncheckedUpdateManyWithoutStaffInput = {
 export type WorkingHoursSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   businessId?: boolean
-  staffId?: boolean
   dayOfWeek?: boolean
-  startTime?: boolean
-  endTime?: boolean
   isActive?: boolean
   createdAt?: boolean
+  staffId?: boolean
+  endMinutes?: boolean
+  startMinutes?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   staff?: boolean | Prisma.WorkingHours$staffArgs<ExtArgs>
 }, ExtArgs["result"]["workingHours"]>
@@ -717,12 +729,12 @@ export type WorkingHoursSelect<ExtArgs extends runtime.Types.Extensions.Internal
 export type WorkingHoursSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   businessId?: boolean
-  staffId?: boolean
   dayOfWeek?: boolean
-  startTime?: boolean
-  endTime?: boolean
   isActive?: boolean
   createdAt?: boolean
+  staffId?: boolean
+  endMinutes?: boolean
+  startMinutes?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   staff?: boolean | Prisma.WorkingHours$staffArgs<ExtArgs>
 }, ExtArgs["result"]["workingHours"]>
@@ -730,12 +742,12 @@ export type WorkingHoursSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
 export type WorkingHoursSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   businessId?: boolean
-  staffId?: boolean
   dayOfWeek?: boolean
-  startTime?: boolean
-  endTime?: boolean
   isActive?: boolean
   createdAt?: boolean
+  staffId?: boolean
+  endMinutes?: boolean
+  startMinutes?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   staff?: boolean | Prisma.WorkingHours$staffArgs<ExtArgs>
 }, ExtArgs["result"]["workingHours"]>
@@ -743,15 +755,15 @@ export type WorkingHoursSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
 export type WorkingHoursSelectScalar = {
   id?: boolean
   businessId?: boolean
-  staffId?: boolean
   dayOfWeek?: boolean
-  startTime?: boolean
-  endTime?: boolean
   isActive?: boolean
   createdAt?: boolean
+  staffId?: boolean
+  endMinutes?: boolean
+  startMinutes?: boolean
 }
 
-export type WorkingHoursOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "staffId" | "dayOfWeek" | "startTime" | "endTime" | "isActive" | "createdAt", ExtArgs["result"]["workingHours"]>
+export type WorkingHoursOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "dayOfWeek" | "isActive" | "createdAt" | "staffId" | "endMinutes" | "startMinutes", ExtArgs["result"]["workingHours"]>
 export type WorkingHoursInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   staff?: boolean | Prisma.WorkingHours$staffArgs<ExtArgs>
@@ -774,12 +786,12 @@ export type $WorkingHoursPayload<ExtArgs extends runtime.Types.Extensions.Intern
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     businessId: string
-    staffId: string | null
     dayOfWeek: number
-    startTime: Date
-    endTime: Date
     isActive: boolean
     createdAt: Date
+    staffId: string | null
+    endMinutes: number
+    startMinutes: number
   }, ExtArgs["result"]["workingHours"]>
   composites: {}
 }
@@ -1207,12 +1219,12 @@ export interface Prisma__WorkingHoursClient<T, Null = never, ExtArgs extends run
 export interface WorkingHoursFieldRefs {
   readonly id: Prisma.FieldRef<"WorkingHours", 'String'>
   readonly businessId: Prisma.FieldRef<"WorkingHours", 'String'>
-  readonly staffId: Prisma.FieldRef<"WorkingHours", 'String'>
   readonly dayOfWeek: Prisma.FieldRef<"WorkingHours", 'Int'>
-  readonly startTime: Prisma.FieldRef<"WorkingHours", 'DateTime'>
-  readonly endTime: Prisma.FieldRef<"WorkingHours", 'DateTime'>
   readonly isActive: Prisma.FieldRef<"WorkingHours", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"WorkingHours", 'DateTime'>
+  readonly staffId: Prisma.FieldRef<"WorkingHours", 'String'>
+  readonly endMinutes: Prisma.FieldRef<"WorkingHours", 'Int'>
+  readonly startMinutes: Prisma.FieldRef<"WorkingHours", 'Int'>
 }
     
 

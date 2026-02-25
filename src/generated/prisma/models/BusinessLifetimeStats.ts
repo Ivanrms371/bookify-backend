@@ -241,8 +241,8 @@ export type BusinessLifetimeStatsWhereInput = {
   AND?: Prisma.BusinessLifetimeStatsWhereInput | Prisma.BusinessLifetimeStatsWhereInput[]
   OR?: Prisma.BusinessLifetimeStatsWhereInput[]
   NOT?: Prisma.BusinessLifetimeStatsWhereInput | Prisma.BusinessLifetimeStatsWhereInput[]
-  id?: Prisma.StringFilter<"BusinessLifetimeStats"> | string
-  businessId?: Prisma.StringFilter<"BusinessLifetimeStats"> | string
+  id?: Prisma.UuidFilter<"BusinessLifetimeStats"> | string
+  businessId?: Prisma.UuidFilter<"BusinessLifetimeStats"> | string
   totalAppointments?: Prisma.IntFilter<"BusinessLifetimeStats"> | number
   totalRevenue?: Prisma.DecimalFilter<"BusinessLifetimeStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalCustomers?: Prisma.IntFilter<"BusinessLifetimeStats"> | number
@@ -295,8 +295,8 @@ export type BusinessLifetimeStatsScalarWhereWithAggregatesInput = {
   AND?: Prisma.BusinessLifetimeStatsScalarWhereWithAggregatesInput | Prisma.BusinessLifetimeStatsScalarWhereWithAggregatesInput[]
   OR?: Prisma.BusinessLifetimeStatsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.BusinessLifetimeStatsScalarWhereWithAggregatesInput | Prisma.BusinessLifetimeStatsScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"BusinessLifetimeStats"> | string
-  businessId?: Prisma.StringWithAggregatesFilter<"BusinessLifetimeStats"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"BusinessLifetimeStats"> | string
+  businessId?: Prisma.UuidWithAggregatesFilter<"BusinessLifetimeStats"> | string
   totalAppointments?: Prisma.IntWithAggregatesFilter<"BusinessLifetimeStats"> | number
   totalRevenue?: Prisma.DecimalWithAggregatesFilter<"BusinessLifetimeStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalCustomers?: Prisma.IntWithAggregatesFilter<"BusinessLifetimeStats"> | number

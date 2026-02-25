@@ -184,8 +184,8 @@ export type VerificationLockWhereInput = {
   AND?: Prisma.VerificationLockWhereInput | Prisma.VerificationLockWhereInput[]
   OR?: Prisma.VerificationLockWhereInput[]
   NOT?: Prisma.VerificationLockWhereInput | Prisma.VerificationLockWhereInput[]
-  id?: Prisma.StringFilter<"VerificationLock"> | string
-  userId?: Prisma.StringFilter<"VerificationLock"> | string
+  id?: Prisma.UuidFilter<"VerificationLock"> | string
+  userId?: Prisma.UuidFilter<"VerificationLock"> | string
   address?: Prisma.StringFilter<"VerificationLock"> | string
   lockedUntil?: Prisma.DateTimeFilter<"VerificationLock"> | Date | string
   reason?: Prisma.StringNullableFilter<"VerificationLock"> | string | null
@@ -232,8 +232,8 @@ export type VerificationLockScalarWhereWithAggregatesInput = {
   AND?: Prisma.VerificationLockScalarWhereWithAggregatesInput | Prisma.VerificationLockScalarWhereWithAggregatesInput[]
   OR?: Prisma.VerificationLockScalarWhereWithAggregatesInput[]
   NOT?: Prisma.VerificationLockScalarWhereWithAggregatesInput | Prisma.VerificationLockScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"VerificationLock"> | string
-  userId?: Prisma.StringWithAggregatesFilter<"VerificationLock"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"VerificationLock"> | string
+  userId?: Prisma.UuidWithAggregatesFilter<"VerificationLock"> | string
   address?: Prisma.StringWithAggregatesFilter<"VerificationLock"> | string
   lockedUntil?: Prisma.DateTimeWithAggregatesFilter<"VerificationLock"> | Date | string
   reason?: Prisma.StringNullableWithAggregatesFilter<"VerificationLock"> | string | null
@@ -302,14 +302,9 @@ export type VerificationLockUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type VerificationLockListRelationFilter = {
-  every?: Prisma.VerificationLockWhereInput
-  some?: Prisma.VerificationLockWhereInput
-  none?: Prisma.VerificationLockWhereInput
-}
-
-export type VerificationLockOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
+export type VerificationLockNullableScalarRelationFilter = {
+  is?: Prisma.VerificationLockWhereInput | null
+  isNot?: Prisma.VerificationLockWhereInput | null
 }
 
 export type VerificationLockCountOrderByAggregateInput = {
@@ -339,46 +334,36 @@ export type VerificationLockMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
 }
 
-export type VerificationLockCreateNestedManyWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.VerificationLockCreateWithoutUserInput, Prisma.VerificationLockUncheckedCreateWithoutUserInput> | Prisma.VerificationLockCreateWithoutUserInput[] | Prisma.VerificationLockUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.VerificationLockCreateOrConnectWithoutUserInput | Prisma.VerificationLockCreateOrConnectWithoutUserInput[]
-  createMany?: Prisma.VerificationLockCreateManyUserInputEnvelope
-  connect?: Prisma.VerificationLockWhereUniqueInput | Prisma.VerificationLockWhereUniqueInput[]
+export type VerificationLockCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.VerificationLockCreateWithoutUserInput, Prisma.VerificationLockUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.VerificationLockCreateOrConnectWithoutUserInput
+  connect?: Prisma.VerificationLockWhereUniqueInput
 }
 
-export type VerificationLockUncheckedCreateNestedManyWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.VerificationLockCreateWithoutUserInput, Prisma.VerificationLockUncheckedCreateWithoutUserInput> | Prisma.VerificationLockCreateWithoutUserInput[] | Prisma.VerificationLockUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.VerificationLockCreateOrConnectWithoutUserInput | Prisma.VerificationLockCreateOrConnectWithoutUserInput[]
-  createMany?: Prisma.VerificationLockCreateManyUserInputEnvelope
-  connect?: Prisma.VerificationLockWhereUniqueInput | Prisma.VerificationLockWhereUniqueInput[]
+export type VerificationLockUncheckedCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.VerificationLockCreateWithoutUserInput, Prisma.VerificationLockUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.VerificationLockCreateOrConnectWithoutUserInput
+  connect?: Prisma.VerificationLockWhereUniqueInput
 }
 
-export type VerificationLockUpdateManyWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.VerificationLockCreateWithoutUserInput, Prisma.VerificationLockUncheckedCreateWithoutUserInput> | Prisma.VerificationLockCreateWithoutUserInput[] | Prisma.VerificationLockUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.VerificationLockCreateOrConnectWithoutUserInput | Prisma.VerificationLockCreateOrConnectWithoutUserInput[]
-  upsert?: Prisma.VerificationLockUpsertWithWhereUniqueWithoutUserInput | Prisma.VerificationLockUpsertWithWhereUniqueWithoutUserInput[]
-  createMany?: Prisma.VerificationLockCreateManyUserInputEnvelope
-  set?: Prisma.VerificationLockWhereUniqueInput | Prisma.VerificationLockWhereUniqueInput[]
-  disconnect?: Prisma.VerificationLockWhereUniqueInput | Prisma.VerificationLockWhereUniqueInput[]
-  delete?: Prisma.VerificationLockWhereUniqueInput | Prisma.VerificationLockWhereUniqueInput[]
-  connect?: Prisma.VerificationLockWhereUniqueInput | Prisma.VerificationLockWhereUniqueInput[]
-  update?: Prisma.VerificationLockUpdateWithWhereUniqueWithoutUserInput | Prisma.VerificationLockUpdateWithWhereUniqueWithoutUserInput[]
-  updateMany?: Prisma.VerificationLockUpdateManyWithWhereWithoutUserInput | Prisma.VerificationLockUpdateManyWithWhereWithoutUserInput[]
-  deleteMany?: Prisma.VerificationLockScalarWhereInput | Prisma.VerificationLockScalarWhereInput[]
+export type VerificationLockUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.VerificationLockCreateWithoutUserInput, Prisma.VerificationLockUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.VerificationLockCreateOrConnectWithoutUserInput
+  upsert?: Prisma.VerificationLockUpsertWithoutUserInput
+  disconnect?: Prisma.VerificationLockWhereInput | boolean
+  delete?: Prisma.VerificationLockWhereInput | boolean
+  connect?: Prisma.VerificationLockWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VerificationLockUpdateToOneWithWhereWithoutUserInput, Prisma.VerificationLockUpdateWithoutUserInput>, Prisma.VerificationLockUncheckedUpdateWithoutUserInput>
 }
 
-export type VerificationLockUncheckedUpdateManyWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.VerificationLockCreateWithoutUserInput, Prisma.VerificationLockUncheckedCreateWithoutUserInput> | Prisma.VerificationLockCreateWithoutUserInput[] | Prisma.VerificationLockUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.VerificationLockCreateOrConnectWithoutUserInput | Prisma.VerificationLockCreateOrConnectWithoutUserInput[]
-  upsert?: Prisma.VerificationLockUpsertWithWhereUniqueWithoutUserInput | Prisma.VerificationLockUpsertWithWhereUniqueWithoutUserInput[]
-  createMany?: Prisma.VerificationLockCreateManyUserInputEnvelope
-  set?: Prisma.VerificationLockWhereUniqueInput | Prisma.VerificationLockWhereUniqueInput[]
-  disconnect?: Prisma.VerificationLockWhereUniqueInput | Prisma.VerificationLockWhereUniqueInput[]
-  delete?: Prisma.VerificationLockWhereUniqueInput | Prisma.VerificationLockWhereUniqueInput[]
-  connect?: Prisma.VerificationLockWhereUniqueInput | Prisma.VerificationLockWhereUniqueInput[]
-  update?: Prisma.VerificationLockUpdateWithWhereUniqueWithoutUserInput | Prisma.VerificationLockUpdateWithWhereUniqueWithoutUserInput[]
-  updateMany?: Prisma.VerificationLockUpdateManyWithWhereWithoutUserInput | Prisma.VerificationLockUpdateManyWithWhereWithoutUserInput[]
-  deleteMany?: Prisma.VerificationLockScalarWhereInput | Prisma.VerificationLockScalarWhereInput[]
+export type VerificationLockUncheckedUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.VerificationLockCreateWithoutUserInput, Prisma.VerificationLockUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.VerificationLockCreateOrConnectWithoutUserInput
+  upsert?: Prisma.VerificationLockUpsertWithoutUserInput
+  disconnect?: Prisma.VerificationLockWhereInput | boolean
+  delete?: Prisma.VerificationLockWhereInput | boolean
+  connect?: Prisma.VerificationLockWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.VerificationLockUpdateToOneWithWhereWithoutUserInput, Prisma.VerificationLockUpdateWithoutUserInput>, Prisma.VerificationLockUncheckedUpdateWithoutUserInput>
 }
 
 export type VerificationLockCreateWithoutUserInput = {
@@ -402,45 +387,15 @@ export type VerificationLockCreateOrConnectWithoutUserInput = {
   create: Prisma.XOR<Prisma.VerificationLockCreateWithoutUserInput, Prisma.VerificationLockUncheckedCreateWithoutUserInput>
 }
 
-export type VerificationLockCreateManyUserInputEnvelope = {
-  data: Prisma.VerificationLockCreateManyUserInput | Prisma.VerificationLockCreateManyUserInput[]
-  skipDuplicates?: boolean
-}
-
-export type VerificationLockUpsertWithWhereUniqueWithoutUserInput = {
-  where: Prisma.VerificationLockWhereUniqueInput
+export type VerificationLockUpsertWithoutUserInput = {
   update: Prisma.XOR<Prisma.VerificationLockUpdateWithoutUserInput, Prisma.VerificationLockUncheckedUpdateWithoutUserInput>
   create: Prisma.XOR<Prisma.VerificationLockCreateWithoutUserInput, Prisma.VerificationLockUncheckedCreateWithoutUserInput>
+  where?: Prisma.VerificationLockWhereInput
 }
 
-export type VerificationLockUpdateWithWhereUniqueWithoutUserInput = {
-  where: Prisma.VerificationLockWhereUniqueInput
+export type VerificationLockUpdateToOneWithWhereWithoutUserInput = {
+  where?: Prisma.VerificationLockWhereInput
   data: Prisma.XOR<Prisma.VerificationLockUpdateWithoutUserInput, Prisma.VerificationLockUncheckedUpdateWithoutUserInput>
-}
-
-export type VerificationLockUpdateManyWithWhereWithoutUserInput = {
-  where: Prisma.VerificationLockScalarWhereInput
-  data: Prisma.XOR<Prisma.VerificationLockUpdateManyMutationInput, Prisma.VerificationLockUncheckedUpdateManyWithoutUserInput>
-}
-
-export type VerificationLockScalarWhereInput = {
-  AND?: Prisma.VerificationLockScalarWhereInput | Prisma.VerificationLockScalarWhereInput[]
-  OR?: Prisma.VerificationLockScalarWhereInput[]
-  NOT?: Prisma.VerificationLockScalarWhereInput | Prisma.VerificationLockScalarWhereInput[]
-  id?: Prisma.StringFilter<"VerificationLock"> | string
-  userId?: Prisma.StringFilter<"VerificationLock"> | string
-  address?: Prisma.StringFilter<"VerificationLock"> | string
-  lockedUntil?: Prisma.DateTimeFilter<"VerificationLock"> | Date | string
-  reason?: Prisma.StringNullableFilter<"VerificationLock"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"VerificationLock"> | Date | string
-}
-
-export type VerificationLockCreateManyUserInput = {
-  id?: string
-  address: string
-  lockedUntil: Date | string
-  reason?: string | null
-  createdAt?: Date | string
 }
 
 export type VerificationLockUpdateWithoutUserInput = {
@@ -452,14 +407,6 @@ export type VerificationLockUpdateWithoutUserInput = {
 }
 
 export type VerificationLockUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  lockedUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type VerificationLockUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
   lockedUntil?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string

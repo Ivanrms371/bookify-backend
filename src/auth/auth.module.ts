@@ -1,52 +1,41 @@
-import { Module } from '@nestjs/common';
-import { forwardRef } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
+import { PrismaModule } from 'src/shared/prisma/prisma.module';
 import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { JwtService } from './services/jwt.service';
-import { PrismaModule } from 'src/prisma/prisma.module';
-import { UserModule } from 'src/modules/users/user.module';
+import { SessionsModule } from 'src/auth/sessions/sessions.module';
+import { AuthCallbackHandler } from './application/auth-callback.handler';
+import { AuthCookieService } from './infrastructure/cookies/auth-cookie.service';
+import { GoogleService } from './infrastructure/google/google.service';
+import { GoogleMapper } from './infrastructure/google/google.mapper';
+import { AuthService } from './application/auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { BusinessModule } from 'src/modules/businesses/business.module';
-import { VerificationModule } from 'src/modules/verifications/verification.module';
-import { RefreshTokenRepository } from './repositories/refresh-token.repository';
-import { PasswordService } from './services/password.service';
-import { SessionService } from './services/session.service';
-import { RefreshTokenService } from './services/refresh-token.service';
-import { MagicLinkService } from './services/magic-link.service';
-import { OtpService } from './services/otp.service';
-import { OtpRepository } from './repositories/otp.repository';
+import { BusinessGuard } from './guards/business.guard';
+import { PlatformAdminGuard } from './guards/platform-admin.guard';
+import { JwtService } from './infrastructure/jwt/jwt.service';
+import { UsersModule } from 'src/modules/users/users.module';
+import { VerificationsModule } from 'src/modules/verifications/verifications.module';
+import { PasswordService } from './application/password.service';
+import { MembersModule } from 'src/modules/businesses/features/members/members.module';
 
 @Module({
-  imports: [
-    PrismaModule,
-    UserModule,
-    forwardRef(() => BusinessModule),
-    forwardRef(() => VerificationModule),
-  ],
+  imports: [PrismaModule, SessionsModule, MembersModule, UsersModule, forwardRef(() => VerificationsModule)],
   controllers: [AuthController],
   providers: [
+    // application
     AuthService,
-    JwtService,
-    JwtAuthGuard,
-    RefreshTokenRepository,
+    AuthCallbackHandler,
     PasswordService,
-    SessionService,
-    RefreshTokenService,
-    MagicLinkService,
-    OtpService,
-    OtpRepository,
-  ],
-  exports: [
-    AuthService,
+
+    // infrastructure
+    AuthCookieService,
+    GoogleService,
+    GoogleMapper,
     JwtService,
+
+    // guards
     JwtAuthGuard,
-    RefreshTokenRepository,
-    PasswordService,
-    SessionService,
-    RefreshTokenService,
-    MagicLinkService,
-    OtpService,
-    OtpRepository,
+    BusinessGuard,
+    PlatformAdminGuard,
   ],
+  exports: [AuthCookieService, JwtService, JwtAuthGuard, BusinessGuard, PlatformAdminGuard],
 })
 export class AuthModule {}

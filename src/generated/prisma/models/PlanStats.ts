@@ -255,8 +255,8 @@ export type PlanStatsWhereInput = {
   AND?: Prisma.PlanStatsWhereInput | Prisma.PlanStatsWhereInput[]
   OR?: Prisma.PlanStatsWhereInput[]
   NOT?: Prisma.PlanStatsWhereInput | Prisma.PlanStatsWhereInput[]
-  id?: Prisma.StringFilter<"PlanStats"> | string
-  planId?: Prisma.StringFilter<"PlanStats"> | string
+  id?: Prisma.UuidFilter<"PlanStats"> | string
+  planId?: Prisma.UuidFilter<"PlanStats"> | string
   date?: Prisma.DateTimeFilter<"PlanStats"> | Date | string
   newSubscribers?: Prisma.IntFilter<"PlanStats"> | number
   canceledToday?: Prisma.IntFilter<"PlanStats"> | number
@@ -286,7 +286,7 @@ export type PlanStatsWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PlanStatsWhereInput | Prisma.PlanStatsWhereInput[]
   OR?: Prisma.PlanStatsWhereInput[]
   NOT?: Prisma.PlanStatsWhereInput | Prisma.PlanStatsWhereInput[]
-  planId?: Prisma.StringFilter<"PlanStats"> | string
+  planId?: Prisma.UuidFilter<"PlanStats"> | string
   date?: Prisma.DateTimeFilter<"PlanStats"> | Date | string
   newSubscribers?: Prisma.IntFilter<"PlanStats"> | number
   canceledToday?: Prisma.IntFilter<"PlanStats"> | number
@@ -318,8 +318,8 @@ export type PlanStatsScalarWhereWithAggregatesInput = {
   AND?: Prisma.PlanStatsScalarWhereWithAggregatesInput | Prisma.PlanStatsScalarWhereWithAggregatesInput[]
   OR?: Prisma.PlanStatsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PlanStatsScalarWhereWithAggregatesInput | Prisma.PlanStatsScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"PlanStats"> | string
-  planId?: Prisma.StringWithAggregatesFilter<"PlanStats"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"PlanStats"> | string
+  planId?: Prisma.UuidWithAggregatesFilter<"PlanStats"> | string
   date?: Prisma.DateTimeWithAggregatesFilter<"PlanStats"> | Date | string
   newSubscribers?: Prisma.IntWithAggregatesFilter<"PlanStats"> | number
   canceledToday?: Prisma.IntWithAggregatesFilter<"PlanStats"> | number
@@ -573,8 +573,8 @@ export type PlanStatsScalarWhereInput = {
   AND?: Prisma.PlanStatsScalarWhereInput | Prisma.PlanStatsScalarWhereInput[]
   OR?: Prisma.PlanStatsScalarWhereInput[]
   NOT?: Prisma.PlanStatsScalarWhereInput | Prisma.PlanStatsScalarWhereInput[]
-  id?: Prisma.StringFilter<"PlanStats"> | string
-  planId?: Prisma.StringFilter<"PlanStats"> | string
+  id?: Prisma.UuidFilter<"PlanStats"> | string
+  planId?: Prisma.UuidFilter<"PlanStats"> | string
   date?: Prisma.DateTimeFilter<"PlanStats"> | Date | string
   newSubscribers?: Prisma.IntFilter<"PlanStats"> | number
   canceledToday?: Prisma.IntFilter<"PlanStats"> | number

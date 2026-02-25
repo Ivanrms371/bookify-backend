@@ -345,9 +345,9 @@ export type SubscriptionWhereInput = {
   AND?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
   OR?: Prisma.SubscriptionWhereInput[]
   NOT?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
-  id?: Prisma.StringFilter<"Subscription"> | string
-  businessId?: Prisma.StringFilter<"Subscription"> | string
-  planId?: Prisma.StringFilter<"Subscription"> | string
+  id?: Prisma.UuidFilter<"Subscription"> | string
+  businessId?: Prisma.UuidFilter<"Subscription"> | string
+  planId?: Prisma.UuidFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Subscription"> | string
@@ -408,7 +408,7 @@ export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
   OR?: Prisma.SubscriptionWhereInput[]
   NOT?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
-  planId?: Prisma.StringFilter<"Subscription"> | string
+  planId?: Prisma.UuidFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Subscription"> | string
@@ -469,9 +469,9 @@ export type SubscriptionScalarWhereWithAggregatesInput = {
   AND?: Prisma.SubscriptionScalarWhereWithAggregatesInput | Prisma.SubscriptionScalarWhereWithAggregatesInput[]
   OR?: Prisma.SubscriptionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SubscriptionScalarWhereWithAggregatesInput | Prisma.SubscriptionScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
-  businessId?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
-  planId?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"Subscription"> | string
+  businessId?: Prisma.UuidWithAggregatesFilter<"Subscription"> | string
+  planId?: Prisma.UuidWithAggregatesFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusWithAggregatesFilter<"Subscription"> | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalWithAggregatesFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
@@ -517,7 +517,7 @@ export type SubscriptionCreateInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   payments?: Prisma.PaymentCreateNestedManyWithoutSubscriptionInput
-  business: Prisma.BusinessCreateNestedOneWithoutSubscriptionsInput
+  business: Prisma.BusinessCreateNestedOneWithoutSubscriptionInput
   plan: Prisma.PlanCreateNestedOneWithoutSubscriptionsInput
 }
 
@@ -571,7 +571,7 @@ export type SubscriptionUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   payments?: Prisma.PaymentUpdateManyWithoutSubscriptionNestedInput
-  business?: Prisma.BusinessUpdateOneRequiredWithoutSubscriptionsNestedInput
+  business?: Prisma.BusinessUpdateOneRequiredWithoutSubscriptionNestedInput
   plan?: Prisma.PlanUpdateOneRequiredWithoutSubscriptionsNestedInput
 }
 
@@ -1024,7 +1024,7 @@ export type SubscriptionCreateWithoutPlanInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   payments?: Prisma.PaymentCreateNestedManyWithoutSubscriptionInput
-  business: Prisma.BusinessCreateNestedOneWithoutSubscriptionsInput
+  business: Prisma.BusinessCreateNestedOneWithoutSubscriptionInput
 }
 
 export type SubscriptionUncheckedCreateWithoutPlanInput = {
@@ -1083,9 +1083,9 @@ export type SubscriptionScalarWhereInput = {
   AND?: Prisma.SubscriptionScalarWhereInput | Prisma.SubscriptionScalarWhereInput[]
   OR?: Prisma.SubscriptionScalarWhereInput[]
   NOT?: Prisma.SubscriptionScalarWhereInput | Prisma.SubscriptionScalarWhereInput[]
-  id?: Prisma.StringFilter<"Subscription"> | string
-  businessId?: Prisma.StringFilter<"Subscription"> | string
-  planId?: Prisma.StringFilter<"Subscription"> | string
+  id?: Prisma.UuidFilter<"Subscription"> | string
+  businessId?: Prisma.UuidFilter<"Subscription"> | string
+  planId?: Prisma.UuidFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Subscription"> | string
@@ -1130,7 +1130,7 @@ export type SubscriptionCreateWithoutPaymentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  business: Prisma.BusinessCreateNestedOneWithoutSubscriptionsInput
+  business: Prisma.BusinessCreateNestedOneWithoutSubscriptionInput
   plan: Prisma.PlanCreateNestedOneWithoutSubscriptionsInput
 }
 
@@ -1198,7 +1198,7 @@ export type SubscriptionUpdateWithoutPaymentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  business?: Prisma.BusinessUpdateOneRequiredWithoutSubscriptionsNestedInput
+  business?: Prisma.BusinessUpdateOneRequiredWithoutSubscriptionNestedInput
   plan?: Prisma.PlanUpdateOneRequiredWithoutSubscriptionsNestedInput
 }
 
@@ -1276,7 +1276,7 @@ export type SubscriptionUpdateWithoutPlanInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   payments?: Prisma.PaymentUpdateManyWithoutSubscriptionNestedInput
-  business?: Prisma.BusinessUpdateOneRequiredWithoutSubscriptionsNestedInput
+  business?: Prisma.BusinessUpdateOneRequiredWithoutSubscriptionNestedInput
 }
 
 export type SubscriptionUncheckedUpdateWithoutPlanInput = {

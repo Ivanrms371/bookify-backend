@@ -9,6 +9,18 @@ export class CreateUserDto {
 
   @IsString()
   @IsOptional()
+  ipAddress?: string;
+
+  @IsString()
+  @IsOptional()
+  userAgent?: string;
+
+  @IsString()
+  @IsOptional()
+  avatarUrl?: string;
+
+  @IsString()
+  @IsOptional()
   password?: string;
 
   @IsString()

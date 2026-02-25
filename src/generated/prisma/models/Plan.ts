@@ -285,7 +285,7 @@ export type PlanWhereInput = {
   AND?: Prisma.PlanWhereInput | Prisma.PlanWhereInput[]
   OR?: Prisma.PlanWhereInput[]
   NOT?: Prisma.PlanWhereInput | Prisma.PlanWhereInput[]
-  id?: Prisma.StringFilter<"Plan"> | string
+  id?: Prisma.UuidFilter<"Plan"> | string
   name?: Prisma.StringFilter<"Plan"> | string
   planType?: Prisma.EnumPlanTypeFilter<"Plan"> | $Enums.PlanType
   billingCycle?: Prisma.EnumBillingCycleNullableFilter<"Plan"> | $Enums.BillingCycle | null
@@ -377,7 +377,7 @@ export type PlanScalarWhereWithAggregatesInput = {
   AND?: Prisma.PlanScalarWhereWithAggregatesInput | Prisma.PlanScalarWhereWithAggregatesInput[]
   OR?: Prisma.PlanScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PlanScalarWhereWithAggregatesInput | Prisma.PlanScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"Plan"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"Plan"> | string
   name?: Prisma.StringWithAggregatesFilter<"Plan"> | string
   planType?: Prisma.EnumPlanTypeWithAggregatesFilter<"Plan"> | $Enums.PlanType
   billingCycle?: Prisma.EnumBillingCycleNullableWithAggregatesFilter<"Plan"> | $Enums.BillingCycle | null

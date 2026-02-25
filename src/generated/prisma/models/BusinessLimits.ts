@@ -34,6 +34,11 @@ export type BusinessLimitsAvgAggregateOutputType = {
   whatsappCost: runtime.Decimal | null
   periodMonth: number | null
   periodYear: number | null
+  appointmentCount: number | null
+  appointmentLimit: number | null
+  emailCost: runtime.Decimal | null
+  emailLimit: number | null
+  professionalCount: number | null
 }
 
 export type BusinessLimitsSumAggregateOutputType = {
@@ -44,12 +49,16 @@ export type BusinessLimitsSumAggregateOutputType = {
   whatsappCost: runtime.Decimal | null
   periodMonth: number | null
   periodYear: number | null
+  appointmentCount: number | null
+  appointmentLimit: number | null
+  emailCost: runtime.Decimal | null
+  emailLimit: number | null
+  professionalCount: number | null
 }
 
 export type BusinessLimitsMinAggregateOutputType = {
   id: string | null
   businessId: string | null
-  plan: string | null
   whatsappLimit: number | null
   professionalLimit: number | null
   whatsappCount: number | null
@@ -59,12 +68,16 @@ export type BusinessLimitsMinAggregateOutputType = {
   periodYear: number | null
   lastResetAt: Date | null
   updatedAt: Date | null
+  appointmentCount: number | null
+  appointmentLimit: number | null
+  emailCost: runtime.Decimal | null
+  emailLimit: number | null
+  professionalCount: number | null
 }
 
 export type BusinessLimitsMaxAggregateOutputType = {
   id: string | null
   businessId: string | null
-  plan: string | null
   whatsappLimit: number | null
   professionalLimit: number | null
   whatsappCount: number | null
@@ -74,12 +87,16 @@ export type BusinessLimitsMaxAggregateOutputType = {
   periodYear: number | null
   lastResetAt: Date | null
   updatedAt: Date | null
+  appointmentCount: number | null
+  appointmentLimit: number | null
+  emailCost: runtime.Decimal | null
+  emailLimit: number | null
+  professionalCount: number | null
 }
 
 export type BusinessLimitsCountAggregateOutputType = {
   id: number
   businessId: number
-  plan: number
   whatsappLimit: number
   professionalLimit: number
   whatsappCount: number
@@ -89,6 +106,11 @@ export type BusinessLimitsCountAggregateOutputType = {
   periodYear: number
   lastResetAt: number
   updatedAt: number
+  appointmentCount: number
+  appointmentLimit: number
+  emailCost: number
+  emailLimit: number
+  professionalCount: number
   _all: number
 }
 
@@ -101,6 +123,11 @@ export type BusinessLimitsAvgAggregateInputType = {
   whatsappCost?: true
   periodMonth?: true
   periodYear?: true
+  appointmentCount?: true
+  appointmentLimit?: true
+  emailCost?: true
+  emailLimit?: true
+  professionalCount?: true
 }
 
 export type BusinessLimitsSumAggregateInputType = {
@@ -111,12 +138,16 @@ export type BusinessLimitsSumAggregateInputType = {
   whatsappCost?: true
   periodMonth?: true
   periodYear?: true
+  appointmentCount?: true
+  appointmentLimit?: true
+  emailCost?: true
+  emailLimit?: true
+  professionalCount?: true
 }
 
 export type BusinessLimitsMinAggregateInputType = {
   id?: true
   businessId?: true
-  plan?: true
   whatsappLimit?: true
   professionalLimit?: true
   whatsappCount?: true
@@ -126,12 +157,16 @@ export type BusinessLimitsMinAggregateInputType = {
   periodYear?: true
   lastResetAt?: true
   updatedAt?: true
+  appointmentCount?: true
+  appointmentLimit?: true
+  emailCost?: true
+  emailLimit?: true
+  professionalCount?: true
 }
 
 export type BusinessLimitsMaxAggregateInputType = {
   id?: true
   businessId?: true
-  plan?: true
   whatsappLimit?: true
   professionalLimit?: true
   whatsappCount?: true
@@ -141,12 +176,16 @@ export type BusinessLimitsMaxAggregateInputType = {
   periodYear?: true
   lastResetAt?: true
   updatedAt?: true
+  appointmentCount?: true
+  appointmentLimit?: true
+  emailCost?: true
+  emailLimit?: true
+  professionalCount?: true
 }
 
 export type BusinessLimitsCountAggregateInputType = {
   id?: true
   businessId?: true
-  plan?: true
   whatsappLimit?: true
   professionalLimit?: true
   whatsappCount?: true
@@ -156,6 +195,11 @@ export type BusinessLimitsCountAggregateInputType = {
   periodYear?: true
   lastResetAt?: true
   updatedAt?: true
+  appointmentCount?: true
+  appointmentLimit?: true
+  emailCost?: true
+  emailLimit?: true
+  professionalCount?: true
   _all?: true
 }
 
@@ -248,7 +292,6 @@ export type BusinessLimitsGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 export type BusinessLimitsGroupByOutputType = {
   id: string
   businessId: string
-  plan: string
   whatsappLimit: number
   professionalLimit: number
   whatsappCount: number
@@ -258,6 +301,11 @@ export type BusinessLimitsGroupByOutputType = {
   periodYear: number
   lastResetAt: Date
   updatedAt: Date
+  appointmentCount: number
+  appointmentLimit: number
+  emailCost: runtime.Decimal
+  emailLimit: number
+  professionalCount: number
   _count: BusinessLimitsCountAggregateOutputType | null
   _avg: BusinessLimitsAvgAggregateOutputType | null
   _sum: BusinessLimitsSumAggregateOutputType | null
@@ -284,9 +332,8 @@ export type BusinessLimitsWhereInput = {
   AND?: Prisma.BusinessLimitsWhereInput | Prisma.BusinessLimitsWhereInput[]
   OR?: Prisma.BusinessLimitsWhereInput[]
   NOT?: Prisma.BusinessLimitsWhereInput | Prisma.BusinessLimitsWhereInput[]
-  id?: Prisma.StringFilter<"BusinessLimits"> | string
-  businessId?: Prisma.StringFilter<"BusinessLimits"> | string
-  plan?: Prisma.StringFilter<"BusinessLimits"> | string
+  id?: Prisma.UuidFilter<"BusinessLimits"> | string
+  businessId?: Prisma.UuidFilter<"BusinessLimits"> | string
   whatsappLimit?: Prisma.IntFilter<"BusinessLimits"> | number
   professionalLimit?: Prisma.IntFilter<"BusinessLimits"> | number
   whatsappCount?: Prisma.IntFilter<"BusinessLimits"> | number
@@ -296,13 +343,17 @@ export type BusinessLimitsWhereInput = {
   periodYear?: Prisma.IntFilter<"BusinessLimits"> | number
   lastResetAt?: Prisma.DateTimeFilter<"BusinessLimits"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BusinessLimits"> | Date | string
-  business?: Prisma.XOR<Prisma.BusinessNullableScalarRelationFilter, Prisma.BusinessWhereInput> | null
+  appointmentCount?: Prisma.IntFilter<"BusinessLimits"> | number
+  appointmentLimit?: Prisma.IntFilter<"BusinessLimits"> | number
+  emailCost?: Prisma.DecimalFilter<"BusinessLimits"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  emailLimit?: Prisma.IntFilter<"BusinessLimits"> | number
+  professionalCount?: Prisma.IntFilter<"BusinessLimits"> | number
+  business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
 }
 
 export type BusinessLimitsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  plan?: Prisma.SortOrder
   whatsappLimit?: Prisma.SortOrder
   professionalLimit?: Prisma.SortOrder
   whatsappCount?: Prisma.SortOrder
@@ -312,6 +363,11 @@ export type BusinessLimitsOrderByWithRelationInput = {
   periodYear?: Prisma.SortOrder
   lastResetAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  appointmentCount?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailCost?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  professionalCount?: Prisma.SortOrder
   business?: Prisma.BusinessOrderByWithRelationInput
 }
 
@@ -321,7 +377,6 @@ export type BusinessLimitsWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.BusinessLimitsWhereInput | Prisma.BusinessLimitsWhereInput[]
   OR?: Prisma.BusinessLimitsWhereInput[]
   NOT?: Prisma.BusinessLimitsWhereInput | Prisma.BusinessLimitsWhereInput[]
-  plan?: Prisma.StringFilter<"BusinessLimits"> | string
   whatsappLimit?: Prisma.IntFilter<"BusinessLimits"> | number
   professionalLimit?: Prisma.IntFilter<"BusinessLimits"> | number
   whatsappCount?: Prisma.IntFilter<"BusinessLimits"> | number
@@ -331,13 +386,17 @@ export type BusinessLimitsWhereUniqueInput = Prisma.AtLeast<{
   periodYear?: Prisma.IntFilter<"BusinessLimits"> | number
   lastResetAt?: Prisma.DateTimeFilter<"BusinessLimits"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"BusinessLimits"> | Date | string
-  business?: Prisma.XOR<Prisma.BusinessNullableScalarRelationFilter, Prisma.BusinessWhereInput> | null
+  appointmentCount?: Prisma.IntFilter<"BusinessLimits"> | number
+  appointmentLimit?: Prisma.IntFilter<"BusinessLimits"> | number
+  emailCost?: Prisma.DecimalFilter<"BusinessLimits"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  emailLimit?: Prisma.IntFilter<"BusinessLimits"> | number
+  professionalCount?: Prisma.IntFilter<"BusinessLimits"> | number
+  business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
 }, "id" | "businessId">
 
 export type BusinessLimitsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  plan?: Prisma.SortOrder
   whatsappLimit?: Prisma.SortOrder
   professionalLimit?: Prisma.SortOrder
   whatsappCount?: Prisma.SortOrder
@@ -347,6 +406,11 @@ export type BusinessLimitsOrderByWithAggregationInput = {
   periodYear?: Prisma.SortOrder
   lastResetAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  appointmentCount?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailCost?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  professionalCount?: Prisma.SortOrder
   _count?: Prisma.BusinessLimitsCountOrderByAggregateInput
   _avg?: Prisma.BusinessLimitsAvgOrderByAggregateInput
   _max?: Prisma.BusinessLimitsMaxOrderByAggregateInput
@@ -358,9 +422,8 @@ export type BusinessLimitsScalarWhereWithAggregatesInput = {
   AND?: Prisma.BusinessLimitsScalarWhereWithAggregatesInput | Prisma.BusinessLimitsScalarWhereWithAggregatesInput[]
   OR?: Prisma.BusinessLimitsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.BusinessLimitsScalarWhereWithAggregatesInput | Prisma.BusinessLimitsScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"BusinessLimits"> | string
-  businessId?: Prisma.StringWithAggregatesFilter<"BusinessLimits"> | string
-  plan?: Prisma.StringWithAggregatesFilter<"BusinessLimits"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"BusinessLimits"> | string
+  businessId?: Prisma.UuidWithAggregatesFilter<"BusinessLimits"> | string
   whatsappLimit?: Prisma.IntWithAggregatesFilter<"BusinessLimits"> | number
   professionalLimit?: Prisma.IntWithAggregatesFilter<"BusinessLimits"> | number
   whatsappCount?: Prisma.IntWithAggregatesFilter<"BusinessLimits"> | number
@@ -370,11 +433,15 @@ export type BusinessLimitsScalarWhereWithAggregatesInput = {
   periodYear?: Prisma.IntWithAggregatesFilter<"BusinessLimits"> | number
   lastResetAt?: Prisma.DateTimeWithAggregatesFilter<"BusinessLimits"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"BusinessLimits"> | Date | string
+  appointmentCount?: Prisma.IntWithAggregatesFilter<"BusinessLimits"> | number
+  appointmentLimit?: Prisma.IntWithAggregatesFilter<"BusinessLimits"> | number
+  emailCost?: Prisma.DecimalWithAggregatesFilter<"BusinessLimits"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  emailLimit?: Prisma.IntWithAggregatesFilter<"BusinessLimits"> | number
+  professionalCount?: Prisma.IntWithAggregatesFilter<"BusinessLimits"> | number
 }
 
 export type BusinessLimitsCreateInput = {
   id?: string
-  plan?: string
   whatsappLimit?: number
   professionalLimit?: number
   whatsappCount?: number
@@ -384,13 +451,17 @@ export type BusinessLimitsCreateInput = {
   periodYear: number
   lastResetAt: Date | string
   updatedAt?: Date | string
-  business?: Prisma.BusinessCreateNestedOneWithoutLimitsInput
+  appointmentCount?: number
+  appointmentLimit?: number
+  emailCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  emailLimit?: number
+  professionalCount?: number
+  business: Prisma.BusinessCreateNestedOneWithoutLimitsInput
 }
 
 export type BusinessLimitsUncheckedCreateInput = {
   id?: string
   businessId: string
-  plan?: string
   whatsappLimit?: number
   professionalLimit?: number
   whatsappCount?: number
@@ -400,11 +471,15 @@ export type BusinessLimitsUncheckedCreateInput = {
   periodYear: number
   lastResetAt: Date | string
   updatedAt?: Date | string
+  appointmentCount?: number
+  appointmentLimit?: number
+  emailCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  emailLimit?: number
+  professionalCount?: number
 }
 
 export type BusinessLimitsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  plan?: Prisma.StringFieldUpdateOperationsInput | string
   whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
   professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
   whatsappCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -414,13 +489,17 @@ export type BusinessLimitsUpdateInput = {
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
   lastResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  business?: Prisma.BusinessUpdateOneWithoutLimitsNestedInput
+  appointmentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalCount?: Prisma.IntFieldUpdateOperationsInput | number
+  business?: Prisma.BusinessUpdateOneRequiredWithoutLimitsNestedInput
 }
 
 export type BusinessLimitsUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   businessId?: Prisma.StringFieldUpdateOperationsInput | string
-  plan?: Prisma.StringFieldUpdateOperationsInput | string
   whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
   professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
   whatsappCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -430,12 +509,16 @@ export type BusinessLimitsUncheckedUpdateInput = {
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
   lastResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appointmentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type BusinessLimitsCreateManyInput = {
   id?: string
   businessId: string
-  plan?: string
   whatsappLimit?: number
   professionalLimit?: number
   whatsappCount?: number
@@ -445,11 +528,15 @@ export type BusinessLimitsCreateManyInput = {
   periodYear: number
   lastResetAt: Date | string
   updatedAt?: Date | string
+  appointmentCount?: number
+  appointmentLimit?: number
+  emailCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  emailLimit?: number
+  professionalCount?: number
 }
 
 export type BusinessLimitsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  plan?: Prisma.StringFieldUpdateOperationsInput | string
   whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
   professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
   whatsappCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -459,12 +546,16 @@ export type BusinessLimitsUpdateManyMutationInput = {
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
   lastResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appointmentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type BusinessLimitsUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   businessId?: Prisma.StringFieldUpdateOperationsInput | string
-  plan?: Prisma.StringFieldUpdateOperationsInput | string
   whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
   professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
   whatsappCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -474,22 +565,21 @@ export type BusinessLimitsUncheckedUpdateManyInput = {
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
   lastResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appointmentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
-export type BusinessLimitsListRelationFilter = {
-  every?: Prisma.BusinessLimitsWhereInput
-  some?: Prisma.BusinessLimitsWhereInput
-  none?: Prisma.BusinessLimitsWhereInput
-}
-
-export type BusinessLimitsOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
+export type BusinessLimitsNullableScalarRelationFilter = {
+  is?: Prisma.BusinessLimitsWhereInput | null
+  isNot?: Prisma.BusinessLimitsWhereInput | null
 }
 
 export type BusinessLimitsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  plan?: Prisma.SortOrder
   whatsappLimit?: Prisma.SortOrder
   professionalLimit?: Prisma.SortOrder
   whatsappCount?: Prisma.SortOrder
@@ -499,6 +589,11 @@ export type BusinessLimitsCountOrderByAggregateInput = {
   periodYear?: Prisma.SortOrder
   lastResetAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  appointmentCount?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailCost?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  professionalCount?: Prisma.SortOrder
 }
 
 export type BusinessLimitsAvgOrderByAggregateInput = {
@@ -509,12 +604,16 @@ export type BusinessLimitsAvgOrderByAggregateInput = {
   whatsappCost?: Prisma.SortOrder
   periodMonth?: Prisma.SortOrder
   periodYear?: Prisma.SortOrder
+  appointmentCount?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailCost?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  professionalCount?: Prisma.SortOrder
 }
 
 export type BusinessLimitsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  plan?: Prisma.SortOrder
   whatsappLimit?: Prisma.SortOrder
   professionalLimit?: Prisma.SortOrder
   whatsappCount?: Prisma.SortOrder
@@ -524,12 +623,16 @@ export type BusinessLimitsMaxOrderByAggregateInput = {
   periodYear?: Prisma.SortOrder
   lastResetAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  appointmentCount?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailCost?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  professionalCount?: Prisma.SortOrder
 }
 
 export type BusinessLimitsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  plan?: Prisma.SortOrder
   whatsappLimit?: Prisma.SortOrder
   professionalLimit?: Prisma.SortOrder
   whatsappCount?: Prisma.SortOrder
@@ -539,6 +642,11 @@ export type BusinessLimitsMinOrderByAggregateInput = {
   periodYear?: Prisma.SortOrder
   lastResetAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  appointmentCount?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailCost?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  professionalCount?: Prisma.SortOrder
 }
 
 export type BusinessLimitsSumOrderByAggregateInput = {
@@ -549,53 +657,47 @@ export type BusinessLimitsSumOrderByAggregateInput = {
   whatsappCost?: Prisma.SortOrder
   periodMonth?: Prisma.SortOrder
   periodYear?: Prisma.SortOrder
+  appointmentCount?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailCost?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  professionalCount?: Prisma.SortOrder
 }
 
-export type BusinessLimitsCreateNestedManyWithoutBusinessInput = {
-  create?: Prisma.XOR<Prisma.BusinessLimitsCreateWithoutBusinessInput, Prisma.BusinessLimitsUncheckedCreateWithoutBusinessInput> | Prisma.BusinessLimitsCreateWithoutBusinessInput[] | Prisma.BusinessLimitsUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.BusinessLimitsCreateOrConnectWithoutBusinessInput | Prisma.BusinessLimitsCreateOrConnectWithoutBusinessInput[]
-  createMany?: Prisma.BusinessLimitsCreateManyBusinessInputEnvelope
-  connect?: Prisma.BusinessLimitsWhereUniqueInput | Prisma.BusinessLimitsWhereUniqueInput[]
+export type BusinessLimitsCreateNestedOneWithoutBusinessInput = {
+  create?: Prisma.XOR<Prisma.BusinessLimitsCreateWithoutBusinessInput, Prisma.BusinessLimitsUncheckedCreateWithoutBusinessInput>
+  connectOrCreate?: Prisma.BusinessLimitsCreateOrConnectWithoutBusinessInput
+  connect?: Prisma.BusinessLimitsWhereUniqueInput
 }
 
-export type BusinessLimitsUncheckedCreateNestedManyWithoutBusinessInput = {
-  create?: Prisma.XOR<Prisma.BusinessLimitsCreateWithoutBusinessInput, Prisma.BusinessLimitsUncheckedCreateWithoutBusinessInput> | Prisma.BusinessLimitsCreateWithoutBusinessInput[] | Prisma.BusinessLimitsUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.BusinessLimitsCreateOrConnectWithoutBusinessInput | Prisma.BusinessLimitsCreateOrConnectWithoutBusinessInput[]
-  createMany?: Prisma.BusinessLimitsCreateManyBusinessInputEnvelope
-  connect?: Prisma.BusinessLimitsWhereUniqueInput | Prisma.BusinessLimitsWhereUniqueInput[]
+export type BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput = {
+  create?: Prisma.XOR<Prisma.BusinessLimitsCreateWithoutBusinessInput, Prisma.BusinessLimitsUncheckedCreateWithoutBusinessInput>
+  connectOrCreate?: Prisma.BusinessLimitsCreateOrConnectWithoutBusinessInput
+  connect?: Prisma.BusinessLimitsWhereUniqueInput
 }
 
-export type BusinessLimitsUpdateManyWithoutBusinessNestedInput = {
-  create?: Prisma.XOR<Prisma.BusinessLimitsCreateWithoutBusinessInput, Prisma.BusinessLimitsUncheckedCreateWithoutBusinessInput> | Prisma.BusinessLimitsCreateWithoutBusinessInput[] | Prisma.BusinessLimitsUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.BusinessLimitsCreateOrConnectWithoutBusinessInput | Prisma.BusinessLimitsCreateOrConnectWithoutBusinessInput[]
-  upsert?: Prisma.BusinessLimitsUpsertWithWhereUniqueWithoutBusinessInput | Prisma.BusinessLimitsUpsertWithWhereUniqueWithoutBusinessInput[]
-  createMany?: Prisma.BusinessLimitsCreateManyBusinessInputEnvelope
-  set?: Prisma.BusinessLimitsWhereUniqueInput | Prisma.BusinessLimitsWhereUniqueInput[]
-  disconnect?: Prisma.BusinessLimitsWhereUniqueInput | Prisma.BusinessLimitsWhereUniqueInput[]
-  delete?: Prisma.BusinessLimitsWhereUniqueInput | Prisma.BusinessLimitsWhereUniqueInput[]
-  connect?: Prisma.BusinessLimitsWhereUniqueInput | Prisma.BusinessLimitsWhereUniqueInput[]
-  update?: Prisma.BusinessLimitsUpdateWithWhereUniqueWithoutBusinessInput | Prisma.BusinessLimitsUpdateWithWhereUniqueWithoutBusinessInput[]
-  updateMany?: Prisma.BusinessLimitsUpdateManyWithWhereWithoutBusinessInput | Prisma.BusinessLimitsUpdateManyWithWhereWithoutBusinessInput[]
-  deleteMany?: Prisma.BusinessLimitsScalarWhereInput | Prisma.BusinessLimitsScalarWhereInput[]
+export type BusinessLimitsUpdateOneWithoutBusinessNestedInput = {
+  create?: Prisma.XOR<Prisma.BusinessLimitsCreateWithoutBusinessInput, Prisma.BusinessLimitsUncheckedCreateWithoutBusinessInput>
+  connectOrCreate?: Prisma.BusinessLimitsCreateOrConnectWithoutBusinessInput
+  upsert?: Prisma.BusinessLimitsUpsertWithoutBusinessInput
+  disconnect?: Prisma.BusinessLimitsWhereInput | boolean
+  delete?: Prisma.BusinessLimitsWhereInput | boolean
+  connect?: Prisma.BusinessLimitsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessLimitsUpdateToOneWithWhereWithoutBusinessInput, Prisma.BusinessLimitsUpdateWithoutBusinessInput>, Prisma.BusinessLimitsUncheckedUpdateWithoutBusinessInput>
 }
 
-export type BusinessLimitsUncheckedUpdateManyWithoutBusinessNestedInput = {
-  create?: Prisma.XOR<Prisma.BusinessLimitsCreateWithoutBusinessInput, Prisma.BusinessLimitsUncheckedCreateWithoutBusinessInput> | Prisma.BusinessLimitsCreateWithoutBusinessInput[] | Prisma.BusinessLimitsUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.BusinessLimitsCreateOrConnectWithoutBusinessInput | Prisma.BusinessLimitsCreateOrConnectWithoutBusinessInput[]
-  upsert?: Prisma.BusinessLimitsUpsertWithWhereUniqueWithoutBusinessInput | Prisma.BusinessLimitsUpsertWithWhereUniqueWithoutBusinessInput[]
-  createMany?: Prisma.BusinessLimitsCreateManyBusinessInputEnvelope
-  set?: Prisma.BusinessLimitsWhereUniqueInput | Prisma.BusinessLimitsWhereUniqueInput[]
-  disconnect?: Prisma.BusinessLimitsWhereUniqueInput | Prisma.BusinessLimitsWhereUniqueInput[]
-  delete?: Prisma.BusinessLimitsWhereUniqueInput | Prisma.BusinessLimitsWhereUniqueInput[]
-  connect?: Prisma.BusinessLimitsWhereUniqueInput | Prisma.BusinessLimitsWhereUniqueInput[]
-  update?: Prisma.BusinessLimitsUpdateWithWhereUniqueWithoutBusinessInput | Prisma.BusinessLimitsUpdateWithWhereUniqueWithoutBusinessInput[]
-  updateMany?: Prisma.BusinessLimitsUpdateManyWithWhereWithoutBusinessInput | Prisma.BusinessLimitsUpdateManyWithWhereWithoutBusinessInput[]
-  deleteMany?: Prisma.BusinessLimitsScalarWhereInput | Prisma.BusinessLimitsScalarWhereInput[]
+export type BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput = {
+  create?: Prisma.XOR<Prisma.BusinessLimitsCreateWithoutBusinessInput, Prisma.BusinessLimitsUncheckedCreateWithoutBusinessInput>
+  connectOrCreate?: Prisma.BusinessLimitsCreateOrConnectWithoutBusinessInput
+  upsert?: Prisma.BusinessLimitsUpsertWithoutBusinessInput
+  disconnect?: Prisma.BusinessLimitsWhereInput | boolean
+  delete?: Prisma.BusinessLimitsWhereInput | boolean
+  connect?: Prisma.BusinessLimitsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessLimitsUpdateToOneWithWhereWithoutBusinessInput, Prisma.BusinessLimitsUpdateWithoutBusinessInput>, Prisma.BusinessLimitsUncheckedUpdateWithoutBusinessInput>
 }
 
 export type BusinessLimitsCreateWithoutBusinessInput = {
   id?: string
-  plan?: string
   whatsappLimit?: number
   professionalLimit?: number
   whatsappCount?: number
@@ -605,11 +707,15 @@ export type BusinessLimitsCreateWithoutBusinessInput = {
   periodYear: number
   lastResetAt: Date | string
   updatedAt?: Date | string
+  appointmentCount?: number
+  appointmentLimit?: number
+  emailCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  emailLimit?: number
+  professionalCount?: number
 }
 
 export type BusinessLimitsUncheckedCreateWithoutBusinessInput = {
   id?: string
-  plan?: string
   whatsappLimit?: number
   professionalLimit?: number
   whatsappCount?: number
@@ -619,6 +725,11 @@ export type BusinessLimitsUncheckedCreateWithoutBusinessInput = {
   periodYear: number
   lastResetAt: Date | string
   updatedAt?: Date | string
+  appointmentCount?: number
+  appointmentLimit?: number
+  emailCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  emailLimit?: number
+  professionalCount?: number
 }
 
 export type BusinessLimitsCreateOrConnectWithoutBusinessInput = {
@@ -626,62 +737,19 @@ export type BusinessLimitsCreateOrConnectWithoutBusinessInput = {
   create: Prisma.XOR<Prisma.BusinessLimitsCreateWithoutBusinessInput, Prisma.BusinessLimitsUncheckedCreateWithoutBusinessInput>
 }
 
-export type BusinessLimitsCreateManyBusinessInputEnvelope = {
-  data: Prisma.BusinessLimitsCreateManyBusinessInput | Prisma.BusinessLimitsCreateManyBusinessInput[]
-  skipDuplicates?: boolean
-}
-
-export type BusinessLimitsUpsertWithWhereUniqueWithoutBusinessInput = {
-  where: Prisma.BusinessLimitsWhereUniqueInput
+export type BusinessLimitsUpsertWithoutBusinessInput = {
   update: Prisma.XOR<Prisma.BusinessLimitsUpdateWithoutBusinessInput, Prisma.BusinessLimitsUncheckedUpdateWithoutBusinessInput>
   create: Prisma.XOR<Prisma.BusinessLimitsCreateWithoutBusinessInput, Prisma.BusinessLimitsUncheckedCreateWithoutBusinessInput>
+  where?: Prisma.BusinessLimitsWhereInput
 }
 
-export type BusinessLimitsUpdateWithWhereUniqueWithoutBusinessInput = {
-  where: Prisma.BusinessLimitsWhereUniqueInput
+export type BusinessLimitsUpdateToOneWithWhereWithoutBusinessInput = {
+  where?: Prisma.BusinessLimitsWhereInput
   data: Prisma.XOR<Prisma.BusinessLimitsUpdateWithoutBusinessInput, Prisma.BusinessLimitsUncheckedUpdateWithoutBusinessInput>
-}
-
-export type BusinessLimitsUpdateManyWithWhereWithoutBusinessInput = {
-  where: Prisma.BusinessLimitsScalarWhereInput
-  data: Prisma.XOR<Prisma.BusinessLimitsUpdateManyMutationInput, Prisma.BusinessLimitsUncheckedUpdateManyWithoutBusinessInput>
-}
-
-export type BusinessLimitsScalarWhereInput = {
-  AND?: Prisma.BusinessLimitsScalarWhereInput | Prisma.BusinessLimitsScalarWhereInput[]
-  OR?: Prisma.BusinessLimitsScalarWhereInput[]
-  NOT?: Prisma.BusinessLimitsScalarWhereInput | Prisma.BusinessLimitsScalarWhereInput[]
-  id?: Prisma.StringFilter<"BusinessLimits"> | string
-  businessId?: Prisma.StringFilter<"BusinessLimits"> | string
-  plan?: Prisma.StringFilter<"BusinessLimits"> | string
-  whatsappLimit?: Prisma.IntFilter<"BusinessLimits"> | number
-  professionalLimit?: Prisma.IntFilter<"BusinessLimits"> | number
-  whatsappCount?: Prisma.IntFilter<"BusinessLimits"> | number
-  emailCount?: Prisma.IntFilter<"BusinessLimits"> | number
-  whatsappCost?: Prisma.DecimalFilter<"BusinessLimits"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  periodMonth?: Prisma.IntFilter<"BusinessLimits"> | number
-  periodYear?: Prisma.IntFilter<"BusinessLimits"> | number
-  lastResetAt?: Prisma.DateTimeFilter<"BusinessLimits"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"BusinessLimits"> | Date | string
-}
-
-export type BusinessLimitsCreateManyBusinessInput = {
-  id?: string
-  plan?: string
-  whatsappLimit?: number
-  professionalLimit?: number
-  whatsappCount?: number
-  emailCount?: number
-  whatsappCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  periodMonth: number
-  periodYear: number
-  lastResetAt: Date | string
-  updatedAt?: Date | string
 }
 
 export type BusinessLimitsUpdateWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  plan?: Prisma.StringFieldUpdateOperationsInput | string
   whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
   professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
   whatsappCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -691,11 +759,15 @@ export type BusinessLimitsUpdateWithoutBusinessInput = {
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
   lastResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appointmentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type BusinessLimitsUncheckedUpdateWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  plan?: Prisma.StringFieldUpdateOperationsInput | string
   whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
   professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
   whatsappCount?: Prisma.IntFieldUpdateOperationsInput | number
@@ -705,20 +777,11 @@ export type BusinessLimitsUncheckedUpdateWithoutBusinessInput = {
   periodYear?: Prisma.IntFieldUpdateOperationsInput | number
   lastResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type BusinessLimitsUncheckedUpdateManyWithoutBusinessInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  plan?: Prisma.StringFieldUpdateOperationsInput | string
-  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  whatsappCount?: Prisma.IntFieldUpdateOperationsInput | number
-  emailCount?: Prisma.IntFieldUpdateOperationsInput | number
-  whatsappCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  periodMonth?: Prisma.IntFieldUpdateOperationsInput | number
-  periodYear?: Prisma.IntFieldUpdateOperationsInput | number
-  lastResetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appointmentCount?: Prisma.IntFieldUpdateOperationsInput | number
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -726,7 +789,6 @@ export type BusinessLimitsUncheckedUpdateManyWithoutBusinessInput = {
 export type BusinessLimitsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   businessId?: boolean
-  plan?: boolean
   whatsappLimit?: boolean
   professionalLimit?: boolean
   whatsappCount?: boolean
@@ -736,13 +798,17 @@ export type BusinessLimitsSelect<ExtArgs extends runtime.Types.Extensions.Intern
   periodYear?: boolean
   lastResetAt?: boolean
   updatedAt?: boolean
-  business?: boolean | Prisma.BusinessLimits$businessArgs<ExtArgs>
+  appointmentCount?: boolean
+  appointmentLimit?: boolean
+  emailCost?: boolean
+  emailLimit?: boolean
+  professionalCount?: boolean
+  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["businessLimits"]>
 
 export type BusinessLimitsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   businessId?: boolean
-  plan?: boolean
   whatsappLimit?: boolean
   professionalLimit?: boolean
   whatsappCount?: boolean
@@ -752,13 +818,17 @@ export type BusinessLimitsSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   periodYear?: boolean
   lastResetAt?: boolean
   updatedAt?: boolean
-  business?: boolean | Prisma.BusinessLimits$businessArgs<ExtArgs>
+  appointmentCount?: boolean
+  appointmentLimit?: boolean
+  emailCost?: boolean
+  emailLimit?: boolean
+  professionalCount?: boolean
+  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["businessLimits"]>
 
 export type BusinessLimitsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   businessId?: boolean
-  plan?: boolean
   whatsappLimit?: boolean
   professionalLimit?: boolean
   whatsappCount?: boolean
@@ -768,13 +838,17 @@ export type BusinessLimitsSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   periodYear?: boolean
   lastResetAt?: boolean
   updatedAt?: boolean
-  business?: boolean | Prisma.BusinessLimits$businessArgs<ExtArgs>
+  appointmentCount?: boolean
+  appointmentLimit?: boolean
+  emailCost?: boolean
+  emailLimit?: boolean
+  professionalCount?: boolean
+  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["businessLimits"]>
 
 export type BusinessLimitsSelectScalar = {
   id?: boolean
   businessId?: boolean
-  plan?: boolean
   whatsappLimit?: boolean
   professionalLimit?: boolean
   whatsappCount?: boolean
@@ -784,28 +858,32 @@ export type BusinessLimitsSelectScalar = {
   periodYear?: boolean
   lastResetAt?: boolean
   updatedAt?: boolean
+  appointmentCount?: boolean
+  appointmentLimit?: boolean
+  emailCost?: boolean
+  emailLimit?: boolean
+  professionalCount?: boolean
 }
 
-export type BusinessLimitsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "plan" | "whatsappLimit" | "professionalLimit" | "whatsappCount" | "emailCount" | "whatsappCost" | "periodMonth" | "periodYear" | "lastResetAt" | "updatedAt", ExtArgs["result"]["businessLimits"]>
+export type BusinessLimitsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "whatsappLimit" | "professionalLimit" | "whatsappCount" | "emailCount" | "whatsappCost" | "periodMonth" | "periodYear" | "lastResetAt" | "updatedAt" | "appointmentCount" | "appointmentLimit" | "emailCost" | "emailLimit" | "professionalCount", ExtArgs["result"]["businessLimits"]>
 export type BusinessLimitsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessLimits$businessArgs<ExtArgs>
+  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }
 export type BusinessLimitsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessLimits$businessArgs<ExtArgs>
+  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }
 export type BusinessLimitsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessLimits$businessArgs<ExtArgs>
+  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }
 
 export type $BusinessLimitsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "BusinessLimits"
   objects: {
-    business: Prisma.$BusinessPayload<ExtArgs> | null
+    business: Prisma.$BusinessPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     businessId: string
-    plan: string
     whatsappLimit: number
     professionalLimit: number
     whatsappCount: number
@@ -815,6 +893,11 @@ export type $BusinessLimitsPayload<ExtArgs extends runtime.Types.Extensions.Inte
     periodYear: number
     lastResetAt: Date
     updatedAt: Date
+    appointmentCount: number
+    appointmentLimit: number
+    emailCost: runtime.Decimal
+    emailLimit: number
+    professionalCount: number
   }, ExtArgs["result"]["businessLimits"]>
   composites: {}
 }
@@ -1209,7 +1292,7 @@ readonly fields: BusinessLimitsFieldRefs;
  */
 export interface Prisma__BusinessLimitsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  business<T extends Prisma.BusinessLimits$businessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BusinessLimits$businessArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  business<T extends Prisma.BusinessDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BusinessDefaultArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1241,7 +1324,6 @@ export interface Prisma__BusinessLimitsClient<T, Null = never, ExtArgs extends r
 export interface BusinessLimitsFieldRefs {
   readonly id: Prisma.FieldRef<"BusinessLimits", 'String'>
   readonly businessId: Prisma.FieldRef<"BusinessLimits", 'String'>
-  readonly plan: Prisma.FieldRef<"BusinessLimits", 'String'>
   readonly whatsappLimit: Prisma.FieldRef<"BusinessLimits", 'Int'>
   readonly professionalLimit: Prisma.FieldRef<"BusinessLimits", 'Int'>
   readonly whatsappCount: Prisma.FieldRef<"BusinessLimits", 'Int'>
@@ -1251,6 +1333,11 @@ export interface BusinessLimitsFieldRefs {
   readonly periodYear: Prisma.FieldRef<"BusinessLimits", 'Int'>
   readonly lastResetAt: Prisma.FieldRef<"BusinessLimits", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"BusinessLimits", 'DateTime'>
+  readonly appointmentCount: Prisma.FieldRef<"BusinessLimits", 'Int'>
+  readonly appointmentLimit: Prisma.FieldRef<"BusinessLimits", 'Int'>
+  readonly emailCost: Prisma.FieldRef<"BusinessLimits", 'Decimal'>
+  readonly emailLimit: Prisma.FieldRef<"BusinessLimits", 'Int'>
+  readonly professionalCount: Prisma.FieldRef<"BusinessLimits", 'Int'>
 }
     
 
@@ -1644,25 +1731,6 @@ export type BusinessLimitsDeleteManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many BusinessLimits to delete.
    */
   limit?: number
-}
-
-/**
- * BusinessLimits.business
- */
-export type BusinessLimits$businessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Business
-   */
-  select?: Prisma.BusinessSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Business
-   */
-  omit?: Prisma.BusinessOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.BusinessInclude<ExtArgs> | null
-  where?: Prisma.BusinessWhereInput
 }
 
 /**

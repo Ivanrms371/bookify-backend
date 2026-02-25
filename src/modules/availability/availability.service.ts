@@ -1,28 +1,68 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { ResolvedSchedule, ResolveScheduleParams } from './types/availability.type';
+import { endOfDay, getDay, startOfDay } from 'date-fns';
+import { SlotsGenerator } from './slots.generator';
+import { AvailabilityQuery } from 'src/shared/infrastructure/queries/availability.query';
 
 @Injectable()
 export class AvailabilityService {
-  constructor() {}
+  constructor(
+    private readonly slotsGenerator: SlotsGenerator,
+    private readonly availability: AvailabilityQuery,
+  ) {}
 
-  private resolveSlotInterval() {}
+  async getAvailability(staffId: string, date: Date) {
+    const availabilityData = await this.availability.getAvailabilityData(staffId, date);
 
-  private resolveMinAdvancedMinutes() {}
+    if (!availabilityData) {
+      throw new BadRequestException('No se encontro disponibilidad para la fecha');
+    }
 
-  private resolveMaxAdvancedDays() {}
-
-  private canBookAt(): boolean {
-    return true;
+    return availabilityData;
   }
 
-  private isWithinAdvanceWindow() {}
+  async getSlotsAvailability(staffId: string, serviceId: string, date: Date) {
+    const availabilityData = await this.getAvailability(staffId, date);
+    const settings = availabilityData.business.settings;
+    if (!settings) {
+      throw new BadRequestException('No se encontro disponibilidad para la fecha');
+    }
 
-  private getWorkingRangesForDate() {}
+    const assignment = await this.availability.findServiceAssignment(staffId, serviceId);
+    if (!assignment) {
+      throw new BadRequestException('No se encontro el servicio');
+    }
 
-  private getBusyRanges() {}
+    const slotInterval = availabilityData.slotIntervalMinutes || settings.slotIntervalMinutes;
+    const serviceDuration = assignment.service.durationMinutes;
+    const minAdvancedMinutes = availabilityData.minAdvancedMinutes || settings.minAdvancedMinutes;
+    const appointments = availabilityData.appointments;
+    const allowPassiveTimeBooking = settings.allowPassiveTimeBooking;
 
-  private generateSlots() {}
+    const blocks = this.resolveSchedule({
+      workingBlocks: availabilityData.workingHours,
+      scheduleException: availabilityData.exceptions[0],
+    });
 
-  private filterValidSlots() {}
+    const slots = this.slotsGenerator.generate({
+      strategy: 'dynamic',
+      interval: slotInterval,
+      blocks,
+      serviceDuration,
+      appointments,
+      date,
+      minAdvancedMinutes,
+      allowPassiveTimeBooking,
+    });
 
-  getAvailableSlots() {}
+    return slots;
+  }
+
+  private resolveSchedule({ workingBlocks, scheduleException }: ResolveScheduleParams): ResolvedSchedule[] {
+    if (!scheduleException) return workingBlocks;
+
+    if (scheduleException.isClosed) return [];
+
+    return scheduleException.blocks;
+  }
 }

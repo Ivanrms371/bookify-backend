@@ -20,124 +20,58 @@ export type NotificationLogModel = runtime.Types.Result.DefaultSelection<Prisma.
 
 export type AggregateNotificationLog = {
   _count: NotificationLogCountAggregateOutputType | null
-  _avg: NotificationLogAvgAggregateOutputType | null
-  _sum: NotificationLogSumAggregateOutputType | null
   _min: NotificationLogMinAggregateOutputType | null
   _max: NotificationLogMaxAggregateOutputType | null
 }
 
-export type NotificationLogAvgAggregateOutputType = {
-  cost: runtime.Decimal | null
-}
-
-export type NotificationLogSumAggregateOutputType = {
-  cost: runtime.Decimal | null
-}
-
 export type NotificationLogMinAggregateOutputType = {
   id: string | null
-  type: string | null
-  channel: $Enums.NotificationChannel | null
-  layer: $Enums.NotificationLayer | null
-  businessId: string | null
-  recipientId: string | null
   status: $Enums.NotificationStatus | null
-  cost: runtime.Decimal | null
-  error: string | null
-  provider: string | null
-  providerMessageId: string | null
-  scheduledNotificationId: string | null
   createdAt: Date | null
+  errorMessage: string | null
+  deliveryId: string | null
 }
 
 export type NotificationLogMaxAggregateOutputType = {
   id: string | null
-  type: string | null
-  channel: $Enums.NotificationChannel | null
-  layer: $Enums.NotificationLayer | null
-  businessId: string | null
-  recipientId: string | null
   status: $Enums.NotificationStatus | null
-  cost: runtime.Decimal | null
-  error: string | null
-  provider: string | null
-  providerMessageId: string | null
-  scheduledNotificationId: string | null
   createdAt: Date | null
+  errorMessage: string | null
+  deliveryId: string | null
 }
 
 export type NotificationLogCountAggregateOutputType = {
   id: number
-  type: number
-  channel: number
-  layer: number
-  businessId: number
-  recipientId: number
   status: number
-  cost: number
-  error: number
-  provider: number
-  providerMessageId: number
-  scheduledNotificationId: number
   createdAt: number
+  errorMessage: number
+  deliveryId: number
   _all: number
 }
 
 
-export type NotificationLogAvgAggregateInputType = {
-  cost?: true
-}
-
-export type NotificationLogSumAggregateInputType = {
-  cost?: true
-}
-
 export type NotificationLogMinAggregateInputType = {
   id?: true
-  type?: true
-  channel?: true
-  layer?: true
-  businessId?: true
-  recipientId?: true
   status?: true
-  cost?: true
-  error?: true
-  provider?: true
-  providerMessageId?: true
-  scheduledNotificationId?: true
   createdAt?: true
+  errorMessage?: true
+  deliveryId?: true
 }
 
 export type NotificationLogMaxAggregateInputType = {
   id?: true
-  type?: true
-  channel?: true
-  layer?: true
-  businessId?: true
-  recipientId?: true
   status?: true
-  cost?: true
-  error?: true
-  provider?: true
-  providerMessageId?: true
-  scheduledNotificationId?: true
   createdAt?: true
+  errorMessage?: true
+  deliveryId?: true
 }
 
 export type NotificationLogCountAggregateInputType = {
   id?: true
-  type?: true
-  channel?: true
-  layer?: true
-  businessId?: true
-  recipientId?: true
   status?: true
-  cost?: true
-  error?: true
-  provider?: true
-  providerMessageId?: true
-  scheduledNotificationId?: true
   createdAt?: true
+  errorMessage?: true
+  deliveryId?: true
   _all?: true
 }
 
@@ -179,18 +113,6 @@ export type NotificationLogAggregateArgs<ExtArgs extends runtime.Types.Extension
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: NotificationLogAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: NotificationLogSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: NotificationLogMinAggregateInputType
@@ -221,29 +143,17 @@ export type NotificationLogGroupByArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   _count?: NotificationLogCountAggregateInputType | true
-  _avg?: NotificationLogAvgAggregateInputType
-  _sum?: NotificationLogSumAggregateInputType
   _min?: NotificationLogMinAggregateInputType
   _max?: NotificationLogMaxAggregateInputType
 }
 
 export type NotificationLogGroupByOutputType = {
   id: string
-  type: string
-  channel: $Enums.NotificationChannel
-  layer: $Enums.NotificationLayer
-  businessId: string | null
-  recipientId: string | null
   status: $Enums.NotificationStatus
-  cost: runtime.Decimal
-  error: string | null
-  provider: string | null
-  providerMessageId: string | null
-  scheduledNotificationId: string | null
   createdAt: Date
+  errorMessage: string | null
+  deliveryId: string | null
   _count: NotificationLogCountAggregateOutputType | null
-  _avg: NotificationLogAvgAggregateOutputType | null
-  _sum: NotificationLogSumAggregateOutputType | null
   _min: NotificationLogMinAggregateOutputType | null
   _max: NotificationLogMaxAggregateOutputType | null
 }
@@ -267,39 +177,21 @@ export type NotificationLogWhereInput = {
   AND?: Prisma.NotificationLogWhereInput | Prisma.NotificationLogWhereInput[]
   OR?: Prisma.NotificationLogWhereInput[]
   NOT?: Prisma.NotificationLogWhereInput | Prisma.NotificationLogWhereInput[]
-  id?: Prisma.StringFilter<"NotificationLog"> | string
-  type?: Prisma.StringFilter<"NotificationLog"> | string
-  channel?: Prisma.EnumNotificationChannelFilter<"NotificationLog"> | $Enums.NotificationChannel
-  layer?: Prisma.EnumNotificationLayerFilter<"NotificationLog"> | $Enums.NotificationLayer
-  businessId?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
-  recipientId?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
+  id?: Prisma.UuidFilter<"NotificationLog"> | string
   status?: Prisma.EnumNotificationStatusFilter<"NotificationLog"> | $Enums.NotificationStatus
-  cost?: Prisma.DecimalFilter<"NotificationLog"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
-  provider?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
-  providerMessageId?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
-  scheduledNotificationId?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
   createdAt?: Prisma.DateTimeFilter<"NotificationLog"> | Date | string
-  business?: Prisma.XOR<Prisma.BusinessNullableScalarRelationFilter, Prisma.BusinessWhereInput> | null
-  scheduledNotification?: Prisma.XOR<Prisma.ScheduledNotificationNullableScalarRelationFilter, Prisma.ScheduledNotificationWhereInput> | null
+  errorMessage?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
+  deliveryId?: Prisma.UuidNullableFilter<"NotificationLog"> | string | null
+  delivery?: Prisma.XOR<Prisma.NotificationDeliveryNullableScalarRelationFilter, Prisma.NotificationDeliveryWhereInput> | null
 }
 
 export type NotificationLogOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  channel?: Prisma.SortOrder
-  layer?: Prisma.SortOrder
-  businessId?: Prisma.SortOrderInput | Prisma.SortOrder
-  recipientId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
-  cost?: Prisma.SortOrder
-  error?: Prisma.SortOrderInput | Prisma.SortOrder
-  provider?: Prisma.SortOrderInput | Prisma.SortOrder
-  providerMessageId?: Prisma.SortOrderInput | Prisma.SortOrder
-  scheduledNotificationId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  business?: Prisma.BusinessOrderByWithRelationInput
-  scheduledNotification?: Prisma.ScheduledNotificationOrderByWithRelationInput
+  errorMessage?: Prisma.SortOrderInput | Prisma.SortOrder
+  deliveryId?: Prisma.SortOrderInput | Prisma.SortOrder
+  delivery?: Prisma.NotificationDeliveryOrderByWithRelationInput
 }
 
 export type NotificationLogWhereUniqueInput = Prisma.AtLeast<{
@@ -307,170 +199,88 @@ export type NotificationLogWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.NotificationLogWhereInput | Prisma.NotificationLogWhereInput[]
   OR?: Prisma.NotificationLogWhereInput[]
   NOT?: Prisma.NotificationLogWhereInput | Prisma.NotificationLogWhereInput[]
-  type?: Prisma.StringFilter<"NotificationLog"> | string
-  channel?: Prisma.EnumNotificationChannelFilter<"NotificationLog"> | $Enums.NotificationChannel
-  layer?: Prisma.EnumNotificationLayerFilter<"NotificationLog"> | $Enums.NotificationLayer
-  businessId?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
-  recipientId?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
   status?: Prisma.EnumNotificationStatusFilter<"NotificationLog"> | $Enums.NotificationStatus
-  cost?: Prisma.DecimalFilter<"NotificationLog"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
-  provider?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
-  providerMessageId?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
-  scheduledNotificationId?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
   createdAt?: Prisma.DateTimeFilter<"NotificationLog"> | Date | string
-  business?: Prisma.XOR<Prisma.BusinessNullableScalarRelationFilter, Prisma.BusinessWhereInput> | null
-  scheduledNotification?: Prisma.XOR<Prisma.ScheduledNotificationNullableScalarRelationFilter, Prisma.ScheduledNotificationWhereInput> | null
+  errorMessage?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
+  deliveryId?: Prisma.UuidNullableFilter<"NotificationLog"> | string | null
+  delivery?: Prisma.XOR<Prisma.NotificationDeliveryNullableScalarRelationFilter, Prisma.NotificationDeliveryWhereInput> | null
 }, "id">
 
 export type NotificationLogOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  channel?: Prisma.SortOrder
-  layer?: Prisma.SortOrder
-  businessId?: Prisma.SortOrderInput | Prisma.SortOrder
-  recipientId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
-  cost?: Prisma.SortOrder
-  error?: Prisma.SortOrderInput | Prisma.SortOrder
-  provider?: Prisma.SortOrderInput | Prisma.SortOrder
-  providerMessageId?: Prisma.SortOrderInput | Prisma.SortOrder
-  scheduledNotificationId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  errorMessage?: Prisma.SortOrderInput | Prisma.SortOrder
+  deliveryId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.NotificationLogCountOrderByAggregateInput
-  _avg?: Prisma.NotificationLogAvgOrderByAggregateInput
   _max?: Prisma.NotificationLogMaxOrderByAggregateInput
   _min?: Prisma.NotificationLogMinOrderByAggregateInput
-  _sum?: Prisma.NotificationLogSumOrderByAggregateInput
 }
 
 export type NotificationLogScalarWhereWithAggregatesInput = {
   AND?: Prisma.NotificationLogScalarWhereWithAggregatesInput | Prisma.NotificationLogScalarWhereWithAggregatesInput[]
   OR?: Prisma.NotificationLogScalarWhereWithAggregatesInput[]
   NOT?: Prisma.NotificationLogScalarWhereWithAggregatesInput | Prisma.NotificationLogScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"NotificationLog"> | string
-  type?: Prisma.StringWithAggregatesFilter<"NotificationLog"> | string
-  channel?: Prisma.EnumNotificationChannelWithAggregatesFilter<"NotificationLog"> | $Enums.NotificationChannel
-  layer?: Prisma.EnumNotificationLayerWithAggregatesFilter<"NotificationLog"> | $Enums.NotificationLayer
-  businessId?: Prisma.StringNullableWithAggregatesFilter<"NotificationLog"> | string | null
-  recipientId?: Prisma.StringNullableWithAggregatesFilter<"NotificationLog"> | string | null
+  id?: Prisma.UuidWithAggregatesFilter<"NotificationLog"> | string
   status?: Prisma.EnumNotificationStatusWithAggregatesFilter<"NotificationLog"> | $Enums.NotificationStatus
-  cost?: Prisma.DecimalWithAggregatesFilter<"NotificationLog"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: Prisma.StringNullableWithAggregatesFilter<"NotificationLog"> | string | null
-  provider?: Prisma.StringNullableWithAggregatesFilter<"NotificationLog"> | string | null
-  providerMessageId?: Prisma.StringNullableWithAggregatesFilter<"NotificationLog"> | string | null
-  scheduledNotificationId?: Prisma.StringNullableWithAggregatesFilter<"NotificationLog"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"NotificationLog"> | Date | string
+  errorMessage?: Prisma.StringNullableWithAggregatesFilter<"NotificationLog"> | string | null
+  deliveryId?: Prisma.UuidNullableWithAggregatesFilter<"NotificationLog"> | string | null
 }
 
 export type NotificationLogCreateInput = {
   id?: string
-  type: string
-  channel: $Enums.NotificationChannel
-  layer: $Enums.NotificationLayer
-  recipientId?: string | null
   status: $Enums.NotificationStatus
-  cost: runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: string | null
-  provider?: string | null
-  providerMessageId?: string | null
   createdAt?: Date | string
-  business?: Prisma.BusinessCreateNestedOneWithoutNotificationLogsInput
-  scheduledNotification?: Prisma.ScheduledNotificationCreateNestedOneWithoutLogsInput
+  errorMessage?: string | null
+  delivery?: Prisma.NotificationDeliveryCreateNestedOneWithoutLogsInput
 }
 
 export type NotificationLogUncheckedCreateInput = {
   id?: string
-  type: string
-  channel: $Enums.NotificationChannel
-  layer: $Enums.NotificationLayer
-  businessId?: string | null
-  recipientId?: string | null
   status: $Enums.NotificationStatus
-  cost: runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: string | null
-  provider?: string | null
-  providerMessageId?: string | null
-  scheduledNotificationId?: string | null
   createdAt?: Date | string
+  errorMessage?: string | null
+  deliveryId?: string | null
 }
 
 export type NotificationLogUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  channel?: Prisma.EnumNotificationChannelFieldUpdateOperationsInput | $Enums.NotificationChannel
-  layer?: Prisma.EnumNotificationLayerFieldUpdateOperationsInput | $Enums.NotificationLayer
-  recipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
-  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  business?: Prisma.BusinessUpdateOneWithoutNotificationLogsNestedInput
-  scheduledNotification?: Prisma.ScheduledNotificationUpdateOneWithoutLogsNestedInput
+  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  delivery?: Prisma.NotificationDeliveryUpdateOneWithoutLogsNestedInput
 }
 
 export type NotificationLogUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  channel?: Prisma.EnumNotificationChannelFieldUpdateOperationsInput | $Enums.NotificationChannel
-  layer?: Prisma.EnumNotificationLayerFieldUpdateOperationsInput | $Enums.NotificationLayer
-  businessId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
-  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  scheduledNotificationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type NotificationLogCreateManyInput = {
   id?: string
-  type: string
-  channel: $Enums.NotificationChannel
-  layer: $Enums.NotificationLayer
-  businessId?: string | null
-  recipientId?: string | null
   status: $Enums.NotificationStatus
-  cost: runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: string | null
-  provider?: string | null
-  providerMessageId?: string | null
-  scheduledNotificationId?: string | null
   createdAt?: Date | string
+  errorMessage?: string | null
+  deliveryId?: string | null
 }
 
 export type NotificationLogUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  channel?: Prisma.EnumNotificationChannelFieldUpdateOperationsInput | $Enums.NotificationChannel
-  layer?: Prisma.EnumNotificationLayerFieldUpdateOperationsInput | $Enums.NotificationLayer
-  recipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
-  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type NotificationLogUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  channel?: Prisma.EnumNotificationChannelFieldUpdateOperationsInput | $Enums.NotificationChannel
-  layer?: Prisma.EnumNotificationLayerFieldUpdateOperationsInput | $Enums.NotificationLayer
-  businessId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
-  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  scheduledNotificationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deliveryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type NotificationLogListRelationFilter = {
@@ -485,509 +295,208 @@ export type NotificationLogOrderByRelationAggregateInput = {
 
 export type NotificationLogCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  channel?: Prisma.SortOrder
-  layer?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
-  recipientId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  cost?: Prisma.SortOrder
-  error?: Prisma.SortOrder
-  provider?: Prisma.SortOrder
-  providerMessageId?: Prisma.SortOrder
-  scheduledNotificationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-}
-
-export type NotificationLogAvgOrderByAggregateInput = {
-  cost?: Prisma.SortOrder
+  errorMessage?: Prisma.SortOrder
+  deliveryId?: Prisma.SortOrder
 }
 
 export type NotificationLogMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  channel?: Prisma.SortOrder
-  layer?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
-  recipientId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  cost?: Prisma.SortOrder
-  error?: Prisma.SortOrder
-  provider?: Prisma.SortOrder
-  providerMessageId?: Prisma.SortOrder
-  scheduledNotificationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  errorMessage?: Prisma.SortOrder
+  deliveryId?: Prisma.SortOrder
 }
 
 export type NotificationLogMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  type?: Prisma.SortOrder
-  channel?: Prisma.SortOrder
-  layer?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
-  recipientId?: Prisma.SortOrder
   status?: Prisma.SortOrder
-  cost?: Prisma.SortOrder
-  error?: Prisma.SortOrder
-  provider?: Prisma.SortOrder
-  providerMessageId?: Prisma.SortOrder
-  scheduledNotificationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  errorMessage?: Prisma.SortOrder
+  deliveryId?: Prisma.SortOrder
 }
 
-export type NotificationLogSumOrderByAggregateInput = {
-  cost?: Prisma.SortOrder
-}
-
-export type NotificationLogCreateNestedManyWithoutBusinessInput = {
-  create?: Prisma.XOR<Prisma.NotificationLogCreateWithoutBusinessInput, Prisma.NotificationLogUncheckedCreateWithoutBusinessInput> | Prisma.NotificationLogCreateWithoutBusinessInput[] | Prisma.NotificationLogUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.NotificationLogCreateOrConnectWithoutBusinessInput | Prisma.NotificationLogCreateOrConnectWithoutBusinessInput[]
-  createMany?: Prisma.NotificationLogCreateManyBusinessInputEnvelope
+export type NotificationLogCreateNestedManyWithoutDeliveryInput = {
+  create?: Prisma.XOR<Prisma.NotificationLogCreateWithoutDeliveryInput, Prisma.NotificationLogUncheckedCreateWithoutDeliveryInput> | Prisma.NotificationLogCreateWithoutDeliveryInput[] | Prisma.NotificationLogUncheckedCreateWithoutDeliveryInput[]
+  connectOrCreate?: Prisma.NotificationLogCreateOrConnectWithoutDeliveryInput | Prisma.NotificationLogCreateOrConnectWithoutDeliveryInput[]
+  createMany?: Prisma.NotificationLogCreateManyDeliveryInputEnvelope
   connect?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
 }
 
-export type NotificationLogUncheckedCreateNestedManyWithoutBusinessInput = {
-  create?: Prisma.XOR<Prisma.NotificationLogCreateWithoutBusinessInput, Prisma.NotificationLogUncheckedCreateWithoutBusinessInput> | Prisma.NotificationLogCreateWithoutBusinessInput[] | Prisma.NotificationLogUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.NotificationLogCreateOrConnectWithoutBusinessInput | Prisma.NotificationLogCreateOrConnectWithoutBusinessInput[]
-  createMany?: Prisma.NotificationLogCreateManyBusinessInputEnvelope
+export type NotificationLogUncheckedCreateNestedManyWithoutDeliveryInput = {
+  create?: Prisma.XOR<Prisma.NotificationLogCreateWithoutDeliveryInput, Prisma.NotificationLogUncheckedCreateWithoutDeliveryInput> | Prisma.NotificationLogCreateWithoutDeliveryInput[] | Prisma.NotificationLogUncheckedCreateWithoutDeliveryInput[]
+  connectOrCreate?: Prisma.NotificationLogCreateOrConnectWithoutDeliveryInput | Prisma.NotificationLogCreateOrConnectWithoutDeliveryInput[]
+  createMany?: Prisma.NotificationLogCreateManyDeliveryInputEnvelope
   connect?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
 }
 
-export type NotificationLogUpdateManyWithoutBusinessNestedInput = {
-  create?: Prisma.XOR<Prisma.NotificationLogCreateWithoutBusinessInput, Prisma.NotificationLogUncheckedCreateWithoutBusinessInput> | Prisma.NotificationLogCreateWithoutBusinessInput[] | Prisma.NotificationLogUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.NotificationLogCreateOrConnectWithoutBusinessInput | Prisma.NotificationLogCreateOrConnectWithoutBusinessInput[]
-  upsert?: Prisma.NotificationLogUpsertWithWhereUniqueWithoutBusinessInput | Prisma.NotificationLogUpsertWithWhereUniqueWithoutBusinessInput[]
-  createMany?: Prisma.NotificationLogCreateManyBusinessInputEnvelope
+export type NotificationLogUpdateManyWithoutDeliveryNestedInput = {
+  create?: Prisma.XOR<Prisma.NotificationLogCreateWithoutDeliveryInput, Prisma.NotificationLogUncheckedCreateWithoutDeliveryInput> | Prisma.NotificationLogCreateWithoutDeliveryInput[] | Prisma.NotificationLogUncheckedCreateWithoutDeliveryInput[]
+  connectOrCreate?: Prisma.NotificationLogCreateOrConnectWithoutDeliveryInput | Prisma.NotificationLogCreateOrConnectWithoutDeliveryInput[]
+  upsert?: Prisma.NotificationLogUpsertWithWhereUniqueWithoutDeliveryInput | Prisma.NotificationLogUpsertWithWhereUniqueWithoutDeliveryInput[]
+  createMany?: Prisma.NotificationLogCreateManyDeliveryInputEnvelope
   set?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
   disconnect?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
   delete?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
   connect?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
-  update?: Prisma.NotificationLogUpdateWithWhereUniqueWithoutBusinessInput | Prisma.NotificationLogUpdateWithWhereUniqueWithoutBusinessInput[]
-  updateMany?: Prisma.NotificationLogUpdateManyWithWhereWithoutBusinessInput | Prisma.NotificationLogUpdateManyWithWhereWithoutBusinessInput[]
+  update?: Prisma.NotificationLogUpdateWithWhereUniqueWithoutDeliveryInput | Prisma.NotificationLogUpdateWithWhereUniqueWithoutDeliveryInput[]
+  updateMany?: Prisma.NotificationLogUpdateManyWithWhereWithoutDeliveryInput | Prisma.NotificationLogUpdateManyWithWhereWithoutDeliveryInput[]
   deleteMany?: Prisma.NotificationLogScalarWhereInput | Prisma.NotificationLogScalarWhereInput[]
 }
 
-export type NotificationLogUncheckedUpdateManyWithoutBusinessNestedInput = {
-  create?: Prisma.XOR<Prisma.NotificationLogCreateWithoutBusinessInput, Prisma.NotificationLogUncheckedCreateWithoutBusinessInput> | Prisma.NotificationLogCreateWithoutBusinessInput[] | Prisma.NotificationLogUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.NotificationLogCreateOrConnectWithoutBusinessInput | Prisma.NotificationLogCreateOrConnectWithoutBusinessInput[]
-  upsert?: Prisma.NotificationLogUpsertWithWhereUniqueWithoutBusinessInput | Prisma.NotificationLogUpsertWithWhereUniqueWithoutBusinessInput[]
-  createMany?: Prisma.NotificationLogCreateManyBusinessInputEnvelope
+export type NotificationLogUncheckedUpdateManyWithoutDeliveryNestedInput = {
+  create?: Prisma.XOR<Prisma.NotificationLogCreateWithoutDeliveryInput, Prisma.NotificationLogUncheckedCreateWithoutDeliveryInput> | Prisma.NotificationLogCreateWithoutDeliveryInput[] | Prisma.NotificationLogUncheckedCreateWithoutDeliveryInput[]
+  connectOrCreate?: Prisma.NotificationLogCreateOrConnectWithoutDeliveryInput | Prisma.NotificationLogCreateOrConnectWithoutDeliveryInput[]
+  upsert?: Prisma.NotificationLogUpsertWithWhereUniqueWithoutDeliveryInput | Prisma.NotificationLogUpsertWithWhereUniqueWithoutDeliveryInput[]
+  createMany?: Prisma.NotificationLogCreateManyDeliveryInputEnvelope
   set?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
   disconnect?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
   delete?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
   connect?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
-  update?: Prisma.NotificationLogUpdateWithWhereUniqueWithoutBusinessInput | Prisma.NotificationLogUpdateWithWhereUniqueWithoutBusinessInput[]
-  updateMany?: Prisma.NotificationLogUpdateManyWithWhereWithoutBusinessInput | Prisma.NotificationLogUpdateManyWithWhereWithoutBusinessInput[]
+  update?: Prisma.NotificationLogUpdateWithWhereUniqueWithoutDeliveryInput | Prisma.NotificationLogUpdateWithWhereUniqueWithoutDeliveryInput[]
+  updateMany?: Prisma.NotificationLogUpdateManyWithWhereWithoutDeliveryInput | Prisma.NotificationLogUpdateManyWithWhereWithoutDeliveryInput[]
   deleteMany?: Prisma.NotificationLogScalarWhereInput | Prisma.NotificationLogScalarWhereInput[]
 }
 
-export type NotificationLogCreateNestedManyWithoutScheduledNotificationInput = {
-  create?: Prisma.XOR<Prisma.NotificationLogCreateWithoutScheduledNotificationInput, Prisma.NotificationLogUncheckedCreateWithoutScheduledNotificationInput> | Prisma.NotificationLogCreateWithoutScheduledNotificationInput[] | Prisma.NotificationLogUncheckedCreateWithoutScheduledNotificationInput[]
-  connectOrCreate?: Prisma.NotificationLogCreateOrConnectWithoutScheduledNotificationInput | Prisma.NotificationLogCreateOrConnectWithoutScheduledNotificationInput[]
-  createMany?: Prisma.NotificationLogCreateManyScheduledNotificationInputEnvelope
-  connect?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
-}
-
-export type NotificationLogUncheckedCreateNestedManyWithoutScheduledNotificationInput = {
-  create?: Prisma.XOR<Prisma.NotificationLogCreateWithoutScheduledNotificationInput, Prisma.NotificationLogUncheckedCreateWithoutScheduledNotificationInput> | Prisma.NotificationLogCreateWithoutScheduledNotificationInput[] | Prisma.NotificationLogUncheckedCreateWithoutScheduledNotificationInput[]
-  connectOrCreate?: Prisma.NotificationLogCreateOrConnectWithoutScheduledNotificationInput | Prisma.NotificationLogCreateOrConnectWithoutScheduledNotificationInput[]
-  createMany?: Prisma.NotificationLogCreateManyScheduledNotificationInputEnvelope
-  connect?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
-}
-
-export type NotificationLogUpdateManyWithoutScheduledNotificationNestedInput = {
-  create?: Prisma.XOR<Prisma.NotificationLogCreateWithoutScheduledNotificationInput, Prisma.NotificationLogUncheckedCreateWithoutScheduledNotificationInput> | Prisma.NotificationLogCreateWithoutScheduledNotificationInput[] | Prisma.NotificationLogUncheckedCreateWithoutScheduledNotificationInput[]
-  connectOrCreate?: Prisma.NotificationLogCreateOrConnectWithoutScheduledNotificationInput | Prisma.NotificationLogCreateOrConnectWithoutScheduledNotificationInput[]
-  upsert?: Prisma.NotificationLogUpsertWithWhereUniqueWithoutScheduledNotificationInput | Prisma.NotificationLogUpsertWithWhereUniqueWithoutScheduledNotificationInput[]
-  createMany?: Prisma.NotificationLogCreateManyScheduledNotificationInputEnvelope
-  set?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
-  disconnect?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
-  delete?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
-  connect?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
-  update?: Prisma.NotificationLogUpdateWithWhereUniqueWithoutScheduledNotificationInput | Prisma.NotificationLogUpdateWithWhereUniqueWithoutScheduledNotificationInput[]
-  updateMany?: Prisma.NotificationLogUpdateManyWithWhereWithoutScheduledNotificationInput | Prisma.NotificationLogUpdateManyWithWhereWithoutScheduledNotificationInput[]
-  deleteMany?: Prisma.NotificationLogScalarWhereInput | Prisma.NotificationLogScalarWhereInput[]
-}
-
-export type NotificationLogUncheckedUpdateManyWithoutScheduledNotificationNestedInput = {
-  create?: Prisma.XOR<Prisma.NotificationLogCreateWithoutScheduledNotificationInput, Prisma.NotificationLogUncheckedCreateWithoutScheduledNotificationInput> | Prisma.NotificationLogCreateWithoutScheduledNotificationInput[] | Prisma.NotificationLogUncheckedCreateWithoutScheduledNotificationInput[]
-  connectOrCreate?: Prisma.NotificationLogCreateOrConnectWithoutScheduledNotificationInput | Prisma.NotificationLogCreateOrConnectWithoutScheduledNotificationInput[]
-  upsert?: Prisma.NotificationLogUpsertWithWhereUniqueWithoutScheduledNotificationInput | Prisma.NotificationLogUpsertWithWhereUniqueWithoutScheduledNotificationInput[]
-  createMany?: Prisma.NotificationLogCreateManyScheduledNotificationInputEnvelope
-  set?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
-  disconnect?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
-  delete?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
-  connect?: Prisma.NotificationLogWhereUniqueInput | Prisma.NotificationLogWhereUniqueInput[]
-  update?: Prisma.NotificationLogUpdateWithWhereUniqueWithoutScheduledNotificationInput | Prisma.NotificationLogUpdateWithWhereUniqueWithoutScheduledNotificationInput[]
-  updateMany?: Prisma.NotificationLogUpdateManyWithWhereWithoutScheduledNotificationInput | Prisma.NotificationLogUpdateManyWithWhereWithoutScheduledNotificationInput[]
-  deleteMany?: Prisma.NotificationLogScalarWhereInput | Prisma.NotificationLogScalarWhereInput[]
-}
-
-export type EnumNotificationChannelFieldUpdateOperationsInput = {
-  set?: $Enums.NotificationChannel
-}
-
-export type EnumNotificationStatusFieldUpdateOperationsInput = {
-  set?: $Enums.NotificationStatus
-}
-
-export type NotificationLogCreateWithoutBusinessInput = {
+export type NotificationLogCreateWithoutDeliveryInput = {
   id?: string
-  type: string
-  channel: $Enums.NotificationChannel
-  layer: $Enums.NotificationLayer
-  recipientId?: string | null
   status: $Enums.NotificationStatus
-  cost: runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: string | null
-  provider?: string | null
-  providerMessageId?: string | null
   createdAt?: Date | string
-  scheduledNotification?: Prisma.ScheduledNotificationCreateNestedOneWithoutLogsInput
+  errorMessage?: string | null
 }
 
-export type NotificationLogUncheckedCreateWithoutBusinessInput = {
+export type NotificationLogUncheckedCreateWithoutDeliveryInput = {
   id?: string
-  type: string
-  channel: $Enums.NotificationChannel
-  layer: $Enums.NotificationLayer
-  recipientId?: string | null
   status: $Enums.NotificationStatus
-  cost: runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: string | null
-  provider?: string | null
-  providerMessageId?: string | null
-  scheduledNotificationId?: string | null
   createdAt?: Date | string
+  errorMessage?: string | null
 }
 
-export type NotificationLogCreateOrConnectWithoutBusinessInput = {
+export type NotificationLogCreateOrConnectWithoutDeliveryInput = {
   where: Prisma.NotificationLogWhereUniqueInput
-  create: Prisma.XOR<Prisma.NotificationLogCreateWithoutBusinessInput, Prisma.NotificationLogUncheckedCreateWithoutBusinessInput>
+  create: Prisma.XOR<Prisma.NotificationLogCreateWithoutDeliveryInput, Prisma.NotificationLogUncheckedCreateWithoutDeliveryInput>
 }
 
-export type NotificationLogCreateManyBusinessInputEnvelope = {
-  data: Prisma.NotificationLogCreateManyBusinessInput | Prisma.NotificationLogCreateManyBusinessInput[]
+export type NotificationLogCreateManyDeliveryInputEnvelope = {
+  data: Prisma.NotificationLogCreateManyDeliveryInput | Prisma.NotificationLogCreateManyDeliveryInput[]
   skipDuplicates?: boolean
 }
 
-export type NotificationLogUpsertWithWhereUniqueWithoutBusinessInput = {
+export type NotificationLogUpsertWithWhereUniqueWithoutDeliveryInput = {
   where: Prisma.NotificationLogWhereUniqueInput
-  update: Prisma.XOR<Prisma.NotificationLogUpdateWithoutBusinessInput, Prisma.NotificationLogUncheckedUpdateWithoutBusinessInput>
-  create: Prisma.XOR<Prisma.NotificationLogCreateWithoutBusinessInput, Prisma.NotificationLogUncheckedCreateWithoutBusinessInput>
+  update: Prisma.XOR<Prisma.NotificationLogUpdateWithoutDeliveryInput, Prisma.NotificationLogUncheckedUpdateWithoutDeliveryInput>
+  create: Prisma.XOR<Prisma.NotificationLogCreateWithoutDeliveryInput, Prisma.NotificationLogUncheckedCreateWithoutDeliveryInput>
 }
 
-export type NotificationLogUpdateWithWhereUniqueWithoutBusinessInput = {
+export type NotificationLogUpdateWithWhereUniqueWithoutDeliveryInput = {
   where: Prisma.NotificationLogWhereUniqueInput
-  data: Prisma.XOR<Prisma.NotificationLogUpdateWithoutBusinessInput, Prisma.NotificationLogUncheckedUpdateWithoutBusinessInput>
+  data: Prisma.XOR<Prisma.NotificationLogUpdateWithoutDeliveryInput, Prisma.NotificationLogUncheckedUpdateWithoutDeliveryInput>
 }
 
-export type NotificationLogUpdateManyWithWhereWithoutBusinessInput = {
+export type NotificationLogUpdateManyWithWhereWithoutDeliveryInput = {
   where: Prisma.NotificationLogScalarWhereInput
-  data: Prisma.XOR<Prisma.NotificationLogUpdateManyMutationInput, Prisma.NotificationLogUncheckedUpdateManyWithoutBusinessInput>
+  data: Prisma.XOR<Prisma.NotificationLogUpdateManyMutationInput, Prisma.NotificationLogUncheckedUpdateManyWithoutDeliveryInput>
 }
 
 export type NotificationLogScalarWhereInput = {
   AND?: Prisma.NotificationLogScalarWhereInput | Prisma.NotificationLogScalarWhereInput[]
   OR?: Prisma.NotificationLogScalarWhereInput[]
   NOT?: Prisma.NotificationLogScalarWhereInput | Prisma.NotificationLogScalarWhereInput[]
-  id?: Prisma.StringFilter<"NotificationLog"> | string
-  type?: Prisma.StringFilter<"NotificationLog"> | string
-  channel?: Prisma.EnumNotificationChannelFilter<"NotificationLog"> | $Enums.NotificationChannel
-  layer?: Prisma.EnumNotificationLayerFilter<"NotificationLog"> | $Enums.NotificationLayer
-  businessId?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
-  recipientId?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
+  id?: Prisma.UuidFilter<"NotificationLog"> | string
   status?: Prisma.EnumNotificationStatusFilter<"NotificationLog"> | $Enums.NotificationStatus
-  cost?: Prisma.DecimalFilter<"NotificationLog"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
-  provider?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
-  providerMessageId?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
-  scheduledNotificationId?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
   createdAt?: Prisma.DateTimeFilter<"NotificationLog"> | Date | string
+  errorMessage?: Prisma.StringNullableFilter<"NotificationLog"> | string | null
+  deliveryId?: Prisma.UuidNullableFilter<"NotificationLog"> | string | null
 }
 
-export type NotificationLogCreateWithoutScheduledNotificationInput = {
+export type NotificationLogCreateManyDeliveryInput = {
   id?: string
-  type: string
-  channel: $Enums.NotificationChannel
-  layer: $Enums.NotificationLayer
-  recipientId?: string | null
   status: $Enums.NotificationStatus
-  cost: runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: string | null
-  provider?: string | null
-  providerMessageId?: string | null
   createdAt?: Date | string
-  business?: Prisma.BusinessCreateNestedOneWithoutNotificationLogsInput
+  errorMessage?: string | null
 }
 
-export type NotificationLogUncheckedCreateWithoutScheduledNotificationInput = {
-  id?: string
-  type: string
-  channel: $Enums.NotificationChannel
-  layer: $Enums.NotificationLayer
-  businessId?: string | null
-  recipientId?: string | null
-  status: $Enums.NotificationStatus
-  cost: runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: string | null
-  provider?: string | null
-  providerMessageId?: string | null
-  createdAt?: Date | string
-}
-
-export type NotificationLogCreateOrConnectWithoutScheduledNotificationInput = {
-  where: Prisma.NotificationLogWhereUniqueInput
-  create: Prisma.XOR<Prisma.NotificationLogCreateWithoutScheduledNotificationInput, Prisma.NotificationLogUncheckedCreateWithoutScheduledNotificationInput>
-}
-
-export type NotificationLogCreateManyScheduledNotificationInputEnvelope = {
-  data: Prisma.NotificationLogCreateManyScheduledNotificationInput | Prisma.NotificationLogCreateManyScheduledNotificationInput[]
-  skipDuplicates?: boolean
-}
-
-export type NotificationLogUpsertWithWhereUniqueWithoutScheduledNotificationInput = {
-  where: Prisma.NotificationLogWhereUniqueInput
-  update: Prisma.XOR<Prisma.NotificationLogUpdateWithoutScheduledNotificationInput, Prisma.NotificationLogUncheckedUpdateWithoutScheduledNotificationInput>
-  create: Prisma.XOR<Prisma.NotificationLogCreateWithoutScheduledNotificationInput, Prisma.NotificationLogUncheckedCreateWithoutScheduledNotificationInput>
-}
-
-export type NotificationLogUpdateWithWhereUniqueWithoutScheduledNotificationInput = {
-  where: Prisma.NotificationLogWhereUniqueInput
-  data: Prisma.XOR<Prisma.NotificationLogUpdateWithoutScheduledNotificationInput, Prisma.NotificationLogUncheckedUpdateWithoutScheduledNotificationInput>
-}
-
-export type NotificationLogUpdateManyWithWhereWithoutScheduledNotificationInput = {
-  where: Prisma.NotificationLogScalarWhereInput
-  data: Prisma.XOR<Prisma.NotificationLogUpdateManyMutationInput, Prisma.NotificationLogUncheckedUpdateManyWithoutScheduledNotificationInput>
-}
-
-export type NotificationLogCreateManyBusinessInput = {
-  id?: string
-  type: string
-  channel: $Enums.NotificationChannel
-  layer: $Enums.NotificationLayer
-  recipientId?: string | null
-  status: $Enums.NotificationStatus
-  cost: runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: string | null
-  provider?: string | null
-  providerMessageId?: string | null
-  scheduledNotificationId?: string | null
-  createdAt?: Date | string
-}
-
-export type NotificationLogUpdateWithoutBusinessInput = {
+export type NotificationLogUpdateWithoutDeliveryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  channel?: Prisma.EnumNotificationChannelFieldUpdateOperationsInput | $Enums.NotificationChannel
-  layer?: Prisma.EnumNotificationLayerFieldUpdateOperationsInput | $Enums.NotificationLayer
-  recipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
-  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  scheduledNotification?: Prisma.ScheduledNotificationUpdateOneWithoutLogsNestedInput
+  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type NotificationLogUncheckedUpdateWithoutBusinessInput = {
+export type NotificationLogUncheckedUpdateWithoutDeliveryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  channel?: Prisma.EnumNotificationChannelFieldUpdateOperationsInput | $Enums.NotificationChannel
-  layer?: Prisma.EnumNotificationLayerFieldUpdateOperationsInput | $Enums.NotificationLayer
-  recipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
-  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  scheduledNotificationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type NotificationLogUncheckedUpdateManyWithoutBusinessInput = {
+export type NotificationLogUncheckedUpdateManyWithoutDeliveryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  channel?: Prisma.EnumNotificationChannelFieldUpdateOperationsInput | $Enums.NotificationChannel
-  layer?: Prisma.EnumNotificationLayerFieldUpdateOperationsInput | $Enums.NotificationLayer
-  recipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
-  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  scheduledNotificationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type NotificationLogCreateManyScheduledNotificationInput = {
-  id?: string
-  type: string
-  channel: $Enums.NotificationChannel
-  layer: $Enums.NotificationLayer
-  businessId?: string | null
-  recipientId?: string | null
-  status: $Enums.NotificationStatus
-  cost: runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: string | null
-  provider?: string | null
-  providerMessageId?: string | null
-  createdAt?: Date | string
-}
-
-export type NotificationLogUpdateWithoutScheduledNotificationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  channel?: Prisma.EnumNotificationChannelFieldUpdateOperationsInput | $Enums.NotificationChannel
-  layer?: Prisma.EnumNotificationLayerFieldUpdateOperationsInput | $Enums.NotificationLayer
-  recipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
-  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  business?: Prisma.BusinessUpdateOneWithoutNotificationLogsNestedInput
-}
-
-export type NotificationLogUncheckedUpdateWithoutScheduledNotificationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  channel?: Prisma.EnumNotificationChannelFieldUpdateOperationsInput | $Enums.NotificationChannel
-  layer?: Prisma.EnumNotificationLayerFieldUpdateOperationsInput | $Enums.NotificationLayer
-  businessId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
-  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type NotificationLogUncheckedUpdateManyWithoutScheduledNotificationInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.StringFieldUpdateOperationsInput | string
-  channel?: Prisma.EnumNotificationChannelFieldUpdateOperationsInput | $Enums.NotificationChannel
-  layer?: Prisma.EnumNotificationLayerFieldUpdateOperationsInput | $Enums.NotificationLayer
-  businessId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  recipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumNotificationStatusFieldUpdateOperationsInput | $Enums.NotificationStatus
-  cost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  provider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  providerMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  errorMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
 
 export type NotificationLogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  type?: boolean
-  channel?: boolean
-  layer?: boolean
-  businessId?: boolean
-  recipientId?: boolean
   status?: boolean
-  cost?: boolean
-  error?: boolean
-  provider?: boolean
-  providerMessageId?: boolean
-  scheduledNotificationId?: boolean
   createdAt?: boolean
-  business?: boolean | Prisma.NotificationLog$businessArgs<ExtArgs>
-  scheduledNotification?: boolean | Prisma.NotificationLog$scheduledNotificationArgs<ExtArgs>
+  errorMessage?: boolean
+  deliveryId?: boolean
+  delivery?: boolean | Prisma.NotificationLog$deliveryArgs<ExtArgs>
 }, ExtArgs["result"]["notificationLog"]>
 
 export type NotificationLogSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  type?: boolean
-  channel?: boolean
-  layer?: boolean
-  businessId?: boolean
-  recipientId?: boolean
   status?: boolean
-  cost?: boolean
-  error?: boolean
-  provider?: boolean
-  providerMessageId?: boolean
-  scheduledNotificationId?: boolean
   createdAt?: boolean
-  business?: boolean | Prisma.NotificationLog$businessArgs<ExtArgs>
-  scheduledNotification?: boolean | Prisma.NotificationLog$scheduledNotificationArgs<ExtArgs>
+  errorMessage?: boolean
+  deliveryId?: boolean
+  delivery?: boolean | Prisma.NotificationLog$deliveryArgs<ExtArgs>
 }, ExtArgs["result"]["notificationLog"]>
 
 export type NotificationLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  type?: boolean
-  channel?: boolean
-  layer?: boolean
-  businessId?: boolean
-  recipientId?: boolean
   status?: boolean
-  cost?: boolean
-  error?: boolean
-  provider?: boolean
-  providerMessageId?: boolean
-  scheduledNotificationId?: boolean
   createdAt?: boolean
-  business?: boolean | Prisma.NotificationLog$businessArgs<ExtArgs>
-  scheduledNotification?: boolean | Prisma.NotificationLog$scheduledNotificationArgs<ExtArgs>
+  errorMessage?: boolean
+  deliveryId?: boolean
+  delivery?: boolean | Prisma.NotificationLog$deliveryArgs<ExtArgs>
 }, ExtArgs["result"]["notificationLog"]>
 
 export type NotificationLogSelectScalar = {
   id?: boolean
-  type?: boolean
-  channel?: boolean
-  layer?: boolean
-  businessId?: boolean
-  recipientId?: boolean
   status?: boolean
-  cost?: boolean
-  error?: boolean
-  provider?: boolean
-  providerMessageId?: boolean
-  scheduledNotificationId?: boolean
   createdAt?: boolean
+  errorMessage?: boolean
+  deliveryId?: boolean
 }
 
-export type NotificationLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "channel" | "layer" | "businessId" | "recipientId" | "status" | "cost" | "error" | "provider" | "providerMessageId" | "scheduledNotificationId" | "createdAt", ExtArgs["result"]["notificationLog"]>
+export type NotificationLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "status" | "createdAt" | "errorMessage" | "deliveryId", ExtArgs["result"]["notificationLog"]>
 export type NotificationLogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.NotificationLog$businessArgs<ExtArgs>
-  scheduledNotification?: boolean | Prisma.NotificationLog$scheduledNotificationArgs<ExtArgs>
+  delivery?: boolean | Prisma.NotificationLog$deliveryArgs<ExtArgs>
 }
 export type NotificationLogIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.NotificationLog$businessArgs<ExtArgs>
-  scheduledNotification?: boolean | Prisma.NotificationLog$scheduledNotificationArgs<ExtArgs>
+  delivery?: boolean | Prisma.NotificationLog$deliveryArgs<ExtArgs>
 }
 export type NotificationLogIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.NotificationLog$businessArgs<ExtArgs>
-  scheduledNotification?: boolean | Prisma.NotificationLog$scheduledNotificationArgs<ExtArgs>
+  delivery?: boolean | Prisma.NotificationLog$deliveryArgs<ExtArgs>
 }
 
 export type $NotificationLogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "NotificationLog"
   objects: {
-    business: Prisma.$BusinessPayload<ExtArgs> | null
-    scheduledNotification: Prisma.$ScheduledNotificationPayload<ExtArgs> | null
+    delivery: Prisma.$NotificationDeliveryPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    type: string
-    channel: $Enums.NotificationChannel
-    layer: $Enums.NotificationLayer
-    businessId: string | null
-    recipientId: string | null
     status: $Enums.NotificationStatus
-    cost: runtime.Decimal
-    error: string | null
-    provider: string | null
-    providerMessageId: string | null
-    scheduledNotificationId: string | null
     createdAt: Date
+    errorMessage: string | null
+    deliveryId: string | null
   }, ExtArgs["result"]["notificationLog"]>
   composites: {}
 }
@@ -1382,8 +891,7 @@ readonly fields: NotificationLogFieldRefs;
  */
 export interface Prisma__NotificationLogClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  business<T extends Prisma.NotificationLog$businessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.NotificationLog$businessArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  scheduledNotification<T extends Prisma.NotificationLog$scheduledNotificationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.NotificationLog$scheduledNotificationArgs<ExtArgs>>): Prisma.Prisma__ScheduledNotificationClient<runtime.Types.Result.GetResult<Prisma.$ScheduledNotificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  delivery<T extends Prisma.NotificationLog$deliveryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.NotificationLog$deliveryArgs<ExtArgs>>): Prisma.Prisma__NotificationDeliveryClient<runtime.Types.Result.GetResult<Prisma.$NotificationDeliveryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1414,18 +922,10 @@ export interface Prisma__NotificationLogClient<T, Null = never, ExtArgs extends 
  */
 export interface NotificationLogFieldRefs {
   readonly id: Prisma.FieldRef<"NotificationLog", 'String'>
-  readonly type: Prisma.FieldRef<"NotificationLog", 'String'>
-  readonly channel: Prisma.FieldRef<"NotificationLog", 'NotificationChannel'>
-  readonly layer: Prisma.FieldRef<"NotificationLog", 'NotificationLayer'>
-  readonly businessId: Prisma.FieldRef<"NotificationLog", 'String'>
-  readonly recipientId: Prisma.FieldRef<"NotificationLog", 'String'>
   readonly status: Prisma.FieldRef<"NotificationLog", 'NotificationStatus'>
-  readonly cost: Prisma.FieldRef<"NotificationLog", 'Decimal'>
-  readonly error: Prisma.FieldRef<"NotificationLog", 'String'>
-  readonly provider: Prisma.FieldRef<"NotificationLog", 'String'>
-  readonly providerMessageId: Prisma.FieldRef<"NotificationLog", 'String'>
-  readonly scheduledNotificationId: Prisma.FieldRef<"NotificationLog", 'String'>
   readonly createdAt: Prisma.FieldRef<"NotificationLog", 'DateTime'>
+  readonly errorMessage: Prisma.FieldRef<"NotificationLog", 'String'>
+  readonly deliveryId: Prisma.FieldRef<"NotificationLog", 'String'>
 }
     
 
@@ -1822,41 +1322,22 @@ export type NotificationLogDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
 }
 
 /**
- * NotificationLog.business
+ * NotificationLog.delivery
  */
-export type NotificationLog$businessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type NotificationLog$deliveryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Business
+   * Select specific fields to fetch from the NotificationDelivery
    */
-  select?: Prisma.BusinessSelect<ExtArgs> | null
+  select?: Prisma.NotificationDeliverySelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Business
+   * Omit specific fields from the NotificationDelivery
    */
-  omit?: Prisma.BusinessOmit<ExtArgs> | null
+  omit?: Prisma.NotificationDeliveryOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.BusinessInclude<ExtArgs> | null
-  where?: Prisma.BusinessWhereInput
-}
-
-/**
- * NotificationLog.scheduledNotification
- */
-export type NotificationLog$scheduledNotificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the ScheduledNotification
-   */
-  select?: Prisma.ScheduledNotificationSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the ScheduledNotification
-   */
-  omit?: Prisma.ScheduledNotificationOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ScheduledNotificationInclude<ExtArgs> | null
-  where?: Prisma.ScheduledNotificationWhereInput
+  include?: Prisma.NotificationDeliveryInclude<ExtArgs> | null
+  where?: Prisma.NotificationDeliveryWhereInput
 }
 
 /**

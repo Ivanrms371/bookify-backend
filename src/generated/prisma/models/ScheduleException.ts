@@ -20,82 +20,96 @@ export type ScheduleExceptionModel = runtime.Types.Result.DefaultSelection<Prism
 
 export type AggregateScheduleException = {
   _count: ScheduleExceptionCountAggregateOutputType | null
+  _avg: ScheduleExceptionAvgAggregateOutputType | null
+  _sum: ScheduleExceptionSumAggregateOutputType | null
   _min: ScheduleExceptionMinAggregateOutputType | null
   _max: ScheduleExceptionMaxAggregateOutputType | null
+}
+
+export type ScheduleExceptionAvgAggregateOutputType = {
+  daysOfWeek: number | null
+}
+
+export type ScheduleExceptionSumAggregateOutputType = {
+  daysOfWeek: number[]
 }
 
 export type ScheduleExceptionMinAggregateOutputType = {
   id: string | null
   businessId: string | null
-  staffId: string | null
-  date: Date | null
   isClosed: boolean | null
-  customStartTime: Date | null
-  customEndTime: Date | null
   reason: string | null
   createdAt: Date | null
+  endDate: Date | null
+  staffId: string | null
+  startDate: Date | null
 }
 
 export type ScheduleExceptionMaxAggregateOutputType = {
   id: string | null
   businessId: string | null
-  staffId: string | null
-  date: Date | null
   isClosed: boolean | null
-  customStartTime: Date | null
-  customEndTime: Date | null
   reason: string | null
   createdAt: Date | null
+  endDate: Date | null
+  staffId: string | null
+  startDate: Date | null
 }
 
 export type ScheduleExceptionCountAggregateOutputType = {
   id: number
   businessId: number
-  staffId: number
-  date: number
   isClosed: number
-  customStartTime: number
-  customEndTime: number
   reason: number
   createdAt: number
+  daysOfWeek: number
+  endDate: number
+  staffId: number
+  startDate: number
   _all: number
 }
 
 
+export type ScheduleExceptionAvgAggregateInputType = {
+  daysOfWeek?: true
+}
+
+export type ScheduleExceptionSumAggregateInputType = {
+  daysOfWeek?: true
+}
+
 export type ScheduleExceptionMinAggregateInputType = {
   id?: true
   businessId?: true
-  staffId?: true
-  date?: true
   isClosed?: true
-  customStartTime?: true
-  customEndTime?: true
   reason?: true
   createdAt?: true
+  endDate?: true
+  staffId?: true
+  startDate?: true
 }
 
 export type ScheduleExceptionMaxAggregateInputType = {
   id?: true
   businessId?: true
-  staffId?: true
-  date?: true
   isClosed?: true
-  customStartTime?: true
-  customEndTime?: true
   reason?: true
   createdAt?: true
+  endDate?: true
+  staffId?: true
+  startDate?: true
 }
 
 export type ScheduleExceptionCountAggregateInputType = {
   id?: true
   businessId?: true
-  staffId?: true
-  date?: true
   isClosed?: true
-  customStartTime?: true
-  customEndTime?: true
   reason?: true
   createdAt?: true
+  daysOfWeek?: true
+  endDate?: true
+  staffId?: true
+  startDate?: true
   _all?: true
 }
 
@@ -137,6 +151,18 @@ export type ScheduleExceptionAggregateArgs<ExtArgs extends runtime.Types.Extensi
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ScheduleExceptionAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ScheduleExceptionSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ScheduleExceptionMinAggregateInputType
@@ -167,6 +193,8 @@ export type ScheduleExceptionGroupByArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   _count?: ScheduleExceptionCountAggregateInputType | true
+  _avg?: ScheduleExceptionAvgAggregateInputType
+  _sum?: ScheduleExceptionSumAggregateInputType
   _min?: ScheduleExceptionMinAggregateInputType
   _max?: ScheduleExceptionMaxAggregateInputType
 }
@@ -174,14 +202,16 @@ export type ScheduleExceptionGroupByArgs<ExtArgs extends runtime.Types.Extension
 export type ScheduleExceptionGroupByOutputType = {
   id: string
   businessId: string
-  staffId: string | null
-  date: Date
   isClosed: boolean
-  customStartTime: Date | null
-  customEndTime: Date | null
   reason: string | null
   createdAt: Date
+  daysOfWeek: number[]
+  endDate: Date
+  staffId: string
+  startDate: Date
   _count: ScheduleExceptionCountAggregateOutputType | null
+  _avg: ScheduleExceptionAvgAggregateOutputType | null
+  _sum: ScheduleExceptionSumAggregateOutputType | null
   _min: ScheduleExceptionMinAggregateOutputType | null
   _max: ScheduleExceptionMaxAggregateOutputType | null
 }
@@ -205,29 +235,33 @@ export type ScheduleExceptionWhereInput = {
   AND?: Prisma.ScheduleExceptionWhereInput | Prisma.ScheduleExceptionWhereInput[]
   OR?: Prisma.ScheduleExceptionWhereInput[]
   NOT?: Prisma.ScheduleExceptionWhereInput | Prisma.ScheduleExceptionWhereInput[]
-  id?: Prisma.StringFilter<"ScheduleException"> | string
-  businessId?: Prisma.StringFilter<"ScheduleException"> | string
-  staffId?: Prisma.StringNullableFilter<"ScheduleException"> | string | null
-  date?: Prisma.DateTimeFilter<"ScheduleException"> | Date | string
+  id?: Prisma.UuidFilter<"ScheduleException"> | string
+  businessId?: Prisma.UuidFilter<"ScheduleException"> | string
   isClosed?: Prisma.BoolFilter<"ScheduleException"> | boolean
-  customStartTime?: Prisma.DateTimeNullableFilter<"ScheduleException"> | Date | string | null
-  customEndTime?: Prisma.DateTimeNullableFilter<"ScheduleException"> | Date | string | null
   reason?: Prisma.StringNullableFilter<"ScheduleException"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ScheduleException"> | Date | string
+  daysOfWeek?: Prisma.IntNullableListFilter<"ScheduleException">
+  endDate?: Prisma.DateTimeFilter<"ScheduleException"> | Date | string
+  staffId?: Prisma.UuidFilter<"ScheduleException"> | string
+  startDate?: Prisma.DateTimeFilter<"ScheduleException"> | Date | string
+  blocks?: Prisma.ScheduleExceptionBlockListRelationFilter
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
+  staff?: Prisma.XOR<Prisma.StaffScalarRelationFilter, Prisma.StaffWhereInput>
 }
 
 export type ScheduleExceptionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  staffId?: Prisma.SortOrderInput | Prisma.SortOrder
-  date?: Prisma.SortOrder
   isClosed?: Prisma.SortOrder
-  customStartTime?: Prisma.SortOrderInput | Prisma.SortOrder
-  customEndTime?: Prisma.SortOrderInput | Prisma.SortOrder
   reason?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  daysOfWeek?: Prisma.SortOrder
+  endDate?: Prisma.SortOrder
+  staffId?: Prisma.SortOrder
+  startDate?: Prisma.SortOrder
+  blocks?: Prisma.ScheduleExceptionBlockOrderByRelationAggregateInput
   business?: Prisma.BusinessOrderByWithRelationInput
+  staff?: Prisma.StaffOrderByWithRelationInput
 }
 
 export type ScheduleExceptionWhereUniqueInput = Prisma.AtLeast<{
@@ -235,128 +269,135 @@ export type ScheduleExceptionWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ScheduleExceptionWhereInput | Prisma.ScheduleExceptionWhereInput[]
   OR?: Prisma.ScheduleExceptionWhereInput[]
   NOT?: Prisma.ScheduleExceptionWhereInput | Prisma.ScheduleExceptionWhereInput[]
-  businessId?: Prisma.StringFilter<"ScheduleException"> | string
-  staffId?: Prisma.StringNullableFilter<"ScheduleException"> | string | null
-  date?: Prisma.DateTimeFilter<"ScheduleException"> | Date | string
+  businessId?: Prisma.UuidFilter<"ScheduleException"> | string
   isClosed?: Prisma.BoolFilter<"ScheduleException"> | boolean
-  customStartTime?: Prisma.DateTimeNullableFilter<"ScheduleException"> | Date | string | null
-  customEndTime?: Prisma.DateTimeNullableFilter<"ScheduleException"> | Date | string | null
   reason?: Prisma.StringNullableFilter<"ScheduleException"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ScheduleException"> | Date | string
+  daysOfWeek?: Prisma.IntNullableListFilter<"ScheduleException">
+  endDate?: Prisma.DateTimeFilter<"ScheduleException"> | Date | string
+  staffId?: Prisma.UuidFilter<"ScheduleException"> | string
+  startDate?: Prisma.DateTimeFilter<"ScheduleException"> | Date | string
+  blocks?: Prisma.ScheduleExceptionBlockListRelationFilter
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
+  staff?: Prisma.XOR<Prisma.StaffScalarRelationFilter, Prisma.StaffWhereInput>
 }, "id">
 
 export type ScheduleExceptionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  staffId?: Prisma.SortOrderInput | Prisma.SortOrder
-  date?: Prisma.SortOrder
   isClosed?: Prisma.SortOrder
-  customStartTime?: Prisma.SortOrderInput | Prisma.SortOrder
-  customEndTime?: Prisma.SortOrderInput | Prisma.SortOrder
   reason?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  daysOfWeek?: Prisma.SortOrder
+  endDate?: Prisma.SortOrder
+  staffId?: Prisma.SortOrder
+  startDate?: Prisma.SortOrder
   _count?: Prisma.ScheduleExceptionCountOrderByAggregateInput
+  _avg?: Prisma.ScheduleExceptionAvgOrderByAggregateInput
   _max?: Prisma.ScheduleExceptionMaxOrderByAggregateInput
   _min?: Prisma.ScheduleExceptionMinOrderByAggregateInput
+  _sum?: Prisma.ScheduleExceptionSumOrderByAggregateInput
 }
 
 export type ScheduleExceptionScalarWhereWithAggregatesInput = {
   AND?: Prisma.ScheduleExceptionScalarWhereWithAggregatesInput | Prisma.ScheduleExceptionScalarWhereWithAggregatesInput[]
   OR?: Prisma.ScheduleExceptionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ScheduleExceptionScalarWhereWithAggregatesInput | Prisma.ScheduleExceptionScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"ScheduleException"> | string
-  businessId?: Prisma.StringWithAggregatesFilter<"ScheduleException"> | string
-  staffId?: Prisma.StringNullableWithAggregatesFilter<"ScheduleException"> | string | null
-  date?: Prisma.DateTimeWithAggregatesFilter<"ScheduleException"> | Date | string
+  id?: Prisma.UuidWithAggregatesFilter<"ScheduleException"> | string
+  businessId?: Prisma.UuidWithAggregatesFilter<"ScheduleException"> | string
   isClosed?: Prisma.BoolWithAggregatesFilter<"ScheduleException"> | boolean
-  customStartTime?: Prisma.DateTimeNullableWithAggregatesFilter<"ScheduleException"> | Date | string | null
-  customEndTime?: Prisma.DateTimeNullableWithAggregatesFilter<"ScheduleException"> | Date | string | null
   reason?: Prisma.StringNullableWithAggregatesFilter<"ScheduleException"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ScheduleException"> | Date | string
+  daysOfWeek?: Prisma.IntNullableListFilter<"ScheduleException">
+  endDate?: Prisma.DateTimeWithAggregatesFilter<"ScheduleException"> | Date | string
+  staffId?: Prisma.UuidWithAggregatesFilter<"ScheduleException"> | string
+  startDate?: Prisma.DateTimeWithAggregatesFilter<"ScheduleException"> | Date | string
 }
 
 export type ScheduleExceptionCreateInput = {
   id?: string
-  staffId?: string | null
-  date: Date | string
   isClosed: boolean
-  customStartTime?: Date | string | null
-  customEndTime?: Date | string | null
   reason?: string | null
   createdAt?: Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionCreatedaysOfWeekInput | number[]
+  endDate: Date | string
+  startDate: Date | string
+  blocks?: Prisma.ScheduleExceptionBlockCreateNestedManyWithoutScheduleExceptionInput
   business: Prisma.BusinessCreateNestedOneWithoutScheduleExceptionsInput
+  staff: Prisma.StaffCreateNestedOneWithoutExceptionsInput
 }
 
 export type ScheduleExceptionUncheckedCreateInput = {
   id?: string
   businessId: string
-  staffId?: string | null
-  date: Date | string
   isClosed: boolean
-  customStartTime?: Date | string | null
-  customEndTime?: Date | string | null
   reason?: string | null
   createdAt?: Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionCreatedaysOfWeekInput | number[]
+  endDate: Date | string
+  staffId: string
+  startDate: Date | string
+  blocks?: Prisma.ScheduleExceptionBlockUncheckedCreateNestedManyWithoutScheduleExceptionInput
 }
 
 export type ScheduleExceptionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isClosed?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  customStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  customEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionUpdatedaysOfWeekInput | number[]
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blocks?: Prisma.ScheduleExceptionBlockUpdateManyWithoutScheduleExceptionNestedInput
   business?: Prisma.BusinessUpdateOneRequiredWithoutScheduleExceptionsNestedInput
+  staff?: Prisma.StaffUpdateOneRequiredWithoutExceptionsNestedInput
 }
 
 export type ScheduleExceptionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   businessId?: Prisma.StringFieldUpdateOperationsInput | string
-  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isClosed?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  customStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  customEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionUpdatedaysOfWeekInput | number[]
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  staffId?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blocks?: Prisma.ScheduleExceptionBlockUncheckedUpdateManyWithoutScheduleExceptionNestedInput
 }
 
 export type ScheduleExceptionCreateManyInput = {
   id?: string
   businessId: string
-  staffId?: string | null
-  date: Date | string
   isClosed: boolean
-  customStartTime?: Date | string | null
-  customEndTime?: Date | string | null
   reason?: string | null
   createdAt?: Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionCreatedaysOfWeekInput | number[]
+  endDate: Date | string
+  staffId: string
+  startDate: Date | string
 }
 
 export type ScheduleExceptionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isClosed?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  customStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  customEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionUpdatedaysOfWeekInput | number[]
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ScheduleExceptionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   businessId?: Prisma.StringFieldUpdateOperationsInput | string
-  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isClosed?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  customStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  customEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionUpdatedaysOfWeekInput | number[]
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  staffId?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ScheduleExceptionListRelationFilter = {
@@ -369,40 +410,59 @@ export type ScheduleExceptionOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type IntNullableListFilter<$PrismaModel = never> = {
+  equals?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel> | null
+  has?: number | Prisma.IntFieldRefInput<$PrismaModel> | null
+  hasEvery?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
+  hasSome?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type ScheduleExceptionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  staffId?: Prisma.SortOrder
-  date?: Prisma.SortOrder
   isClosed?: Prisma.SortOrder
-  customStartTime?: Prisma.SortOrder
-  customEndTime?: Prisma.SortOrder
   reason?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  daysOfWeek?: Prisma.SortOrder
+  endDate?: Prisma.SortOrder
+  staffId?: Prisma.SortOrder
+  startDate?: Prisma.SortOrder
+}
+
+export type ScheduleExceptionAvgOrderByAggregateInput = {
+  daysOfWeek?: Prisma.SortOrder
 }
 
 export type ScheduleExceptionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  staffId?: Prisma.SortOrder
-  date?: Prisma.SortOrder
   isClosed?: Prisma.SortOrder
-  customStartTime?: Prisma.SortOrder
-  customEndTime?: Prisma.SortOrder
   reason?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  endDate?: Prisma.SortOrder
+  staffId?: Prisma.SortOrder
+  startDate?: Prisma.SortOrder
 }
 
 export type ScheduleExceptionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   businessId?: Prisma.SortOrder
-  staffId?: Prisma.SortOrder
-  date?: Prisma.SortOrder
   isClosed?: Prisma.SortOrder
-  customStartTime?: Prisma.SortOrder
-  customEndTime?: Prisma.SortOrder
   reason?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  endDate?: Prisma.SortOrder
+  staffId?: Prisma.SortOrder
+  startDate?: Prisma.SortOrder
+}
+
+export type ScheduleExceptionSumOrderByAggregateInput = {
+  daysOfWeek?: Prisma.SortOrder
+}
+
+export type ScheduleExceptionScalarRelationFilter = {
+  is?: Prisma.ScheduleExceptionWhereInput
+  isNot?: Prisma.ScheduleExceptionWhereInput
 }
 
 export type ScheduleExceptionCreateNestedManyWithoutBusinessInput = {
@@ -447,26 +507,93 @@ export type ScheduleExceptionUncheckedUpdateManyWithoutBusinessNestedInput = {
   deleteMany?: Prisma.ScheduleExceptionScalarWhereInput | Prisma.ScheduleExceptionScalarWhereInput[]
 }
 
+export type ScheduleExceptionCreateNestedManyWithoutStaffInput = {
+  create?: Prisma.XOR<Prisma.ScheduleExceptionCreateWithoutStaffInput, Prisma.ScheduleExceptionUncheckedCreateWithoutStaffInput> | Prisma.ScheduleExceptionCreateWithoutStaffInput[] | Prisma.ScheduleExceptionUncheckedCreateWithoutStaffInput[]
+  connectOrCreate?: Prisma.ScheduleExceptionCreateOrConnectWithoutStaffInput | Prisma.ScheduleExceptionCreateOrConnectWithoutStaffInput[]
+  createMany?: Prisma.ScheduleExceptionCreateManyStaffInputEnvelope
+  connect?: Prisma.ScheduleExceptionWhereUniqueInput | Prisma.ScheduleExceptionWhereUniqueInput[]
+}
+
+export type ScheduleExceptionUncheckedCreateNestedManyWithoutStaffInput = {
+  create?: Prisma.XOR<Prisma.ScheduleExceptionCreateWithoutStaffInput, Prisma.ScheduleExceptionUncheckedCreateWithoutStaffInput> | Prisma.ScheduleExceptionCreateWithoutStaffInput[] | Prisma.ScheduleExceptionUncheckedCreateWithoutStaffInput[]
+  connectOrCreate?: Prisma.ScheduleExceptionCreateOrConnectWithoutStaffInput | Prisma.ScheduleExceptionCreateOrConnectWithoutStaffInput[]
+  createMany?: Prisma.ScheduleExceptionCreateManyStaffInputEnvelope
+  connect?: Prisma.ScheduleExceptionWhereUniqueInput | Prisma.ScheduleExceptionWhereUniqueInput[]
+}
+
+export type ScheduleExceptionUpdateManyWithoutStaffNestedInput = {
+  create?: Prisma.XOR<Prisma.ScheduleExceptionCreateWithoutStaffInput, Prisma.ScheduleExceptionUncheckedCreateWithoutStaffInput> | Prisma.ScheduleExceptionCreateWithoutStaffInput[] | Prisma.ScheduleExceptionUncheckedCreateWithoutStaffInput[]
+  connectOrCreate?: Prisma.ScheduleExceptionCreateOrConnectWithoutStaffInput | Prisma.ScheduleExceptionCreateOrConnectWithoutStaffInput[]
+  upsert?: Prisma.ScheduleExceptionUpsertWithWhereUniqueWithoutStaffInput | Prisma.ScheduleExceptionUpsertWithWhereUniqueWithoutStaffInput[]
+  createMany?: Prisma.ScheduleExceptionCreateManyStaffInputEnvelope
+  set?: Prisma.ScheduleExceptionWhereUniqueInput | Prisma.ScheduleExceptionWhereUniqueInput[]
+  disconnect?: Prisma.ScheduleExceptionWhereUniqueInput | Prisma.ScheduleExceptionWhereUniqueInput[]
+  delete?: Prisma.ScheduleExceptionWhereUniqueInput | Prisma.ScheduleExceptionWhereUniqueInput[]
+  connect?: Prisma.ScheduleExceptionWhereUniqueInput | Prisma.ScheduleExceptionWhereUniqueInput[]
+  update?: Prisma.ScheduleExceptionUpdateWithWhereUniqueWithoutStaffInput | Prisma.ScheduleExceptionUpdateWithWhereUniqueWithoutStaffInput[]
+  updateMany?: Prisma.ScheduleExceptionUpdateManyWithWhereWithoutStaffInput | Prisma.ScheduleExceptionUpdateManyWithWhereWithoutStaffInput[]
+  deleteMany?: Prisma.ScheduleExceptionScalarWhereInput | Prisma.ScheduleExceptionScalarWhereInput[]
+}
+
+export type ScheduleExceptionUncheckedUpdateManyWithoutStaffNestedInput = {
+  create?: Prisma.XOR<Prisma.ScheduleExceptionCreateWithoutStaffInput, Prisma.ScheduleExceptionUncheckedCreateWithoutStaffInput> | Prisma.ScheduleExceptionCreateWithoutStaffInput[] | Prisma.ScheduleExceptionUncheckedCreateWithoutStaffInput[]
+  connectOrCreate?: Prisma.ScheduleExceptionCreateOrConnectWithoutStaffInput | Prisma.ScheduleExceptionCreateOrConnectWithoutStaffInput[]
+  upsert?: Prisma.ScheduleExceptionUpsertWithWhereUniqueWithoutStaffInput | Prisma.ScheduleExceptionUpsertWithWhereUniqueWithoutStaffInput[]
+  createMany?: Prisma.ScheduleExceptionCreateManyStaffInputEnvelope
+  set?: Prisma.ScheduleExceptionWhereUniqueInput | Prisma.ScheduleExceptionWhereUniqueInput[]
+  disconnect?: Prisma.ScheduleExceptionWhereUniqueInput | Prisma.ScheduleExceptionWhereUniqueInput[]
+  delete?: Prisma.ScheduleExceptionWhereUniqueInput | Prisma.ScheduleExceptionWhereUniqueInput[]
+  connect?: Prisma.ScheduleExceptionWhereUniqueInput | Prisma.ScheduleExceptionWhereUniqueInput[]
+  update?: Prisma.ScheduleExceptionUpdateWithWhereUniqueWithoutStaffInput | Prisma.ScheduleExceptionUpdateWithWhereUniqueWithoutStaffInput[]
+  updateMany?: Prisma.ScheduleExceptionUpdateManyWithWhereWithoutStaffInput | Prisma.ScheduleExceptionUpdateManyWithWhereWithoutStaffInput[]
+  deleteMany?: Prisma.ScheduleExceptionScalarWhereInput | Prisma.ScheduleExceptionScalarWhereInput[]
+}
+
+export type ScheduleExceptionCreatedaysOfWeekInput = {
+  set: number[]
+}
+
+export type ScheduleExceptionUpdatedaysOfWeekInput = {
+  set?: number[]
+  push?: number | number[]
+}
+
+export type ScheduleExceptionCreateNestedOneWithoutBlocksInput = {
+  create?: Prisma.XOR<Prisma.ScheduleExceptionCreateWithoutBlocksInput, Prisma.ScheduleExceptionUncheckedCreateWithoutBlocksInput>
+  connectOrCreate?: Prisma.ScheduleExceptionCreateOrConnectWithoutBlocksInput
+  connect?: Prisma.ScheduleExceptionWhereUniqueInput
+}
+
+export type ScheduleExceptionUpdateOneRequiredWithoutBlocksNestedInput = {
+  create?: Prisma.XOR<Prisma.ScheduleExceptionCreateWithoutBlocksInput, Prisma.ScheduleExceptionUncheckedCreateWithoutBlocksInput>
+  connectOrCreate?: Prisma.ScheduleExceptionCreateOrConnectWithoutBlocksInput
+  upsert?: Prisma.ScheduleExceptionUpsertWithoutBlocksInput
+  connect?: Prisma.ScheduleExceptionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ScheduleExceptionUpdateToOneWithWhereWithoutBlocksInput, Prisma.ScheduleExceptionUpdateWithoutBlocksInput>, Prisma.ScheduleExceptionUncheckedUpdateWithoutBlocksInput>
+}
+
 export type ScheduleExceptionCreateWithoutBusinessInput = {
   id?: string
-  staffId?: string | null
-  date: Date | string
   isClosed: boolean
-  customStartTime?: Date | string | null
-  customEndTime?: Date | string | null
   reason?: string | null
   createdAt?: Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionCreatedaysOfWeekInput | number[]
+  endDate: Date | string
+  startDate: Date | string
+  blocks?: Prisma.ScheduleExceptionBlockCreateNestedManyWithoutScheduleExceptionInput
+  staff: Prisma.StaffCreateNestedOneWithoutExceptionsInput
 }
 
 export type ScheduleExceptionUncheckedCreateWithoutBusinessInput = {
   id?: string
-  staffId?: string | null
-  date: Date | string
   isClosed: boolean
-  customStartTime?: Date | string | null
-  customEndTime?: Date | string | null
   reason?: string | null
   createdAt?: Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionCreatedaysOfWeekInput | number[]
+  endDate: Date | string
+  staffId: string
+  startDate: Date | string
+  blocks?: Prisma.ScheduleExceptionBlockUncheckedCreateNestedManyWithoutScheduleExceptionInput
 }
 
 export type ScheduleExceptionCreateOrConnectWithoutBusinessInput = {
@@ -499,140 +626,343 @@ export type ScheduleExceptionScalarWhereInput = {
   AND?: Prisma.ScheduleExceptionScalarWhereInput | Prisma.ScheduleExceptionScalarWhereInput[]
   OR?: Prisma.ScheduleExceptionScalarWhereInput[]
   NOT?: Prisma.ScheduleExceptionScalarWhereInput | Prisma.ScheduleExceptionScalarWhereInput[]
-  id?: Prisma.StringFilter<"ScheduleException"> | string
-  businessId?: Prisma.StringFilter<"ScheduleException"> | string
-  staffId?: Prisma.StringNullableFilter<"ScheduleException"> | string | null
-  date?: Prisma.DateTimeFilter<"ScheduleException"> | Date | string
+  id?: Prisma.UuidFilter<"ScheduleException"> | string
+  businessId?: Prisma.UuidFilter<"ScheduleException"> | string
   isClosed?: Prisma.BoolFilter<"ScheduleException"> | boolean
-  customStartTime?: Prisma.DateTimeNullableFilter<"ScheduleException"> | Date | string | null
-  customEndTime?: Prisma.DateTimeNullableFilter<"ScheduleException"> | Date | string | null
   reason?: Prisma.StringNullableFilter<"ScheduleException"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ScheduleException"> | Date | string
+  daysOfWeek?: Prisma.IntNullableListFilter<"ScheduleException">
+  endDate?: Prisma.DateTimeFilter<"ScheduleException"> | Date | string
+  staffId?: Prisma.UuidFilter<"ScheduleException"> | string
+  startDate?: Prisma.DateTimeFilter<"ScheduleException"> | Date | string
+}
+
+export type ScheduleExceptionCreateWithoutStaffInput = {
+  id?: string
+  isClosed: boolean
+  reason?: string | null
+  createdAt?: Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionCreatedaysOfWeekInput | number[]
+  endDate: Date | string
+  startDate: Date | string
+  blocks?: Prisma.ScheduleExceptionBlockCreateNestedManyWithoutScheduleExceptionInput
+  business: Prisma.BusinessCreateNestedOneWithoutScheduleExceptionsInput
+}
+
+export type ScheduleExceptionUncheckedCreateWithoutStaffInput = {
+  id?: string
+  businessId: string
+  isClosed: boolean
+  reason?: string | null
+  createdAt?: Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionCreatedaysOfWeekInput | number[]
+  endDate: Date | string
+  startDate: Date | string
+  blocks?: Prisma.ScheduleExceptionBlockUncheckedCreateNestedManyWithoutScheduleExceptionInput
+}
+
+export type ScheduleExceptionCreateOrConnectWithoutStaffInput = {
+  where: Prisma.ScheduleExceptionWhereUniqueInput
+  create: Prisma.XOR<Prisma.ScheduleExceptionCreateWithoutStaffInput, Prisma.ScheduleExceptionUncheckedCreateWithoutStaffInput>
+}
+
+export type ScheduleExceptionCreateManyStaffInputEnvelope = {
+  data: Prisma.ScheduleExceptionCreateManyStaffInput | Prisma.ScheduleExceptionCreateManyStaffInput[]
+  skipDuplicates?: boolean
+}
+
+export type ScheduleExceptionUpsertWithWhereUniqueWithoutStaffInput = {
+  where: Prisma.ScheduleExceptionWhereUniqueInput
+  update: Prisma.XOR<Prisma.ScheduleExceptionUpdateWithoutStaffInput, Prisma.ScheduleExceptionUncheckedUpdateWithoutStaffInput>
+  create: Prisma.XOR<Prisma.ScheduleExceptionCreateWithoutStaffInput, Prisma.ScheduleExceptionUncheckedCreateWithoutStaffInput>
+}
+
+export type ScheduleExceptionUpdateWithWhereUniqueWithoutStaffInput = {
+  where: Prisma.ScheduleExceptionWhereUniqueInput
+  data: Prisma.XOR<Prisma.ScheduleExceptionUpdateWithoutStaffInput, Prisma.ScheduleExceptionUncheckedUpdateWithoutStaffInput>
+}
+
+export type ScheduleExceptionUpdateManyWithWhereWithoutStaffInput = {
+  where: Prisma.ScheduleExceptionScalarWhereInput
+  data: Prisma.XOR<Prisma.ScheduleExceptionUpdateManyMutationInput, Prisma.ScheduleExceptionUncheckedUpdateManyWithoutStaffInput>
+}
+
+export type ScheduleExceptionCreateWithoutBlocksInput = {
+  id?: string
+  isClosed: boolean
+  reason?: string | null
+  createdAt?: Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionCreatedaysOfWeekInput | number[]
+  endDate: Date | string
+  startDate: Date | string
+  business: Prisma.BusinessCreateNestedOneWithoutScheduleExceptionsInput
+  staff: Prisma.StaffCreateNestedOneWithoutExceptionsInput
+}
+
+export type ScheduleExceptionUncheckedCreateWithoutBlocksInput = {
+  id?: string
+  businessId: string
+  isClosed: boolean
+  reason?: string | null
+  createdAt?: Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionCreatedaysOfWeekInput | number[]
+  endDate: Date | string
+  staffId: string
+  startDate: Date | string
+}
+
+export type ScheduleExceptionCreateOrConnectWithoutBlocksInput = {
+  where: Prisma.ScheduleExceptionWhereUniqueInput
+  create: Prisma.XOR<Prisma.ScheduleExceptionCreateWithoutBlocksInput, Prisma.ScheduleExceptionUncheckedCreateWithoutBlocksInput>
+}
+
+export type ScheduleExceptionUpsertWithoutBlocksInput = {
+  update: Prisma.XOR<Prisma.ScheduleExceptionUpdateWithoutBlocksInput, Prisma.ScheduleExceptionUncheckedUpdateWithoutBlocksInput>
+  create: Prisma.XOR<Prisma.ScheduleExceptionCreateWithoutBlocksInput, Prisma.ScheduleExceptionUncheckedCreateWithoutBlocksInput>
+  where?: Prisma.ScheduleExceptionWhereInput
+}
+
+export type ScheduleExceptionUpdateToOneWithWhereWithoutBlocksInput = {
+  where?: Prisma.ScheduleExceptionWhereInput
+  data: Prisma.XOR<Prisma.ScheduleExceptionUpdateWithoutBlocksInput, Prisma.ScheduleExceptionUncheckedUpdateWithoutBlocksInput>
+}
+
+export type ScheduleExceptionUpdateWithoutBlocksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  isClosed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionUpdatedaysOfWeekInput | number[]
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  business?: Prisma.BusinessUpdateOneRequiredWithoutScheduleExceptionsNestedInput
+  staff?: Prisma.StaffUpdateOneRequiredWithoutExceptionsNestedInput
+}
+
+export type ScheduleExceptionUncheckedUpdateWithoutBlocksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  isClosed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionUpdatedaysOfWeekInput | number[]
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  staffId?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ScheduleExceptionCreateManyBusinessInput = {
   id?: string
-  staffId?: string | null
-  date: Date | string
   isClosed: boolean
-  customStartTime?: Date | string | null
-  customEndTime?: Date | string | null
   reason?: string | null
   createdAt?: Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionCreatedaysOfWeekInput | number[]
+  endDate: Date | string
+  staffId: string
+  startDate: Date | string
 }
 
 export type ScheduleExceptionUpdateWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isClosed?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  customStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  customEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionUpdatedaysOfWeekInput | number[]
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blocks?: Prisma.ScheduleExceptionBlockUpdateManyWithoutScheduleExceptionNestedInput
+  staff?: Prisma.StaffUpdateOneRequiredWithoutExceptionsNestedInput
 }
 
 export type ScheduleExceptionUncheckedUpdateWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isClosed?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  customStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  customEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionUpdatedaysOfWeekInput | number[]
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  staffId?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blocks?: Prisma.ScheduleExceptionBlockUncheckedUpdateManyWithoutScheduleExceptionNestedInput
 }
 
 export type ScheduleExceptionUncheckedUpdateManyWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  staffId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isClosed?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  customStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  customEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionUpdatedaysOfWeekInput | number[]
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  staffId?: Prisma.StringFieldUpdateOperationsInput | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type ScheduleExceptionCreateManyStaffInput = {
+  id?: string
+  businessId: string
+  isClosed: boolean
+  reason?: string | null
+  createdAt?: Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionCreatedaysOfWeekInput | number[]
+  endDate: Date | string
+  startDate: Date | string
+}
+
+export type ScheduleExceptionUpdateWithoutStaffInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  isClosed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionUpdatedaysOfWeekInput | number[]
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blocks?: Prisma.ScheduleExceptionBlockUpdateManyWithoutScheduleExceptionNestedInput
+  business?: Prisma.BusinessUpdateOneRequiredWithoutScheduleExceptionsNestedInput
+}
+
+export type ScheduleExceptionUncheckedUpdateWithoutStaffInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  isClosed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionUpdatedaysOfWeekInput | number[]
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  blocks?: Prisma.ScheduleExceptionBlockUncheckedUpdateManyWithoutScheduleExceptionNestedInput
+}
+
+export type ScheduleExceptionUncheckedUpdateManyWithoutStaffInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  isClosed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  reason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  daysOfWeek?: Prisma.ScheduleExceptionUpdatedaysOfWeekInput | number[]
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type ScheduleExceptionCountOutputType
+ */
+
+export type ScheduleExceptionCountOutputType = {
+  blocks: number
+}
+
+export type ScheduleExceptionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  blocks?: boolean | ScheduleExceptionCountOutputTypeCountBlocksArgs
+}
+
+/**
+ * ScheduleExceptionCountOutputType without action
+ */
+export type ScheduleExceptionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScheduleExceptionCountOutputType
+   */
+  select?: Prisma.ScheduleExceptionCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ScheduleExceptionCountOutputType without action
+ */
+export type ScheduleExceptionCountOutputTypeCountBlocksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ScheduleExceptionBlockWhereInput
+}
 
 
 export type ScheduleExceptionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   businessId?: boolean
-  staffId?: boolean
-  date?: boolean
   isClosed?: boolean
-  customStartTime?: boolean
-  customEndTime?: boolean
   reason?: boolean
   createdAt?: boolean
+  daysOfWeek?: boolean
+  endDate?: boolean
+  staffId?: boolean
+  startDate?: boolean
+  blocks?: boolean | Prisma.ScheduleException$blocksArgs<ExtArgs>
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.ScheduleExceptionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scheduleException"]>
 
 export type ScheduleExceptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   businessId?: boolean
-  staffId?: boolean
-  date?: boolean
   isClosed?: boolean
-  customStartTime?: boolean
-  customEndTime?: boolean
   reason?: boolean
   createdAt?: boolean
+  daysOfWeek?: boolean
+  endDate?: boolean
+  staffId?: boolean
+  startDate?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scheduleException"]>
 
 export type ScheduleExceptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   businessId?: boolean
-  staffId?: boolean
-  date?: boolean
   isClosed?: boolean
-  customStartTime?: boolean
-  customEndTime?: boolean
   reason?: boolean
   createdAt?: boolean
+  daysOfWeek?: boolean
+  endDate?: boolean
+  staffId?: boolean
+  startDate?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scheduleException"]>
 
 export type ScheduleExceptionSelectScalar = {
   id?: boolean
   businessId?: boolean
-  staffId?: boolean
-  date?: boolean
   isClosed?: boolean
-  customStartTime?: boolean
-  customEndTime?: boolean
   reason?: boolean
   createdAt?: boolean
+  daysOfWeek?: boolean
+  endDate?: boolean
+  staffId?: boolean
+  startDate?: boolean
 }
 
-export type ScheduleExceptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "staffId" | "date" | "isClosed" | "customStartTime" | "customEndTime" | "reason" | "createdAt", ExtArgs["result"]["scheduleException"]>
+export type ScheduleExceptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "isClosed" | "reason" | "createdAt" | "daysOfWeek" | "endDate" | "staffId" | "startDate", ExtArgs["result"]["scheduleException"]>
 export type ScheduleExceptionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  blocks?: boolean | Prisma.ScheduleException$blocksArgs<ExtArgs>
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.ScheduleExceptionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ScheduleExceptionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
 }
 export type ScheduleExceptionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
 }
 
 export type $ScheduleExceptionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ScheduleException"
   objects: {
+    blocks: Prisma.$ScheduleExceptionBlockPayload<ExtArgs>[]
     business: Prisma.$BusinessPayload<ExtArgs>
+    staff: Prisma.$StaffPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     businessId: string
-    staffId: string | null
-    date: Date
     isClosed: boolean
-    customStartTime: Date | null
-    customEndTime: Date | null
     reason: string | null
     createdAt: Date
+    daysOfWeek: number[]
+    endDate: Date
+    staffId: string
+    startDate: Date
   }, ExtArgs["result"]["scheduleException"]>
   composites: {}
 }
@@ -1027,7 +1357,9 @@ readonly fields: ScheduleExceptionFieldRefs;
  */
 export interface Prisma__ScheduleExceptionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  blocks<T extends Prisma.ScheduleException$blocksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ScheduleException$blocksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduleExceptionBlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   business<T extends Prisma.BusinessDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BusinessDefaultArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  staff<T extends Prisma.StaffDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StaffDefaultArgs<ExtArgs>>): Prisma.Prisma__StaffClient<runtime.Types.Result.GetResult<Prisma.$StaffPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1059,13 +1391,13 @@ export interface Prisma__ScheduleExceptionClient<T, Null = never, ExtArgs extend
 export interface ScheduleExceptionFieldRefs {
   readonly id: Prisma.FieldRef<"ScheduleException", 'String'>
   readonly businessId: Prisma.FieldRef<"ScheduleException", 'String'>
-  readonly staffId: Prisma.FieldRef<"ScheduleException", 'String'>
-  readonly date: Prisma.FieldRef<"ScheduleException", 'DateTime'>
   readonly isClosed: Prisma.FieldRef<"ScheduleException", 'Boolean'>
-  readonly customStartTime: Prisma.FieldRef<"ScheduleException", 'DateTime'>
-  readonly customEndTime: Prisma.FieldRef<"ScheduleException", 'DateTime'>
   readonly reason: Prisma.FieldRef<"ScheduleException", 'String'>
   readonly createdAt: Prisma.FieldRef<"ScheduleException", 'DateTime'>
+  readonly daysOfWeek: Prisma.FieldRef<"ScheduleException", 'Int[]'>
+  readonly endDate: Prisma.FieldRef<"ScheduleException", 'DateTime'>
+  readonly staffId: Prisma.FieldRef<"ScheduleException", 'String'>
+  readonly startDate: Prisma.FieldRef<"ScheduleException", 'DateTime'>
 }
     
 
@@ -1459,6 +1791,30 @@ export type ScheduleExceptionDeleteManyArgs<ExtArgs extends runtime.Types.Extens
    * Limit how many ScheduleExceptions to delete.
    */
   limit?: number
+}
+
+/**
+ * ScheduleException.blocks
+ */
+export type ScheduleException$blocksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScheduleExceptionBlock
+   */
+  select?: Prisma.ScheduleExceptionBlockSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScheduleExceptionBlock
+   */
+  omit?: Prisma.ScheduleExceptionBlockOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScheduleExceptionBlockInclude<ExtArgs> | null
+  where?: Prisma.ScheduleExceptionBlockWhereInput
+  orderBy?: Prisma.ScheduleExceptionBlockOrderByWithRelationInput | Prisma.ScheduleExceptionBlockOrderByWithRelationInput[]
+  cursor?: Prisma.ScheduleExceptionBlockWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ScheduleExceptionBlockScalarFieldEnum | Prisma.ScheduleExceptionBlockScalarFieldEnum[]
 }
 
 /**

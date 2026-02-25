@@ -23,10 +23,15 @@ export * from './enums';
  */
 export type User = Prisma.UserModel
 /**
- * Model RefreshToken
+ * Model BusinessMember
  * 
  */
-export type RefreshToken = Prisma.RefreshTokenModel
+export type BusinessMember = Prisma.BusinessMemberModel
+/**
+ * Model Session
+ * 
+ */
+export type Session = Prisma.SessionModel
 /**
  * Model Verification
  * 
@@ -37,11 +42,6 @@ export type Verification = Prisma.VerificationModel
  * 
  */
 export type VerificationLock = Prisma.VerificationLockModel
-/**
- * Model MagicLink
- * 
- */
-export type MagicLink = Prisma.MagicLinkModel
 /**
  * Model Business
  * 
@@ -83,6 +83,11 @@ export type WorkingHours = Prisma.WorkingHoursModel
  */
 export type ScheduleException = Prisma.ScheduleExceptionModel
 /**
+ * Model ScheduleExceptionBlock
+ * 
+ */
+export type ScheduleExceptionBlock = Prisma.ScheduleExceptionBlockModel
+/**
  * Model Customer
  * 
  */
@@ -92,6 +97,11 @@ export type Customer = Prisma.CustomerModel
  * 
  */
 export type Appointment = Prisma.AppointmentModel
+/**
+ * Model AppointmentBlock
+ * 
+ */
+export type AppointmentBlock = Prisma.AppointmentBlockModel
 /**
  * Model BusinessDailyStats
  * 
@@ -108,15 +118,25 @@ export type BusinessLifetimeStats = Prisma.BusinessLifetimeStatsModel
  */
 export type StaffDailyStats = Prisma.StaffDailyStatsModel
 /**
- * Model StaffLifetime
+ * Model StaffLifetimeStats
  * 
  */
-export type StaffLifetime = Prisma.StaffLifetimeModel
+export type StaffLifetimeStats = Prisma.StaffLifetimeStatsModel
 /**
- * Model ScheduledNotification
+ * Model Notification
  * 
  */
-export type ScheduledNotification = Prisma.ScheduledNotificationModel
+export type Notification = Prisma.NotificationModel
+/**
+ * Model NotificationDelivery
+ * 
+ */
+export type NotificationDelivery = Prisma.NotificationDeliveryModel
+/**
+ * Model InAppNotification
+ * 
+ */
+export type InAppNotification = Prisma.InAppNotificationModel
 /**
  * Model NotificationLog
  * 
@@ -143,16 +163,6 @@ export type Plan = Prisma.PlanModel
  */
 export type PlanLimits = Prisma.PlanLimitsModel
 /**
- * Model BusinessUsage
- * 
- */
-export type BusinessUsage = Prisma.BusinessUsageModel
-/**
- * Model BusinessDailyUsage
- * 
- */
-export type BusinessDailyUsage = Prisma.BusinessDailyUsageModel
-/**
  * Model PlanStats
  * 
  */
@@ -177,8 +187,3 @@ export type PlatformAdmin = Prisma.PlatformAdminModel
  * 
  */
 export type WebhookLog = Prisma.WebhookLogModel
-/**
- * Model AdminEvent
- * 
- */
-export type AdminEvent = Prisma.AdminEventModel

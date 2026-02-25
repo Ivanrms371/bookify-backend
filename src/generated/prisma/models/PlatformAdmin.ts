@@ -163,8 +163,8 @@ export type PlatformAdminWhereInput = {
   AND?: Prisma.PlatformAdminWhereInput | Prisma.PlatformAdminWhereInput[]
   OR?: Prisma.PlatformAdminWhereInput[]
   NOT?: Prisma.PlatformAdminWhereInput | Prisma.PlatformAdminWhereInput[]
-  id?: Prisma.StringFilter<"PlatformAdmin"> | string
-  userId?: Prisma.StringFilter<"PlatformAdmin"> | string
+  id?: Prisma.UuidFilter<"PlatformAdmin"> | string
+  userId?: Prisma.UuidFilter<"PlatformAdmin"> | string
   level?: Prisma.EnumPlatformAdminLevelFilter<"PlatformAdmin"> | $Enums.PlatformAdminLevel
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -199,8 +199,8 @@ export type PlatformAdminScalarWhereWithAggregatesInput = {
   AND?: Prisma.PlatformAdminScalarWhereWithAggregatesInput | Prisma.PlatformAdminScalarWhereWithAggregatesInput[]
   OR?: Prisma.PlatformAdminScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PlatformAdminScalarWhereWithAggregatesInput | Prisma.PlatformAdminScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"PlatformAdmin"> | string
-  userId?: Prisma.StringWithAggregatesFilter<"PlatformAdmin"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"PlatformAdmin"> | string
+  userId?: Prisma.UuidWithAggregatesFilter<"PlatformAdmin"> | string
   level?: Prisma.EnumPlatformAdminLevelWithAggregatesFilter<"PlatformAdmin"> | $Enums.PlatformAdminLevel
 }
 

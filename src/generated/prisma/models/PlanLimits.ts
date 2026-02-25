@@ -27,97 +27,87 @@ export type AggregatePlanLimits = {
 }
 
 export type PlanLimitsAvgAggregateOutputType = {
-  softMonthlyLimit: number | null
-  hardMonthlyLimit: number | null
-  dailyOtpLimit: number | null
-  dailyMessagesLimit: number | null
-  maxMonthlyCost: runtime.Decimal | null
+  appointmentLimit: number | null
+  emailLimit: number | null
+  professionalLimit: number | null
+  whatsappLimit: number | null
 }
 
 export type PlanLimitsSumAggregateOutputType = {
-  softMonthlyLimit: number | null
-  hardMonthlyLimit: number | null
-  dailyOtpLimit: number | null
-  dailyMessagesLimit: number | null
-  maxMonthlyCost: runtime.Decimal | null
+  appointmentLimit: number | null
+  emailLimit: number | null
+  professionalLimit: number | null
+  whatsappLimit: number | null
 }
 
 export type PlanLimitsMinAggregateOutputType = {
   id: string | null
   planId: string | null
-  softMonthlyLimit: number | null
-  hardMonthlyLimit: number | null
-  dailyOtpLimit: number | null
-  dailyMessagesLimit: number | null
-  maxMonthlyCost: runtime.Decimal | null
+  appointmentLimit: number | null
+  emailLimit: number | null
+  professionalLimit: number | null
+  whatsappLimit: number | null
 }
 
 export type PlanLimitsMaxAggregateOutputType = {
   id: string | null
   planId: string | null
-  softMonthlyLimit: number | null
-  hardMonthlyLimit: number | null
-  dailyOtpLimit: number | null
-  dailyMessagesLimit: number | null
-  maxMonthlyCost: runtime.Decimal | null
+  appointmentLimit: number | null
+  emailLimit: number | null
+  professionalLimit: number | null
+  whatsappLimit: number | null
 }
 
 export type PlanLimitsCountAggregateOutputType = {
   id: number
   planId: number
-  softMonthlyLimit: number
-  hardMonthlyLimit: number
-  dailyOtpLimit: number
-  dailyMessagesLimit: number
-  maxMonthlyCost: number
+  appointmentLimit: number
+  emailLimit: number
+  professionalLimit: number
+  whatsappLimit: number
   _all: number
 }
 
 
 export type PlanLimitsAvgAggregateInputType = {
-  softMonthlyLimit?: true
-  hardMonthlyLimit?: true
-  dailyOtpLimit?: true
-  dailyMessagesLimit?: true
-  maxMonthlyCost?: true
+  appointmentLimit?: true
+  emailLimit?: true
+  professionalLimit?: true
+  whatsappLimit?: true
 }
 
 export type PlanLimitsSumAggregateInputType = {
-  softMonthlyLimit?: true
-  hardMonthlyLimit?: true
-  dailyOtpLimit?: true
-  dailyMessagesLimit?: true
-  maxMonthlyCost?: true
+  appointmentLimit?: true
+  emailLimit?: true
+  professionalLimit?: true
+  whatsappLimit?: true
 }
 
 export type PlanLimitsMinAggregateInputType = {
   id?: true
   planId?: true
-  softMonthlyLimit?: true
-  hardMonthlyLimit?: true
-  dailyOtpLimit?: true
-  dailyMessagesLimit?: true
-  maxMonthlyCost?: true
+  appointmentLimit?: true
+  emailLimit?: true
+  professionalLimit?: true
+  whatsappLimit?: true
 }
 
 export type PlanLimitsMaxAggregateInputType = {
   id?: true
   planId?: true
-  softMonthlyLimit?: true
-  hardMonthlyLimit?: true
-  dailyOtpLimit?: true
-  dailyMessagesLimit?: true
-  maxMonthlyCost?: true
+  appointmentLimit?: true
+  emailLimit?: true
+  professionalLimit?: true
+  whatsappLimit?: true
 }
 
 export type PlanLimitsCountAggregateInputType = {
   id?: true
   planId?: true
-  softMonthlyLimit?: true
-  hardMonthlyLimit?: true
-  dailyOtpLimit?: true
-  dailyMessagesLimit?: true
-  maxMonthlyCost?: true
+  appointmentLimit?: true
+  emailLimit?: true
+  professionalLimit?: true
+  whatsappLimit?: true
   _all?: true
 }
 
@@ -210,11 +200,10 @@ export type PlanLimitsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type PlanLimitsGroupByOutputType = {
   id: string
   planId: string
-  softMonthlyLimit: number
-  hardMonthlyLimit: number
-  dailyOtpLimit: number
-  dailyMessagesLimit: number
-  maxMonthlyCost: runtime.Decimal
+  appointmentLimit: number
+  emailLimit: number
+  professionalLimit: number
+  whatsappLimit: number
   _count: PlanLimitsCountAggregateOutputType | null
   _avg: PlanLimitsAvgAggregateOutputType | null
   _sum: PlanLimitsSumAggregateOutputType | null
@@ -241,24 +230,22 @@ export type PlanLimitsWhereInput = {
   AND?: Prisma.PlanLimitsWhereInput | Prisma.PlanLimitsWhereInput[]
   OR?: Prisma.PlanLimitsWhereInput[]
   NOT?: Prisma.PlanLimitsWhereInput | Prisma.PlanLimitsWhereInput[]
-  id?: Prisma.StringFilter<"PlanLimits"> | string
-  planId?: Prisma.StringFilter<"PlanLimits"> | string
-  softMonthlyLimit?: Prisma.IntFilter<"PlanLimits"> | number
-  hardMonthlyLimit?: Prisma.IntFilter<"PlanLimits"> | number
-  dailyOtpLimit?: Prisma.IntFilter<"PlanLimits"> | number
-  dailyMessagesLimit?: Prisma.IntFilter<"PlanLimits"> | number
-  maxMonthlyCost?: Prisma.DecimalFilter<"PlanLimits"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  id?: Prisma.UuidFilter<"PlanLimits"> | string
+  planId?: Prisma.UuidFilter<"PlanLimits"> | string
+  appointmentLimit?: Prisma.IntFilter<"PlanLimits"> | number
+  emailLimit?: Prisma.IntFilter<"PlanLimits"> | number
+  professionalLimit?: Prisma.IntFilter<"PlanLimits"> | number
+  whatsappLimit?: Prisma.IntFilter<"PlanLimits"> | number
   plan?: Prisma.XOR<Prisma.PlanScalarRelationFilter, Prisma.PlanWhereInput>
 }
 
 export type PlanLimitsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   planId?: Prisma.SortOrder
-  softMonthlyLimit?: Prisma.SortOrder
-  hardMonthlyLimit?: Prisma.SortOrder
-  dailyOtpLimit?: Prisma.SortOrder
-  dailyMessagesLimit?: Prisma.SortOrder
-  maxMonthlyCost?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  professionalLimit?: Prisma.SortOrder
+  whatsappLimit?: Prisma.SortOrder
   plan?: Prisma.PlanOrderByWithRelationInput
 }
 
@@ -268,22 +255,20 @@ export type PlanLimitsWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PlanLimitsWhereInput | Prisma.PlanLimitsWhereInput[]
   OR?: Prisma.PlanLimitsWhereInput[]
   NOT?: Prisma.PlanLimitsWhereInput | Prisma.PlanLimitsWhereInput[]
-  softMonthlyLimit?: Prisma.IntFilter<"PlanLimits"> | number
-  hardMonthlyLimit?: Prisma.IntFilter<"PlanLimits"> | number
-  dailyOtpLimit?: Prisma.IntFilter<"PlanLimits"> | number
-  dailyMessagesLimit?: Prisma.IntFilter<"PlanLimits"> | number
-  maxMonthlyCost?: Prisma.DecimalFilter<"PlanLimits"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  appointmentLimit?: Prisma.IntFilter<"PlanLimits"> | number
+  emailLimit?: Prisma.IntFilter<"PlanLimits"> | number
+  professionalLimit?: Prisma.IntFilter<"PlanLimits"> | number
+  whatsappLimit?: Prisma.IntFilter<"PlanLimits"> | number
   plan?: Prisma.XOR<Prisma.PlanScalarRelationFilter, Prisma.PlanWhereInput>
 }, "id" | "planId">
 
 export type PlanLimitsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   planId?: Prisma.SortOrder
-  softMonthlyLimit?: Prisma.SortOrder
-  hardMonthlyLimit?: Prisma.SortOrder
-  dailyOtpLimit?: Prisma.SortOrder
-  dailyMessagesLimit?: Prisma.SortOrder
-  maxMonthlyCost?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  professionalLimit?: Prisma.SortOrder
+  whatsappLimit?: Prisma.SortOrder
   _count?: Prisma.PlanLimitsCountOrderByAggregateInput
   _avg?: Prisma.PlanLimitsAvgOrderByAggregateInput
   _max?: Prisma.PlanLimitsMaxOrderByAggregateInput
@@ -295,82 +280,74 @@ export type PlanLimitsScalarWhereWithAggregatesInput = {
   AND?: Prisma.PlanLimitsScalarWhereWithAggregatesInput | Prisma.PlanLimitsScalarWhereWithAggregatesInput[]
   OR?: Prisma.PlanLimitsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PlanLimitsScalarWhereWithAggregatesInput | Prisma.PlanLimitsScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"PlanLimits"> | string
-  planId?: Prisma.StringWithAggregatesFilter<"PlanLimits"> | string
-  softMonthlyLimit?: Prisma.IntWithAggregatesFilter<"PlanLimits"> | number
-  hardMonthlyLimit?: Prisma.IntWithAggregatesFilter<"PlanLimits"> | number
-  dailyOtpLimit?: Prisma.IntWithAggregatesFilter<"PlanLimits"> | number
-  dailyMessagesLimit?: Prisma.IntWithAggregatesFilter<"PlanLimits"> | number
-  maxMonthlyCost?: Prisma.DecimalWithAggregatesFilter<"PlanLimits"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  id?: Prisma.UuidWithAggregatesFilter<"PlanLimits"> | string
+  planId?: Prisma.UuidWithAggregatesFilter<"PlanLimits"> | string
+  appointmentLimit?: Prisma.IntWithAggregatesFilter<"PlanLimits"> | number
+  emailLimit?: Prisma.IntWithAggregatesFilter<"PlanLimits"> | number
+  professionalLimit?: Prisma.IntWithAggregatesFilter<"PlanLimits"> | number
+  whatsappLimit?: Prisma.IntWithAggregatesFilter<"PlanLimits"> | number
 }
 
 export type PlanLimitsCreateInput = {
   id?: string
-  softMonthlyLimit: number
-  hardMonthlyLimit: number
-  dailyOtpLimit: number
-  dailyMessagesLimit: number
-  maxMonthlyCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  appointmentLimit?: number
+  emailLimit?: number
+  professionalLimit?: number
+  whatsappLimit?: number
   plan: Prisma.PlanCreateNestedOneWithoutLimitsInput
 }
 
 export type PlanLimitsUncheckedCreateInput = {
   id?: string
   planId: string
-  softMonthlyLimit: number
-  hardMonthlyLimit: number
-  dailyOtpLimit: number
-  dailyMessagesLimit: number
-  maxMonthlyCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  appointmentLimit?: number
+  emailLimit?: number
+  professionalLimit?: number
+  whatsappLimit?: number
 }
 
 export type PlanLimitsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  softMonthlyLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  hardMonthlyLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  dailyOtpLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  dailyMessagesLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  maxMonthlyCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
   plan?: Prisma.PlanUpdateOneRequiredWithoutLimitsNestedInput
 }
 
 export type PlanLimitsUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   planId?: Prisma.StringFieldUpdateOperationsInput | string
-  softMonthlyLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  hardMonthlyLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  dailyOtpLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  dailyMessagesLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  maxMonthlyCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type PlanLimitsCreateManyInput = {
   id?: string
   planId: string
-  softMonthlyLimit: number
-  hardMonthlyLimit: number
-  dailyOtpLimit: number
-  dailyMessagesLimit: number
-  maxMonthlyCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  appointmentLimit?: number
+  emailLimit?: number
+  professionalLimit?: number
+  whatsappLimit?: number
 }
 
 export type PlanLimitsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  softMonthlyLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  hardMonthlyLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  dailyOtpLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  dailyMessagesLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  maxMonthlyCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type PlanLimitsUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   planId?: Prisma.StringFieldUpdateOperationsInput | string
-  softMonthlyLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  hardMonthlyLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  dailyOtpLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  dailyMessagesLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  maxMonthlyCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type PlanLimitsNullableScalarRelationFilter = {
@@ -381,47 +358,42 @@ export type PlanLimitsNullableScalarRelationFilter = {
 export type PlanLimitsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   planId?: Prisma.SortOrder
-  softMonthlyLimit?: Prisma.SortOrder
-  hardMonthlyLimit?: Prisma.SortOrder
-  dailyOtpLimit?: Prisma.SortOrder
-  dailyMessagesLimit?: Prisma.SortOrder
-  maxMonthlyCost?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  professionalLimit?: Prisma.SortOrder
+  whatsappLimit?: Prisma.SortOrder
 }
 
 export type PlanLimitsAvgOrderByAggregateInput = {
-  softMonthlyLimit?: Prisma.SortOrder
-  hardMonthlyLimit?: Prisma.SortOrder
-  dailyOtpLimit?: Prisma.SortOrder
-  dailyMessagesLimit?: Prisma.SortOrder
-  maxMonthlyCost?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  professionalLimit?: Prisma.SortOrder
+  whatsappLimit?: Prisma.SortOrder
 }
 
 export type PlanLimitsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   planId?: Prisma.SortOrder
-  softMonthlyLimit?: Prisma.SortOrder
-  hardMonthlyLimit?: Prisma.SortOrder
-  dailyOtpLimit?: Prisma.SortOrder
-  dailyMessagesLimit?: Prisma.SortOrder
-  maxMonthlyCost?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  professionalLimit?: Prisma.SortOrder
+  whatsappLimit?: Prisma.SortOrder
 }
 
 export type PlanLimitsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   planId?: Prisma.SortOrder
-  softMonthlyLimit?: Prisma.SortOrder
-  hardMonthlyLimit?: Prisma.SortOrder
-  dailyOtpLimit?: Prisma.SortOrder
-  dailyMessagesLimit?: Prisma.SortOrder
-  maxMonthlyCost?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  professionalLimit?: Prisma.SortOrder
+  whatsappLimit?: Prisma.SortOrder
 }
 
 export type PlanLimitsSumOrderByAggregateInput = {
-  softMonthlyLimit?: Prisma.SortOrder
-  hardMonthlyLimit?: Prisma.SortOrder
-  dailyOtpLimit?: Prisma.SortOrder
-  dailyMessagesLimit?: Prisma.SortOrder
-  maxMonthlyCost?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  professionalLimit?: Prisma.SortOrder
+  whatsappLimit?: Prisma.SortOrder
 }
 
 export type PlanLimitsCreateNestedOneWithoutPlanInput = {
@@ -458,20 +430,18 @@ export type PlanLimitsUncheckedUpdateOneWithoutPlanNestedInput = {
 
 export type PlanLimitsCreateWithoutPlanInput = {
   id?: string
-  softMonthlyLimit: number
-  hardMonthlyLimit: number
-  dailyOtpLimit: number
-  dailyMessagesLimit: number
-  maxMonthlyCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  appointmentLimit?: number
+  emailLimit?: number
+  professionalLimit?: number
+  whatsappLimit?: number
 }
 
 export type PlanLimitsUncheckedCreateWithoutPlanInput = {
   id?: string
-  softMonthlyLimit: number
-  hardMonthlyLimit: number
-  dailyOtpLimit: number
-  dailyMessagesLimit: number
-  maxMonthlyCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  appointmentLimit?: number
+  emailLimit?: number
+  professionalLimit?: number
+  whatsappLimit?: number
 }
 
 export type PlanLimitsCreateOrConnectWithoutPlanInput = {
@@ -492,20 +462,18 @@ export type PlanLimitsUpdateToOneWithWhereWithoutPlanInput = {
 
 export type PlanLimitsUpdateWithoutPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  softMonthlyLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  hardMonthlyLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  dailyOtpLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  dailyMessagesLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  maxMonthlyCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type PlanLimitsUncheckedUpdateWithoutPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  softMonthlyLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  hardMonthlyLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  dailyOtpLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  dailyMessagesLimit?: Prisma.IntFieldUpdateOperationsInput | number
-  maxMonthlyCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -513,47 +481,43 @@ export type PlanLimitsUncheckedUpdateWithoutPlanInput = {
 export type PlanLimitsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   planId?: boolean
-  softMonthlyLimit?: boolean
-  hardMonthlyLimit?: boolean
-  dailyOtpLimit?: boolean
-  dailyMessagesLimit?: boolean
-  maxMonthlyCost?: boolean
+  appointmentLimit?: boolean
+  emailLimit?: boolean
+  professionalLimit?: boolean
+  whatsappLimit?: boolean
   plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["planLimits"]>
 
 export type PlanLimitsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   planId?: boolean
-  softMonthlyLimit?: boolean
-  hardMonthlyLimit?: boolean
-  dailyOtpLimit?: boolean
-  dailyMessagesLimit?: boolean
-  maxMonthlyCost?: boolean
+  appointmentLimit?: boolean
+  emailLimit?: boolean
+  professionalLimit?: boolean
+  whatsappLimit?: boolean
   plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["planLimits"]>
 
 export type PlanLimitsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   planId?: boolean
-  softMonthlyLimit?: boolean
-  hardMonthlyLimit?: boolean
-  dailyOtpLimit?: boolean
-  dailyMessagesLimit?: boolean
-  maxMonthlyCost?: boolean
+  appointmentLimit?: boolean
+  emailLimit?: boolean
+  professionalLimit?: boolean
+  whatsappLimit?: boolean
   plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["planLimits"]>
 
 export type PlanLimitsSelectScalar = {
   id?: boolean
   planId?: boolean
-  softMonthlyLimit?: boolean
-  hardMonthlyLimit?: boolean
-  dailyOtpLimit?: boolean
-  dailyMessagesLimit?: boolean
-  maxMonthlyCost?: boolean
+  appointmentLimit?: boolean
+  emailLimit?: boolean
+  professionalLimit?: boolean
+  whatsappLimit?: boolean
 }
 
-export type PlanLimitsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planId" | "softMonthlyLimit" | "hardMonthlyLimit" | "dailyOtpLimit" | "dailyMessagesLimit" | "maxMonthlyCost", ExtArgs["result"]["planLimits"]>
+export type PlanLimitsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "planId" | "appointmentLimit" | "emailLimit" | "professionalLimit" | "whatsappLimit", ExtArgs["result"]["planLimits"]>
 export type PlanLimitsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
 }
@@ -572,11 +536,10 @@ export type $PlanLimitsPayload<ExtArgs extends runtime.Types.Extensions.Internal
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     planId: string
-    softMonthlyLimit: number
-    hardMonthlyLimit: number
-    dailyOtpLimit: number
-    dailyMessagesLimit: number
-    maxMonthlyCost: runtime.Decimal
+    appointmentLimit: number
+    emailLimit: number
+    professionalLimit: number
+    whatsappLimit: number
   }, ExtArgs["result"]["planLimits"]>
   composites: {}
 }
@@ -1003,11 +966,10 @@ export interface Prisma__PlanLimitsClient<T, Null = never, ExtArgs extends runti
 export interface PlanLimitsFieldRefs {
   readonly id: Prisma.FieldRef<"PlanLimits", 'String'>
   readonly planId: Prisma.FieldRef<"PlanLimits", 'String'>
-  readonly softMonthlyLimit: Prisma.FieldRef<"PlanLimits", 'Int'>
-  readonly hardMonthlyLimit: Prisma.FieldRef<"PlanLimits", 'Int'>
-  readonly dailyOtpLimit: Prisma.FieldRef<"PlanLimits", 'Int'>
-  readonly dailyMessagesLimit: Prisma.FieldRef<"PlanLimits", 'Int'>
-  readonly maxMonthlyCost: Prisma.FieldRef<"PlanLimits", 'Decimal'>
+  readonly appointmentLimit: Prisma.FieldRef<"PlanLimits", 'Int'>
+  readonly emailLimit: Prisma.FieldRef<"PlanLimits", 'Int'>
+  readonly professionalLimit: Prisma.FieldRef<"PlanLimits", 'Int'>
+  readonly whatsappLimit: Prisma.FieldRef<"PlanLimits", 'Int'>
 }
     
 

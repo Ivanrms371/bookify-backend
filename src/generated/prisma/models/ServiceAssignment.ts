@@ -20,99 +20,45 @@ export type ServiceAssignmentModel = runtime.Types.Result.DefaultSelection<Prism
 
 export type AggregateServiceAssignment = {
   _count: ServiceAssignmentCountAggregateOutputType | null
-  _avg: ServiceAssignmentAvgAggregateOutputType | null
-  _sum: ServiceAssignmentSumAggregateOutputType | null
   _min: ServiceAssignmentMinAggregateOutputType | null
   _max: ServiceAssignmentMaxAggregateOutputType | null
-}
-
-export type ServiceAssignmentAvgAggregateOutputType = {
-  customPrice: runtime.Decimal | null
-  customDiscountPercentage: runtime.Decimal | null
-  customDiscountFixed: runtime.Decimal | null
-  customDurationMinutes: number | null
-}
-
-export type ServiceAssignmentSumAggregateOutputType = {
-  customPrice: runtime.Decimal | null
-  customDiscountPercentage: runtime.Decimal | null
-  customDiscountFixed: runtime.Decimal | null
-  customDurationMinutes: number | null
 }
 
 export type ServiceAssignmentMinAggregateOutputType = {
   staffId: string | null
   serviceId: string | null
-  customPrice: runtime.Decimal | null
-  customDiscountPercentage: runtime.Decimal | null
-  customDiscountFixed: runtime.Decimal | null
-  customDurationMinutes: number | null
   isActive: boolean | null
 }
 
 export type ServiceAssignmentMaxAggregateOutputType = {
   staffId: string | null
   serviceId: string | null
-  customPrice: runtime.Decimal | null
-  customDiscountPercentage: runtime.Decimal | null
-  customDiscountFixed: runtime.Decimal | null
-  customDurationMinutes: number | null
   isActive: boolean | null
 }
 
 export type ServiceAssignmentCountAggregateOutputType = {
   staffId: number
   serviceId: number
-  customPrice: number
-  customDiscountPercentage: number
-  customDiscountFixed: number
-  customDurationMinutes: number
   isActive: number
   _all: number
 }
 
 
-export type ServiceAssignmentAvgAggregateInputType = {
-  customPrice?: true
-  customDiscountPercentage?: true
-  customDiscountFixed?: true
-  customDurationMinutes?: true
-}
-
-export type ServiceAssignmentSumAggregateInputType = {
-  customPrice?: true
-  customDiscountPercentage?: true
-  customDiscountFixed?: true
-  customDurationMinutes?: true
-}
-
 export type ServiceAssignmentMinAggregateInputType = {
   staffId?: true
   serviceId?: true
-  customPrice?: true
-  customDiscountPercentage?: true
-  customDiscountFixed?: true
-  customDurationMinutes?: true
   isActive?: true
 }
 
 export type ServiceAssignmentMaxAggregateInputType = {
   staffId?: true
   serviceId?: true
-  customPrice?: true
-  customDiscountPercentage?: true
-  customDiscountFixed?: true
-  customDurationMinutes?: true
   isActive?: true
 }
 
 export type ServiceAssignmentCountAggregateInputType = {
   staffId?: true
   serviceId?: true
-  customPrice?: true
-  customDiscountPercentage?: true
-  customDiscountFixed?: true
-  customDurationMinutes?: true
   isActive?: true
   _all?: true
 }
@@ -155,18 +101,6 @@ export type ServiceAssignmentAggregateArgs<ExtArgs extends runtime.Types.Extensi
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: ServiceAssignmentAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: ServiceAssignmentSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: ServiceAssignmentMinAggregateInputType
@@ -197,8 +131,6 @@ export type ServiceAssignmentGroupByArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   _count?: ServiceAssignmentCountAggregateInputType | true
-  _avg?: ServiceAssignmentAvgAggregateInputType
-  _sum?: ServiceAssignmentSumAggregateInputType
   _min?: ServiceAssignmentMinAggregateInputType
   _max?: ServiceAssignmentMaxAggregateInputType
 }
@@ -206,14 +138,8 @@ export type ServiceAssignmentGroupByArgs<ExtArgs extends runtime.Types.Extension
 export type ServiceAssignmentGroupByOutputType = {
   staffId: string
   serviceId: string
-  customPrice: runtime.Decimal | null
-  customDiscountPercentage: runtime.Decimal | null
-  customDiscountFixed: runtime.Decimal | null
-  customDurationMinutes: number | null
   isActive: boolean
   _count: ServiceAssignmentCountAggregateOutputType | null
-  _avg: ServiceAssignmentAvgAggregateOutputType | null
-  _sum: ServiceAssignmentSumAggregateOutputType | null
   _min: ServiceAssignmentMinAggregateOutputType | null
   _max: ServiceAssignmentMaxAggregateOutputType | null
 }
@@ -237,27 +163,19 @@ export type ServiceAssignmentWhereInput = {
   AND?: Prisma.ServiceAssignmentWhereInput | Prisma.ServiceAssignmentWhereInput[]
   OR?: Prisma.ServiceAssignmentWhereInput[]
   NOT?: Prisma.ServiceAssignmentWhereInput | Prisma.ServiceAssignmentWhereInput[]
-  staffId?: Prisma.StringFilter<"ServiceAssignment"> | string
-  serviceId?: Prisma.StringFilter<"ServiceAssignment"> | string
-  customPrice?: Prisma.DecimalNullableFilter<"ServiceAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: Prisma.DecimalNullableFilter<"ServiceAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: Prisma.DecimalNullableFilter<"ServiceAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: Prisma.IntNullableFilter<"ServiceAssignment"> | number | null
+  staffId?: Prisma.UuidFilter<"ServiceAssignment"> | string
+  serviceId?: Prisma.UuidFilter<"ServiceAssignment"> | string
   isActive?: Prisma.BoolFilter<"ServiceAssignment"> | boolean
-  staff?: Prisma.XOR<Prisma.StaffScalarRelationFilter, Prisma.StaffWhereInput>
   service?: Prisma.XOR<Prisma.ServiceScalarRelationFilter, Prisma.ServiceWhereInput>
+  staff?: Prisma.XOR<Prisma.StaffScalarRelationFilter, Prisma.StaffWhereInput>
 }
 
 export type ServiceAssignmentOrderByWithRelationInput = {
   staffId?: Prisma.SortOrder
   serviceId?: Prisma.SortOrder
-  customPrice?: Prisma.SortOrderInput | Prisma.SortOrder
-  customDiscountPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
-  customDiscountFixed?: Prisma.SortOrderInput | Prisma.SortOrder
-  customDurationMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
-  staff?: Prisma.StaffOrderByWithRelationInput
   service?: Prisma.ServiceOrderByWithRelationInput
+  staff?: Prisma.StaffOrderByWithRelationInput
 }
 
 export type ServiceAssignmentWhereUniqueInput = Prisma.AtLeast<{
@@ -265,110 +183,68 @@ export type ServiceAssignmentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ServiceAssignmentWhereInput | Prisma.ServiceAssignmentWhereInput[]
   OR?: Prisma.ServiceAssignmentWhereInput[]
   NOT?: Prisma.ServiceAssignmentWhereInput | Prisma.ServiceAssignmentWhereInput[]
-  staffId?: Prisma.StringFilter<"ServiceAssignment"> | string
-  serviceId?: Prisma.StringFilter<"ServiceAssignment"> | string
-  customPrice?: Prisma.DecimalNullableFilter<"ServiceAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: Prisma.DecimalNullableFilter<"ServiceAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: Prisma.DecimalNullableFilter<"ServiceAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: Prisma.IntNullableFilter<"ServiceAssignment"> | number | null
+  staffId?: Prisma.UuidFilter<"ServiceAssignment"> | string
+  serviceId?: Prisma.UuidFilter<"ServiceAssignment"> | string
   isActive?: Prisma.BoolFilter<"ServiceAssignment"> | boolean
-  staff?: Prisma.XOR<Prisma.StaffScalarRelationFilter, Prisma.StaffWhereInput>
   service?: Prisma.XOR<Prisma.ServiceScalarRelationFilter, Prisma.ServiceWhereInput>
+  staff?: Prisma.XOR<Prisma.StaffScalarRelationFilter, Prisma.StaffWhereInput>
 }, "staffId_serviceId">
 
 export type ServiceAssignmentOrderByWithAggregationInput = {
   staffId?: Prisma.SortOrder
   serviceId?: Prisma.SortOrder
-  customPrice?: Prisma.SortOrderInput | Prisma.SortOrder
-  customDiscountPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
-  customDiscountFixed?: Prisma.SortOrderInput | Prisma.SortOrder
-  customDurationMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   _count?: Prisma.ServiceAssignmentCountOrderByAggregateInput
-  _avg?: Prisma.ServiceAssignmentAvgOrderByAggregateInput
   _max?: Prisma.ServiceAssignmentMaxOrderByAggregateInput
   _min?: Prisma.ServiceAssignmentMinOrderByAggregateInput
-  _sum?: Prisma.ServiceAssignmentSumOrderByAggregateInput
 }
 
 export type ServiceAssignmentScalarWhereWithAggregatesInput = {
   AND?: Prisma.ServiceAssignmentScalarWhereWithAggregatesInput | Prisma.ServiceAssignmentScalarWhereWithAggregatesInput[]
   OR?: Prisma.ServiceAssignmentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ServiceAssignmentScalarWhereWithAggregatesInput | Prisma.ServiceAssignmentScalarWhereWithAggregatesInput[]
-  staffId?: Prisma.StringWithAggregatesFilter<"ServiceAssignment"> | string
-  serviceId?: Prisma.StringWithAggregatesFilter<"ServiceAssignment"> | string
-  customPrice?: Prisma.DecimalNullableWithAggregatesFilter<"ServiceAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: Prisma.DecimalNullableWithAggregatesFilter<"ServiceAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: Prisma.DecimalNullableWithAggregatesFilter<"ServiceAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: Prisma.IntNullableWithAggregatesFilter<"ServiceAssignment"> | number | null
+  staffId?: Prisma.UuidWithAggregatesFilter<"ServiceAssignment"> | string
+  serviceId?: Prisma.UuidWithAggregatesFilter<"ServiceAssignment"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"ServiceAssignment"> | boolean
 }
 
 export type ServiceAssignmentCreateInput = {
-  customPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: number | null
   isActive?: boolean
-  staff: Prisma.StaffCreateNestedOneWithoutAssignmentsInput
   service: Prisma.ServiceCreateNestedOneWithoutAssignmentsInput
+  staff: Prisma.StaffCreateNestedOneWithoutAssignmentsInput
 }
 
 export type ServiceAssignmentUncheckedCreateInput = {
   staffId: string
   serviceId: string
-  customPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: number | null
   isActive?: boolean
 }
 
 export type ServiceAssignmentUpdateInput = {
-  customPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  staff?: Prisma.StaffUpdateOneRequiredWithoutAssignmentsNestedInput
   service?: Prisma.ServiceUpdateOneRequiredWithoutAssignmentsNestedInput
+  staff?: Prisma.StaffUpdateOneRequiredWithoutAssignmentsNestedInput
 }
 
 export type ServiceAssignmentUncheckedUpdateInput = {
   staffId?: Prisma.StringFieldUpdateOperationsInput | string
   serviceId?: Prisma.StringFieldUpdateOperationsInput | string
-  customPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type ServiceAssignmentCreateManyInput = {
   staffId: string
   serviceId: string
-  customPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: number | null
   isActive?: boolean
 }
 
 export type ServiceAssignmentUpdateManyMutationInput = {
-  customPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type ServiceAssignmentUncheckedUpdateManyInput = {
   staffId?: Prisma.StringFieldUpdateOperationsInput | string
   serviceId?: Prisma.StringFieldUpdateOperationsInput | string
-  customPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
@@ -390,45 +266,19 @@ export type ServiceAssignmentStaffIdServiceIdCompoundUniqueInput = {
 export type ServiceAssignmentCountOrderByAggregateInput = {
   staffId?: Prisma.SortOrder
   serviceId?: Prisma.SortOrder
-  customPrice?: Prisma.SortOrder
-  customDiscountPercentage?: Prisma.SortOrder
-  customDiscountFixed?: Prisma.SortOrder
-  customDurationMinutes?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
-}
-
-export type ServiceAssignmentAvgOrderByAggregateInput = {
-  customPrice?: Prisma.SortOrder
-  customDiscountPercentage?: Prisma.SortOrder
-  customDiscountFixed?: Prisma.SortOrder
-  customDurationMinutes?: Prisma.SortOrder
 }
 
 export type ServiceAssignmentMaxOrderByAggregateInput = {
   staffId?: Prisma.SortOrder
   serviceId?: Prisma.SortOrder
-  customPrice?: Prisma.SortOrder
-  customDiscountPercentage?: Prisma.SortOrder
-  customDiscountFixed?: Prisma.SortOrder
-  customDurationMinutes?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
 }
 
 export type ServiceAssignmentMinOrderByAggregateInput = {
   staffId?: Prisma.SortOrder
   serviceId?: Prisma.SortOrder
-  customPrice?: Prisma.SortOrder
-  customDiscountPercentage?: Prisma.SortOrder
-  customDiscountFixed?: Prisma.SortOrder
-  customDurationMinutes?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
-}
-
-export type ServiceAssignmentSumOrderByAggregateInput = {
-  customPrice?: Prisma.SortOrder
-  customDiscountPercentage?: Prisma.SortOrder
-  customDiscountFixed?: Prisma.SortOrder
-  customDurationMinutes?: Prisma.SortOrder
 }
 
 export type ServiceAssignmentCreateNestedManyWithoutServiceInput = {
@@ -471,14 +321,6 @@ export type ServiceAssignmentUncheckedUpdateManyWithoutServiceNestedInput = {
   update?: Prisma.ServiceAssignmentUpdateWithWhereUniqueWithoutServiceInput | Prisma.ServiceAssignmentUpdateWithWhereUniqueWithoutServiceInput[]
   updateMany?: Prisma.ServiceAssignmentUpdateManyWithWhereWithoutServiceInput | Prisma.ServiceAssignmentUpdateManyWithWhereWithoutServiceInput[]
   deleteMany?: Prisma.ServiceAssignmentScalarWhereInput | Prisma.ServiceAssignmentScalarWhereInput[]
-}
-
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type ServiceAssignmentCreateNestedManyWithoutStaffInput = {
@@ -524,20 +366,12 @@ export type ServiceAssignmentUncheckedUpdateManyWithoutStaffNestedInput = {
 }
 
 export type ServiceAssignmentCreateWithoutServiceInput = {
-  customPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: number | null
   isActive?: boolean
   staff: Prisma.StaffCreateNestedOneWithoutAssignmentsInput
 }
 
 export type ServiceAssignmentUncheckedCreateWithoutServiceInput = {
   staffId: string
-  customPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: number | null
   isActive?: boolean
 }
 
@@ -571,30 +405,18 @@ export type ServiceAssignmentScalarWhereInput = {
   AND?: Prisma.ServiceAssignmentScalarWhereInput | Prisma.ServiceAssignmentScalarWhereInput[]
   OR?: Prisma.ServiceAssignmentScalarWhereInput[]
   NOT?: Prisma.ServiceAssignmentScalarWhereInput | Prisma.ServiceAssignmentScalarWhereInput[]
-  staffId?: Prisma.StringFilter<"ServiceAssignment"> | string
-  serviceId?: Prisma.StringFilter<"ServiceAssignment"> | string
-  customPrice?: Prisma.DecimalNullableFilter<"ServiceAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: Prisma.DecimalNullableFilter<"ServiceAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: Prisma.DecimalNullableFilter<"ServiceAssignment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: Prisma.IntNullableFilter<"ServiceAssignment"> | number | null
+  staffId?: Prisma.UuidFilter<"ServiceAssignment"> | string
+  serviceId?: Prisma.UuidFilter<"ServiceAssignment"> | string
   isActive?: Prisma.BoolFilter<"ServiceAssignment"> | boolean
 }
 
 export type ServiceAssignmentCreateWithoutStaffInput = {
-  customPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: number | null
   isActive?: boolean
   service: Prisma.ServiceCreateNestedOneWithoutAssignmentsInput
 }
 
 export type ServiceAssignmentUncheckedCreateWithoutStaffInput = {
   serviceId: string
-  customPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: number | null
   isActive?: boolean
 }
 
@@ -626,73 +448,41 @@ export type ServiceAssignmentUpdateManyWithWhereWithoutStaffInput = {
 
 export type ServiceAssignmentCreateManyServiceInput = {
   staffId: string
-  customPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: number | null
   isActive?: boolean
 }
 
 export type ServiceAssignmentUpdateWithoutServiceInput = {
-  customPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   staff?: Prisma.StaffUpdateOneRequiredWithoutAssignmentsNestedInput
 }
 
 export type ServiceAssignmentUncheckedUpdateWithoutServiceInput = {
   staffId?: Prisma.StringFieldUpdateOperationsInput | string
-  customPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type ServiceAssignmentUncheckedUpdateManyWithoutServiceInput = {
   staffId?: Prisma.StringFieldUpdateOperationsInput | string
-  customPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type ServiceAssignmentCreateManyStaffInput = {
   serviceId: string
-  customPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: number | null
   isActive?: boolean
 }
 
 export type ServiceAssignmentUpdateWithoutStaffInput = {
-  customPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   service?: Prisma.ServiceUpdateOneRequiredWithoutAssignmentsNestedInput
 }
 
 export type ServiceAssignmentUncheckedUpdateWithoutStaffInput = {
   serviceId?: Prisma.StringFieldUpdateOperationsInput | string
-  customPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type ServiceAssignmentUncheckedUpdateManyWithoutStaffInput = {
   serviceId?: Prisma.StringFieldUpdateOperationsInput | string
-  customPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountPercentage?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDiscountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  customDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
@@ -701,76 +491,56 @@ export type ServiceAssignmentUncheckedUpdateManyWithoutStaffInput = {
 export type ServiceAssignmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   staffId?: boolean
   serviceId?: boolean
-  customPrice?: boolean
-  customDiscountPercentage?: boolean
-  customDiscountFixed?: boolean
-  customDurationMinutes?: boolean
   isActive?: boolean
-  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
   service?: boolean | Prisma.ServiceDefaultArgs<ExtArgs>
+  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceAssignment"]>
 
 export type ServiceAssignmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   staffId?: boolean
   serviceId?: boolean
-  customPrice?: boolean
-  customDiscountPercentage?: boolean
-  customDiscountFixed?: boolean
-  customDurationMinutes?: boolean
   isActive?: boolean
-  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
   service?: boolean | Prisma.ServiceDefaultArgs<ExtArgs>
+  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceAssignment"]>
 
 export type ServiceAssignmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   staffId?: boolean
   serviceId?: boolean
-  customPrice?: boolean
-  customDiscountPercentage?: boolean
-  customDiscountFixed?: boolean
-  customDurationMinutes?: boolean
   isActive?: boolean
-  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
   service?: boolean | Prisma.ServiceDefaultArgs<ExtArgs>
+  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceAssignment"]>
 
 export type ServiceAssignmentSelectScalar = {
   staffId?: boolean
   serviceId?: boolean
-  customPrice?: boolean
-  customDiscountPercentage?: boolean
-  customDiscountFixed?: boolean
-  customDurationMinutes?: boolean
   isActive?: boolean
 }
 
-export type ServiceAssignmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"staffId" | "serviceId" | "customPrice" | "customDiscountPercentage" | "customDiscountFixed" | "customDurationMinutes" | "isActive", ExtArgs["result"]["serviceAssignment"]>
+export type ServiceAssignmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"staffId" | "serviceId" | "isActive", ExtArgs["result"]["serviceAssignment"]>
 export type ServiceAssignmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
   service?: boolean | Prisma.ServiceDefaultArgs<ExtArgs>
+  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
 }
 export type ServiceAssignmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
   service?: boolean | Prisma.ServiceDefaultArgs<ExtArgs>
+  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
 }
 export type ServiceAssignmentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
   service?: boolean | Prisma.ServiceDefaultArgs<ExtArgs>
+  staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
 }
 
 export type $ServiceAssignmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ServiceAssignment"
   objects: {
-    staff: Prisma.$StaffPayload<ExtArgs>
     service: Prisma.$ServicePayload<ExtArgs>
+    staff: Prisma.$StaffPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     staffId: string
     serviceId: string
-    customPrice: runtime.Decimal | null
-    customDiscountPercentage: runtime.Decimal | null
-    customDiscountFixed: runtime.Decimal | null
-    customDurationMinutes: number | null
     isActive: boolean
   }, ExtArgs["result"]["serviceAssignment"]>
   composites: {}
@@ -1166,8 +936,8 @@ readonly fields: ServiceAssignmentFieldRefs;
  */
 export interface Prisma__ServiceAssignmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  staff<T extends Prisma.StaffDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StaffDefaultArgs<ExtArgs>>): Prisma.Prisma__StaffClient<runtime.Types.Result.GetResult<Prisma.$StaffPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   service<T extends Prisma.ServiceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ServiceDefaultArgs<ExtArgs>>): Prisma.Prisma__ServiceClient<runtime.Types.Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  staff<T extends Prisma.StaffDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StaffDefaultArgs<ExtArgs>>): Prisma.Prisma__StaffClient<runtime.Types.Result.GetResult<Prisma.$StaffPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1199,10 +969,6 @@ export interface Prisma__ServiceAssignmentClient<T, Null = never, ExtArgs extend
 export interface ServiceAssignmentFieldRefs {
   readonly staffId: Prisma.FieldRef<"ServiceAssignment", 'String'>
   readonly serviceId: Prisma.FieldRef<"ServiceAssignment", 'String'>
-  readonly customPrice: Prisma.FieldRef<"ServiceAssignment", 'Decimal'>
-  readonly customDiscountPercentage: Prisma.FieldRef<"ServiceAssignment", 'Decimal'>
-  readonly customDiscountFixed: Prisma.FieldRef<"ServiceAssignment", 'Decimal'>
-  readonly customDurationMinutes: Prisma.FieldRef<"ServiceAssignment", 'Int'>
   readonly isActive: Prisma.FieldRef<"ServiceAssignment", 'Boolean'>
 }
     

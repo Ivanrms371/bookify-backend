@@ -21,12 +21,14 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prisma": {
       "seed": "ts-node -r tsconfig-paths/register prisma/seed.ts"
-    }
+    },
+    "email:dev": "email dev --dir src/modules/notifications/application/templates"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/event-emitter": "^3.0.1",
     "@nestjs/jwt": "^11.0.2",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/schedule": "^6.1.0",
@@ -43,7 +45,9 @@
     "cookie-parser": "^1.4.7",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
+    "eventemitter2": "^6.4.9",
     "jsonwebtoken": "^9.0.3",
+    "p-limit": "^7.3.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-email": "^5.1.1",
@@ -51,7 +55,10 @@
     "resend": "^6.6.0",
     "rxjs": "^7.8.1",
     "sharp": "^0.34.5",
-    "streamifier": "^0.1.1"
+    "slugify": "^1.6.6",
+    "streamifier": "^0.1.1",
+    "tailwind-merge": "^3.5.0",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

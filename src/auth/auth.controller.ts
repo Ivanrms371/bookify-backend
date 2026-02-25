@@ -1,150 +1,117 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-  UnauthorizedException,
-  Param,
-} from '@nestjs/common';
-import { Response, Request } from 'express';
-import { AuthService } from './auth.service';
-import { SignupDto } from './dto/signup-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
-import { createAuthContext } from './utils/auth-context.util';
-import { MagicLinkService } from './services/magic-link.service';
-import { MagicLinkRequestDto } from './dto/magic-link-request.dto';
+import { Request, Response } from 'express';
+import { Body, Controller, Get, Post, Query, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { AuthService } from './application/auth.service';
+import { GoogleService } from './infrastructure/google/google.service';
+import { LoginDto } from './dto/login.dto';
+import { SignupDto } from './dto/signup.dto';
+import { AuthCallbackHandler } from './application/auth-callback.handler';
+import { AuthCookieService } from './infrastructure/cookies/auth-cookie.service';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { AuthenticatedRequest } from 'src/auth/types/express-request.type';
+import { ClientInfo } from 'src/common/types/client.type';
+import { PasswordService } from './application/password.service';
+import { ForgotPasswordDto, ResetPasswordDto } from './dto/forgot-password.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly passwordService: PasswordService,
+    private readonly authCookieService: AuthCookieService,
+    private readonly googleService: GoogleService,
+    private readonly authCallbackHandler: AuthCallbackHandler,
+  ) {}
 
-  @Post('signup')
-  async register(@Body() data: SignupDto, @Req() req: Request) {
-    const ctx = createAuthContext(req);
-    await this.authService.signup(data, ctx);
+  private normalizeClientInfo(req: Request): ClientInfo {
+    const forwarded = req.headers['x-forwarded-for'];
+    const ip = typeof forwarded === 'string' ? forwarded.split(',')[0] : (req.ip ?? '');
 
     return {
-      success: true,
-      message: 'Cuenta creada. Hemos enviado un email para confirmar su cuenta.',
+      ipAddress: ip.trim().toLowerCase(),
+      userAgent: req.get('user-agent')?.trim().toLowerCase() ?? '',
     };
   }
 
   @Post('login')
-  async login(
-    @Req() req: Request,
-    @Res({ passthrough: true }) res: Response,
-    @Body() data: LoginUserDto,
-  ) {
-    const ctx = createAuthContext(req);
-    const { accessToken, refreshToken, user } = await this.authService.login(data, ctx);
+  async login(@Req() req: Request, @Res() res: Response, @Body() dto: LoginDto) {
+    const deviceId = this.authCookieService.getDeviceIdCookie(req);
+    const { accessToken, refreshToken, deviceId: newDeviceId } = await this.authService.login(dto, this.normalizeClientInfo(req), deviceId);
+    this.authCookieService.setDeviceIdCookie(res, newDeviceId);
+    this.authCookieService.setAccessTokenCookie(res, accessToken);
+    this.authCookieService.setRefreshTokenCookie(res, refreshToken);
+    res.json({ accessToken, refreshToken });
+  }
 
-    res.cookie('refresh-token', refreshToken, {
-      httpOnly: true,
-      secure: false,
-      path: '/api/auth/refresh',
-      sameSite: 'lax',
-      maxAge: 1000 * 60 * 60 * 24 * 30,
-    });
+  @Post('signup')
+  signup(@Req() req: Request, @Body() dto: SignupDto) {
+    return this.authService.signup(dto, this.normalizeClientInfo(req));
+  }
 
-    res.cookie('access-token', accessToken, {
-      httpOnly: true,
-      secure: false,
-      path: '/api',
-      sameSite: 'lax',
-      maxAge: 1000 * 60 * 15,
-    });
+  @Get('google')
+  google(@Req() req: Request, @Res() res: Response) {
+    const deviceId = this.authCookieService.getDeviceIdCookie(req);
+    const url = this.googleService.getAuthorizationUrl(deviceId);
+    res.redirect(url);
+  }
 
-    return user;
+  @Get('google/callback')
+  async googleCallback(@Req() req: Request, @Res() res: Response, @Query() query: { code: string; state: string }) {
+    const deviceId = this.authCookieService.getDeviceIdCookie(req) || query.state;
+    const {
+      accessToken,
+      refreshToken,
+      deviceId: newDeviceId,
+    } = await this.authCallbackHandler.handleGoogleOAuthCallback(query.code, this.normalizeClientInfo(req), deviceId);
+    this.authCookieService.setDeviceIdCookie(res, newDeviceId);
+    this.authCookieService.setAccessTokenCookie(res, accessToken);
+    this.authCookieService.setRefreshTokenCookie(res, refreshToken);
+    res.json({ accessToken, refreshToken });
   }
 
   @Post('refresh')
-  async refreshToken(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    const refreshToken = req.cookies['refresh-token'];
+  async refresh(@Req() req: Request, @Res() res: Response) {
+    const refreshToken = this.authCookieService.getRefreshTokenCookie(req);
     if (!refreshToken) {
-      throw new UnauthorizedException('Inicia sesion para continuar');
+      throw new UnauthorizedException('Inicia sesión para continuar');
     }
-
-    console.log(refreshToken);
-    const { accessToken } = await this.authService.refreshToken(refreshToken);
-    console.log('refreshed', accessToken);
-
-    res.cookie('access-token', accessToken, {
-      httpOnly: true,
-      secure: false,
-      path: '/api',
-      sameSite: 'lax',
-      maxAge: 1000 * 60 * 15,
-    });
-
-    return { success: true };
+    const { accessToken, refreshToken: newRefreshToken } = await this.authService.refresh(refreshToken);
+    this.authCookieService.setAccessTokenCookie(res, accessToken);
+    this.authCookieService.setRefreshTokenCookie(res, newRefreshToken);
+    res.json({ accessToken, newRefreshToken });
   }
 
-  @Get('me')
-  async getMe(@Req() req: Request) {
-    const accessToken = req.cookies['access-token'];
-    if (!accessToken) {
-      throw new UnauthorizedException('Inicia sesion para continuar');
-    }
-
-    return await this.authService.getMe(accessToken);
-  }
-
+  @UseGuards(JwtAuthGuard)
   @Post('logout')
-  async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    const refreshToken = req.cookies['refresh-token'];
-    if (!refreshToken) {
-      throw new UnauthorizedException('Inicia sesion para continuar');
-    }
-    res.clearCookie('refresh-token');
-    return this.authService.revokeRefreshToken(refreshToken);
+  async logout(@Req() req: AuthenticatedRequest, @Res() res: Response) {
+    const jti = req.user.jti;
+    await this.authService.logout(jti);
+    this.authCookieService.clearAccessTokenCookie(res);
+    this.authCookieService.clearRefreshTokenCookie(res);
+    res.json({ success: true });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('logout-all')
-  async revokeAllTokens(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    const refreshToken = req.cookies['refresh-token'];
-    if (!refreshToken) {
-      throw new UnauthorizedException('Inicia sesion para continuar');
-    }
-    res.clearCookie('refresh-token');
-    return this.authService.revokeAllTokens(refreshToken);
+  async logoutAll(@Req() req: AuthenticatedRequest, @Res() res: Response) {
+    const userId = req.user.userId;
+    await this.authService.logoutAll(userId);
+    this.authCookieService.clearAccessTokenCookie(res);
+    this.authCookieService.clearRefreshTokenCookie(res);
+    res.json({ success: true });
   }
 
-  @Post('magic-link/request')
-  async requestMagicLink(@Body() data: MagicLinkRequestDto, @Req() req: Request) {
-    const ctx = createAuthContext(req);
-    return this.authService.requestMagicLink(data.email, ctx);
+  @Get('email/confirm')
+  async confirmEmail(@Req() req: Request, @Query() query: { token: string }) {
+    return this.authService.confirmEmailAndMaybeLogin(query.token, this.normalizeClientInfo(req));
   }
 
-  @Get('magic-link/verify/:token')
-  async verifyMagicLink(
-    @Param('token') token: string,
-    @Req() req: Request,
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    const ctx = createAuthContext(req);
-    const { accessToken, refreshToken, user } = await this.authService.loginWithMagicLink(
-      token,
-      ctx,
-    );
+  @Post('password/forgot')
+  async forgotPassword(@Body() dto: ForgotPasswordDto) {
+    return this.passwordService.forgotPassword(dto);
+  }
 
-    res.cookie('refresh-token', refreshToken, {
-      httpOnly: true,
-      secure: false,
-      path: '/api/auth/refresh',
-      sameSite: 'lax',
-      maxAge: 1000 * 60 * 60 * 24 * 180, // 6 months for customers
-    });
-
-    res.cookie('access-token', accessToken, {
-      httpOnly: true,
-      secure: false,
-      path: '/api',
-      sameSite: 'lax',
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days for customers
-    });
-
-    return user;
+  @Post('password/reset')
+  async resetPassword(@Body() dto: ResetPasswordDto) {
+    return this.passwordService.resetPassword(dto);
   }
 }

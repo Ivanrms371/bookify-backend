@@ -303,9 +303,9 @@ export type PaymentWhereInput = {
   AND?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
   OR?: Prisma.PaymentWhereInput[]
   NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
-  id?: Prisma.StringFilter<"Payment"> | string
-  businessId?: Prisma.StringFilter<"Payment"> | string
-  subscriptionId?: Prisma.StringNullableFilter<"Payment"> | string | null
+  id?: Prisma.UuidFilter<"Payment"> | string
+  businessId?: Prisma.UuidFilter<"Payment"> | string
+  subscriptionId?: Prisma.UuidNullableFilter<"Payment"> | string | null
   referenceCode?: Prisma.StringFilter<"Payment"> | string
   sequenceNumber?: Prisma.IntFilter<"Payment"> | number
   status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
@@ -354,8 +354,8 @@ export type PaymentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
   OR?: Prisma.PaymentWhereInput[]
   NOT?: Prisma.PaymentWhereInput | Prisma.PaymentWhereInput[]
-  businessId?: Prisma.StringFilter<"Payment"> | string
-  subscriptionId?: Prisma.StringNullableFilter<"Payment"> | string | null
+  businessId?: Prisma.UuidFilter<"Payment"> | string
+  subscriptionId?: Prisma.UuidNullableFilter<"Payment"> | string | null
   status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus
   statusDetails?: Prisma.StringNullableFilter<"Payment"> | string | null
   transactionAmount?: Prisma.DecimalFilter<"Payment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -400,9 +400,9 @@ export type PaymentScalarWhereWithAggregatesInput = {
   AND?: Prisma.PaymentScalarWhereWithAggregatesInput | Prisma.PaymentScalarWhereWithAggregatesInput[]
   OR?: Prisma.PaymentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PaymentScalarWhereWithAggregatesInput | Prisma.PaymentScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"Payment"> | string
-  businessId?: Prisma.StringWithAggregatesFilter<"Payment"> | string
-  subscriptionId?: Prisma.StringNullableWithAggregatesFilter<"Payment"> | string | null
+  id?: Prisma.UuidWithAggregatesFilter<"Payment"> | string
+  businessId?: Prisma.UuidWithAggregatesFilter<"Payment"> | string
+  subscriptionId?: Prisma.UuidNullableWithAggregatesFilter<"Payment"> | string | null
   referenceCode?: Prisma.StringWithAggregatesFilter<"Payment"> | string
   sequenceNumber?: Prisma.IntWithAggregatesFilter<"Payment"> | number
   status?: Prisma.EnumPaymentStatusWithAggregatesFilter<"Payment"> | $Enums.PaymentStatus
@@ -795,9 +795,9 @@ export type PaymentScalarWhereInput = {
   AND?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
   OR?: Prisma.PaymentScalarWhereInput[]
   NOT?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
-  id?: Prisma.StringFilter<"Payment"> | string
-  businessId?: Prisma.StringFilter<"Payment"> | string
-  subscriptionId?: Prisma.StringNullableFilter<"Payment"> | string | null
+  id?: Prisma.UuidFilter<"Payment"> | string
+  businessId?: Prisma.UuidFilter<"Payment"> | string
+  subscriptionId?: Prisma.UuidNullableFilter<"Payment"> | string | null
   referenceCode?: Prisma.StringFilter<"Payment"> | string
   sequenceNumber?: Prisma.IntFilter<"Payment"> | number
   status?: Prisma.EnumPaymentStatusFilter<"Payment"> | $Enums.PaymentStatus

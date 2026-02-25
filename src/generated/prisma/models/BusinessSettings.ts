@@ -57,6 +57,7 @@ export type BusinessSettingsMinAggregateOutputType = {
   maxPendingApptsPerClient: number | null
   requireConfirmation: boolean | null
   holidayClosureAutoApply: boolean | null
+  allowPassiveTimeBooking: boolean | null
 }
 
 export type BusinessSettingsMaxAggregateOutputType = {
@@ -72,6 +73,7 @@ export type BusinessSettingsMaxAggregateOutputType = {
   maxPendingApptsPerClient: number | null
   requireConfirmation: boolean | null
   holidayClosureAutoApply: boolean | null
+  allowPassiveTimeBooking: boolean | null
 }
 
 export type BusinessSettingsCountAggregateOutputType = {
@@ -87,6 +89,7 @@ export type BusinessSettingsCountAggregateOutputType = {
   maxPendingApptsPerClient: number
   requireConfirmation: number
   holidayClosureAutoApply: number
+  allowPassiveTimeBooking: number
   _all: number
 }
 
@@ -122,6 +125,7 @@ export type BusinessSettingsMinAggregateInputType = {
   maxPendingApptsPerClient?: true
   requireConfirmation?: true
   holidayClosureAutoApply?: true
+  allowPassiveTimeBooking?: true
 }
 
 export type BusinessSettingsMaxAggregateInputType = {
@@ -137,6 +141,7 @@ export type BusinessSettingsMaxAggregateInputType = {
   maxPendingApptsPerClient?: true
   requireConfirmation?: true
   holidayClosureAutoApply?: true
+  allowPassiveTimeBooking?: true
 }
 
 export type BusinessSettingsCountAggregateInputType = {
@@ -152,6 +157,7 @@ export type BusinessSettingsCountAggregateInputType = {
   maxPendingApptsPerClient?: true
   requireConfirmation?: true
   holidayClosureAutoApply?: true
+  allowPassiveTimeBooking?: true
   _all?: true
 }
 
@@ -254,6 +260,7 @@ export type BusinessSettingsGroupByOutputType = {
   maxPendingApptsPerClient: number
   requireConfirmation: boolean
   holidayClosureAutoApply: boolean
+  allowPassiveTimeBooking: boolean
   _count: BusinessSettingsCountAggregateOutputType | null
   _avg: BusinessSettingsAvgAggregateOutputType | null
   _sum: BusinessSettingsSumAggregateOutputType | null
@@ -280,8 +287,8 @@ export type BusinessSettingsWhereInput = {
   AND?: Prisma.BusinessSettingsWhereInput | Prisma.BusinessSettingsWhereInput[]
   OR?: Prisma.BusinessSettingsWhereInput[]
   NOT?: Prisma.BusinessSettingsWhereInput | Prisma.BusinessSettingsWhereInput[]
-  id?: Prisma.StringFilter<"BusinessSettings"> | string
-  businessId?: Prisma.StringFilter<"BusinessSettings"> | string
+  id?: Prisma.UuidFilter<"BusinessSettings"> | string
+  businessId?: Prisma.UuidFilter<"BusinessSettings"> | string
   slotIntervalMinutes?: Prisma.IntFilter<"BusinessSettings"> | number
   maxAdvancedDays?: Prisma.IntFilter<"BusinessSettings"> | number
   minAdvancedMinutes?: Prisma.IntFilter<"BusinessSettings"> | number
@@ -292,6 +299,7 @@ export type BusinessSettingsWhereInput = {
   maxPendingApptsPerClient?: Prisma.IntFilter<"BusinessSettings"> | number
   requireConfirmation?: Prisma.BoolFilter<"BusinessSettings"> | boolean
   holidayClosureAutoApply?: Prisma.BoolFilter<"BusinessSettings"> | boolean
+  allowPassiveTimeBooking?: Prisma.BoolFilter<"BusinessSettings"> | boolean
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
 }
 
@@ -308,6 +316,7 @@ export type BusinessSettingsOrderByWithRelationInput = {
   maxPendingApptsPerClient?: Prisma.SortOrder
   requireConfirmation?: Prisma.SortOrder
   holidayClosureAutoApply?: Prisma.SortOrder
+  allowPassiveTimeBooking?: Prisma.SortOrder
   business?: Prisma.BusinessOrderByWithRelationInput
 }
 
@@ -327,6 +336,7 @@ export type BusinessSettingsWhereUniqueInput = Prisma.AtLeast<{
   maxPendingApptsPerClient?: Prisma.IntFilter<"BusinessSettings"> | number
   requireConfirmation?: Prisma.BoolFilter<"BusinessSettings"> | boolean
   holidayClosureAutoApply?: Prisma.BoolFilter<"BusinessSettings"> | boolean
+  allowPassiveTimeBooking?: Prisma.BoolFilter<"BusinessSettings"> | boolean
   business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
 }, "id" | "businessId">
 
@@ -343,6 +353,7 @@ export type BusinessSettingsOrderByWithAggregationInput = {
   maxPendingApptsPerClient?: Prisma.SortOrder
   requireConfirmation?: Prisma.SortOrder
   holidayClosureAutoApply?: Prisma.SortOrder
+  allowPassiveTimeBooking?: Prisma.SortOrder
   _count?: Prisma.BusinessSettingsCountOrderByAggregateInput
   _avg?: Prisma.BusinessSettingsAvgOrderByAggregateInput
   _max?: Prisma.BusinessSettingsMaxOrderByAggregateInput
@@ -354,8 +365,8 @@ export type BusinessSettingsScalarWhereWithAggregatesInput = {
   AND?: Prisma.BusinessSettingsScalarWhereWithAggregatesInput | Prisma.BusinessSettingsScalarWhereWithAggregatesInput[]
   OR?: Prisma.BusinessSettingsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.BusinessSettingsScalarWhereWithAggregatesInput | Prisma.BusinessSettingsScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"BusinessSettings"> | string
-  businessId?: Prisma.StringWithAggregatesFilter<"BusinessSettings"> | string
+  id?: Prisma.UuidWithAggregatesFilter<"BusinessSettings"> | string
+  businessId?: Prisma.UuidWithAggregatesFilter<"BusinessSettings"> | string
   slotIntervalMinutes?: Prisma.IntWithAggregatesFilter<"BusinessSettings"> | number
   maxAdvancedDays?: Prisma.IntWithAggregatesFilter<"BusinessSettings"> | number
   minAdvancedMinutes?: Prisma.IntWithAggregatesFilter<"BusinessSettings"> | number
@@ -366,6 +377,7 @@ export type BusinessSettingsScalarWhereWithAggregatesInput = {
   maxPendingApptsPerClient?: Prisma.IntWithAggregatesFilter<"BusinessSettings"> | number
   requireConfirmation?: Prisma.BoolWithAggregatesFilter<"BusinessSettings"> | boolean
   holidayClosureAutoApply?: Prisma.BoolWithAggregatesFilter<"BusinessSettings"> | boolean
+  allowPassiveTimeBooking?: Prisma.BoolWithAggregatesFilter<"BusinessSettings"> | boolean
 }
 
 export type BusinessSettingsCreateInput = {
@@ -380,6 +392,7 @@ export type BusinessSettingsCreateInput = {
   maxPendingApptsPerClient?: number
   requireConfirmation?: boolean
   holidayClosureAutoApply?: boolean
+  allowPassiveTimeBooking?: boolean
   business: Prisma.BusinessCreateNestedOneWithoutSettingsInput
 }
 
@@ -396,6 +409,7 @@ export type BusinessSettingsUncheckedCreateInput = {
   maxPendingApptsPerClient?: number
   requireConfirmation?: boolean
   holidayClosureAutoApply?: boolean
+  allowPassiveTimeBooking?: boolean
 }
 
 export type BusinessSettingsUpdateInput = {
@@ -410,6 +424,7 @@ export type BusinessSettingsUpdateInput = {
   maxPendingApptsPerClient?: Prisma.IntFieldUpdateOperationsInput | number
   requireConfirmation?: Prisma.BoolFieldUpdateOperationsInput | boolean
   holidayClosureAutoApply?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowPassiveTimeBooking?: Prisma.BoolFieldUpdateOperationsInput | boolean
   business?: Prisma.BusinessUpdateOneRequiredWithoutSettingsNestedInput
 }
 
@@ -426,6 +441,7 @@ export type BusinessSettingsUncheckedUpdateInput = {
   maxPendingApptsPerClient?: Prisma.IntFieldUpdateOperationsInput | number
   requireConfirmation?: Prisma.BoolFieldUpdateOperationsInput | boolean
   holidayClosureAutoApply?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowPassiveTimeBooking?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type BusinessSettingsCreateManyInput = {
@@ -441,6 +457,7 @@ export type BusinessSettingsCreateManyInput = {
   maxPendingApptsPerClient?: number
   requireConfirmation?: boolean
   holidayClosureAutoApply?: boolean
+  allowPassiveTimeBooking?: boolean
 }
 
 export type BusinessSettingsUpdateManyMutationInput = {
@@ -455,6 +472,7 @@ export type BusinessSettingsUpdateManyMutationInput = {
   maxPendingApptsPerClient?: Prisma.IntFieldUpdateOperationsInput | number
   requireConfirmation?: Prisma.BoolFieldUpdateOperationsInput | boolean
   holidayClosureAutoApply?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowPassiveTimeBooking?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type BusinessSettingsUncheckedUpdateManyInput = {
@@ -470,6 +488,7 @@ export type BusinessSettingsUncheckedUpdateManyInput = {
   maxPendingApptsPerClient?: Prisma.IntFieldUpdateOperationsInput | number
   requireConfirmation?: Prisma.BoolFieldUpdateOperationsInput | boolean
   holidayClosureAutoApply?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowPassiveTimeBooking?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type BusinessSettingsNullableScalarRelationFilter = {
@@ -490,6 +509,7 @@ export type BusinessSettingsCountOrderByAggregateInput = {
   maxPendingApptsPerClient?: Prisma.SortOrder
   requireConfirmation?: Prisma.SortOrder
   holidayClosureAutoApply?: Prisma.SortOrder
+  allowPassiveTimeBooking?: Prisma.SortOrder
 }
 
 export type BusinessSettingsAvgOrderByAggregateInput = {
@@ -514,6 +534,7 @@ export type BusinessSettingsMaxOrderByAggregateInput = {
   maxPendingApptsPerClient?: Prisma.SortOrder
   requireConfirmation?: Prisma.SortOrder
   holidayClosureAutoApply?: Prisma.SortOrder
+  allowPassiveTimeBooking?: Prisma.SortOrder
 }
 
 export type BusinessSettingsMinOrderByAggregateInput = {
@@ -529,6 +550,7 @@ export type BusinessSettingsMinOrderByAggregateInput = {
   maxPendingApptsPerClient?: Prisma.SortOrder
   requireConfirmation?: Prisma.SortOrder
   holidayClosureAutoApply?: Prisma.SortOrder
+  allowPassiveTimeBooking?: Prisma.SortOrder
 }
 
 export type BusinessSettingsSumOrderByAggregateInput = {
@@ -584,6 +606,7 @@ export type BusinessSettingsCreateWithoutBusinessInput = {
   maxPendingApptsPerClient?: number
   requireConfirmation?: boolean
   holidayClosureAutoApply?: boolean
+  allowPassiveTimeBooking?: boolean
 }
 
 export type BusinessSettingsUncheckedCreateWithoutBusinessInput = {
@@ -598,6 +621,7 @@ export type BusinessSettingsUncheckedCreateWithoutBusinessInput = {
   maxPendingApptsPerClient?: number
   requireConfirmation?: boolean
   holidayClosureAutoApply?: boolean
+  allowPassiveTimeBooking?: boolean
 }
 
 export type BusinessSettingsCreateOrConnectWithoutBusinessInput = {
@@ -628,6 +652,7 @@ export type BusinessSettingsUpdateWithoutBusinessInput = {
   maxPendingApptsPerClient?: Prisma.IntFieldUpdateOperationsInput | number
   requireConfirmation?: Prisma.BoolFieldUpdateOperationsInput | boolean
   holidayClosureAutoApply?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowPassiveTimeBooking?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type BusinessSettingsUncheckedUpdateWithoutBusinessInput = {
@@ -642,6 +667,7 @@ export type BusinessSettingsUncheckedUpdateWithoutBusinessInput = {
   maxPendingApptsPerClient?: Prisma.IntFieldUpdateOperationsInput | number
   requireConfirmation?: Prisma.BoolFieldUpdateOperationsInput | boolean
   holidayClosureAutoApply?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  allowPassiveTimeBooking?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -659,6 +685,7 @@ export type BusinessSettingsSelect<ExtArgs extends runtime.Types.Extensions.Inte
   maxPendingApptsPerClient?: boolean
   requireConfirmation?: boolean
   holidayClosureAutoApply?: boolean
+  allowPassiveTimeBooking?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["businessSettings"]>
 
@@ -675,6 +702,7 @@ export type BusinessSettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   maxPendingApptsPerClient?: boolean
   requireConfirmation?: boolean
   holidayClosureAutoApply?: boolean
+  allowPassiveTimeBooking?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["businessSettings"]>
 
@@ -691,6 +719,7 @@ export type BusinessSettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   maxPendingApptsPerClient?: boolean
   requireConfirmation?: boolean
   holidayClosureAutoApply?: boolean
+  allowPassiveTimeBooking?: boolean
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["businessSettings"]>
 
@@ -707,9 +736,10 @@ export type BusinessSettingsSelectScalar = {
   maxPendingApptsPerClient?: boolean
   requireConfirmation?: boolean
   holidayClosureAutoApply?: boolean
+  allowPassiveTimeBooking?: boolean
 }
 
-export type BusinessSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "slotIntervalMinutes" | "maxAdvancedDays" | "minAdvancedMinutes" | "bufferTimeMinutes" | "cancellationWindowMinutes" | "timezone" | "currency" | "maxPendingApptsPerClient" | "requireConfirmation" | "holidayClosureAutoApply", ExtArgs["result"]["businessSettings"]>
+export type BusinessSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "slotIntervalMinutes" | "maxAdvancedDays" | "minAdvancedMinutes" | "bufferTimeMinutes" | "cancellationWindowMinutes" | "timezone" | "currency" | "maxPendingApptsPerClient" | "requireConfirmation" | "holidayClosureAutoApply" | "allowPassiveTimeBooking", ExtArgs["result"]["businessSettings"]>
 export type BusinessSettingsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
 }
@@ -738,6 +768,7 @@ export type $BusinessSettingsPayload<ExtArgs extends runtime.Types.Extensions.In
     maxPendingApptsPerClient: number
     requireConfirmation: boolean
     holidayClosureAutoApply: boolean
+    allowPassiveTimeBooking: boolean
   }, ExtArgs["result"]["businessSettings"]>
   composites: {}
 }
@@ -1174,6 +1205,7 @@ export interface BusinessSettingsFieldRefs {
   readonly maxPendingApptsPerClient: Prisma.FieldRef<"BusinessSettings", 'Int'>
   readonly requireConfirmation: Prisma.FieldRef<"BusinessSettings", 'Boolean'>
   readonly holidayClosureAutoApply: Prisma.FieldRef<"BusinessSettings", 'Boolean'>
+  readonly allowPassiveTimeBooking: Prisma.FieldRef<"BusinessSettings", 'Boolean'>
 }
     
 
