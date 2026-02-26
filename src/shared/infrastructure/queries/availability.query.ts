@@ -68,12 +68,13 @@ export class AvailabilityQuery extends BaseRepository {
             endTime: { gt: start },
           },
           select: {
-            startTime: true,
-            endTime: true,
-            durationMinutes: true,
-            initialActiveMinutes: true,
-            passiveMinutes: true,
-            finalActiveMinutes: true,
+            blocks: {
+              select: {
+                staffId: true,
+                startTime: true,
+                endTime: true,
+              },
+            },
           },
         },
       },

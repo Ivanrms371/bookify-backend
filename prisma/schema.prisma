@@ -359,8 +359,18 @@ model Appointment {
   notes                String?
   internalNotes        String?           @map("internal_notes")
   confirmationCode     String            @map("confirmation_code")
+
+  rescheduleToken      String?           @unique @map("reschedule_token")
+  rescheduleRequestedAt DateTime?         @map("reschedule_requested_at")
+  previousStartTime    DateTime?         @map("previous_start_time")
+  previousEndTime      DateTime?         @map("previous_end_time")
+  rescheduleReason     String?           @map("reschedule_reason")
+  rescheduleCount      Int               @default(0) @map("reschedule_count")
+
   cancelledAt          DateTime?         @map("cancelled_at")
   cancellationReason   String?           @map("cancellation_reason")
+  cancelToken          String?           @unique @map("cancel_token")
+
   createdAt            DateTime          @default(now()) @map("created_at")
   updatedAt            DateTime          @updatedAt @map("updated_at")
   discountFixed        Decimal?          @default(0) @map("discount_fixed") @db.Decimal(10, 2)

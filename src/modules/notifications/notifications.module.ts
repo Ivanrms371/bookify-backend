@@ -22,9 +22,14 @@ import { AppointmentCreatedTemplate } from './application/templates/appointment-
 import { AppointmentReminderTemplate } from './application/templates/appointment-reminder/appointment-reminder.template';
 import { VerificationCreatedListener } from './listeners/verifications/verification-created.listener';
 import { VerificationEmailTemplate } from './application/templates/confirm-email/confirm-email.template';
+import { AppointmentCancelledTemplate } from './application/templates/appointment-cancelled/appointment-cancelled.template';
+import { AppointmentRescheduledTemplate } from './application/templates/appointment-reschedule/appointment-reschedule.template';
+import { AppointmentCancelledListener } from './listeners/appointments/appointment-cancelled.listener';
+import { AppointmentRescheduledListener } from './listeners/appointments/appointment-rescheduled.listener';
+import { AppointmentsModule } from '../appointments/appointments.module';
 
 @Module({
-  imports: [UsersModule, CustomersModule, BusinessLimitsModule],
+  imports: [UsersModule, CustomersModule, AppointmentsModule, BusinessLimitsModule],
   providers: [
     // Services
     NotificationsService,
@@ -55,11 +60,15 @@ import { VerificationEmailTemplate } from './application/templates/confirm-email
     // Templates
     TemplateService,
     AppointmentCreatedTemplate,
+    AppointmentCancelledTemplate,
+    AppointmentRescheduledTemplate,
     AppointmentReminderTemplate,
     VerificationEmailTemplate,
 
     // Listeners
     AppointmentCreatedListener,
+    AppointmentCancelledListener,
+    AppointmentRescheduledListener,
     VerificationCreatedListener,
   ],
 })

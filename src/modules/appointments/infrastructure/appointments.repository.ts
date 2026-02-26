@@ -26,6 +26,110 @@ export class AppointmentsRepository extends BaseRepository {
   }
 
   create(appointment: AppointmentCreateInput, tx?: TransactionClient) {
-    return this.db(tx).appointment.create({ data: appointment });
+    return this.db(tx).appointment.create({
+      data: appointment,
+      include: {
+        staff: {
+          include: {
+            user: true,
+          },
+        },
+        customer: true,
+        service: true,
+      },
+    });
+  }
+
+  findById(id: string) {
+    return this.db().appointment.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        businessId: true,
+        staffId: true,
+        status: true,
+        customerId: true,
+        serviceId: true,
+        staff: {
+          select: {
+            userId: true,
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+        customer: {
+          select: {
+            name: true,
+          },
+        },
+        startTime: true,
+        endTime: true,
+        cancellationReason: true,
+        cancelledAt: true,
+      },
+    });
+  }
+
+  updateCancelToken(id: string, token: string, tx?: TransactionClient) {
+    return this.db(tx).appointment.update({
+      where: { id },
+      data: {
+        cancelToken: token,
+      },
+    });
+  }
+
+  findByCancelToken(cancelToken: string) {
+    return this.db().appointment.findUnique({
+      where: { cancelToken },
+      select: {
+        id: true,
+        staffId: true,
+        status: true,
+        customerId: true,
+        serviceId: true,
+        staff: {
+          select: {
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+        customer: {
+          select: {
+            name: true,
+          },
+        },
+        startTime: true,
+        endTime: true,
+        cancellationReason: true,
+        cancelledAt: true,
+      },
+    });
+  }
+
+  markAsCancelled(id: string, reason: string, tx?: TransactionClient) {
+    return this.db(tx).appointment.update({
+      where: { id },
+      data: {
+        status: 'CANCELLED',
+        cancellationReason: reason,
+        cancelledAt: new Date(),
+      },
+    });
+  }
+
+  updateRescheduleToken(id: string, token: string, tx?: TransactionClient) {
+    return this.db(tx).appointment.update({
+      where: { id },
+      data: {
+        rescheduleToken: token,
+      },
+    });
   }
 }

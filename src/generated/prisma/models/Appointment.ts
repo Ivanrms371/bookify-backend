@@ -27,6 +27,7 @@ export type AggregateAppointment = {
 }
 
 export type AppointmentAvgAggregateOutputType = {
+  rescheduleCount: number | null
   discountFixed: runtime.Decimal | null
   discountPercentage: number | null
   durationMinutes: number | null
@@ -37,6 +38,7 @@ export type AppointmentAvgAggregateOutputType = {
 }
 
 export type AppointmentSumAggregateOutputType = {
+  rescheduleCount: number | null
   discountFixed: runtime.Decimal | null
   discountPercentage: number | null
   durationMinutes: number | null
@@ -60,8 +62,15 @@ export type AppointmentMinAggregateOutputType = {
   notes: string | null
   internalNotes: string | null
   confirmationCode: string | null
+  rescheduleToken: string | null
+  rescheduleRequestedAt: Date | null
+  previousStartTime: Date | null
+  previousEndTime: Date | null
+  rescheduleReason: string | null
+  rescheduleCount: number | null
   cancelledAt: Date | null
   cancellationReason: string | null
+  cancelToken: string | null
   createdAt: Date | null
   updatedAt: Date | null
   discountFixed: runtime.Decimal | null
@@ -88,8 +97,15 @@ export type AppointmentMaxAggregateOutputType = {
   notes: string | null
   internalNotes: string | null
   confirmationCode: string | null
+  rescheduleToken: string | null
+  rescheduleRequestedAt: Date | null
+  previousStartTime: Date | null
+  previousEndTime: Date | null
+  rescheduleReason: string | null
+  rescheduleCount: number | null
   cancelledAt: Date | null
   cancellationReason: string | null
+  cancelToken: string | null
   createdAt: Date | null
   updatedAt: Date | null
   discountFixed: runtime.Decimal | null
@@ -116,8 +132,15 @@ export type AppointmentCountAggregateOutputType = {
   notes: number
   internalNotes: number
   confirmationCode: number
+  rescheduleToken: number
+  rescheduleRequestedAt: number
+  previousStartTime: number
+  previousEndTime: number
+  rescheduleReason: number
+  rescheduleCount: number
   cancelledAt: number
   cancellationReason: number
+  cancelToken: number
   createdAt: number
   updatedAt: number
   discountFixed: number
@@ -133,6 +156,7 @@ export type AppointmentCountAggregateOutputType = {
 
 
 export type AppointmentAvgAggregateInputType = {
+  rescheduleCount?: true
   discountFixed?: true
   discountPercentage?: true
   durationMinutes?: true
@@ -143,6 +167,7 @@ export type AppointmentAvgAggregateInputType = {
 }
 
 export type AppointmentSumAggregateInputType = {
+  rescheduleCount?: true
   discountFixed?: true
   discountPercentage?: true
   durationMinutes?: true
@@ -166,8 +191,15 @@ export type AppointmentMinAggregateInputType = {
   notes?: true
   internalNotes?: true
   confirmationCode?: true
+  rescheduleToken?: true
+  rescheduleRequestedAt?: true
+  previousStartTime?: true
+  previousEndTime?: true
+  rescheduleReason?: true
+  rescheduleCount?: true
   cancelledAt?: true
   cancellationReason?: true
+  cancelToken?: true
   createdAt?: true
   updatedAt?: true
   discountFixed?: true
@@ -194,8 +226,15 @@ export type AppointmentMaxAggregateInputType = {
   notes?: true
   internalNotes?: true
   confirmationCode?: true
+  rescheduleToken?: true
+  rescheduleRequestedAt?: true
+  previousStartTime?: true
+  previousEndTime?: true
+  rescheduleReason?: true
+  rescheduleCount?: true
   cancelledAt?: true
   cancellationReason?: true
+  cancelToken?: true
   createdAt?: true
   updatedAt?: true
   discountFixed?: true
@@ -222,8 +261,15 @@ export type AppointmentCountAggregateInputType = {
   notes?: true
   internalNotes?: true
   confirmationCode?: true
+  rescheduleToken?: true
+  rescheduleRequestedAt?: true
+  previousStartTime?: true
+  previousEndTime?: true
+  rescheduleReason?: true
+  rescheduleCount?: true
   cancelledAt?: true
   cancellationReason?: true
+  cancelToken?: true
   createdAt?: true
   updatedAt?: true
   discountFixed?: true
@@ -337,8 +383,15 @@ export type AppointmentGroupByOutputType = {
   notes: string | null
   internalNotes: string | null
   confirmationCode: string
+  rescheduleToken: string | null
+  rescheduleRequestedAt: Date | null
+  previousStartTime: Date | null
+  previousEndTime: Date | null
+  rescheduleReason: string | null
+  rescheduleCount: number
   cancelledAt: Date | null
   cancellationReason: string | null
+  cancelToken: string | null
   createdAt: Date
   updatedAt: Date
   discountFixed: runtime.Decimal | null
@@ -388,8 +441,15 @@ export type AppointmentWhereInput = {
   notes?: Prisma.StringNullableFilter<"Appointment"> | string | null
   internalNotes?: Prisma.StringNullableFilter<"Appointment"> | string | null
   confirmationCode?: Prisma.StringFilter<"Appointment"> | string
+  rescheduleToken?: Prisma.StringNullableFilter<"Appointment"> | string | null
+  rescheduleRequestedAt?: Prisma.DateTimeNullableFilter<"Appointment"> | Date | string | null
+  previousStartTime?: Prisma.DateTimeNullableFilter<"Appointment"> | Date | string | null
+  previousEndTime?: Prisma.DateTimeNullableFilter<"Appointment"> | Date | string | null
+  rescheduleReason?: Prisma.StringNullableFilter<"Appointment"> | string | null
+  rescheduleCount?: Prisma.IntFilter<"Appointment"> | number
   cancelledAt?: Prisma.DateTimeNullableFilter<"Appointment"> | Date | string | null
   cancellationReason?: Prisma.StringNullableFilter<"Appointment"> | string | null
+  cancelToken?: Prisma.StringNullableFilter<"Appointment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Appointment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Appointment"> | Date | string
   discountFixed?: Prisma.DecimalNullableFilter<"Appointment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -421,8 +481,15 @@ export type AppointmentOrderByWithRelationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   internalNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   confirmationCode?: Prisma.SortOrder
+  rescheduleToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  rescheduleRequestedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousStartTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousEndTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  rescheduleReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  rescheduleCount?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cancellationReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   discountFixed?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -442,6 +509,8 @@ export type AppointmentOrderByWithRelationInput = {
 
 export type AppointmentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  rescheduleToken?: string
+  cancelToken?: string
   businessId_confirmationCode?: Prisma.AppointmentBusinessIdConfirmationCodeCompoundUniqueInput
   AND?: Prisma.AppointmentWhereInput | Prisma.AppointmentWhereInput[]
   OR?: Prisma.AppointmentWhereInput[]
@@ -458,6 +527,11 @@ export type AppointmentWhereUniqueInput = Prisma.AtLeast<{
   notes?: Prisma.StringNullableFilter<"Appointment"> | string | null
   internalNotes?: Prisma.StringNullableFilter<"Appointment"> | string | null
   confirmationCode?: Prisma.StringFilter<"Appointment"> | string
+  rescheduleRequestedAt?: Prisma.DateTimeNullableFilter<"Appointment"> | Date | string | null
+  previousStartTime?: Prisma.DateTimeNullableFilter<"Appointment"> | Date | string | null
+  previousEndTime?: Prisma.DateTimeNullableFilter<"Appointment"> | Date | string | null
+  rescheduleReason?: Prisma.StringNullableFilter<"Appointment"> | string | null
+  rescheduleCount?: Prisma.IntFilter<"Appointment"> | number
   cancelledAt?: Prisma.DateTimeNullableFilter<"Appointment"> | Date | string | null
   cancellationReason?: Prisma.StringNullableFilter<"Appointment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Appointment"> | Date | string
@@ -475,7 +549,7 @@ export type AppointmentWhereUniqueInput = Prisma.AtLeast<{
   service?: Prisma.XOR<Prisma.ServiceScalarRelationFilter, Prisma.ServiceWhereInput>
   staff?: Prisma.XOR<Prisma.StaffScalarRelationFilter, Prisma.StaffWhereInput>
   blocks?: Prisma.AppointmentBlockListRelationFilter
-}, "id" | "businessId_confirmationCode">
+}, "id" | "rescheduleToken" | "cancelToken" | "businessId_confirmationCode">
 
 export type AppointmentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -491,8 +565,15 @@ export type AppointmentOrderByWithAggregationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   internalNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   confirmationCode?: Prisma.SortOrder
+  rescheduleToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  rescheduleRequestedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousStartTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  previousEndTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  rescheduleReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  rescheduleCount?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cancellationReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   discountFixed?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -527,8 +608,15 @@ export type AppointmentScalarWhereWithAggregatesInput = {
   notes?: Prisma.StringNullableWithAggregatesFilter<"Appointment"> | string | null
   internalNotes?: Prisma.StringNullableWithAggregatesFilter<"Appointment"> | string | null
   confirmationCode?: Prisma.StringWithAggregatesFilter<"Appointment"> | string
+  rescheduleToken?: Prisma.StringNullableWithAggregatesFilter<"Appointment"> | string | null
+  rescheduleRequestedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Appointment"> | Date | string | null
+  previousStartTime?: Prisma.DateTimeNullableWithAggregatesFilter<"Appointment"> | Date | string | null
+  previousEndTime?: Prisma.DateTimeNullableWithAggregatesFilter<"Appointment"> | Date | string | null
+  rescheduleReason?: Prisma.StringNullableWithAggregatesFilter<"Appointment"> | string | null
+  rescheduleCount?: Prisma.IntWithAggregatesFilter<"Appointment"> | number
   cancelledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Appointment"> | Date | string | null
   cancellationReason?: Prisma.StringNullableWithAggregatesFilter<"Appointment"> | string | null
+  cancelToken?: Prisma.StringNullableWithAggregatesFilter<"Appointment"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Appointment"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Appointment"> | Date | string
   discountFixed?: Prisma.DecimalNullableWithAggregatesFilter<"Appointment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -551,8 +639,15 @@ export type AppointmentCreateInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -584,8 +679,15 @@ export type AppointmentUncheckedCreateInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -609,8 +711,15 @@ export type AppointmentUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -642,8 +751,15 @@ export type AppointmentUncheckedUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -671,8 +787,15 @@ export type AppointmentCreateManyInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -695,8 +818,15 @@ export type AppointmentUpdateManyMutationInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -723,8 +853,15 @@ export type AppointmentUncheckedUpdateManyInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -766,8 +903,15 @@ export type AppointmentCountOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   internalNotes?: Prisma.SortOrder
   confirmationCode?: Prisma.SortOrder
+  rescheduleToken?: Prisma.SortOrder
+  rescheduleRequestedAt?: Prisma.SortOrder
+  previousStartTime?: Prisma.SortOrder
+  previousEndTime?: Prisma.SortOrder
+  rescheduleReason?: Prisma.SortOrder
+  rescheduleCount?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
   cancellationReason?: Prisma.SortOrder
+  cancelToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   discountFixed?: Prisma.SortOrder
@@ -781,6 +925,7 @@ export type AppointmentCountOrderByAggregateInput = {
 }
 
 export type AppointmentAvgOrderByAggregateInput = {
+  rescheduleCount?: Prisma.SortOrder
   discountFixed?: Prisma.SortOrder
   discountPercentage?: Prisma.SortOrder
   durationMinutes?: Prisma.SortOrder
@@ -804,8 +949,15 @@ export type AppointmentMaxOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   internalNotes?: Prisma.SortOrder
   confirmationCode?: Prisma.SortOrder
+  rescheduleToken?: Prisma.SortOrder
+  rescheduleRequestedAt?: Prisma.SortOrder
+  previousStartTime?: Prisma.SortOrder
+  previousEndTime?: Prisma.SortOrder
+  rescheduleReason?: Prisma.SortOrder
+  rescheduleCount?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
   cancellationReason?: Prisma.SortOrder
+  cancelToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   discountFixed?: Prisma.SortOrder
@@ -832,8 +984,15 @@ export type AppointmentMinOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   internalNotes?: Prisma.SortOrder
   confirmationCode?: Prisma.SortOrder
+  rescheduleToken?: Prisma.SortOrder
+  rescheduleRequestedAt?: Prisma.SortOrder
+  previousStartTime?: Prisma.SortOrder
+  previousEndTime?: Prisma.SortOrder
+  rescheduleReason?: Prisma.SortOrder
+  rescheduleCount?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
   cancellationReason?: Prisma.SortOrder
+  cancelToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   discountFixed?: Prisma.SortOrder
@@ -847,6 +1006,7 @@ export type AppointmentMinOrderByAggregateInput = {
 }
 
 export type AppointmentSumOrderByAggregateInput = {
+  rescheduleCount?: Prisma.SortOrder
   discountFixed?: Prisma.SortOrder
   discountPercentage?: Prisma.SortOrder
   durationMinutes?: Prisma.SortOrder
@@ -1057,8 +1217,15 @@ export type AppointmentCreateWithoutBusinessInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1088,8 +1255,15 @@ export type AppointmentUncheckedCreateWithoutBusinessInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1146,8 +1320,15 @@ export type AppointmentScalarWhereInput = {
   notes?: Prisma.StringNullableFilter<"Appointment"> | string | null
   internalNotes?: Prisma.StringNullableFilter<"Appointment"> | string | null
   confirmationCode?: Prisma.StringFilter<"Appointment"> | string
+  rescheduleToken?: Prisma.StringNullableFilter<"Appointment"> | string | null
+  rescheduleRequestedAt?: Prisma.DateTimeNullableFilter<"Appointment"> | Date | string | null
+  previousStartTime?: Prisma.DateTimeNullableFilter<"Appointment"> | Date | string | null
+  previousEndTime?: Prisma.DateTimeNullableFilter<"Appointment"> | Date | string | null
+  rescheduleReason?: Prisma.StringNullableFilter<"Appointment"> | string | null
+  rescheduleCount?: Prisma.IntFilter<"Appointment"> | number
   cancelledAt?: Prisma.DateTimeNullableFilter<"Appointment"> | Date | string | null
   cancellationReason?: Prisma.StringNullableFilter<"Appointment"> | string | null
+  cancelToken?: Prisma.StringNullableFilter<"Appointment"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Appointment"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Appointment"> | Date | string
   discountFixed?: Prisma.DecimalNullableFilter<"Appointment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1170,8 +1351,15 @@ export type AppointmentCreateWithoutServiceInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1201,8 +1389,15 @@ export type AppointmentUncheckedCreateWithoutServiceInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1252,8 +1447,15 @@ export type AppointmentCreateWithoutStaffInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1283,8 +1485,15 @@ export type AppointmentUncheckedCreateWithoutStaffInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1334,8 +1543,15 @@ export type AppointmentCreateWithoutCustomerInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1365,8 +1581,15 @@ export type AppointmentUncheckedCreateWithoutCustomerInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1416,8 +1639,15 @@ export type AppointmentCreateWithoutBlocksInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1448,8 +1678,15 @@ export type AppointmentUncheckedCreateWithoutBlocksInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1488,8 +1725,15 @@ export type AppointmentUpdateWithoutBlocksInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1520,8 +1764,15 @@ export type AppointmentUncheckedUpdateWithoutBlocksInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1547,8 +1798,15 @@ export type AppointmentCreateManyBusinessInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1571,8 +1829,15 @@ export type AppointmentUpdateWithoutBusinessInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1602,8 +1867,15 @@ export type AppointmentUncheckedUpdateWithoutBusinessInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1630,8 +1902,15 @@ export type AppointmentUncheckedUpdateManyWithoutBusinessInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1657,8 +1936,15 @@ export type AppointmentCreateManyServiceInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1681,8 +1967,15 @@ export type AppointmentUpdateWithoutServiceInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1712,8 +2005,15 @@ export type AppointmentUncheckedUpdateWithoutServiceInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1740,8 +2040,15 @@ export type AppointmentUncheckedUpdateManyWithoutServiceInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1767,8 +2074,15 @@ export type AppointmentCreateManyStaffInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1791,8 +2105,15 @@ export type AppointmentUpdateWithoutStaffInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1822,8 +2143,15 @@ export type AppointmentUncheckedUpdateWithoutStaffInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1850,8 +2178,15 @@ export type AppointmentUncheckedUpdateManyWithoutStaffInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1877,8 +2212,15 @@ export type AppointmentCreateManyCustomerInput = {
   notes?: string | null
   internalNotes?: string | null
   confirmationCode: string
+  rescheduleToken?: string | null
+  rescheduleRequestedAt?: Date | string | null
+  previousStartTime?: Date | string | null
+  previousEndTime?: Date | string | null
+  rescheduleReason?: string | null
+  rescheduleCount?: number
   cancelledAt?: Date | string | null
   cancellationReason?: string | null
+  cancelToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   discountFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1901,8 +2243,15 @@ export type AppointmentUpdateWithoutCustomerInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1932,8 +2281,15 @@ export type AppointmentUncheckedUpdateWithoutCustomerInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -1960,8 +2316,15 @@ export type AppointmentUncheckedUpdateManyWithoutCustomerInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   confirmationCode?: Prisma.StringFieldUpdateOperationsInput | string
+  rescheduleToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousStartTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  previousEndTime?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rescheduleReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduleCount?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cancellationReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discountFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
@@ -2019,8 +2382,15 @@ export type AppointmentSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   notes?: boolean
   internalNotes?: boolean
   confirmationCode?: boolean
+  rescheduleToken?: boolean
+  rescheduleRequestedAt?: boolean
+  previousStartTime?: boolean
+  previousEndTime?: boolean
+  rescheduleReason?: boolean
+  rescheduleCount?: boolean
   cancelledAt?: boolean
   cancellationReason?: boolean
+  cancelToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   discountFixed?: boolean
@@ -2053,8 +2423,15 @@ export type AppointmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   notes?: boolean
   internalNotes?: boolean
   confirmationCode?: boolean
+  rescheduleToken?: boolean
+  rescheduleRequestedAt?: boolean
+  previousStartTime?: boolean
+  previousEndTime?: boolean
+  rescheduleReason?: boolean
+  rescheduleCount?: boolean
   cancelledAt?: boolean
   cancellationReason?: boolean
+  cancelToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   discountFixed?: boolean
@@ -2085,8 +2462,15 @@ export type AppointmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   notes?: boolean
   internalNotes?: boolean
   confirmationCode?: boolean
+  rescheduleToken?: boolean
+  rescheduleRequestedAt?: boolean
+  previousStartTime?: boolean
+  previousEndTime?: boolean
+  rescheduleReason?: boolean
+  rescheduleCount?: boolean
   cancelledAt?: boolean
   cancellationReason?: boolean
+  cancelToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   discountFixed?: boolean
@@ -2117,8 +2501,15 @@ export type AppointmentSelectScalar = {
   notes?: boolean
   internalNotes?: boolean
   confirmationCode?: boolean
+  rescheduleToken?: boolean
+  rescheduleRequestedAt?: boolean
+  previousStartTime?: boolean
+  previousEndTime?: boolean
+  rescheduleReason?: boolean
+  rescheduleCount?: boolean
   cancelledAt?: boolean
   cancellationReason?: boolean
+  cancelToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   discountFixed?: boolean
@@ -2131,7 +2522,7 @@ export type AppointmentSelectScalar = {
   endTime?: boolean
 }
 
-export type AppointmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "serviceId" | "customerId" | "staffId" | "startTime" | "status" | "customerName" | "customerPhone" | "customerEmail" | "notes" | "internalNotes" | "confirmationCode" | "cancelledAt" | "cancellationReason" | "createdAt" | "updatedAt" | "discountFixed" | "discountPercentage" | "durationMinutes" | "finalActiveMinutes" | "initialActiveMinutes" | "passiveMinutes" | "price" | "endTime", ExtArgs["result"]["appointment"]>
+export type AppointmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "serviceId" | "customerId" | "staffId" | "startTime" | "status" | "customerName" | "customerPhone" | "customerEmail" | "notes" | "internalNotes" | "confirmationCode" | "rescheduleToken" | "rescheduleRequestedAt" | "previousStartTime" | "previousEndTime" | "rescheduleReason" | "rescheduleCount" | "cancelledAt" | "cancellationReason" | "cancelToken" | "createdAt" | "updatedAt" | "discountFixed" | "discountPercentage" | "durationMinutes" | "finalActiveMinutes" | "initialActiveMinutes" | "passiveMinutes" | "price" | "endTime", ExtArgs["result"]["appointment"]>
 export type AppointmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
@@ -2176,8 +2567,15 @@ export type $AppointmentPayload<ExtArgs extends runtime.Types.Extensions.Interna
     notes: string | null
     internalNotes: string | null
     confirmationCode: string
+    rescheduleToken: string | null
+    rescheduleRequestedAt: Date | null
+    previousStartTime: Date | null
+    previousEndTime: Date | null
+    rescheduleReason: string | null
+    rescheduleCount: number
     cancelledAt: Date | null
     cancellationReason: string | null
+    cancelToken: string | null
     createdAt: Date
     updatedAt: Date
     discountFixed: runtime.Decimal | null
@@ -2629,8 +3027,15 @@ export interface AppointmentFieldRefs {
   readonly notes: Prisma.FieldRef<"Appointment", 'String'>
   readonly internalNotes: Prisma.FieldRef<"Appointment", 'String'>
   readonly confirmationCode: Prisma.FieldRef<"Appointment", 'String'>
+  readonly rescheduleToken: Prisma.FieldRef<"Appointment", 'String'>
+  readonly rescheduleRequestedAt: Prisma.FieldRef<"Appointment", 'DateTime'>
+  readonly previousStartTime: Prisma.FieldRef<"Appointment", 'DateTime'>
+  readonly previousEndTime: Prisma.FieldRef<"Appointment", 'DateTime'>
+  readonly rescheduleReason: Prisma.FieldRef<"Appointment", 'String'>
+  readonly rescheduleCount: Prisma.FieldRef<"Appointment", 'Int'>
   readonly cancelledAt: Prisma.FieldRef<"Appointment", 'DateTime'>
   readonly cancellationReason: Prisma.FieldRef<"Appointment", 'String'>
+  readonly cancelToken: Prisma.FieldRef<"Appointment", 'String'>
   readonly createdAt: Prisma.FieldRef<"Appointment", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Appointment", 'DateTime'>
   readonly discountFixed: Prisma.FieldRef<"Appointment", 'Decimal'>

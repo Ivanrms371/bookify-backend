@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { format } from 'date-fns';
 import { NotificationChannel } from 'src/generated/prisma/enums';
 import { NotificationTemplate } from 'src/modules/notifications/domain/templates/notification-template.interface';
 import { AppointmentCancelledVariables } from './appointment-cancelled.type';
@@ -26,7 +25,7 @@ export class AppointmentCancelledTemplate implements NotificationTemplate {
 
   private buildEmail(variables: AppointmentCancelledVariables): BuildEmailResponse {
     return {
-      subject: `Cita cancelada - para el ${format(variables.date, 'dd "de" MMMM yyyy "a las" HH:mm')}`,
+      subject: `Cita cancelada - para el ${variables.date}`,
       react: AppointmentCancelledEmailTemplate(variables),
     };
   }
@@ -34,7 +33,7 @@ export class AppointmentCancelledTemplate implements NotificationTemplate {
   private buildInApp(variables: AppointmentCancelledVariables): BuildInAppResponse {
     return {
       title: 'Cita cancelada',
-      message: `Tu cita con ${variables.staffName} para el ${format(variables.date, 'dd "de" MMMM yyyy "a las" HH:mm')} ha sido cancelada`,
+      message: `Tu cita con ${variables.staffName} para el ${variables.date} ha sido cancelada`,
       actionUrl: `/appointments/${variables.appointmentId}`,
     };
   }

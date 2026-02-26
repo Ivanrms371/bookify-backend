@@ -7,6 +7,8 @@ import { BuildEmailResponse } from '../../domain/templates/build-email.interface
 import { BuildInAppResponse } from '../../domain/templates/build-in-app.interface';
 import { BuildWhatsappResponse } from '../../domain/templates/build-whatsapp.interface';
 import { VerificationEmailTemplate } from '../templates/confirm-email/confirm-email.template';
+import { AppointmentCancelledTemplate } from '../templates/appointment-cancelled/appointment-cancelled.template';
+import { AppointmentRescheduledTemplate } from '../templates/appointment-reschedule/appointment-reschedule.template';
 
 @Injectable()
 export class TemplateService {
@@ -14,10 +16,14 @@ export class TemplateService {
 
   constructor(
     private readonly appointmentCreatedTemplate: AppointmentCreatedTemplate,
+    private readonly appointmentCancelledTemplate: AppointmentCancelledTemplate,
+    private readonly appointmentRescheduledTemplate: AppointmentRescheduledTemplate,
     private readonly appointmentReminderTemplate: AppointmentReminderTemplate,
     private readonly verificationEmailTemplate: VerificationEmailTemplate,
   ) {
     this.templateMap.set(this.appointmentCreatedTemplate.type, this.appointmentCreatedTemplate);
+    this.templateMap.set(this.appointmentCancelledTemplate.type, this.appointmentCancelledTemplate);
+    this.templateMap.set(this.appointmentRescheduledTemplate.type, this.appointmentRescheduledTemplate);
     this.templateMap.set(this.appointmentReminderTemplate.type, this.appointmentReminderTemplate);
     this.templateMap.set(this.verificationEmailTemplate.type, this.verificationEmailTemplate);
   }

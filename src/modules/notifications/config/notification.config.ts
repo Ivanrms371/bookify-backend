@@ -28,11 +28,31 @@ export const NotificationConfig: NotificationConfigMap = {
     },
   },
 
+  'appointment.reminder': {
+    retry: {
+      retryable: true,
+      maxRetries: 3,
+    },
+    channels: {
+      CUSTOMER: [{ channel: NotificationChannel.WHATSAPP, fallback: [NotificationChannel.EMAIL] }],
+    },
+  },
+
   DEFAULT: {
     retry: {
       retryable: false,
       maxRetries: 0,
     },
     channels: {},
+  },
+
+  'appointment.cancelled': {
+    retry: {
+      retryable: true,
+      maxRetries: 3,
+    },
+    channels: {
+      USER: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL }],
+    },
   },
 };

@@ -1,15 +1,16 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { AppointmentsRepository } from '../infrastructure/appointments.repository';
-import { CustomersService } from '../../customers/customers.service';
-import { ServicesService } from '../../services/services/services.service';
+import { AppointmentsRepository } from '../../infrastructure/appointments.repository';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { CreateAppointmentDto } from '../dto/create-appointment.dto';
-import { AppointmentCreatedEvent } from '../domain/events/appointment-created.event';
-import { AvailabilityPolicy } from '../domain/policies/appointment-creation.policy';
+import { CreateAppointmentDto } from '../../dto/create-appointment.dto';
+import { AppointmentCreatedEvent } from '../../domain/events/appointment-created.event';
+import { AvailabilityPolicy } from '../../domain/policies/appointment-creation.policy';
+import { buildTimeBlocks } from '../../domain/appointment-block.builder';
+import { CustomersService } from 'src/modules/customers/customers.service';
+import { ServicesService } from 'src/modules/services/services/services.service';
 
 @Injectable()
-export class AppointmentsService {
+export class AppointmentCreationService {
   constructor(
     private readonly eventEmitter: EventEmitter2,
     private readonly prisma: PrismaService,
@@ -37,8 +38,8 @@ export class AppointmentsService {
     const result = await this.prisma.$transaction(async (tx) => {
       const customer = await this.customersService.findOrCreateCustomer(dto.appointment.businessId, dto.customer);
 
-      const appointment = await tx.appointment.create({
-        data: {
+      const appointment = await this.appointmentsRepository.create(
+        {
           business: { connect: { id: dto.appointment.businessId } },
           staff: { connect: { id: dto.appointment.staffId } },
           service: { connect: { id: dto.appointment.serviceId } },
@@ -57,16 +58,26 @@ export class AppointmentsService {
           startTime,
           endTime,
         },
-        include: {
-          staff: {
-            include: {
-              user: true,
-            },
-          },
-          customer: true,
-          service: true,
-        },
+        tx,
+      );
+
+      const timeBlocks = buildTimeBlocks({
+        startTime,
+        initialActiveMinutes: service.initialActiveMinutes,
+        passiveTimeMinutes: service.passiveTimeMinutes,
+        finalActiveMinutes: service.finalActiveMinutes,
       });
+
+      const appointmentBlocks = timeBlocks.map((block) => ({
+        appointmentId: appointment.id,
+        staffId: dto.appointment.staffId,
+        startTime: block.startTime,
+        endTime: block.endTime,
+      }));
+
+      if (appointmentBlocks.length > 0) {
+        await tx.appointmentBlock.createMany({ data: appointmentBlocks });
+      }
 
       return {
         customer,

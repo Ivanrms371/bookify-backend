@@ -17,7 +17,7 @@ import { PasswordService } from './application/password.service';
 import { MembersModule } from 'src/modules/businesses/features/members/members.module';
 
 @Module({
-  imports: [PrismaModule, SessionsModule, MembersModule, UsersModule, forwardRef(() => VerificationsModule)],
+  imports: [PrismaModule, SessionsModule, MembersModule, UsersModule, VerificationsModule],
   controllers: [AuthController],
   providers: [
     // application

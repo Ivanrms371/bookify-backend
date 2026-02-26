@@ -1,4 +1,4 @@
-export type AppointmentReminder = {
+export type AppointmentReminderVariables = {
   customerName: string;
   appointmentId: string;
   serviceName: string;

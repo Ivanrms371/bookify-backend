@@ -1,8 +1,7 @@
 export type AppointmentCancelledVariables = {
   customerName: string;
+  staffName: string;
   date: string;
   time: string;
-  serviceName: string;
-  staffName: string;
   appointmentId: string;
 };

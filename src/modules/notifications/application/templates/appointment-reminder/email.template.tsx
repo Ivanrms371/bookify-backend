@@ -2,7 +2,7 @@ import { Section, Text } from '@react-email/components';
 import { Layout } from '../_components/Layout';
 import { CustomHeading } from '../_components/Heading';
 import { Button } from '../_components/Button';
-import { AppointmentReminder } from './appointment-reminder.type';
+import { AppointmentReminderVariables } from './appointment-reminder.type';
 
 export const AppointmentReminderEmailTemplate = ({
   customerName = 'Iván Rodríguez',
@@ -13,7 +13,7 @@ export const AppointmentReminderEmailTemplate = ({
   reminderType = '24h',
   cancelUrl = 'https://localhost:4000/appointments',
   rescheduleUrl = 'https://localhost:4000/appointments',
-}: AppointmentReminder) => {
+}: AppointmentReminderVariables) => {
   return (
     <Layout previewText={`Recordatorio de cita con ${staffName} ${reminderType === '24h' ? 'mañana' : 'hoy'} a las ${time}`}>
       <Section>

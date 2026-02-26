@@ -5,22 +5,12 @@ export type Block = {
   endMinutes: number;
 };
 
-export type AppointmentBlock = {
-  startMinutes: number;
-  endMinutes: number;
-  passive: boolean;
-};
+// AppointmentBlock fetched from DB
 
-// Appointment domain
-
-export type Appointment = {
+export type FetchedAppointmentBlock = {
+  staffId: string;
   startTime: Date;
   endTime: Date;
-
-  durationMinutes: number;
-  initialActiveMinutes: number;
-  passiveMinutes: number;
-  finalActiveMinutes: number;
 };
 
 // Strategies
@@ -34,10 +24,9 @@ export type GenerateParams = {
   blocks: Block[];
   interval: number;
   serviceDuration: number;
-  appointments: Appointment[];
+  appointmentBlocks: FetchedAppointmentBlock[];
   date: Date;
   minAdvancedMinutes: number;
-  allowPassiveTimeBooking: boolean;
 };
 
 // Slot generation layer
@@ -75,20 +64,13 @@ export type FilterByMinAdvancedMinutesParams = {
 export type FilterOverlappingSlotsParams = {
   slots: number[];
   slotDuration: number;
-  appointments: Appointment[];
-  allowPassiveTimeBooking: boolean;
+  appointmentBlocks: FetchedAppointmentBlock[];
+  date: Date;
 };
 
 export type IsSlotOverlappingParams = {
   slot: number;
   slotDuration: number;
-  appointment: Appointment;
-  allowPassiveTimeBooking: boolean;
-};
-
-// Internal helpers
-
-export type GetAppointmentBlocksParams = {
-  appointment: Appointment;
-  allowPassiveTimeBooking: boolean;
+  block: FetchedAppointmentBlock;
+  date: Date;
 };

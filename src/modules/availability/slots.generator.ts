@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { dateToMinutes, minutesToTime } from 'src/common/utils/time/time.util';
 import {
-  AppointmentBlock,
+  FetchedAppointmentBlock,
   FilterByMinAdvancedMinutesParams,
   FilterOverlappingSlotsParams,
   FilterPastSlotsParams,
@@ -9,58 +9,31 @@ import {
   GenerateFixedSlotsParams,
   GenerateParams,
   GenerateSlotsFromBlocksParams,
-  GetAppointmentBlocksParams,
   IsSlotOverlappingParams,
 } from './types/slots.type';
 
 @Injectable()
 export class SlotsGenerator {
-  private getAppointmentBlocks({ appointment, allowPassiveTimeBooking: allowPassive }: GetAppointmentBlocksParams): AppointmentBlock[] {
-    const start = dateToMinutes(appointment.startTime);
-    const blocks: AppointmentBlock[] = [];
+  private blockToMinutes(block: FetchedAppointmentBlock, date: Date): { startMinutes: number; endMinutes: number } {
+    const blockStart = new Date(block.startTime);
+    const blockEnd = new Date(block.endTime);
 
-    blocks.push({ startMinutes: start, endMinutes: start + appointment.initialActiveMinutes, passive: false });
+    // Calculate minutes from start of the target date
+    const startMinutes = blockStart.getHours() * 60 + blockStart.getMinutes();
+    const endMinutes = blockEnd.getHours() * 60 + blockEnd.getMinutes();
 
-    if (allowPassive && appointment.passiveMinutes > 0) {
-      blocks.push({
-        startMinutes: start + appointment.initialActiveMinutes,
-        endMinutes: start + appointment.initialActiveMinutes + appointment.passiveMinutes,
-        passive: true,
-      });
-    }
-
-    blocks.push({
-      startMinutes: start + appointment.initialActiveMinutes + (allowPassive ? appointment.passiveMinutes : 0),
-      endMinutes:
-        start + appointment.initialActiveMinutes + (allowPassive ? appointment.passiveMinutes : 0) + appointment.finalActiveMinutes,
-      passive: false,
-    });
-
-    return blocks;
+    return { startMinutes, endMinutes };
   }
 
-  private isSlotOverlapping({ slot, slotDuration, appointment, allowPassiveTimeBooking }: IsSlotOverlappingParams) {
+  private isSlotOverlapping({ slot, slotDuration, block, date }: IsSlotOverlappingParams): boolean {
     const slotEnd = slot + slotDuration;
-    const blocks = this.getAppointmentBlocks({ appointment, allowPassiveTimeBooking });
+    const { startMinutes, endMinutes } = this.blockToMinutes(block, date);
 
-    return blocks.some((block) => {
-      if (block.passive && allowPassiveTimeBooking) {
-        const blockDuration = block.endMinutes - block.startMinutes;
-
-        if (slotDuration > blockDuration) return true;
-
-        return false;
-      }
-
-      return slot < block.endMinutes && slotEnd > block.startMinutes;
-    });
+    return slot < endMinutes && slotEnd > startMinutes;
   }
 
-  private filterOverlappingSlots({ slots, slotDuration, appointments, allowPassiveTimeBooking }: FilterOverlappingSlotsParams) {
-    const res = slots.filter(
-      (slot) => !appointments.some((appointment) => this.isSlotOverlapping({ slot, slotDuration, appointment, allowPassiveTimeBooking })),
-    );
-    return res;
+  private filterOverlappingSlots({ slots, slotDuration, appointmentBlocks, date }: FilterOverlappingSlotsParams) {
+    return slots.filter((slot) => !appointmentBlocks.some((block) => this.isSlotOverlapping({ slot, slotDuration, block, date })));
   }
 
   private filterPastSlots({ slots, date }: FilterPastSlotsParams) {
@@ -77,11 +50,15 @@ export class SlotsGenerator {
 
   private filterByMinAdvancedMinutes({ slots, minAdvancedMinutes, date }: FilterByMinAdvancedMinutesParams) {
     const now = new Date();
-    const advanceLimit = new Date(now.getTime() + minAdvancedMinutes * 60000);
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+    const isToday =
+      now.getUTCFullYear() === date.getUTCFullYear() && now.getUTCMonth() === date.getUTCMonth() && now.getUTCDate() === date.getUTCDate();
 
     return slots.filter((slot) => {
-      const slotDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), Math.floor(slot / 60), slot % 60);
-      return slotDate >= advanceLimit;
+      if (isToday) {
+        return slot >= nowMinutes + minAdvancedMinutes;
+      }
+      return true;
     });
   }
 
@@ -123,11 +100,11 @@ export class SlotsGenerator {
   }
 
   generate(params: GenerateParams): string[] {
-    const { strategy, blocks, interval, serviceDuration, appointments, date, minAdvancedMinutes, allowPassiveTimeBooking } = params;
+    const { strategy, blocks, interval, serviceDuration, appointmentBlocks, date, minAdvancedMinutes } = params;
 
     let slots = this.generateSlotsFromBlocks({ strategy, blocks, interval, serviceDuration });
     slots = this.filterPastSlots({ slots, date });
-    slots = this.filterOverlappingSlots({ slots, slotDuration: serviceDuration, appointments, allowPassiveTimeBooking });
+    slots = this.filterOverlappingSlots({ slots, slotDuration: serviceDuration, appointmentBlocks, date });
     slots = this.filterByMinAdvancedMinutes({ slots, minAdvancedMinutes, date });
 
     return this.formatSlotsHumanReadble(slots);

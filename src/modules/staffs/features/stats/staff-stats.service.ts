@@ -24,4 +24,14 @@ export class StaffStatsService {
       update: { appointmentsCount: { increment: 1 } },
     });
   }
+
+  async incrementCancelledAppointments(staffId: string, date: Date) {
+    const day = startOfDay(date);
+
+    // return this.prisma.staffLifetimeStats.upsert({
+    //   where: { staffId },
+    //   create: { staffId, cancelledAppointments: 1 },
+    //   update: { cancelledAppointments: { increment: 1 } },
+    // });
+  }
 }

@@ -1,6 +1,7 @@
 import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { AvailabilityQuery } from 'src/shared/infrastructure/queries/availability.query';
 import { AvailabilityData, Settings, Service } from './appointment-creation.type';
+import { buildTimeBlocks } from '../appointment-block.builder';
 
 interface ValidateAvailabilityParams {
   staffId: string;
@@ -38,7 +39,7 @@ export class AvailabilityPolicy {
 
     const effectiveBlocks = this.resolveEffectiveBlocks(availability);
 
-    this.validateWorkingHours(startTime, service.durationMinutes, effectiveBlocks);
+    this.validateWorkingHours(startTime, service, effectiveBlocks);
 
     this.validateAppointmentsConflict(startTime, service, availability, settings);
   }
@@ -76,47 +77,54 @@ export class AvailabilityPolicy {
     return exception.blocks;
   }
 
-  private validateWorkingHours(startTime: Date, duration: number, blocks: { startMinutes: number; endMinutes: number }[]) {
+  private validateWorkingHours(startTime: Date, service: Service, blocks: { startMinutes: number; endMinutes: number }[]) {
     if (!blocks.length) {
       throw new BadRequestException('El negocio está cerrado en esa fecha');
     }
 
-    const startMinutes = startTime.getHours() * 60 + startTime.getMinutes();
+    const newBlocks = buildTimeBlocks({
+      startTime,
+      initialActiveMinutes: service.initialActiveMinutes,
+      passiveTimeMinutes: service.passiveTimeMinutes,
+      finalActiveMinutes: service.finalActiveMinutes,
+    });
 
-    const endMinutes = startMinutes + duration;
+    for (const newBlock of newBlocks) {
+      const blockStartMins = newBlock.startTime.getHours() * 60 + newBlock.startTime.getMinutes();
+      const blockEndMins = newBlock.endTime.getHours() * 60 + newBlock.endTime.getMinutes();
 
-    const isValid = blocks.some((block) => startMinutes >= block.startMinutes && endMinutes <= block.endMinutes);
+      const fitsInWorkingHours = blocks.some(
+        (workingBlock) => blockStartMins >= workingBlock.startMinutes && blockEndMins <= workingBlock.endMinutes,
+      );
 
-    if (!isValid) {
-      throw new BadRequestException('El horario está fuera del horario laboral');
+      if (!fitsInWorkingHours) {
+        throw new BadRequestException('El horario está fuera del horario laboral');
+      }
     }
   }
 
   private validateAppointmentsConflict(startTime: Date, service: Service, availability: AvailabilityData, settings: Settings) {
     const buffer = settings.bufferTimeMinutes ?? 0;
 
-    const allowPassive = settings.allowPassiveTimeBooking ?? false;
+    const newBlocks = buildTimeBlocks({
+      startTime,
+      initialActiveMinutes: service.initialActiveMinutes,
+      passiveTimeMinutes: service.passiveTimeMinutes,
+      finalActiveMinutes: service.finalActiveMinutes,
+    });
 
-    const serviceStart = startTime.getTime();
-    const serviceEnd = serviceStart + service.durationMinutes * 60 * 1000;
+    for (const newBlock of newBlocks) {
+      const adjustedStart = newBlock.startTime.getTime() - buffer * 60 * 1000;
+      const adjustedEnd = newBlock.endTime.getTime() + buffer * 60 * 1000;
 
-    const adjustedStart = serviceStart - buffer * 60 * 1000;
-    const adjustedEnd = serviceEnd + buffer * 60 * 1000;
+      for (const appointment of availability.appointments) {
+        for (const existingBlock of appointment.blocks) {
+          const blockStart = new Date(existingBlock.startTime).getTime();
+          const blockEnd = new Date(existingBlock.endTime).getTime();
 
-    for (const appointment of availability.appointments) {
-      const existingStart = new Date(appointment.startTime).getTime();
-      const existingEnd = new Date(appointment.endTime).getTime();
-
-      if (!allowPassive) {
-        if (adjustedStart < existingEnd && adjustedEnd > existingStart) {
-          throw new ConflictException('El horario ya está ocupado');
-        }
-      } else {
-        // solo bloqueamos tiempo activo
-        const activeEnd = existingStart + appointment.initialActiveMinutes * 60 * 1000 + appointment.finalActiveMinutes * 60 * 1000;
-
-        if (adjustedStart < activeEnd && adjustedEnd > existingStart) {
-          throw new ConflictException('El horario ya está ocupado');
+          if (adjustedStart < blockEnd && adjustedEnd > blockStart) {
+            throw new ConflictException('El horario ya está ocupado');
+          }
         }
       }
     }

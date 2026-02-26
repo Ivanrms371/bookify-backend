@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { PrismaModule } from 'src/shared/prisma/prisma.module';
 import { AppointmentsController } from './appointments.controller';
-import { AppointmentsService } from './application/appointments.service';
+import { AppointmentCreationService } from './application/services/appointment-creation.service';
+import { AppointmentCancelationService } from './application/services/appointment-cancelation.service';
+import { AppointmentReschedulingService } from './application/services/appointment-rescheduling.service';
 import { AppointmentsRepository } from './infrastructure/appointments.repository';
 import { CustomersModule } from '../customers/customers.module';
 import { ServicesModule } from '../services/services/services.module';
@@ -12,7 +13,13 @@ import { AvailabilityPolicy } from './domain/policies/appointment-creation.polic
 @Module({
   imports: [CustomersModule, ServicesModule, StaffsModule, InfrastructureModule],
   controllers: [AppointmentsController],
-  providers: [AppointmentsService, AppointmentsRepository, AvailabilityPolicy],
-  exports: [AppointmentsService, AppointmentsRepository],
+  providers: [
+    AppointmentCreationService,
+    AppointmentCancelationService,
+    AppointmentReschedulingService,
+    AppointmentsRepository,
+    AvailabilityPolicy,
+  ],
+  exports: [AppointmentCancelationService, AppointmentReschedulingService],
 })
 export class AppointmentsModule {}

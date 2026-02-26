@@ -10,11 +10,12 @@ import { BusinessesRepository } from './core/businesses.repository';
 import { AppointmentCreatedListener } from './listeners/appointment-created.listener';
 import { BusinessStatsModule } from './features/stats/business-stats.module';
 import { BusinessLimitsModule } from './features/limits/business-limits.module';
+import { AppointmentCancelledListener } from './listeners/appointment-cancelled.listener.js';
 
 @Module({
   imports: [CloudinaryModule, UsersModule, PlansModule, AuthModule, BusinessStatsModule, BusinessLimitsModule],
   controllers: [BusinessController],
-  providers: [BusinessesService, BusinessImagesService, BusinessesRepository, AppointmentCreatedListener],
+  providers: [BusinessesService, BusinessImagesService, BusinessesRepository, AppointmentCreatedListener, AppointmentCancelledListener],
   exports: [BusinessesService, BusinessImagesService],
 })
 export class BusinessesModule {}

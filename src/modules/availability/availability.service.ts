@@ -3,6 +3,7 @@ import { ResolvedSchedule, ResolveScheduleParams } from './types/availability.ty
 import { endOfDay, getDay, startOfDay } from 'date-fns';
 import { SlotsGenerator } from './slots.generator';
 import { AvailabilityQuery } from 'src/shared/infrastructure/queries/availability.query';
+import { FetchedAppointmentBlock } from './types/slots.type';
 
 @Injectable()
 export class AvailabilityService {
@@ -23,6 +24,7 @@ export class AvailabilityService {
 
   async getSlotsAvailability(staffId: string, serviceId: string, date: Date) {
     const availabilityData = await this.getAvailability(staffId, date);
+
     const settings = availabilityData.business.settings;
     if (!settings) {
       throw new BadRequestException('No se encontro disponibilidad para la fecha');
@@ -36,8 +38,8 @@ export class AvailabilityService {
     const slotInterval = availabilityData.slotIntervalMinutes || settings.slotIntervalMinutes;
     const serviceDuration = assignment.service.durationMinutes;
     const minAdvancedMinutes = availabilityData.minAdvancedMinutes || settings.minAdvancedMinutes;
-    const appointments = availabilityData.appointments;
-    const allowPassiveTimeBooking = settings.allowPassiveTimeBooking;
+
+    const appointmentBlocks: FetchedAppointmentBlock[] = availabilityData.appointments.flatMap((appointment) => appointment.blocks);
 
     const blocks = this.resolveSchedule({
       workingBlocks: availabilityData.workingHours,
@@ -49,10 +51,9 @@ export class AvailabilityService {
       interval: slotInterval,
       blocks,
       serviceDuration,
-      appointments,
+      appointmentBlocks,
       date,
       minAdvancedMinutes,
-      allowPassiveTimeBooking,
     });
 
     return slots;

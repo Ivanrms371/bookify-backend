@@ -8,6 +8,7 @@ import { NotificationProcessorInput } from '../../types/notification-processor.t
 import { NotificationChannel } from 'src/generated/prisma/enums';
 import { NotificationUsageService } from './notification-usage.service';
 import { CostProtectionError } from '../../errors/cost-protection.error';
+import { NotImplementedError } from '../../errors/not-implemented.error';
 
 @Injectable()
 export class NotificationProcessorService {
@@ -34,7 +35,6 @@ export class NotificationProcessorService {
       }
 
       const template = this.templateService.build(type, channel, payload as Record<string, any>);
-
       const referenceId = await this.gateways.send(channel, notification, template);
 
       await this.deliveryRepository.markAsSent(delivery.id, referenceId);
@@ -45,6 +45,13 @@ export class NotificationProcessorService {
       const channelConfig = this.configService.getChannelConfig(type, notification.recipientType, channel);
       await this.logRepository.createErrorLog(deliveryId, error.message);
       if (error instanceof CostProtectionError) {
+        await this.deliveryRepository.markAsFailed(deliveryId);
+        if (channelConfig?.fallback?.length) {
+          await this.createFallback(notificationId, channelConfig.fallback);
+        }
+        return;
+      }
+      if (error instanceof NotImplementedError) {
         await this.deliveryRepository.markAsFailed(deliveryId);
         if (channelConfig?.fallback?.length) {
           await this.createFallback(notificationId, channelConfig.fallback);
@@ -92,7 +99,6 @@ export class NotificationProcessorService {
   private getNextRetry(retryCount: number): Date {
     const delays = [60_000, 300_000, 900_000];
     const delay = delays[retryCount] ?? 900_000;
-
     const runAt = new Date(Date.now() + delay);
     runAt.setMilliseconds(0);
     return runAt;

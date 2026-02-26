@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { NotificationChannel } from 'src/generated/prisma/enums';
 import { NotificationTemplate } from 'src/modules/notifications/domain/templates/notification-template.interface';
-import { AppointmentRescheduleVariables } from './appointment-reschedule.type';
+import { AppointmentRescheduledVariables } from './appointment-reschedule.type';
 import { BuildEmailResponse } from 'src/modules/notifications/domain/templates/build-email.interface';
 import { BuildInAppResponse } from 'src/modules/notifications/domain/templates/build-in-app.interface';
 
 @Injectable()
-export class AppointmentRescheduleTemplate implements NotificationTemplate {
-  type = 'appointment.cancelled';
+export class AppointmentRescheduledTemplate implements NotificationTemplate {
+  type = 'appointment.rescheduled';
 
-  build(channel: NotificationChannel, variables: AppointmentRescheduleVariables) {
+  build(channel: NotificationChannel, variables: AppointmentRescheduledVariables) {
     switch (channel) {
       case NotificationChannel.EMAIL:
         return this.buildEmail(variables);
@@ -22,11 +22,11 @@ export class AppointmentRescheduleTemplate implements NotificationTemplate {
     }
   }
 
-  private buildEmail(variables: AppointmentRescheduleVariables): BuildEmailResponse {
+  private buildEmail(variables: AppointmentRescheduledVariables): BuildEmailResponse {
     throw new Error('Not implemented');
   }
 
-  private buildInApp(variables: AppointmentRescheduleVariables): BuildInAppResponse {
+  private buildInApp(variables: AppointmentRescheduledVariables): BuildInAppResponse {
     throw new Error('Not implemented');
   }
 }

@@ -14,7 +14,7 @@ import { PhoneVerificationStrategy } from './strategies/phone-verification.strat
 import { UserCreatedListener } from './listeners/user-created.listener';
 
 @Module({
-  imports: [PrismaModule, NotificationsModule, UsersModule],
+  imports: [PrismaModule, UsersModule],
   controllers: [VerificationsController],
   providers: [
     // Core

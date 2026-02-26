@@ -1,4 +1,4 @@
-import { AppointmentRescheduleVariables } from './appointment-reschedule.type';
+import { AppointmentRescheduledVariables } from './appointment-reschedule.type';
 import { Section, Text } from '@react-email/components';
 import { CustomHeading } from '../_components/Heading';
 import { Layout } from '../_components/Layout';
@@ -10,7 +10,7 @@ export const AppointmentRescheduleEmailTemplate = ({
   time = '10:00 AM',
   serviceName = 'Corte de cabello',
   staffName = 'Juan Pérez',
-}: AppointmentRescheduleVariables) => {
+}: AppointmentRescheduledVariables) => {
   return (
     <Layout previewText={`Cita reprogramada con ${customerName}`}>
       <Section>

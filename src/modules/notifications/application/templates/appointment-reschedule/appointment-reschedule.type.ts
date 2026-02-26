@@ -1,4 +1,4 @@
-export type AppointmentRescheduleVariables = {
+export type AppointmentRescheduledVariables = {
   customerName: string;
   appointmentId: string;
   serviceName: string;
