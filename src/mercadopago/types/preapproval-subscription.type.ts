@@ -64,9 +64,4 @@ export interface MercadoPagoPreapprovalSummary {
   last_charged_amount: number | null;
 }
 
-export type MercadoPagoPreapprovalStatus =
-  | 'authorized'
-  | 'pending'
-  | 'paused'
-  | 'cancelled'
-  | 'expired';
+export type MercadoPagoPreapprovalStatus = 'authorized' | 'pending' | 'paused' | 'cancelled' | 'expired';

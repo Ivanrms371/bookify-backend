@@ -14,7 +14,7 @@ export const TrialExpiringReminderEmailTemplate = ({
     <Layout previewText={`Tu prueba gratuita está por expirar`}>
       <Section>
         <CustomHeading>Tu prueba gratuita está por expirar</CustomHeading>
-        <Text className="text-gray-600 text-lg leading-relaxed text-center mb-8">
+        <Text className="text-mist-600 text-lg leading-relaxed text-center mb-8">
           Hola <strong>{name}</strong>, esperemos estes disfrutando nuestra aplicación. Tu prueba gratuita de <strong>{planName}</strong>{' '}
           está por expirar en <strong>{daysLeft} días</strong>. Por favor, conecta tu cuenta de Mercado Pago para continuar disfrutando de
           todos los beneficios de Turnify.
@@ -24,7 +24,7 @@ export const TrialExpiringReminderEmailTemplate = ({
         Conectar Mercado Pago
       </Button>
       <Hr className="my-4" />
-      <Text className="text-gray-500 text-sm leading-relaxed text-center">
+      <Text className="text-mist-500 text-sm leading-relaxed text-center">
         Si no creaste esta cuenta, por favor ignora este correo electrónico.
       </Text>
     </Layout>

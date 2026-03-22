@@ -6,7 +6,5 @@ export const MercadoPagoConfig = {
   preapprovalSubscriptionUrl: 'https://api.mercadopago.com/preapproval',
   cancelSubscriptionUrl: (id: string) => `https://api.mercadopago.com/preapproval/${id}`,
   paymentSearchUrl: (externalReference: string) =>
-    `https://api.mercadopago.com/v1/payments/search?external_reference=${encodeURIComponent(
-      externalReference,
-    )}`,
+    `https://api.mercadopago.com/v1/payments/search?external_reference=${encodeURIComponent(externalReference)}`,
 };

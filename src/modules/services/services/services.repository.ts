@@ -25,6 +25,12 @@ export class ServicesRepository extends BaseRepository {
     });
   }
 
+  countByBusiness(businessId: string, client?: PrismaClient) {
+    return this.db(client).service.count({
+      where: { businessId, deletedAt: null },
+    });
+  }
+
   findById(id: string, client?: PrismaClient) {
     return this.db(client).service.findUnique({ where: { id, deletedAt: null } });
   }

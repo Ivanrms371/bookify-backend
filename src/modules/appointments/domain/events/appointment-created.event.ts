@@ -7,6 +7,8 @@ export interface AppointmentCreatedEvent {
   serviceName: string;
   customerId: string;
   customerName: string;
+  cancelUrl: string;
+  rescheduleUrl: string;
   startAppointmentDate: Date;
   endAppointmentDate: Date;
   appointmentId: string;

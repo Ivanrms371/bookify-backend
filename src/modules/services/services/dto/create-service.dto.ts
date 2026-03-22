@@ -1,5 +1,8 @@
-import { Decimal } from '@prisma/client/runtime/client';
-import { IsBoolean, IsDecimal, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+
+const toNumber = (v: unknown) => (v === '' || v === undefined ? undefined : Number(v));
+const toBool = (v: unknown) => v === 'true' || v === true;
 
 export class CreateServiceDto {
   @IsString()
@@ -7,34 +10,37 @@ export class CreateServiceDto {
 
   @IsString()
   @IsOptional()
-  image?: string;
-
-  @IsString()
-  @IsOptional()
   description?: string;
 
-  @IsDecimal()
-  price: Decimal;
+  @Transform(({ value }) => toNumber(value))
+  @IsNumber()
+  price: number;
 
+  @Transform(({ value }) => toNumber(value))
   @IsNumber()
   @IsOptional()
   discountPercentage?: number;
 
-  @IsDecimal()
+  @Transform(({ value }) => toNumber(value))
+  @IsNumber()
   @IsOptional()
-  discountFixed?: Decimal;
+  discountFixed?: number;
 
+  @Transform(({ value }) => toNumber(value))
   @IsNumber()
   initialActiveMinutes: number;
 
+  @Transform(({ value }) => toNumber(value))
   @IsNumber()
   @IsOptional()
   passiveTimeMinutes?: number;
 
+  @Transform(({ value }) => toNumber(value))
   @IsNumber()
   @IsOptional()
   finalActiveMinutes?: number;
 
+  @Transform(({ value }) => toBool(value))
   @IsBoolean()
   isActive: boolean;
 }

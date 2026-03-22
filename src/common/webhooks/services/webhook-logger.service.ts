@@ -49,15 +49,11 @@ export class WebhookLoggerService {
       const minutesSinceUpdate = (new Date().getTime() - existing.updatedAt.getTime()) / 60000;
 
       if (minutesSinceUpdate < 5) {
-        this.logger.warn(
-          `⏳ Waiting: Request ${requestId} is being handled (locked for ${minutesSinceUpdate.toFixed(1)}m).`,
-        );
+        this.logger.warn(`⏳ Waiting: Request ${requestId} is being handled (locked for ${minutesSinceUpdate.toFixed(1)}m).`);
         return 'SKIP';
       }
 
-      this.logger.warn(
-        `🧟 Zombie detected: Request ${requestId} was stuck in ${existing.status} for >5m. Retrying.`,
-      );
+      this.logger.warn(`🧟 Zombie detected: Request ${requestId} was stuck in ${existing.status} for >5m. Retrying.`);
       return 'PROCESS';
     }
 
@@ -88,9 +84,7 @@ export class WebhookLoggerService {
       });
 
       if (log) {
-        this.logger.log(
-          `♻️ Webhook already processed: ${provider} | ${requestId} | ${log.status} | ${log.processedAt?.toISOString()}`,
-        );
+        this.logger.log(`♻️ Webhook already processed: ${provider} | ${requestId} | ${log.status} | ${log.processedAt?.toISOString()}`);
         return true;
       }
 

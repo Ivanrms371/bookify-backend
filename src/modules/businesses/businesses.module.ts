@@ -1,21 +1,30 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from 'src/auth/auth.module';
+import { MediaModule } from 'src/shared/media/media.module';
 import { PlansModule } from 'src/modules/plans/plans.module';
 import { UsersModule } from 'src/modules/users/users.module';
-import { CloudinaryModule } from 'src/shared/cloudinary/cloudinary.module';
-import { BusinessController } from './core/businesses.controller.ts';
-import { BusinessesService } from './core/businesses.service';
-import { BusinessImagesService } from './core/business-images.service';
-import { BusinessesRepository } from './core/businesses.repository';
+import { MembersModule } from './features/members/members.module';
+import { BusinessesController } from './businesses.controller';
+import { BusinessQuotaModule } from './features/quota/business-quota.module';
+import { BusinessesService } from './businesses.service';
+import { BusinessesRepository } from './repositories/businesses.repository.js';
 import { AppointmentCreatedListener } from './listeners/appointment-created.listener';
 import { BusinessStatsModule } from './features/stats/business-stats.module';
-import { BusinessLimitsModule } from './features/limits/business-limits.module';
 import { AppointmentCancelledListener } from './listeners/appointment-cancelled.listener.js';
+import { BusinessWorkingHoursController } from './features/working-hours/business-working-hours.controller';
+import { BusinessWorkingHoursService } from './features/working-hours/business-working-hours.service';
+import { BusinessWorkingHoursRepository } from './features/working-hours/business-working-hours.repository';
 
 @Module({
-  imports: [CloudinaryModule, UsersModule, PlansModule, AuthModule, BusinessStatsModule, BusinessLimitsModule],
-  controllers: [BusinessController],
-  providers: [BusinessesService, BusinessImagesService, BusinessesRepository, AppointmentCreatedListener, AppointmentCancelledListener],
-  exports: [BusinessesService, BusinessImagesService],
+  imports: [MediaModule,MembersModule, UsersModule, PlansModule, BusinessStatsModule, BusinessQuotaModule],
+  controllers: [BusinessesController, BusinessWorkingHoursController],
+  providers: [
+    BusinessesService,
+    BusinessesRepository,
+    AppointmentCreatedListener,
+    AppointmentCancelledListener,
+    BusinessWorkingHoursService,
+    BusinessWorkingHoursRepository,
+  ],
+  exports: [BusinessesService],
 })
 export class BusinessesModule {}

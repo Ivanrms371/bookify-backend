@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BusinessesRepository } from './businesses.repository';
+import { BusinessesRepository } from '../repositories/businesses.repository';
 
 @Injectable()
 export class BusinessesService {
@@ -8,7 +8,7 @@ export class BusinessesService {
   async findBusinessById(businessId: string) {
     const business = await this.businessesRepository.findById(businessId);
     if (!business) {
-      throw new Error('Business not found');
+      throw new Error('Negocio no encontrado');
     }
     return business;
   }

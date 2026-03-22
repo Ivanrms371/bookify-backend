@@ -5,7 +5,6 @@ import { AppointmentCreatedVariables } from './appointment-created.type';
 import { AppointmentCreatedEmailTemplate } from './email.template';
 import { BuildEmailResponse } from 'src/modules/notifications/domain/templates/build-email.interface';
 import { BuildInAppResponse } from 'src/modules/notifications/domain/templates/build-in-app.interface';
-import { format } from 'date-fns';
 
 @Injectable()
 export class AppointmentCreatedTemplate implements NotificationTemplate {

@@ -1,24 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { NotificationChannel } from 'src/generated/prisma/enums';
-import { BusinessLimitsService } from 'src/modules/businesses/features/limits/business-limits.service';
+import { BusinessQuotaService } from 'src/modules/businesses/features/quota/business-quota.service';
 
 @Injectable()
 export class NotificationUsageService {
-  constructor(private readonly limitsService: BusinessLimitsService) {}
+  constructor(private readonly quotaService: BusinessQuotaService) {}
 
   async canSend(businessId: string | null, channel: NotificationChannel) {
     if (!businessId) {
       return true && channel !== NotificationChannel.WHATSAPP;
     }
-    const limits = await this.limitsService.findByBusinessId(businessId);
-    if (!limits) {
+    const quota = await this.quotaService.findByBusinessId(businessId);
+    if (!quota) {
       return false;
     }
     switch (channel) {
       case NotificationChannel.EMAIL:
-        return limits.emailCount < limits.emailLimit;
+        return quota.emailCount < quota.emailLimit;
       case NotificationChannel.WHATSAPP:
-        return limits.whatsappCount < limits.whatsappLimit;
+        return quota.whatsappCount < quota.whatsappLimit;
       default:
         return true;
     }

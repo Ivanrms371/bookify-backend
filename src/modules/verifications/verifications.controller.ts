@@ -16,12 +16,7 @@ export class VerificationsController {
   ) {}
 
   @Get('email/confirm')
-  async confirmEmail(
-    @Query('token') token: string,
-    @Ip() ip: string,
-    @Headers('user-agent') userAgent: string,
-    @Res() res: Response,
-  ) {
+  async confirmEmail(@Query('token') token: string, @Ip() ip: string, @Headers('user-agent') userAgent: string, @Res() res: Response) {
     return this.emailVerification.confirmEmail(token);
   }
 

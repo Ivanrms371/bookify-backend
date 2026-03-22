@@ -19,7 +19,6 @@ export class UserCreatedListener {
 
   @OnEvent('user.created', { async: true })
   async handle(payload: UserCreatedEvent) {
-    console.log('🔥 user.created recibido');
     const token = await this.verificationService.createTokenVerification({
       userId: payload.userId,
       address: payload.email,

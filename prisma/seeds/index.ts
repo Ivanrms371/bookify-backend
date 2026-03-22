@@ -6,6 +6,25 @@ import { seedSalonBellaVita } from './businesses/salon-bella-vita.seed';
 import { seedZenSpaWellness } from './businesses/zen-spa-wellness.seed';
 
 export async function runSeeds(prisma: PrismaClient) {
+  console.log('🧹 Cleaning database...');
+  try {
+    const tablenames = await prisma.$queryRaw<Array<{ tablename: string }>>`SELECT tablename FROM pg_tables WHERE schemaname='public'`;
+
+    const tables = tablenames
+      .map(({ tablename }) => tablename)
+      .filter((name) => name !== '_prisma_migrations')
+      .map((name) => `"public"."${name}"`)
+      .join(', ');
+
+    if (tables.length > 0) {
+      await prisma.$executeRawUnsafe(`TRUNCATE TABLE ${tables} CASCADE;`);
+    }
+    console.log('  ✅ Database cleaned successfully\\n');
+  } catch (error) {
+    console.error('  ❌ Error cleaning database:', error);
+    throw error;
+  }
+
   const passwordHash = await bcrypt.hash('Password123!', 10);
 
   // 1. Plans
@@ -19,11 +38,11 @@ export async function runSeeds(prisma: PrismaClient) {
   await seedBarberiaElCorte(ctx);
   console.log('  ✅ Barbería El Corte (Free)');
 
-  await seedSalonBellaVita(ctx);
-  console.log('  ✅ Salón Bella Vita (Pro/Trial)');
+  // await seedSalonBellaVita(ctx);
+  // console.log('  ✅ Salón Bella Vita (Pro/Trial)');
 
-  await seedZenSpaWellness(ctx);
-  console.log('  ✅ Zen Spa & Wellness (Team/Active)');
+  // await seedZenSpaWellness(ctx);
+  // console.log('  ✅ Zen Spa & Wellness (Team/Active)');
 
   // Summary
   console.log('');

@@ -19,11 +19,11 @@ export const AppointmentReminderEmailTemplate = ({
       <Section>
         <CustomHeading>Hola {customerName}</CustomHeading>
         <Section>
-          <Text className="text-gray-600 text-lg leading-relaxed text-center mb-8">
+          <Text className="text-mist-600 text-lg leading-relaxed text-center mb-8">
             Te recordamos que tienes una cita programada con <strong>{staffName}</strong> para el <strong>{date}</strong> a las{' '}
             <strong>{time}</strong>
           </Text>
-          <Text className="text-gray-500 leading-relaxed text-center">
+          <Text className="text-mist-500 leading-relaxed text-center">
             Si deseas cancelar o reprogramar tu cita, puedes hacerlo a través de los siguientes enlaces:
           </Text>
         </Section>
@@ -32,7 +32,7 @@ export const AppointmentReminderEmailTemplate = ({
             Cancelar cita
           </Button>
 
-          <Button href={rescheduleUrl} className="w-1/2 border border-gray-200 bg-transparent text-gray-700">
+          <Button href={rescheduleUrl} className="w-1/2 border border-mist-200 bg-transparent text-mist-700">
             Reprogramar cita
           </Button>
         </Section>

@@ -5,7 +5,6 @@ import { NotificationConfigService } from '../../notification-config.service';
 import { NotificationsRepository } from '../../infraestructure/repositories/notifications.repository';
 import { NotificationDeliveryRepository } from '../../infraestructure/repositories/notification-delivery.repository';
 import { TemplateService } from './template.service';
-import { NotificationLogsRepository } from '../../infraestructure/repositories/notification-logs.repository';
 import { EmailGateway } from '../../infraestructure/gateways/email.gateway';
 import { BuildEmailResponse } from '../../domain/templates/build-email.interface';
 
@@ -18,7 +17,6 @@ export class NotificationsService {
     private readonly deliveryRepository: NotificationDeliveryRepository,
     private readonly templateService: TemplateService,
     private readonly emailGateway: EmailGateway,
-    private readonly logRepository: NotificationLogsRepository,
   ) {}
 
   private resolveChannels(type: string, recipientType: RecipientType) {

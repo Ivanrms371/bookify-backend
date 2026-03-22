@@ -6,10 +6,13 @@ import { AppointmentsRepository } from '../../infrastructure/appointments.reposi
 export class AppointmentReschedulingService {
   constructor(private readonly appointmentsRepository: AppointmentsRepository) {}
 
-  async generateRescheduleUrl(appointmentId: string) {
+  async generateRescheduleUrl() {
     const rawToken = crypto.randomBytes(32).toString('hex');
     const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
-    await this.appointmentsRepository.updateCancelToken(appointmentId, tokenHash);
-    return `${process.env.FRONTEND_URL}/appointments/${appointmentId}/reschedule?token=${rawToken}`;
+
+    return {
+      rescheduleUrl: `${process.env.FRONTEND_URL}/appointments/${rawToken}/reschedule`,
+      rescheduleToken: tokenHash,
+    };
   }
 }

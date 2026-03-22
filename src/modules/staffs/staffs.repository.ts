@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from 'src/common/database/base.repository';
-import {
-  StaffCreateInput,
-  StaffUpdateInput,
-  TransactionClient,
-} from 'src/generated/prisma/internal/prismaNamespace';
+import { StaffCreateInput, StaffUpdateInput, TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 
 @Injectable()

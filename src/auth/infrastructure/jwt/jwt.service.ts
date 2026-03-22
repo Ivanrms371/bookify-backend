@@ -17,10 +17,8 @@ export class JwtService {
   constructor(private readonly configService: ConfigService) {
     this.accessTokenSecret = this.configService.getOrThrow<string>('ACCESS_TOKEN_SECRET');
     this.refreshTokenSecret = this.configService.getOrThrow<string>('REFRESH_TOKEN_SECRET');
-    this.accessTokenExpiresIn = (this.configService.get<string>('ACCESS_TOKEN_EXPIRES_IN') ??
-      '1h') as jwt.SignOptions['expiresIn'];
-    this.refreshTokenExpiresIn = (this.configService.get<string>('REFRESH_TOKEN_EXPIRES_IN') ??
-      '30d') as jwt.SignOptions['expiresIn'];
+    this.accessTokenExpiresIn = (this.configService.get<string>('ACCESS_TOKEN_EXPIRES_IN') ?? '1h') as jwt.SignOptions['expiresIn'];
+    this.refreshTokenExpiresIn = (this.configService.get<string>('REFRESH_TOKEN_EXPIRES_IN') ?? '30d') as jwt.SignOptions['expiresIn'];
   }
 
   validateAccessToken(accessToken: string): TokenPayload {

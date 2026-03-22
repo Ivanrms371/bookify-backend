@@ -164,17 +164,29 @@ export class VerificationsService {
 
     // 3. Check if exists
     if (!verification) {
-      throw new NotFoundException('No hemos encontrado ninguna solicitud de verificación.');
+      throw new NotFoundException({
+        status: 404,
+        error: 'verification_not_found',
+        message: 'No hemos encontrado ninguna solicitud de verificación.',
+      });
     }
 
     // 4. Check if is not expired
     if (verification.expiresAt < new Date()) {
-      throw new BadRequestException('La verificación ha expirado.');
+      throw new BadRequestException({
+        status: 400,
+        error: 'verification_expired',
+        message: 'La verificación ha expirado.',
+      });
     }
 
     // 5. Check if is not verified
     if (verification.verifiedAt) {
-      throw new BadRequestException('Este enlance ya ha sido utilizado.');
+      throw new BadRequestException({
+        status: 400,
+        error: 'email_already_verified',
+        message: 'Este enlance ya ha sido utilizado.',
+      });
     }
 
     // 6. Mark as verified

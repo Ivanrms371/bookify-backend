@@ -13,13 +13,26 @@ export class AppointmentCreatedListener {
 
   @OnEvent('appointment.created', { async: true })
   async handle(event: AppointmentCreatedEvent) {
-    const { startAppointmentDate, businessId, userId, customerId, appointmentId, staffName, serviceName, customerName } = event;
+    const {
+      startAppointmentDate,
+      businessId,
+      userId,
+      customerId,
+      appointmentId,
+      staffName,
+      serviceName,
+      customerName,
+      cancelUrl,
+      rescheduleUrl,
+    } = event;
 
     const payload = {
       appointmentId,
       staffName,
       customerName,
       serviceName,
+      cancelUrl,
+      rescheduleUrl,
       date: format(startAppointmentDate, "dd 'de' MMMM 'de' yyyy", { locale: es }),
       time: format(startAppointmentDate, 'HH:mm'),
     } as AppointmentCreatedVariables;

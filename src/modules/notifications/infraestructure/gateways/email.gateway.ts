@@ -28,7 +28,7 @@ export class EmailGateway {
 
     const { react, subject } = template;
 
-    const { data } = await this.resend.emails.send({
+    const { data, error } = await this.resend.emails.send({
       from: 'Turnify <onboarding@resend.dev>',
       to,
       react,
@@ -36,6 +36,7 @@ export class EmailGateway {
     });
 
     if (!data) {
+      console.log(error);
       throw new Error('An error has ocurred sending email');
     }
 
@@ -44,9 +45,10 @@ export class EmailGateway {
 
   async sendDirectly(to: string, template: BuildEmailResponse) {
     const { react, subject } = template;
+    const resolvedTo = await this.resolveTo(to, RecipientType.USER);
     const { data } = await this.resend.emails.send({
       from: 'Turnify <onboarding@resend.dev>',
-      to,
+      to: resolvedTo,
       react,
       subject,
     });

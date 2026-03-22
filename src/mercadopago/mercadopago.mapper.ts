@@ -22,9 +22,7 @@ export function mapMercadoPagoStatus(status: string): SubscriptionStatus {
   }
 }
 
-export function mapMercadoPagoPreapprovalToSubscription(
-  mp: MercadoPagoPreapproval,
-): SubscriptionUpdateInput {
+export function mapMercadoPagoPreapprovalToSubscription(mp: MercadoPagoPreapproval): SubscriptionUpdateInput {
   return {
     externalId: mp.id,
     status: mapMercadoPagoStatus(mp.status),
@@ -35,9 +33,7 @@ export function mapMercadoPagoPreapprovalToSubscription(
     amount: new Decimal(mp.auto_recurring.transaction_amount),
     currency: mp.auto_recurring.currency_id,
 
-    currentPeriodStart: mp.auto_recurring.start_date
-      ? new Date(mp.auto_recurring.start_date)
-      : null,
+    currentPeriodStart: mp.auto_recurring.start_date ? new Date(mp.auto_recurring.start_date) : null,
 
     currentPeriodEnd: mp.auto_recurring.end_date ? new Date(mp.auto_recurring.end_date) : null,
 

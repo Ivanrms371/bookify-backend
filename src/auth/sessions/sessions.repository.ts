@@ -25,8 +25,6 @@ export class SessionsRepository extends BaseRepository {
     const data: SessionCreateInput = {
       jti,
       deviceId,
-      ipAddress: dto.ipAddress,
-      userAgent: dto.userAgent,
       expiresAt,
       lastUsedAt: new Date(),
       user: { connect: { id: dto.userId } },
@@ -100,8 +98,6 @@ export class SessionsRepository extends BaseRepository {
         deviceId,
         userId,
         expiresAt,
-        userAgent: dto.userAgent,
-        ipAddress: dto.ipAddress,
         lastUsedAt: new Date(),
         revokedAt: null,
       },

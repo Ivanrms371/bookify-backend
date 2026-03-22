@@ -1,13 +1,4 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { CreateWorkingHourDto } from './dto/create-working-hour.dto';
 import { UpdateWorkingHourDto } from './dto/update-working-hour.dto';
 import { BusinessStaffParamsDto, BusinessStaffWorkingHoursParamsDto } from '../../dto/params.dto';
@@ -27,10 +18,7 @@ export class WorkingHoursController {
   }
 
   @Put(':workingHourId')
-  updateWorkingHour(
-    @Param() params: BusinessStaffWorkingHoursParamsDto,
-    @Body() body: UpdateWorkingHourDto,
-  ) {
+  updateWorkingHour(@Param() params: BusinessStaffWorkingHoursParamsDto, @Body() body: UpdateWorkingHourDto) {
     return this.workingHoursService.updateWorkingHour(params, body);
   }
 

@@ -31,6 +31,36 @@ export class UsersRepository extends BaseRepository {
     return this.db(tx).user.findUnique({ where: { googleId } });
   }
 
+  async getMeWithBusiness(userId: string, tx?: TransactionClient) {
+    return this.db(tx).user.findUnique({
+      where: { id: userId },
+      select: {
+        avatarUrl: true,
+        name: true,
+        email: true,
+        phone: true,
+        businessMembers: {
+          select: {
+            business: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+                logoUrl: true,
+                members: {
+                  where: { userId },
+                  select: {
+                    role: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
   async markEmailVerified(userId: string, tx?: TransactionClient) {
     return this.db(tx).user.update({
       data: { emailVerifiedAt: new Date() },

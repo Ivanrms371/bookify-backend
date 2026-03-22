@@ -8,16 +8,20 @@ import { AvailabilityPolicy } from '../../domain/policies/appointment-creation.p
 import { buildTimeBlocks } from '../../domain/appointment-block.builder';
 import { CustomersService } from 'src/modules/customers/customers.service';
 import { ServicesService } from 'src/modules/services/services/services.service';
+import { AppointmentCancelationService } from './appointment-cancelation.service';
+import { AppointmentReschedulingService } from './appointment-rescheduling.service';
 
 @Injectable()
 export class AppointmentCreationService {
   constructor(
-    private readonly eventEmitter: EventEmitter2,
     private readonly prisma: PrismaService,
+    private readonly eventEmitter: EventEmitter2,
     private readonly policy: AvailabilityPolicy,
     private readonly customersService: CustomersService,
     private readonly servicesService: ServicesService,
     private readonly appointmentsRepository: AppointmentsRepository,
+    private readonly appointmentCancelationService: AppointmentCancelationService,
+    private readonly appointmentReschedulingService: AppointmentReschedulingService,
   ) {}
 
   private generateConfirmationCode() {
@@ -38,6 +42,9 @@ export class AppointmentCreationService {
     const result = await this.prisma.$transaction(async (tx) => {
       const customer = await this.customersService.findOrCreateCustomer(dto.appointment.businessId, dto.customer);
 
+      const { rescheduleUrl, rescheduleToken } = await this.appointmentReschedulingService.generateRescheduleUrl();
+      const { cancelUrl, cancelToken } = await this.appointmentCancelationService.generateCancelUrl();
+
       const appointment = await this.appointmentsRepository.create(
         {
           business: { connect: { id: dto.appointment.businessId } },
@@ -55,6 +62,8 @@ export class AppointmentCreationService {
           initialActiveMinutes: service.initialActiveMinutes,
           passiveMinutes: service.passiveTimeMinutes,
           finalActiveMinutes: service.finalActiveMinutes,
+          rescheduleToken,
+          cancelToken,
           startTime,
           endTime,
         },
@@ -82,6 +91,8 @@ export class AppointmentCreationService {
       return {
         customer,
         appointment,
+        cancelUrl,
+        rescheduleUrl,
       };
     });
 
@@ -98,6 +109,8 @@ export class AppointmentCreationService {
       staffPhone: result.appointment.staff.user.phone,
       serviceName: result.appointment.service.name,
       userId: result.appointment.staff.userId,
+      cancelUrl: result.cancelUrl,
+      rescheduleUrl: result.rescheduleUrl,
     } as AppointmentCreatedEvent);
 
     return result;

@@ -20,18 +20,8 @@ export type BusinessModel = runtime.Types.Result.DefaultSelection<Prisma.$Busine
 
 export type AggregateBusiness = {
   _count: BusinessCountAggregateOutputType | null
-  _avg: BusinessAvgAggregateOutputType | null
-  _sum: BusinessSumAggregateOutputType | null
   _min: BusinessMinAggregateOutputType | null
   _max: BusinessMaxAggregateOutputType | null
-}
-
-export type BusinessAvgAggregateOutputType = {
-  onboardingStep: number | null
-}
-
-export type BusinessSumAggregateOutputType = {
-  onboardingStep: number | null
 }
 
 export type BusinessMinAggregateOutputType = {
@@ -48,12 +38,12 @@ export type BusinessMinAggregateOutputType = {
   logoPublicId: string | null
   coverUrl: string | null
   coverPublicId: string | null
-  onboardingStep: number | null
-  onboardingCompleted: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
   isActive: boolean | null
+  onboardingCompleted: boolean | null
+  isPublic: boolean | null
 }
 
 export type BusinessMaxAggregateOutputType = {
@@ -70,12 +60,12 @@ export type BusinessMaxAggregateOutputType = {
   logoPublicId: string | null
   coverUrl: string | null
   coverPublicId: string | null
-  onboardingStep: number | null
-  onboardingCompleted: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
   isActive: boolean | null
+  onboardingCompleted: boolean | null
+  isPublic: boolean | null
 }
 
 export type BusinessCountAggregateOutputType = {
@@ -92,23 +82,15 @@ export type BusinessCountAggregateOutputType = {
   logoPublicId: number
   coverUrl: number
   coverPublicId: number
-  onboardingStep: number
-  onboardingCompleted: number
   createdAt: number
   updatedAt: number
   deletedAt: number
   isActive: number
+  onboardingCompleted: number
+  isPublic: number
   _all: number
 }
 
-
-export type BusinessAvgAggregateInputType = {
-  onboardingStep?: true
-}
-
-export type BusinessSumAggregateInputType = {
-  onboardingStep?: true
-}
 
 export type BusinessMinAggregateInputType = {
   id?: true
@@ -124,12 +106,12 @@ export type BusinessMinAggregateInputType = {
   logoPublicId?: true
   coverUrl?: true
   coverPublicId?: true
-  onboardingStep?: true
-  onboardingCompleted?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
   isActive?: true
+  onboardingCompleted?: true
+  isPublic?: true
 }
 
 export type BusinessMaxAggregateInputType = {
@@ -146,12 +128,12 @@ export type BusinessMaxAggregateInputType = {
   logoPublicId?: true
   coverUrl?: true
   coverPublicId?: true
-  onboardingStep?: true
-  onboardingCompleted?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
   isActive?: true
+  onboardingCompleted?: true
+  isPublic?: true
 }
 
 export type BusinessCountAggregateInputType = {
@@ -168,12 +150,12 @@ export type BusinessCountAggregateInputType = {
   logoPublicId?: true
   coverUrl?: true
   coverPublicId?: true
-  onboardingStep?: true
-  onboardingCompleted?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
   isActive?: true
+  onboardingCompleted?: true
+  isPublic?: true
   _all?: true
 }
 
@@ -215,18 +197,6 @@ export type BusinessAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: BusinessAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: BusinessSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: BusinessMinAggregateInputType
@@ -257,8 +227,6 @@ export type BusinessGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: BusinessCountAggregateInputType | true
-  _avg?: BusinessAvgAggregateInputType
-  _sum?: BusinessSumAggregateInputType
   _min?: BusinessMinAggregateInputType
   _max?: BusinessMaxAggregateInputType
 }
@@ -277,15 +245,13 @@ export type BusinessGroupByOutputType = {
   logoPublicId: string | null
   coverUrl: string | null
   coverPublicId: string | null
-  onboardingStep: number
-  onboardingCompleted: boolean
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
   isActive: boolean
+  onboardingCompleted: boolean
+  isPublic: boolean
   _count: BusinessCountAggregateOutputType | null
-  _avg: BusinessAvgAggregateOutputType | null
-  _sum: BusinessSumAggregateOutputType | null
   _min: BusinessMinAggregateOutputType | null
   _max: BusinessMaxAggregateOutputType | null
 }
@@ -322,17 +288,18 @@ export type BusinessWhereInput = {
   logoPublicId?: Prisma.StringNullableFilter<"Business"> | string | null
   coverUrl?: Prisma.StringNullableFilter<"Business"> | string | null
   coverPublicId?: Prisma.StringNullableFilter<"Business"> | string | null
-  onboardingStep?: Prisma.IntFilter<"Business"> | number
-  onboardingCompleted?: Prisma.BoolFilter<"Business"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Business"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Business"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Business"> | Date | string | null
   isActive?: Prisma.BoolFilter<"Business"> | boolean
+  onboardingCompleted?: Prisma.BoolFilter<"Business"> | boolean
+  isPublic?: Prisma.BoolFilter<"Business"> | boolean
   appointments?: Prisma.AppointmentListRelationFilter
   dailyStats?: Prisma.BusinessDailyStatsListRelationFilter
   lifetimeStats?: Prisma.XOR<Prisma.BusinessLifetimeStatsNullableScalarRelationFilter, Prisma.BusinessLifetimeStatsWhereInput> | null
-  limits?: Prisma.XOR<Prisma.BusinessLimitsNullableScalarRelationFilter, Prisma.BusinessLimitsWhereInput> | null
+  quota?: Prisma.XOR<Prisma.BusinessQuotaNullableScalarRelationFilter, Prisma.BusinessQuotaWhereInput> | null
   members?: Prisma.BusinessMemberListRelationFilter
+  onboarding?: Prisma.XOR<Prisma.BusinessOnboardingNullableScalarRelationFilter, Prisma.BusinessOnboardingWhereInput> | null
   settings?: Prisma.XOR<Prisma.BusinessSettingsNullableScalarRelationFilter, Prisma.BusinessSettingsWhereInput> | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   customers?: Prisma.CustomerListRelationFilter
@@ -344,6 +311,7 @@ export type BusinessWhereInput = {
   staffs?: Prisma.StaffListRelationFilter
   subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
   workingHours?: Prisma.WorkingHoursListRelationFilter
+  businessWorkingHours?: Prisma.BusinessWorkingHoursListRelationFilter
 }
 
 export type BusinessOrderByWithRelationInput = {
@@ -360,17 +328,18 @@ export type BusinessOrderByWithRelationInput = {
   logoPublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   coverUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   coverPublicId?: Prisma.SortOrderInput | Prisma.SortOrder
-  onboardingStep?: Prisma.SortOrder
-  onboardingCompleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  onboardingCompleted?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
   appointments?: Prisma.AppointmentOrderByRelationAggregateInput
   dailyStats?: Prisma.BusinessDailyStatsOrderByRelationAggregateInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsOrderByWithRelationInput
-  limits?: Prisma.BusinessLimitsOrderByWithRelationInput
+  quota?: Prisma.BusinessQuotaOrderByWithRelationInput
   members?: Prisma.BusinessMemberOrderByRelationAggregateInput
+  onboarding?: Prisma.BusinessOnboardingOrderByWithRelationInput
   settings?: Prisma.BusinessSettingsOrderByWithRelationInput
   owner?: Prisma.UserOrderByWithRelationInput
   customers?: Prisma.CustomerOrderByRelationAggregateInput
@@ -382,6 +351,7 @@ export type BusinessOrderByWithRelationInput = {
   staffs?: Prisma.StaffOrderByRelationAggregateInput
   subscription?: Prisma.SubscriptionOrderByWithRelationInput
   workingHours?: Prisma.WorkingHoursOrderByRelationAggregateInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursOrderByRelationAggregateInput
 }
 
 export type BusinessWhereUniqueInput = Prisma.AtLeast<{
@@ -401,17 +371,18 @@ export type BusinessWhereUniqueInput = Prisma.AtLeast<{
   logoPublicId?: Prisma.StringNullableFilter<"Business"> | string | null
   coverUrl?: Prisma.StringNullableFilter<"Business"> | string | null
   coverPublicId?: Prisma.StringNullableFilter<"Business"> | string | null
-  onboardingStep?: Prisma.IntFilter<"Business"> | number
-  onboardingCompleted?: Prisma.BoolFilter<"Business"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Business"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Business"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Business"> | Date | string | null
   isActive?: Prisma.BoolFilter<"Business"> | boolean
+  onboardingCompleted?: Prisma.BoolFilter<"Business"> | boolean
+  isPublic?: Prisma.BoolFilter<"Business"> | boolean
   appointments?: Prisma.AppointmentListRelationFilter
   dailyStats?: Prisma.BusinessDailyStatsListRelationFilter
   lifetimeStats?: Prisma.XOR<Prisma.BusinessLifetimeStatsNullableScalarRelationFilter, Prisma.BusinessLifetimeStatsWhereInput> | null
-  limits?: Prisma.XOR<Prisma.BusinessLimitsNullableScalarRelationFilter, Prisma.BusinessLimitsWhereInput> | null
+  quota?: Prisma.XOR<Prisma.BusinessQuotaNullableScalarRelationFilter, Prisma.BusinessQuotaWhereInput> | null
   members?: Prisma.BusinessMemberListRelationFilter
+  onboarding?: Prisma.XOR<Prisma.BusinessOnboardingNullableScalarRelationFilter, Prisma.BusinessOnboardingWhereInput> | null
   settings?: Prisma.XOR<Prisma.BusinessSettingsNullableScalarRelationFilter, Prisma.BusinessSettingsWhereInput> | null
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   customers?: Prisma.CustomerListRelationFilter
@@ -423,6 +394,7 @@ export type BusinessWhereUniqueInput = Prisma.AtLeast<{
   staffs?: Prisma.StaffListRelationFilter
   subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
   workingHours?: Prisma.WorkingHoursListRelationFilter
+  businessWorkingHours?: Prisma.BusinessWorkingHoursListRelationFilter
 }, "id" | "ownerId" | "slug">
 
 export type BusinessOrderByWithAggregationInput = {
@@ -439,17 +411,15 @@ export type BusinessOrderByWithAggregationInput = {
   logoPublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   coverUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   coverPublicId?: Prisma.SortOrderInput | Prisma.SortOrder
-  onboardingStep?: Prisma.SortOrder
-  onboardingCompleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  onboardingCompleted?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
   _count?: Prisma.BusinessCountOrderByAggregateInput
-  _avg?: Prisma.BusinessAvgOrderByAggregateInput
   _max?: Prisma.BusinessMaxOrderByAggregateInput
   _min?: Prisma.BusinessMinOrderByAggregateInput
-  _sum?: Prisma.BusinessSumOrderByAggregateInput
 }
 
 export type BusinessScalarWhereWithAggregatesInput = {
@@ -469,12 +439,12 @@ export type BusinessScalarWhereWithAggregatesInput = {
   logoPublicId?: Prisma.StringNullableWithAggregatesFilter<"Business"> | string | null
   coverUrl?: Prisma.StringNullableWithAggregatesFilter<"Business"> | string | null
   coverPublicId?: Prisma.StringNullableWithAggregatesFilter<"Business"> | string | null
-  onboardingStep?: Prisma.IntWithAggregatesFilter<"Business"> | number
-  onboardingCompleted?: Prisma.BoolWithAggregatesFilter<"Business"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Business"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Business"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Business"> | Date | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"Business"> | boolean
+  onboardingCompleted?: Prisma.BoolWithAggregatesFilter<"Business"> | boolean
+  isPublic?: Prisma.BoolWithAggregatesFilter<"Business"> | boolean
 }
 
 export type BusinessCreateInput = {
@@ -490,17 +460,18 @@ export type BusinessCreateInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
@@ -512,6 +483,7 @@ export type BusinessCreateInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateInput = {
@@ -528,17 +500,18 @@ export type BusinessUncheckedCreateInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
@@ -549,6 +522,7 @@ export type BusinessUncheckedCreateInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUpdateInput = {
@@ -564,17 +538,18 @@ export type BusinessUpdateInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
@@ -586,6 +561,7 @@ export type BusinessUpdateInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateInput = {
@@ -602,17 +578,18 @@ export type BusinessUncheckedUpdateInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -623,6 +600,7 @@ export type BusinessUncheckedUpdateInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateManyInput = {
@@ -639,12 +617,12 @@ export type BusinessCreateManyInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
 }
 
 export type BusinessUpdateManyMutationInput = {
@@ -660,12 +638,12 @@ export type BusinessUpdateManyMutationInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type BusinessUncheckedUpdateManyInput = {
@@ -682,12 +660,12 @@ export type BusinessUncheckedUpdateManyInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type BusinessNullableScalarRelationFilter = {
@@ -714,16 +692,12 @@ export type BusinessCountOrderByAggregateInput = {
   logoPublicId?: Prisma.SortOrder
   coverUrl?: Prisma.SortOrder
   coverPublicId?: Prisma.SortOrder
-  onboardingStep?: Prisma.SortOrder
-  onboardingCompleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
-}
-
-export type BusinessAvgOrderByAggregateInput = {
-  onboardingStep?: Prisma.SortOrder
+  onboardingCompleted?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
 }
 
 export type BusinessMaxOrderByAggregateInput = {
@@ -740,12 +714,12 @@ export type BusinessMaxOrderByAggregateInput = {
   logoPublicId?: Prisma.SortOrder
   coverUrl?: Prisma.SortOrder
   coverPublicId?: Prisma.SortOrder
-  onboardingStep?: Prisma.SortOrder
-  onboardingCompleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  onboardingCompleted?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
 }
 
 export type BusinessMinOrderByAggregateInput = {
@@ -762,16 +736,12 @@ export type BusinessMinOrderByAggregateInput = {
   logoPublicId?: Prisma.SortOrder
   coverUrl?: Prisma.SortOrder
   coverPublicId?: Prisma.SortOrder
-  onboardingStep?: Prisma.SortOrder
-  onboardingCompleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
-}
-
-export type BusinessSumOrderByAggregateInput = {
-  onboardingStep?: Prisma.SortOrder
+  onboardingCompleted?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
 }
 
 export type BusinessCreateNestedOneWithoutOwnerInput = {
@@ -898,6 +868,20 @@ export type BusinessUpdateOneRequiredWithoutWorkingHoursNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutWorkingHoursInput, Prisma.BusinessUpdateWithoutWorkingHoursInput>, Prisma.BusinessUncheckedUpdateWithoutWorkingHoursInput>
 }
 
+export type BusinessCreateNestedOneWithoutBusinessWorkingHoursInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutBusinessWorkingHoursInput, Prisma.BusinessUncheckedCreateWithoutBusinessWorkingHoursInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutBusinessWorkingHoursInput
+  connect?: Prisma.BusinessWhereUniqueInput
+}
+
+export type BusinessUpdateOneRequiredWithoutBusinessWorkingHoursNestedInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutBusinessWorkingHoursInput, Prisma.BusinessUncheckedCreateWithoutBusinessWorkingHoursInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutBusinessWorkingHoursInput
+  upsert?: Prisma.BusinessUpsertWithoutBusinessWorkingHoursInput
+  connect?: Prisma.BusinessWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutBusinessWorkingHoursInput, Prisma.BusinessUpdateWithoutBusinessWorkingHoursInput>, Prisma.BusinessUncheckedUpdateWithoutBusinessWorkingHoursInput>
+}
+
 export type BusinessCreateNestedOneWithoutScheduleExceptionsInput = {
   create?: Prisma.XOR<Prisma.BusinessCreateWithoutScheduleExceptionsInput, Prisma.BusinessUncheckedCreateWithoutScheduleExceptionsInput>
   connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutScheduleExceptionsInput
@@ -982,18 +966,18 @@ export type BusinessUpdateOneRequiredWithoutInAppNotificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutInAppNotificationsInput, Prisma.BusinessUpdateWithoutInAppNotificationsInput>, Prisma.BusinessUncheckedUpdateWithoutInAppNotificationsInput>
 }
 
-export type BusinessCreateNestedOneWithoutLimitsInput = {
-  create?: Prisma.XOR<Prisma.BusinessCreateWithoutLimitsInput, Prisma.BusinessUncheckedCreateWithoutLimitsInput>
-  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutLimitsInput
+export type BusinessCreateNestedOneWithoutQuotaInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutQuotaInput, Prisma.BusinessUncheckedCreateWithoutQuotaInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutQuotaInput
   connect?: Prisma.BusinessWhereUniqueInput
 }
 
-export type BusinessUpdateOneRequiredWithoutLimitsNestedInput = {
-  create?: Prisma.XOR<Prisma.BusinessCreateWithoutLimitsInput, Prisma.BusinessUncheckedCreateWithoutLimitsInput>
-  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutLimitsInput
-  upsert?: Prisma.BusinessUpsertWithoutLimitsInput
+export type BusinessUpdateOneRequiredWithoutQuotaNestedInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutQuotaInput, Prisma.BusinessUncheckedCreateWithoutQuotaInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutQuotaInput
+  upsert?: Prisma.BusinessUpsertWithoutQuotaInput
   connect?: Prisma.BusinessWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutLimitsInput, Prisma.BusinessUpdateWithoutLimitsInput>, Prisma.BusinessUncheckedUpdateWithoutLimitsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutQuotaInput, Prisma.BusinessUpdateWithoutQuotaInput>, Prisma.BusinessUncheckedUpdateWithoutQuotaInput>
 }
 
 export type BusinessCreateNestedOneWithoutSubscriptionInput = {
@@ -1024,6 +1008,20 @@ export type BusinessUpdateOneRequiredWithoutPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutPaymentsInput, Prisma.BusinessUpdateWithoutPaymentsInput>, Prisma.BusinessUncheckedUpdateWithoutPaymentsInput>
 }
 
+export type BusinessCreateNestedOneWithoutOnboardingInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutOnboardingInput, Prisma.BusinessUncheckedCreateWithoutOnboardingInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutOnboardingInput
+  connect?: Prisma.BusinessWhereUniqueInput
+}
+
+export type BusinessUpdateOneRequiredWithoutOnboardingNestedInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutOnboardingInput, Prisma.BusinessUncheckedCreateWithoutOnboardingInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutOnboardingInput
+  upsert?: Prisma.BusinessUpsertWithoutOnboardingInput
+  connect?: Prisma.BusinessWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutOnboardingInput, Prisma.BusinessUpdateWithoutOnboardingInput>, Prisma.BusinessUncheckedUpdateWithoutOnboardingInput>
+}
+
 export type BusinessCreateWithoutOwnerInput = {
   id?: string
   name?: string | null
@@ -1037,17 +1035,18 @@ export type BusinessCreateWithoutOwnerInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutBusinessInput
@@ -1058,6 +1057,7 @@ export type BusinessCreateWithoutOwnerInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutOwnerInput = {
@@ -1073,17 +1073,18 @@ export type BusinessUncheckedCreateWithoutOwnerInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
@@ -1094,6 +1095,7 @@ export type BusinessUncheckedCreateWithoutOwnerInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutOwnerInput = {
@@ -1125,17 +1127,18 @@ export type BusinessUpdateWithoutOwnerInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutBusinessNestedInput
@@ -1146,6 +1149,7 @@ export type BusinessUpdateWithoutOwnerInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutOwnerInput = {
@@ -1161,17 +1165,18 @@ export type BusinessUncheckedUpdateWithoutOwnerInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -1182,6 +1187,7 @@ export type BusinessUncheckedUpdateWithoutOwnerInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutMembersInput = {
@@ -1197,16 +1203,17 @@ export type BusinessCreateWithoutMembersInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
@@ -1218,6 +1225,7 @@ export type BusinessCreateWithoutMembersInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutMembersInput = {
@@ -1234,16 +1242,17 @@ export type BusinessUncheckedCreateWithoutMembersInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
@@ -1254,6 +1263,7 @@ export type BusinessUncheckedCreateWithoutMembersInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutMembersInput = {
@@ -1285,16 +1295,17 @@ export type BusinessUpdateWithoutMembersInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
@@ -1306,6 +1317,7 @@ export type BusinessUpdateWithoutMembersInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutMembersInput = {
@@ -1322,16 +1334,17 @@ export type BusinessUncheckedUpdateWithoutMembersInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -1342,6 +1355,7 @@ export type BusinessUncheckedUpdateWithoutMembersInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutSettingsInput = {
@@ -1357,17 +1371,18 @@ export type BusinessCreateWithoutSettingsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutBusinessInput
@@ -1378,6 +1393,7 @@ export type BusinessCreateWithoutSettingsInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutSettingsInput = {
@@ -1394,17 +1410,18 @@ export type BusinessUncheckedCreateWithoutSettingsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
   memberInvites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutBusinessInput
@@ -1414,6 +1431,7 @@ export type BusinessUncheckedCreateWithoutSettingsInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutSettingsInput = {
@@ -1445,17 +1463,18 @@ export type BusinessUpdateWithoutSettingsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutBusinessNestedInput
@@ -1466,6 +1485,7 @@ export type BusinessUpdateWithoutSettingsInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutSettingsInput = {
@@ -1482,17 +1502,18 @@ export type BusinessUncheckedUpdateWithoutSettingsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
   memberInvites?: Prisma.MemberInviteUncheckedUpdateManyWithoutBusinessNestedInput
@@ -1502,6 +1523,7 @@ export type BusinessUncheckedUpdateWithoutSettingsInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutServicesInput = {
@@ -1517,17 +1539,18 @@ export type BusinessCreateWithoutServicesInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
@@ -1538,6 +1561,7 @@ export type BusinessCreateWithoutServicesInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutServicesInput = {
@@ -1554,17 +1578,18 @@ export type BusinessUncheckedCreateWithoutServicesInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
@@ -1574,6 +1599,7 @@ export type BusinessUncheckedCreateWithoutServicesInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutServicesInput = {
@@ -1605,17 +1631,18 @@ export type BusinessUpdateWithoutServicesInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
@@ -1626,6 +1653,7 @@ export type BusinessUpdateWithoutServicesInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutServicesInput = {
@@ -1642,17 +1670,18 @@ export type BusinessUncheckedUpdateWithoutServicesInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -1662,6 +1691,7 @@ export type BusinessUncheckedUpdateWithoutServicesInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutStaffsInput = {
@@ -1677,17 +1707,18 @@ export type BusinessCreateWithoutStaffsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
@@ -1698,6 +1729,7 @@ export type BusinessCreateWithoutStaffsInput = {
   services?: Prisma.ServiceCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutStaffsInput = {
@@ -1714,17 +1746,18 @@ export type BusinessUncheckedCreateWithoutStaffsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
@@ -1734,6 +1767,7 @@ export type BusinessUncheckedCreateWithoutStaffsInput = {
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutStaffsInput = {
@@ -1765,17 +1799,18 @@ export type BusinessUpdateWithoutStaffsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
@@ -1786,6 +1821,7 @@ export type BusinessUpdateWithoutStaffsInput = {
   services?: Prisma.ServiceUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutStaffsInput = {
@@ -1802,17 +1838,18 @@ export type BusinessUncheckedUpdateWithoutStaffsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -1822,6 +1859,7 @@ export type BusinessUncheckedUpdateWithoutStaffsInput = {
   services?: Prisma.ServiceUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutMemberInvitesInput = {
@@ -1837,17 +1875,18 @@ export type BusinessCreateWithoutMemberInvitesInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
@@ -1858,6 +1897,7 @@ export type BusinessCreateWithoutMemberInvitesInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutMemberInvitesInput = {
@@ -1874,17 +1914,18 @@ export type BusinessUncheckedCreateWithoutMemberInvitesInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
@@ -1894,6 +1935,7 @@ export type BusinessUncheckedCreateWithoutMemberInvitesInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutMemberInvitesInput = {
@@ -1925,17 +1967,18 @@ export type BusinessUpdateWithoutMemberInvitesInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
@@ -1946,6 +1989,7 @@ export type BusinessUpdateWithoutMemberInvitesInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutMemberInvitesInput = {
@@ -1962,17 +2006,18 @@ export type BusinessUncheckedUpdateWithoutMemberInvitesInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -1982,6 +2027,7 @@ export type BusinessUncheckedUpdateWithoutMemberInvitesInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutWorkingHoursInput = {
@@ -1997,17 +2043,18 @@ export type BusinessCreateWithoutWorkingHoursInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
@@ -2018,6 +2065,7 @@ export type BusinessCreateWithoutWorkingHoursInput = {
   services?: Prisma.ServiceCreateNestedManyWithoutBusinessInput
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutWorkingHoursInput = {
@@ -2034,17 +2082,18 @@ export type BusinessUncheckedCreateWithoutWorkingHoursInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
@@ -2054,6 +2103,7 @@ export type BusinessUncheckedCreateWithoutWorkingHoursInput = {
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutBusinessInput
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutWorkingHoursInput = {
@@ -2085,17 +2135,18 @@ export type BusinessUpdateWithoutWorkingHoursInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
@@ -2106,6 +2157,7 @@ export type BusinessUpdateWithoutWorkingHoursInput = {
   services?: Prisma.ServiceUpdateManyWithoutBusinessNestedInput
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutWorkingHoursInput = {
@@ -2122,17 +2174,18 @@ export type BusinessUncheckedUpdateWithoutWorkingHoursInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -2142,6 +2195,175 @@ export type BusinessUncheckedUpdateWithoutWorkingHoursInput = {
   services?: Prisma.ServiceUncheckedUpdateManyWithoutBusinessNestedInput
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+}
+
+export type BusinessCreateWithoutBusinessWorkingHoursInput = {
+  id?: string
+  name?: string | null
+  slug?: string | null
+  type?: $Enums.BusinessType | null
+  description?: string | null
+  addressLine1?: string | null
+  addressLine2?: string | null
+  phone?: string | null
+  logoUrl?: string | null
+  logoPublicId?: string | null
+  coverUrl?: string | null
+  coverPublicId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
+  dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
+  lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
+  members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
+  settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
+  owner: Prisma.UserCreateNestedOneWithoutBusinessInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutBusinessInput
+  memberInvites?: Prisma.MemberInviteCreateNestedManyWithoutBusinessInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutBusinessInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutBusinessInput
+  services?: Prisma.ServiceCreateNestedManyWithoutBusinessInput
+  staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
+  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+}
+
+export type BusinessUncheckedCreateWithoutBusinessWorkingHoursInput = {
+  id?: string
+  ownerId: string
+  name?: string | null
+  slug?: string | null
+  type?: $Enums.BusinessType | null
+  description?: string | null
+  addressLine1?: string | null
+  addressLine2?: string | null
+  phone?: string | null
+  logoUrl?: string | null
+  logoPublicId?: string | null
+  coverUrl?: string | null
+  coverPublicId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
+  dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
+  lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
+  members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
+  settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
+  memberInvites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutBusinessInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutBusinessInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutBusinessInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutBusinessInput
+  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
+  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+}
+
+export type BusinessCreateOrConnectWithoutBusinessWorkingHoursInput = {
+  where: Prisma.BusinessWhereUniqueInput
+  create: Prisma.XOR<Prisma.BusinessCreateWithoutBusinessWorkingHoursInput, Prisma.BusinessUncheckedCreateWithoutBusinessWorkingHoursInput>
+}
+
+export type BusinessUpsertWithoutBusinessWorkingHoursInput = {
+  update: Prisma.XOR<Prisma.BusinessUpdateWithoutBusinessWorkingHoursInput, Prisma.BusinessUncheckedUpdateWithoutBusinessWorkingHoursInput>
+  create: Prisma.XOR<Prisma.BusinessCreateWithoutBusinessWorkingHoursInput, Prisma.BusinessUncheckedCreateWithoutBusinessWorkingHoursInput>
+  where?: Prisma.BusinessWhereInput
+}
+
+export type BusinessUpdateToOneWithWhereWithoutBusinessWorkingHoursInput = {
+  where?: Prisma.BusinessWhereInput
+  data: Prisma.XOR<Prisma.BusinessUpdateWithoutBusinessWorkingHoursInput, Prisma.BusinessUncheckedUpdateWithoutBusinessWorkingHoursInput>
+}
+
+export type BusinessUpdateWithoutBusinessWorkingHoursInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.NullableEnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
+  dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
+  lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
+  members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
+  settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutBusinessNestedInput
+  memberInvites?: Prisma.MemberInviteUpdateManyWithoutBusinessNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutBusinessNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutBusinessNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutBusinessNestedInput
+  staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
+  workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+}
+
+export type BusinessUncheckedUpdateWithoutBusinessWorkingHoursInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.NullableEnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
+  dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
+  lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
+  members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
+  settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
+  memberInvites?: Prisma.MemberInviteUncheckedUpdateManyWithoutBusinessNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutBusinessNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutBusinessNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutBusinessNestedInput
+  staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
+  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutScheduleExceptionsInput = {
@@ -2157,17 +2379,18 @@ export type BusinessCreateWithoutScheduleExceptionsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
@@ -2178,6 +2401,7 @@ export type BusinessCreateWithoutScheduleExceptionsInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutScheduleExceptionsInput = {
@@ -2194,17 +2418,18 @@ export type BusinessUncheckedCreateWithoutScheduleExceptionsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
@@ -2214,6 +2439,7 @@ export type BusinessUncheckedCreateWithoutScheduleExceptionsInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutScheduleExceptionsInput = {
@@ -2245,17 +2471,18 @@ export type BusinessUpdateWithoutScheduleExceptionsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
@@ -2266,6 +2493,7 @@ export type BusinessUpdateWithoutScheduleExceptionsInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutScheduleExceptionsInput = {
@@ -2282,17 +2510,18 @@ export type BusinessUncheckedUpdateWithoutScheduleExceptionsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -2302,6 +2531,7 @@ export type BusinessUncheckedUpdateWithoutScheduleExceptionsInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutCustomersInput = {
@@ -2317,17 +2547,18 @@ export type BusinessCreateWithoutCustomersInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutBusinessInput
@@ -2338,6 +2569,7 @@ export type BusinessCreateWithoutCustomersInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutCustomersInput = {
@@ -2354,17 +2586,18 @@ export type BusinessUncheckedCreateWithoutCustomersInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
   memberInvites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutBusinessInput
@@ -2374,6 +2607,7 @@ export type BusinessUncheckedCreateWithoutCustomersInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutCustomersInput = {
@@ -2405,17 +2639,18 @@ export type BusinessUpdateWithoutCustomersInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutBusinessNestedInput
@@ -2426,6 +2661,7 @@ export type BusinessUpdateWithoutCustomersInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutCustomersInput = {
@@ -2442,17 +2678,18 @@ export type BusinessUncheckedUpdateWithoutCustomersInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
   memberInvites?: Prisma.MemberInviteUncheckedUpdateManyWithoutBusinessNestedInput
@@ -2462,6 +2699,7 @@ export type BusinessUncheckedUpdateWithoutCustomersInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutAppointmentsInput = {
@@ -2477,16 +2715,17 @@ export type BusinessCreateWithoutAppointmentsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
@@ -2498,6 +2737,7 @@ export type BusinessCreateWithoutAppointmentsInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutAppointmentsInput = {
@@ -2514,16 +2754,17 @@ export type BusinessUncheckedCreateWithoutAppointmentsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
@@ -2534,6 +2775,7 @@ export type BusinessUncheckedCreateWithoutAppointmentsInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutAppointmentsInput = {
@@ -2565,16 +2807,17 @@ export type BusinessUpdateWithoutAppointmentsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
@@ -2586,6 +2829,7 @@ export type BusinessUpdateWithoutAppointmentsInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutAppointmentsInput = {
@@ -2602,16 +2846,17 @@ export type BusinessUncheckedUpdateWithoutAppointmentsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -2622,6 +2867,7 @@ export type BusinessUncheckedUpdateWithoutAppointmentsInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutDailyStatsInput = {
@@ -2637,16 +2883,17 @@ export type BusinessCreateWithoutDailyStatsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
@@ -2658,6 +2905,7 @@ export type BusinessCreateWithoutDailyStatsInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutDailyStatsInput = {
@@ -2674,16 +2922,17 @@ export type BusinessUncheckedCreateWithoutDailyStatsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
@@ -2694,6 +2943,7 @@ export type BusinessUncheckedCreateWithoutDailyStatsInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutDailyStatsInput = {
@@ -2725,16 +2975,17 @@ export type BusinessUpdateWithoutDailyStatsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
@@ -2746,6 +2997,7 @@ export type BusinessUpdateWithoutDailyStatsInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutDailyStatsInput = {
@@ -2762,16 +3014,17 @@ export type BusinessUncheckedUpdateWithoutDailyStatsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -2782,6 +3035,7 @@ export type BusinessUncheckedUpdateWithoutDailyStatsInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutLifetimeStatsInput = {
@@ -2797,16 +3051,17 @@ export type BusinessCreateWithoutLifetimeStatsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
@@ -2818,6 +3073,7 @@ export type BusinessCreateWithoutLifetimeStatsInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutLifetimeStatsInput = {
@@ -2834,16 +3090,17 @@ export type BusinessUncheckedCreateWithoutLifetimeStatsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
@@ -2854,6 +3111,7 @@ export type BusinessUncheckedCreateWithoutLifetimeStatsInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutLifetimeStatsInput = {
@@ -2885,16 +3143,17 @@ export type BusinessUpdateWithoutLifetimeStatsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
@@ -2906,6 +3165,7 @@ export type BusinessUpdateWithoutLifetimeStatsInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutLifetimeStatsInput = {
@@ -2922,16 +3182,17 @@ export type BusinessUncheckedUpdateWithoutLifetimeStatsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -2942,6 +3203,7 @@ export type BusinessUncheckedUpdateWithoutLifetimeStatsInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutInAppNotificationsInput = {
@@ -2957,17 +3219,18 @@ export type BusinessCreateWithoutInAppNotificationsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
@@ -2978,6 +3241,7 @@ export type BusinessCreateWithoutInAppNotificationsInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutInAppNotificationsInput = {
@@ -2994,17 +3258,18 @@ export type BusinessUncheckedCreateWithoutInAppNotificationsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   memberInvites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutBusinessInput
@@ -3014,6 +3279,7 @@ export type BusinessUncheckedCreateWithoutInAppNotificationsInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutInAppNotificationsInput = {
@@ -3045,17 +3311,18 @@ export type BusinessUpdateWithoutInAppNotificationsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
@@ -3066,6 +3333,7 @@ export type BusinessUpdateWithoutInAppNotificationsInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutInAppNotificationsInput = {
@@ -3082,17 +3350,18 @@ export type BusinessUncheckedUpdateWithoutInAppNotificationsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   memberInvites?: Prisma.MemberInviteUncheckedUpdateManyWithoutBusinessNestedInput
@@ -3102,9 +3371,10 @@ export type BusinessUncheckedUpdateWithoutInAppNotificationsInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
-export type BusinessCreateWithoutLimitsInput = {
+export type BusinessCreateWithoutQuotaInput = {
   id?: string
   name?: string | null
   slug?: string | null
@@ -3117,16 +3387,17 @@ export type BusinessCreateWithoutLimitsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
@@ -3138,9 +3409,10 @@ export type BusinessCreateWithoutLimitsInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
-export type BusinessUncheckedCreateWithoutLimitsInput = {
+export type BusinessUncheckedCreateWithoutQuotaInput = {
   id?: string
   ownerId: string
   name?: string | null
@@ -3154,16 +3426,17 @@ export type BusinessUncheckedCreateWithoutLimitsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
@@ -3174,25 +3447,26 @@ export type BusinessUncheckedCreateWithoutLimitsInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
-export type BusinessCreateOrConnectWithoutLimitsInput = {
+export type BusinessCreateOrConnectWithoutQuotaInput = {
   where: Prisma.BusinessWhereUniqueInput
-  create: Prisma.XOR<Prisma.BusinessCreateWithoutLimitsInput, Prisma.BusinessUncheckedCreateWithoutLimitsInput>
+  create: Prisma.XOR<Prisma.BusinessCreateWithoutQuotaInput, Prisma.BusinessUncheckedCreateWithoutQuotaInput>
 }
 
-export type BusinessUpsertWithoutLimitsInput = {
-  update: Prisma.XOR<Prisma.BusinessUpdateWithoutLimitsInput, Prisma.BusinessUncheckedUpdateWithoutLimitsInput>
-  create: Prisma.XOR<Prisma.BusinessCreateWithoutLimitsInput, Prisma.BusinessUncheckedCreateWithoutLimitsInput>
+export type BusinessUpsertWithoutQuotaInput = {
+  update: Prisma.XOR<Prisma.BusinessUpdateWithoutQuotaInput, Prisma.BusinessUncheckedUpdateWithoutQuotaInput>
+  create: Prisma.XOR<Prisma.BusinessCreateWithoutQuotaInput, Prisma.BusinessUncheckedCreateWithoutQuotaInput>
   where?: Prisma.BusinessWhereInput
 }
 
-export type BusinessUpdateToOneWithWhereWithoutLimitsInput = {
+export type BusinessUpdateToOneWithWhereWithoutQuotaInput = {
   where?: Prisma.BusinessWhereInput
-  data: Prisma.XOR<Prisma.BusinessUpdateWithoutLimitsInput, Prisma.BusinessUncheckedUpdateWithoutLimitsInput>
+  data: Prisma.XOR<Prisma.BusinessUpdateWithoutQuotaInput, Prisma.BusinessUncheckedUpdateWithoutQuotaInput>
 }
 
-export type BusinessUpdateWithoutLimitsInput = {
+export type BusinessUpdateWithoutQuotaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3205,16 +3479,17 @@ export type BusinessUpdateWithoutLimitsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
@@ -3226,9 +3501,10 @@ export type BusinessUpdateWithoutLimitsInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
-export type BusinessUncheckedUpdateWithoutLimitsInput = {
+export type BusinessUncheckedUpdateWithoutQuotaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3242,16 +3518,17 @@ export type BusinessUncheckedUpdateWithoutLimitsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -3262,6 +3539,7 @@ export type BusinessUncheckedUpdateWithoutLimitsInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutSubscriptionInput = {
@@ -3277,17 +3555,18 @@ export type BusinessCreateWithoutSubscriptionInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
@@ -3298,6 +3577,7 @@ export type BusinessCreateWithoutSubscriptionInput = {
   services?: Prisma.ServiceCreateNestedManyWithoutBusinessInput
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutSubscriptionInput = {
@@ -3314,17 +3594,18 @@ export type BusinessUncheckedCreateWithoutSubscriptionInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
@@ -3334,6 +3615,7 @@ export type BusinessUncheckedCreateWithoutSubscriptionInput = {
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutBusinessInput
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutSubscriptionInput = {
@@ -3365,17 +3647,18 @@ export type BusinessUpdateWithoutSubscriptionInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
@@ -3386,6 +3669,7 @@ export type BusinessUpdateWithoutSubscriptionInput = {
   services?: Prisma.ServiceUpdateManyWithoutBusinessNestedInput
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutSubscriptionInput = {
@@ -3402,17 +3686,18 @@ export type BusinessUncheckedUpdateWithoutSubscriptionInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -3422,6 +3707,7 @@ export type BusinessUncheckedUpdateWithoutSubscriptionInput = {
   services?: Prisma.ServiceUncheckedUpdateManyWithoutBusinessNestedInput
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessCreateWithoutPaymentsInput = {
@@ -3437,17 +3723,18 @@ export type BusinessCreateWithoutPaymentsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
   owner: Prisma.UserCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
@@ -3458,6 +3745,7 @@ export type BusinessCreateWithoutPaymentsInput = {
   staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutPaymentsInput = {
@@ -3474,17 +3762,18 @@ export type BusinessUncheckedCreateWithoutPaymentsInput = {
   logoPublicId?: string | null
   coverUrl?: string | null
   coverPublicId?: string | null
-  onboardingStep?: number
-  onboardingCompleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
-  limits?: Prisma.BusinessLimitsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
   members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedCreateNestedOneWithoutBusinessInput
   settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
@@ -3494,6 +3783,7 @@ export type BusinessUncheckedCreateWithoutPaymentsInput = {
   staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutPaymentsInput = {
@@ -3525,17 +3815,18 @@ export type BusinessUpdateWithoutPaymentsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
   owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
@@ -3546,6 +3837,7 @@ export type BusinessUpdateWithoutPaymentsInput = {
   staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutPaymentsInput = {
@@ -3562,17 +3854,18 @@ export type BusinessUncheckedUpdateWithoutPaymentsInput = {
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  onboardingStep?: Prisma.IntFieldUpdateOperationsInput | number
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
   dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
   lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
-  limits?: Prisma.BusinessLimitsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
   members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  onboarding?: Prisma.BusinessOnboardingUncheckedUpdateOneWithoutBusinessNestedInput
   settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
@@ -3582,6 +3875,175 @@ export type BusinessUncheckedUpdateWithoutPaymentsInput = {
   staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+}
+
+export type BusinessCreateWithoutOnboardingInput = {
+  id?: string
+  name?: string | null
+  slug?: string | null
+  type?: $Enums.BusinessType | null
+  description?: string | null
+  addressLine1?: string | null
+  addressLine2?: string | null
+  phone?: string | null
+  logoUrl?: string | null
+  logoPublicId?: string | null
+  coverUrl?: string | null
+  coverPublicId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutBusinessInput
+  dailyStats?: Prisma.BusinessDailyStatsCreateNestedManyWithoutBusinessInput
+  lifetimeStats?: Prisma.BusinessLifetimeStatsCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaCreateNestedOneWithoutBusinessInput
+  members?: Prisma.BusinessMemberCreateNestedManyWithoutBusinessInput
+  settings?: Prisma.BusinessSettingsCreateNestedOneWithoutBusinessInput
+  owner: Prisma.UserCreateNestedOneWithoutBusinessInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutBusinessInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutBusinessInput
+  memberInvites?: Prisma.MemberInviteCreateNestedManyWithoutBusinessInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutBusinessInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutBusinessInput
+  services?: Prisma.ServiceCreateNestedManyWithoutBusinessInput
+  staffs?: Prisma.StaffCreateNestedManyWithoutBusinessInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutBusinessInput
+  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursCreateNestedManyWithoutBusinessInput
+}
+
+export type BusinessUncheckedCreateWithoutOnboardingInput = {
+  id?: string
+  ownerId: string
+  name?: string | null
+  slug?: string | null
+  type?: $Enums.BusinessType | null
+  description?: string | null
+  addressLine1?: string | null
+  addressLine2?: string | null
+  phone?: string | null
+  logoUrl?: string | null
+  logoPublicId?: string | null
+  coverUrl?: string | null
+  coverPublicId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutBusinessInput
+  dailyStats?: Prisma.BusinessDailyStatsUncheckedCreateNestedManyWithoutBusinessInput
+  lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedCreateNestedOneWithoutBusinessInput
+  quota?: Prisma.BusinessQuotaUncheckedCreateNestedOneWithoutBusinessInput
+  members?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutBusinessInput
+  settings?: Prisma.BusinessSettingsUncheckedCreateNestedOneWithoutBusinessInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutBusinessInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput
+  memberInvites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutBusinessInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutBusinessInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutBusinessInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutBusinessInput
+  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutBusinessInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutBusinessInput
+  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedCreateNestedManyWithoutBusinessInput
+}
+
+export type BusinessCreateOrConnectWithoutOnboardingInput = {
+  where: Prisma.BusinessWhereUniqueInput
+  create: Prisma.XOR<Prisma.BusinessCreateWithoutOnboardingInput, Prisma.BusinessUncheckedCreateWithoutOnboardingInput>
+}
+
+export type BusinessUpsertWithoutOnboardingInput = {
+  update: Prisma.XOR<Prisma.BusinessUpdateWithoutOnboardingInput, Prisma.BusinessUncheckedUpdateWithoutOnboardingInput>
+  create: Prisma.XOR<Prisma.BusinessCreateWithoutOnboardingInput, Prisma.BusinessUncheckedCreateWithoutOnboardingInput>
+  where?: Prisma.BusinessWhereInput
+}
+
+export type BusinessUpdateToOneWithWhereWithoutOnboardingInput = {
+  where?: Prisma.BusinessWhereInput
+  data: Prisma.XOR<Prisma.BusinessUpdateWithoutOnboardingInput, Prisma.BusinessUncheckedUpdateWithoutOnboardingInput>
+}
+
+export type BusinessUpdateWithoutOnboardingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.NullableEnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  appointments?: Prisma.AppointmentUpdateManyWithoutBusinessNestedInput
+  dailyStats?: Prisma.BusinessDailyStatsUpdateManyWithoutBusinessNestedInput
+  lifetimeStats?: Prisma.BusinessLifetimeStatsUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUpdateOneWithoutBusinessNestedInput
+  members?: Prisma.BusinessMemberUpdateManyWithoutBusinessNestedInput
+  settings?: Prisma.BusinessSettingsUpdateOneWithoutBusinessNestedInput
+  owner?: Prisma.UserUpdateOneRequiredWithoutBusinessNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutBusinessNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutBusinessNestedInput
+  memberInvites?: Prisma.MemberInviteUpdateManyWithoutBusinessNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutBusinessNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutBusinessNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutBusinessNestedInput
+  staffs?: Prisma.StaffUpdateManyWithoutBusinessNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutBusinessNestedInput
+  workingHours?: Prisma.WorkingHoursUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUpdateManyWithoutBusinessNestedInput
+}
+
+export type BusinessUncheckedUpdateWithoutOnboardingInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.NullableEnumBusinessTypeFieldUpdateOperationsInput | $Enums.BusinessType | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutBusinessNestedInput
+  dailyStats?: Prisma.BusinessDailyStatsUncheckedUpdateManyWithoutBusinessNestedInput
+  lifetimeStats?: Prisma.BusinessLifetimeStatsUncheckedUpdateOneWithoutBusinessNestedInput
+  quota?: Prisma.BusinessQuotaUncheckedUpdateOneWithoutBusinessNestedInput
+  members?: Prisma.BusinessMemberUncheckedUpdateManyWithoutBusinessNestedInput
+  settings?: Prisma.BusinessSettingsUncheckedUpdateOneWithoutBusinessNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutBusinessNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput
+  memberInvites?: Prisma.MemberInviteUncheckedUpdateManyWithoutBusinessNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutBusinessNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutBusinessNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutBusinessNestedInput
+  staffs?: Prisma.StaffUncheckedUpdateManyWithoutBusinessNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput
+  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
+  businessWorkingHours?: Prisma.BusinessWorkingHoursUncheckedUpdateManyWithoutBusinessNestedInput
 }
 
 
@@ -3601,6 +4063,7 @@ export type BusinessCountOutputType = {
   services: number
   staffs: number
   workingHours: number
+  businessWorkingHours: number
 }
 
 export type BusinessCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3615,6 +4078,7 @@ export type BusinessCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensio
   services?: boolean | BusinessCountOutputTypeCountServicesArgs
   staffs?: boolean | BusinessCountOutputTypeCountStaffsArgs
   workingHours?: boolean | BusinessCountOutputTypeCountWorkingHoursArgs
+  businessWorkingHours?: boolean | BusinessCountOutputTypeCountBusinessWorkingHoursArgs
 }
 
 /**
@@ -3704,6 +4168,13 @@ export type BusinessCountOutputTypeCountWorkingHoursArgs<ExtArgs extends runtime
   where?: Prisma.WorkingHoursWhereInput
 }
 
+/**
+ * BusinessCountOutputType without action
+ */
+export type BusinessCountOutputTypeCountBusinessWorkingHoursArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BusinessWorkingHoursWhereInput
+}
+
 
 export type BusinessSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3719,17 +4190,18 @@ export type BusinessSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   logoPublicId?: boolean
   coverUrl?: boolean
   coverPublicId?: boolean
-  onboardingStep?: boolean
-  onboardingCompleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   appointments?: boolean | Prisma.Business$appointmentsArgs<ExtArgs>
   dailyStats?: boolean | Prisma.Business$dailyStatsArgs<ExtArgs>
   lifetimeStats?: boolean | Prisma.Business$lifetimeStatsArgs<ExtArgs>
-  limits?: boolean | Prisma.Business$limitsArgs<ExtArgs>
+  quota?: boolean | Prisma.Business$quotaArgs<ExtArgs>
   members?: boolean | Prisma.Business$membersArgs<ExtArgs>
+  onboarding?: boolean | Prisma.Business$onboardingArgs<ExtArgs>
   settings?: boolean | Prisma.Business$settingsArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   customers?: boolean | Prisma.Business$customersArgs<ExtArgs>
@@ -3741,6 +4213,7 @@ export type BusinessSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   staffs?: boolean | Prisma.Business$staffsArgs<ExtArgs>
   subscription?: boolean | Prisma.Business$subscriptionArgs<ExtArgs>
   workingHours?: boolean | Prisma.Business$workingHoursArgs<ExtArgs>
+  businessWorkingHours?: boolean | Prisma.Business$businessWorkingHoursArgs<ExtArgs>
   _count?: boolean | Prisma.BusinessCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["business"]>
 
@@ -3758,12 +4231,12 @@ export type BusinessSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   logoPublicId?: boolean
   coverUrl?: boolean
   coverPublicId?: boolean
-  onboardingStep?: boolean
-  onboardingCompleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["business"]>
 
@@ -3781,12 +4254,12 @@ export type BusinessSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   logoPublicId?: boolean
   coverUrl?: boolean
   coverPublicId?: boolean
-  onboardingStep?: boolean
-  onboardingCompleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["business"]>
 
@@ -3804,21 +4277,22 @@ export type BusinessSelectScalar = {
   logoPublicId?: boolean
   coverUrl?: boolean
   coverPublicId?: boolean
-  onboardingStep?: boolean
-  onboardingCompleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
   isActive?: boolean
+  onboardingCompleted?: boolean
+  isPublic?: boolean
 }
 
-export type BusinessOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "name" | "slug" | "type" | "description" | "addressLine1" | "addressLine2" | "phone" | "logoUrl" | "logoPublicId" | "coverUrl" | "coverPublicId" | "onboardingStep" | "onboardingCompleted" | "createdAt" | "updatedAt" | "deletedAt" | "isActive", ExtArgs["result"]["business"]>
+export type BusinessOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "name" | "slug" | "type" | "description" | "addressLine1" | "addressLine2" | "phone" | "logoUrl" | "logoPublicId" | "coverUrl" | "coverPublicId" | "createdAt" | "updatedAt" | "deletedAt" | "isActive" | "onboardingCompleted" | "isPublic", ExtArgs["result"]["business"]>
 export type BusinessInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   appointments?: boolean | Prisma.Business$appointmentsArgs<ExtArgs>
   dailyStats?: boolean | Prisma.Business$dailyStatsArgs<ExtArgs>
   lifetimeStats?: boolean | Prisma.Business$lifetimeStatsArgs<ExtArgs>
-  limits?: boolean | Prisma.Business$limitsArgs<ExtArgs>
+  quota?: boolean | Prisma.Business$quotaArgs<ExtArgs>
   members?: boolean | Prisma.Business$membersArgs<ExtArgs>
+  onboarding?: boolean | Prisma.Business$onboardingArgs<ExtArgs>
   settings?: boolean | Prisma.Business$settingsArgs<ExtArgs>
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   customers?: boolean | Prisma.Business$customersArgs<ExtArgs>
@@ -3830,6 +4304,7 @@ export type BusinessInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   staffs?: boolean | Prisma.Business$staffsArgs<ExtArgs>
   subscription?: boolean | Prisma.Business$subscriptionArgs<ExtArgs>
   workingHours?: boolean | Prisma.Business$workingHoursArgs<ExtArgs>
+  businessWorkingHours?: boolean | Prisma.Business$businessWorkingHoursArgs<ExtArgs>
   _count?: boolean | Prisma.BusinessCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BusinessIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3845,8 +4320,9 @@ export type $BusinessPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     appointments: Prisma.$AppointmentPayload<ExtArgs>[]
     dailyStats: Prisma.$BusinessDailyStatsPayload<ExtArgs>[]
     lifetimeStats: Prisma.$BusinessLifetimeStatsPayload<ExtArgs> | null
-    limits: Prisma.$BusinessLimitsPayload<ExtArgs> | null
+    quota: Prisma.$BusinessQuotaPayload<ExtArgs> | null
     members: Prisma.$BusinessMemberPayload<ExtArgs>[]
+    onboarding: Prisma.$BusinessOnboardingPayload<ExtArgs> | null
     settings: Prisma.$BusinessSettingsPayload<ExtArgs> | null
     owner: Prisma.$UserPayload<ExtArgs>
     customers: Prisma.$CustomerPayload<ExtArgs>[]
@@ -3858,6 +4334,7 @@ export type $BusinessPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     staffs: Prisma.$StaffPayload<ExtArgs>[]
     subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
     workingHours: Prisma.$WorkingHoursPayload<ExtArgs>[]
+    businessWorkingHours: Prisma.$BusinessWorkingHoursPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3873,12 +4350,12 @@ export type $BusinessPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     logoPublicId: string | null
     coverUrl: string | null
     coverPublicId: string | null
-    onboardingStep: number
-    onboardingCompleted: boolean
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
     isActive: boolean
+    onboardingCompleted: boolean
+    isPublic: boolean
   }, ExtArgs["result"]["business"]>
   composites: {}
 }
@@ -4276,8 +4753,9 @@ export interface Prisma__BusinessClient<T, Null = never, ExtArgs extends runtime
   appointments<T extends Prisma.Business$appointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   dailyStats<T extends Prisma.Business$dailyStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$dailyStatsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BusinessDailyStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   lifetimeStats<T extends Prisma.Business$lifetimeStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$lifetimeStatsArgs<ExtArgs>>): Prisma.Prisma__BusinessLifetimeStatsClient<runtime.Types.Result.GetResult<Prisma.$BusinessLifetimeStatsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  limits<T extends Prisma.Business$limitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$limitsArgs<ExtArgs>>): Prisma.Prisma__BusinessLimitsClient<runtime.Types.Result.GetResult<Prisma.$BusinessLimitsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  quota<T extends Prisma.Business$quotaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$quotaArgs<ExtArgs>>): Prisma.Prisma__BusinessQuotaClient<runtime.Types.Result.GetResult<Prisma.$BusinessQuotaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   members<T extends Prisma.Business$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BusinessMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  onboarding<T extends Prisma.Business$onboardingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$onboardingArgs<ExtArgs>>): Prisma.Prisma__BusinessOnboardingClient<runtime.Types.Result.GetResult<Prisma.$BusinessOnboardingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   settings<T extends Prisma.Business$settingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$settingsArgs<ExtArgs>>): Prisma.Prisma__BusinessSettingsClient<runtime.Types.Result.GetResult<Prisma.$BusinessSettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   customers<T extends Prisma.Business$customersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$customersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4289,6 +4767,7 @@ export interface Prisma__BusinessClient<T, Null = never, ExtArgs extends runtime
   staffs<T extends Prisma.Business$staffsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$staffsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StaffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subscription<T extends Prisma.Business$subscriptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$subscriptionArgs<ExtArgs>>): Prisma.Prisma__SubscriptionClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   workingHours<T extends Prisma.Business$workingHoursArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$workingHoursArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkingHoursPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  businessWorkingHours<T extends Prisma.Business$businessWorkingHoursArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$businessWorkingHoursArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BusinessWorkingHoursPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4331,12 +4810,12 @@ export interface BusinessFieldRefs {
   readonly logoPublicId: Prisma.FieldRef<"Business", 'String'>
   readonly coverUrl: Prisma.FieldRef<"Business", 'String'>
   readonly coverPublicId: Prisma.FieldRef<"Business", 'String'>
-  readonly onboardingStep: Prisma.FieldRef<"Business", 'Int'>
-  readonly onboardingCompleted: Prisma.FieldRef<"Business", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Business", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Business", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"Business", 'DateTime'>
   readonly isActive: Prisma.FieldRef<"Business", 'Boolean'>
+  readonly onboardingCompleted: Prisma.FieldRef<"Business", 'Boolean'>
+  readonly isPublic: Prisma.FieldRef<"Business", 'Boolean'>
 }
     
 
@@ -4800,22 +5279,22 @@ export type Business$lifetimeStatsArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
- * Business.limits
+ * Business.quota
  */
-export type Business$limitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Business$quotaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the BusinessLimits
+   * Select specific fields to fetch from the BusinessQuota
    */
-  select?: Prisma.BusinessLimitsSelect<ExtArgs> | null
+  select?: Prisma.BusinessQuotaSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the BusinessLimits
+   * Omit specific fields from the BusinessQuota
    */
-  omit?: Prisma.BusinessLimitsOmit<ExtArgs> | null
+  omit?: Prisma.BusinessQuotaOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.BusinessLimitsInclude<ExtArgs> | null
-  where?: Prisma.BusinessLimitsWhereInput
+  include?: Prisma.BusinessQuotaInclude<ExtArgs> | null
+  where?: Prisma.BusinessQuotaWhereInput
 }
 
 /**
@@ -4840,6 +5319,25 @@ export type Business$membersArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.BusinessMemberScalarFieldEnum | Prisma.BusinessMemberScalarFieldEnum[]
+}
+
+/**
+ * Business.onboarding
+ */
+export type Business$onboardingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BusinessOnboarding
+   */
+  select?: Prisma.BusinessOnboardingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BusinessOnboarding
+   */
+  omit?: Prisma.BusinessOnboardingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BusinessOnboardingInclude<ExtArgs> | null
+  where?: Prisma.BusinessOnboardingWhereInput
 }
 
 /**
@@ -5070,6 +5568,30 @@ export type Business$workingHoursArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.WorkingHoursScalarFieldEnum | Prisma.WorkingHoursScalarFieldEnum[]
+}
+
+/**
+ * Business.businessWorkingHours
+ */
+export type Business$businessWorkingHoursArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BusinessWorkingHours
+   */
+  select?: Prisma.BusinessWorkingHoursSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BusinessWorkingHours
+   */
+  omit?: Prisma.BusinessWorkingHoursOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BusinessWorkingHoursInclude<ExtArgs> | null
+  where?: Prisma.BusinessWorkingHoursWhereInput
+  orderBy?: Prisma.BusinessWorkingHoursOrderByWithRelationInput | Prisma.BusinessWorkingHoursOrderByWithRelationInput[]
+  cursor?: Prisma.BusinessWorkingHoursWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BusinessWorkingHoursScalarFieldEnum | Prisma.BusinessWorkingHoursScalarFieldEnum[]
 }
 
 /**

@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { AppointmentCreatedEvent } from 'src/modules/appointments/domain/events/appointment-created.event';
-import { BusinessLimitsService } from 'src/modules/businesses/features/limits/business-limits.service';
+import { BusinessQuotaService } from 'src/modules/businesses/features/quota/business-quota.service';
 import { BusinessStatsService } from 'src/modules/businesses/features/stats/business-stats.service';
 
 @Injectable()
 export class AppointmentCreatedListener {
   constructor(
     private readonly businessStatsService: BusinessStatsService,
-    private readonly businessLimitsService: BusinessLimitsService,
+    private readonly businessQuotaService: BusinessQuotaService,
   ) {}
 
   @OnEvent('appointment.created', { async: true })
@@ -18,6 +18,6 @@ export class AppointmentCreatedListener {
 
     await this.businessStatsService.incrementLifetimeAppointments(businessId);
 
-    await this.businessLimitsService.incrementAppointmentsCount(businessId);
+    await this.businessQuotaService.incrementAppointmentsCount(businessId);
   }
 }

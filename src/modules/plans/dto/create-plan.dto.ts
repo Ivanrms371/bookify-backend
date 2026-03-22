@@ -1,14 +1,4 @@
-import {
-  IsString,
-  IsOptional,
-  IsNumber,
-  IsBoolean,
-  IsNotEmpty,
-  ValidateNested,
-  Min,
-  IsDecimal,
-  IsEnum,
-} from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsBoolean, IsNotEmpty, ValidateNested, Min, IsDecimal, IsEnum } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Decimal } from '@prisma/client/runtime/client';
 import { BillingCycle, PlanType } from 'src/generated/prisma/enums';

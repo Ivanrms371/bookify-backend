@@ -5,4 +5,6 @@ export interface AppointmentCreatedVariables {
   date: string;
   time: string;
   appointmentId: string;
+  cancelUrl: string;
+  rescheduleUrl: string;
 }

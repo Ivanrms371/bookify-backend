@@ -1,13 +1,12 @@
 import { Controller, Get, Param, Post, Body, Put, Patch, UseGuards, Delete } from '@nestjs/common';
 import { ServiceAssignmentsService } from './service-assignments.service';
-import { ServiceAssignmentUpdateInput } from 'src/generated/prisma/models';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { BusinessGuard } from 'src/auth/guards/business.guard';
-import { BusinessRoles } from 'src/auth/decorators/business-roles.decorator';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { BusinessRoles } from 'src/common/decorators/business-roles.decorator';
 import { BusinessRole } from 'src/generated/prisma/enums';
 import { BusinessStaffParamsDto } from './dto/params/business-staff.params.dto';
 import { BusinessStaffServiceParamsDto } from './dto/params/business-staff-service.params.dto';
 import { UpdateServiceAssigmentDto } from './dto/body/update-service-assignment.dto';
+import { BusinessGuard } from 'src/common/guards/business.guard';
 
 @Controller('businesses/:businessId/staff/:staffId/services')
 export class ServiceAssignmentsController {

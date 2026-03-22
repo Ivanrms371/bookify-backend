@@ -30,6 +30,10 @@ export class SubscriptionService {
     return subscription;
   }
 
+  async findByBusinessId(businessId: string) {
+    return this.subscriptionRepository.findWithPlanByBusinessId(businessId);
+  }
+
   async createSubscription(businessId: string, planKey: PlanType, tx: TransactionClient) {
     if (this.isFree(planKey)) {
       return this.createFreeSubscription(businessId, tx);

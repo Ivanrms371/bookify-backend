@@ -31,7 +31,7 @@ export async function seedBarberiaElCorte(ctx: SeedContext) {
       addressLine1: 'Av. 18 de Julio 1234',
       addressLine2: 'Local 3, Montevideo',
       phone: '+598 2 908 1234',
-      onboardingStep: 5,
+
       onboardingCompleted: true,
       isActive: true,
     },
@@ -54,7 +54,7 @@ export async function seedBarberiaElCorte(ctx: SeedContext) {
   });
 
   // ─── Business Limits ───────────────────────────────────────────────────────
-  await prisma.businessLimits.create({
+  await prisma.businessQuota.create({
     data: {
       businessId: business.id,
       whatsappLimit: 0,

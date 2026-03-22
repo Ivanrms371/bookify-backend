@@ -5,17 +5,10 @@ import { AppointmentReminderVariables } from './appointment-reminder.type';
 import { AppointmentReminderEmailTemplate } from './email.template';
 import { NotImplementedError } from 'src/modules/notifications/errors/not-implemented.error';
 import { BuildEmailResponse } from 'src/modules/notifications/domain/templates/build-email.interface';
-import { AppointmentCancelationService } from 'src/modules/appointments/application/services/appointment-cancelation.service';
-import { AppointmentReschedulingService } from 'src/modules/appointments/application/services/appointment-rescheduling.service';
 
 @Injectable()
 export class AppointmentReminderTemplate implements NotificationTemplate {
   type = 'appointment.reminder';
-
-  constructor(
-    private readonly appointmentCancelationService: AppointmentCancelationService,
-    private readonly appointmentReschedulingService: AppointmentReschedulingService,
-  ) {}
 
   build(channel: NotificationChannel, variables: any): any {
     switch (channel) {
@@ -31,15 +24,9 @@ export class AppointmentReminderTemplate implements NotificationTemplate {
   }
 
   private async buildEmail(variables: AppointmentReminderVariables): Promise<BuildEmailResponse> {
-    const cancelUrl = await this.appointmentCancelationService.generateCancelUrl(variables.appointmentId);
-    const rescheduleUrl = await this.appointmentReschedulingService.generateRescheduleUrl(variables.appointmentId);
     return {
       subject: `Nueva cita para el ${variables.date} a las ${variables.time}`,
-      react: AppointmentReminderEmailTemplate({
-        ...variables,
-        cancelUrl,
-        rescheduleUrl,
-      }),
+      react: AppointmentReminderEmailTemplate(variables),
     };
   }
 

@@ -1,10 +1,4 @@
-import {
-  BadRequestException,
-  CanActivate,
-  ExecutionContext,
-  ForbiddenException,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { PERMISSIONS_KEY } from '../decorators/business-roles.decorator';
 import { BusinessRole } from 'src/generated/prisma/enums';
@@ -19,10 +13,7 @@ export class BusinessGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const requiredRoles = this.reflector.getAllAndOverride<BusinessRole[]>(PERMISSIONS_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+    const requiredRoles = this.reflector.getAllAndOverride<BusinessRole[]>(PERMISSIONS_KEY, [context.getHandler(), context.getClass()]);
 
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
 
@@ -37,7 +28,7 @@ export class BusinessGuard implements CanActivate {
     const member = await this.membersService.findByUserAndBusiness(userId, businessId);
 
     request.member = {
-      memberId: member.id,
+      id: member.id,
       userId: member.userId,
       businessId: member.businessId,
       role: member.role,

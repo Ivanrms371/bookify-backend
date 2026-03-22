@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import crypto from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import { addDays } from 'date-fns';
@@ -6,16 +6,17 @@ import { addDays } from 'date-fns';
 import { InvitationsRepository } from './invitations.repository';
 import { StaffsService } from 'src/modules/staffs/staffs.service';
 import { BulkInviteDto } from './dto/bulk-invite.dto';
-import { BusinessLimitsService } from '../limits/business-limits.service';
+import { BusinessQuotaService } from '../quota/business-quota.service';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { AuthUser } from 'src/auth/types/express-request.type';
 import { ConfigService } from '@nestjs/config';
 import { AcceptInvitationDto } from './dto/accept-invitation.dto';
 import { UsersService } from 'src/modules/users/users.service';
-import { BusinessesService } from 'src/modules/businesses/core/businesses.service';
+import { BusinessesService } from 'src/modules/businesses/businesses.service';
 import { MembersService } from '../members/members.service';
-import { BusinessRole } from 'src/generated/prisma/enums';
+import { BusinessRole, PlanType } from 'src/generated/prisma/enums';
 import { Staff } from 'src/generated/prisma/client';
+import { SubscriptionService } from 'src/modules/subscriptions/services/subscription.service';
 
 @Injectable()
 export class InvitationsService {
@@ -30,14 +31,15 @@ export class InvitationsService {
     private readonly membersService: MembersService,
     private readonly staffService: StaffsService,
     private readonly invitationsRepository: InvitationsRepository,
-    private readonly businessLimitsService: BusinessLimitsService,
+    private readonly businessQuotaService: BusinessQuotaService,
+    private readonly subscriptionService: SubscriptionService,
   ) {
     this.invitationTokenSecret = this.configService.getOrThrow<string>('INVITATION_TOKEN_SECRET');
     this.invitationTokenExpiresIn = (this.configService.get<string>('INVITATION_TOKEN_EXPIRES_IN') ?? '1h') as jwt.SignOptions['expiresIn'];
   }
 
   private async checkOverLimit(businessId: string, dto: BulkInviteDto) {
-    const snapshot = await this.businessLimitsService.getProfessionalsSnapshot(businessId);
+    const snapshot = await this.businessQuotaService.getProfessionalsSnapshot(businessId);
     const limit = snapshot.professionalLimit;
     const expectedCount = snapshot.professionalCount + dto.items.length;
 
@@ -53,6 +55,11 @@ export class InvitationsService {
   }
 
   async bulkInvite(businessId: string, dto: BulkInviteDto, user: AuthUser) {
+    const subscription = await this.subscriptionService.findByBusinessId(businessId);
+    if (subscription?.plan?.planType === PlanType.FREE) {
+      throw new ForbiddenException('El plan gratuito no permite invitar personal. Por favor, actualiza a Pro o Team.');
+    }
+
     await this.checkOverLimit(businessId, dto);
 
     const business = await this.businessesService.findBusinessById(businessId);

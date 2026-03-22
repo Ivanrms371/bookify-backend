@@ -15,10 +15,10 @@ export const AppointmentRescheduleEmailTemplate = ({
     <Layout previewText={`Cita reprogramada con ${customerName}`}>
       <Section>
         <CustomHeading>Cita reprogramada, {staffName}</CustomHeading>
-        <Text className="text-gray-600 text-lg leading-relaxed text-center mb-8">
+        <Text className="text-mist-600 text-lg leading-relaxed text-center mb-8">
           El cliente <strong>{customerName}</strong> ha reprogramado la cita para el <strong>{date}</strong> a las <strong>{time}</strong>
         </Text>
-        <Text className="text-gray-500 leading-relaxed text-center">Si deseas ver los detalles puedes acceder al enlace de abajo.</Text>
+        <Text className="text-mist-500 leading-relaxed text-center">Si deseas ver los detalles puedes acceder al enlace de abajo.</Text>
       </Section>
       <Button href="https://localhost:4000/appointments">Ver detalles</Button>
     </Layout>

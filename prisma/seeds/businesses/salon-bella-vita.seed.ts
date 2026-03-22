@@ -41,7 +41,7 @@ export async function seedSalonBellaVita(ctx: SeedContext) {
       addressLine1: 'Bvar. España 2456',
       addressLine2: 'Piso 1, Pocitos',
       phone: '+598 2 712 5678',
-      onboardingStep: 5,
+
       onboardingCompleted: true,
       isActive: true,
     },
@@ -64,7 +64,7 @@ export async function seedSalonBellaVita(ctx: SeedContext) {
   });
 
   // ─── Business Limits ───────────────────────────────────────────────────────
-  await prisma.businessLimits.create({
+  await prisma.businessQuota.create({
     data: {
       businessId: business.id,
       whatsappLimit: 300,

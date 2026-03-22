@@ -16,9 +16,7 @@ export class VerificationLocksService {
     const lock = await this.lockRepository.findActiveByUser(userId);
     if (lock) {
       const minutesLeft = Math.ceil((lock.lockedUntil.getTime() - Date.now()) / 60000);
-      throw new ForbiddenException(
-        `Cuena bloqueada temporariamente. Restan ${minutesLeft} minutos`,
-      );
+      throw new ForbiddenException(`Cuena bloqueada temporariamente. Restan ${minutesLeft} minutos`);
     }
   }
 
@@ -42,11 +40,7 @@ export class VerificationLocksService {
   /**
    * Lock for suspicious activity
    */
-  async lockForSuspiciousActivity({
-    userId,
-    address,
-    durationMinutes = 60,
-  }: LockVerificationParams) {
+  async lockForSuspiciousActivity({ userId, address, durationMinutes = 60 }: LockVerificationParams) {
     const lockedUntil = new Date();
     lockedUntil.setMinutes(lockedUntil.getMinutes() + durationMinutes);
 

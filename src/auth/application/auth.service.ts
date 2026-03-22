@@ -8,9 +8,8 @@ import { LoginDto } from '../dto/login.dto';
 import { JwtService } from '../infrastructure/jwt/jwt.service';
 import { GoogleUserInfo } from '../types/google-domain';
 import { EmailVerificationStrategy } from 'src/modules/verifications/strategies/email-verification.strategy';
-import { ClientInfo } from 'src/common/types/client.type';
-import { User } from 'src/generated/prisma/client';
 import { PasswordService } from './password.service';
+import { BusinessesService } from 'src/modules/businesses/businesses.service';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +23,7 @@ export class AuthService {
     private readonly emailVerificationStrategy: EmailVerificationStrategy,
   ) {}
 
-  async login(dto: LoginDto, clientInfo: ClientInfo, deviceId?: string) {
+  async login(dto: LoginDto, deviceId?: string) {
     const user = await this.usersService.findUserByEmailOrFail(dto.email);
 
     if (!user.emailVerifiedAt) {
@@ -41,29 +40,22 @@ export class AuthService {
 
     await this.usersService.updateUser(user.id, { lastLoginAt: new Date() });
 
-    const { ipAddress, userAgent } = clientInfo;
-
     return await this.generateNewSession({
       deviceId,
-      ipAddress,
-      userAgent,
       userId: user.id,
       tokenVersion: user.tokenVersion,
     });
   }
 
-  async signup(dto: SignupDto, clientInfo: ClientInfo) {
+  async signup(dto: SignupDto) {
     const user = await this.usersService.findUserByEmail(dto.email);
     if (user) {
       throw new ConflictException('Usuario ya registrado.');
     }
-    const { ipAddress, userAgent } = clientInfo;
     const hash = await this.passwordService.hash(dto.password);
     const newUser = await this.usersService.createUser({
       ...dto,
       password: hash,
-      ipAddress,
-      userAgent,
     });
     const { id: userId, email } = newUser;
 
@@ -76,28 +68,38 @@ export class AuthService {
     return newUser;
   }
 
-  async loginOrCreateFromGoogle(userInfo: GoogleUserInfo, clientInfo: ClientInfo, deviceId?: string) {
+  async getMe(userId: string) {
+    const user = await this.usersService.findUserById(userId);
+    const businesses = await this.prisma.business.findMany({
+      where: {
+        members: {
+          some: { userId },
+        },
+      },
+    });
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      avatarUrl: user.avatarUrl,
+      businesses,
+    };
+  }
+
+  async loginOrCreateFromGoogle(userInfo: GoogleUserInfo, deviceId?: string) {
     let user = await this.usersService.findUserByGoogleId(userInfo.googleId);
-    const { ipAddress, userAgent } = clientInfo;
     if (!user) {
       user = await this.usersService.findUserByEmail(userInfo.email);
       if (user) {
         user = await this.usersService.updateUser(user.id, { googleId: userInfo.googleId });
       } else {
-        user = await this.usersService.createUser({
-          ...userInfo,
-          ipAddress,
-          userAgent,
-        });
+        user = await this.usersService.createUser(userInfo);
       }
     }
-
     await this.usersService.updateUser(user.id, { lastLoginAt: new Date() });
 
     return await this.generateNewSession({
       deviceId,
-      ipAddress,
-      userAgent,
       userId: user.id,
       tokenVersion: user.tokenVersion,
     });
@@ -109,7 +111,7 @@ export class AuthService {
 
     const user = await this.usersService.findUserById(session.userId);
     if (user.tokenVersion !== tokenVersion) {
-      console.log('Sesión inválida.');
+      console.log('Sesión inválida.a');
       throw new UnauthorizedException('Sesión inválida.');
     }
 
@@ -143,45 +145,24 @@ export class AuthService {
     });
   }
 
-  async confirmEmailAndMaybeLogin(token: string, clientInfo: ClientInfo, deviceId?: string) {
+  async confirmEmail(token: string, deviceId?: string) {
     const user = await this.emailVerificationStrategy.confirmEmail(token);
-    const { ipAddress, userAgent } = clientInfo;
-
-    if (this.isSafeToAutoLogin(user, ipAddress, userAgent)) {
-      const {
-        accessToken,
-        refreshToken,
-        deviceId: newDeviceId,
-      } = await this.generateNewSession({
-        deviceId,
-        ipAddress,
-        userAgent,
-        userId: user.id,
-        tokenVersion: user.tokenVersion,
-      });
-      return { user, accessToken, refreshToken, newDeviceId };
-    }
-    return user;
+    const {
+      accessToken,
+      refreshToken,
+      deviceId: newDeviceId,
+    } = await this.generateNewSession({
+      deviceId,
+      userId: user.id,
+      tokenVersion: user.tokenVersion,
+    });
+    return { user, accessToken, refreshToken, newDeviceId };
   }
 
-  private async generateNewSession({
-    userId,
-    tokenVersion,
-    ipAddress,
-    userAgent,
-    deviceId,
-  }: {
-    userId: string;
-    tokenVersion: number;
-    ipAddress?: string;
-    userAgent?: string;
-    deviceId?: string;
-  }) {
+  private async generateNewSession({ userId, tokenVersion, deviceId }: { userId: string; tokenVersion: number; deviceId?: string }) {
     try {
       const session = await this.sessionsService.upsertSession({
         userId,
-        ipAddress,
-        userAgent,
         deviceId,
       });
       const accessToken = this.jwtService.signAccessToken({
@@ -194,19 +175,9 @@ export class AuthService {
         jti: session.jti,
         tokenVersion,
       });
-      return { accessToken, refreshToken, deviceId: session.deviceId };
+      return { accessToken, refreshToken, deviceId: session.deviceId, userId };
     } catch (error) {
       throw error;
     }
-  }
-
-  private isSafeToAutoLogin(user: User, ipAddress?: string, userAgent?: string) {
-    if (!ipAddress || !userAgent) {
-      return false;
-    }
-    if (user.ipAddress !== ipAddress || user.userAgent !== userAgent) {
-      return false;
-    }
-    return true;
   }
 }

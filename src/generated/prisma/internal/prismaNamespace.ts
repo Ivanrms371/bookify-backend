@@ -396,6 +396,7 @@ export const ModelName = {
   Staff: 'Staff',
   MemberInvite: 'MemberInvite',
   WorkingHours: 'WorkingHours',
+  BusinessWorkingHours: 'BusinessWorkingHours',
   ScheduleException: 'ScheduleException',
   ScheduleExceptionBlock: 'ScheduleExceptionBlock',
   Customer: 'Customer',
@@ -409,7 +410,7 @@ export const ModelName = {
   NotificationDelivery: 'NotificationDelivery',
   InAppNotification: 'InAppNotification',
   NotificationLog: 'NotificationLog',
-  BusinessLimits: 'BusinessLimits',
+  BusinessQuota: 'BusinessQuota',
   Subscription: 'Subscription',
   Plan: 'Plan',
   PlanLimits: 'PlanLimits',
@@ -417,7 +418,8 @@ export const ModelName = {
   Payment: 'Payment',
   PlatformStats: 'PlatformStats',
   PlatformAdmin: 'PlatformAdmin',
-  WebhookLog: 'WebhookLog'
+  WebhookLog: 'WebhookLog',
+  BusinessOnboarding: 'BusinessOnboarding'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -433,7 +435,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "businessMember" | "session" | "verification" | "verificationLock" | "business" | "businessSettings" | "service" | "serviceAssignment" | "staff" | "memberInvite" | "workingHours" | "scheduleException" | "scheduleExceptionBlock" | "customer" | "appointment" | "appointmentBlock" | "businessDailyStats" | "businessLifetimeStats" | "staffDailyStats" | "staffLifetimeStats" | "notification" | "notificationDelivery" | "inAppNotification" | "notificationLog" | "businessLimits" | "subscription" | "plan" | "planLimits" | "planStats" | "payment" | "platformStats" | "platformAdmin" | "webhookLog"
+    modelProps: "user" | "businessMember" | "session" | "verification" | "verificationLock" | "business" | "businessSettings" | "service" | "serviceAssignment" | "staff" | "memberInvite" | "workingHours" | "businessWorkingHours" | "scheduleException" | "scheduleExceptionBlock" | "customer" | "appointment" | "appointmentBlock" | "businessDailyStats" | "businessLifetimeStats" | "staffDailyStats" | "staffLifetimeStats" | "notification" | "notificationDelivery" | "inAppNotification" | "notificationLog" | "businessQuota" | "subscription" | "plan" | "planLimits" | "planStats" | "payment" | "platformStats" | "platformAdmin" | "webhookLog" | "businessOnboarding"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1322,6 +1324,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.WorkingHoursCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.WorkingHoursCountAggregateOutputType> | number
+        }
+      }
+    }
+    BusinessWorkingHours: {
+      payload: Prisma.$BusinessWorkingHoursPayload<ExtArgs>
+      fields: Prisma.BusinessWorkingHoursFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BusinessWorkingHoursFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessWorkingHoursPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BusinessWorkingHoursFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessWorkingHoursPayload>
+        }
+        findFirst: {
+          args: Prisma.BusinessWorkingHoursFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessWorkingHoursPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BusinessWorkingHoursFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessWorkingHoursPayload>
+        }
+        findMany: {
+          args: Prisma.BusinessWorkingHoursFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessWorkingHoursPayload>[]
+        }
+        create: {
+          args: Prisma.BusinessWorkingHoursCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessWorkingHoursPayload>
+        }
+        createMany: {
+          args: Prisma.BusinessWorkingHoursCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BusinessWorkingHoursCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessWorkingHoursPayload>[]
+        }
+        delete: {
+          args: Prisma.BusinessWorkingHoursDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessWorkingHoursPayload>
+        }
+        update: {
+          args: Prisma.BusinessWorkingHoursUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessWorkingHoursPayload>
+        }
+        deleteMany: {
+          args: Prisma.BusinessWorkingHoursDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BusinessWorkingHoursUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BusinessWorkingHoursUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessWorkingHoursPayload>[]
+        }
+        upsert: {
+          args: Prisma.BusinessWorkingHoursUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessWorkingHoursPayload>
+        }
+        aggregate: {
+          args: Prisma.BusinessWorkingHoursAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBusinessWorkingHours>
+        }
+        groupBy: {
+          args: Prisma.BusinessWorkingHoursGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessWorkingHoursGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BusinessWorkingHoursCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessWorkingHoursCountAggregateOutputType> | number
         }
       }
     }
@@ -2287,77 +2363,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    BusinessLimits: {
-      payload: Prisma.$BusinessLimitsPayload<ExtArgs>
-      fields: Prisma.BusinessLimitsFieldRefs
+    BusinessQuota: {
+      payload: Prisma.$BusinessQuotaPayload<ExtArgs>
+      fields: Prisma.BusinessQuotaFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.BusinessLimitsFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessLimitsPayload> | null
+          args: Prisma.BusinessQuotaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessQuotaPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.BusinessLimitsFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessLimitsPayload>
+          args: Prisma.BusinessQuotaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessQuotaPayload>
         }
         findFirst: {
-          args: Prisma.BusinessLimitsFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessLimitsPayload> | null
+          args: Prisma.BusinessQuotaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessQuotaPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.BusinessLimitsFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessLimitsPayload>
+          args: Prisma.BusinessQuotaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessQuotaPayload>
         }
         findMany: {
-          args: Prisma.BusinessLimitsFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessLimitsPayload>[]
+          args: Prisma.BusinessQuotaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessQuotaPayload>[]
         }
         create: {
-          args: Prisma.BusinessLimitsCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessLimitsPayload>
+          args: Prisma.BusinessQuotaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessQuotaPayload>
         }
         createMany: {
-          args: Prisma.BusinessLimitsCreateManyArgs<ExtArgs>
+          args: Prisma.BusinessQuotaCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.BusinessLimitsCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessLimitsPayload>[]
+          args: Prisma.BusinessQuotaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessQuotaPayload>[]
         }
         delete: {
-          args: Prisma.BusinessLimitsDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessLimitsPayload>
+          args: Prisma.BusinessQuotaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessQuotaPayload>
         }
         update: {
-          args: Prisma.BusinessLimitsUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessLimitsPayload>
+          args: Prisma.BusinessQuotaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessQuotaPayload>
         }
         deleteMany: {
-          args: Prisma.BusinessLimitsDeleteManyArgs<ExtArgs>
+          args: Prisma.BusinessQuotaDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.BusinessLimitsUpdateManyArgs<ExtArgs>
+          args: Prisma.BusinessQuotaUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.BusinessLimitsUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessLimitsPayload>[]
+          args: Prisma.BusinessQuotaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessQuotaPayload>[]
         }
         upsert: {
-          args: Prisma.BusinessLimitsUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessLimitsPayload>
+          args: Prisma.BusinessQuotaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessQuotaPayload>
         }
         aggregate: {
-          args: Prisma.BusinessLimitsAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateBusinessLimits>
+          args: Prisma.BusinessQuotaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBusinessQuota>
         }
         groupBy: {
-          args: Prisma.BusinessLimitsGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.BusinessLimitsGroupByOutputType>[]
+          args: Prisma.BusinessQuotaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessQuotaGroupByOutputType>[]
         }
         count: {
-          args: Prisma.BusinessLimitsCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.BusinessLimitsCountAggregateOutputType> | number
+          args: Prisma.BusinessQuotaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessQuotaCountAggregateOutputType> | number
         }
       }
     }
@@ -2953,6 +3029,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    BusinessOnboarding: {
+      payload: Prisma.$BusinessOnboardingPayload<ExtArgs>
+      fields: Prisma.BusinessOnboardingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BusinessOnboardingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BusinessOnboardingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPayload>
+        }
+        findFirst: {
+          args: Prisma.BusinessOnboardingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BusinessOnboardingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPayload>
+        }
+        findMany: {
+          args: Prisma.BusinessOnboardingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPayload>[]
+        }
+        create: {
+          args: Prisma.BusinessOnboardingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPayload>
+        }
+        createMany: {
+          args: Prisma.BusinessOnboardingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BusinessOnboardingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPayload>[]
+        }
+        delete: {
+          args: Prisma.BusinessOnboardingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPayload>
+        }
+        update: {
+          args: Prisma.BusinessOnboardingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPayload>
+        }
+        deleteMany: {
+          args: Prisma.BusinessOnboardingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BusinessOnboardingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BusinessOnboardingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPayload>[]
+        }
+        upsert: {
+          args: Prisma.BusinessOnboardingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessOnboardingPayload>
+        }
+        aggregate: {
+          args: Prisma.BusinessOnboardingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBusinessOnboarding>
+        }
+        groupBy: {
+          args: Prisma.BusinessOnboardingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessOnboardingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BusinessOnboardingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessOnboardingCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3001,13 +3151,12 @@ export const UserScalarFieldEnum = {
   phoneVerifiedAt: 'phoneVerifiedAt',
   password: 'password',
   avatarUrl: 'avatarUrl',
-  ipAddress: 'ipAddress',
-  userAgent: 'userAgent',
   googleId: 'googleId',
   lastLoginAt: 'lastLoginAt',
   tokenVersion: 'tokenVersion',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  pending_plan: 'pending_plan'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -3030,8 +3179,6 @@ export const SessionScalarFieldEnum = {
   userId: 'userId',
   jti: 'jti',
   deviceId: 'deviceId',
-  ipAddress: 'ipAddress',
-  userAgent: 'userAgent',
   lastUsedAt: 'lastUsedAt',
   revokedAt: 'revokedAt',
   expiresAt: 'expiresAt',
@@ -3087,12 +3234,12 @@ export const BusinessScalarFieldEnum = {
   logoPublicId: 'logoPublicId',
   coverUrl: 'coverUrl',
   coverPublicId: 'coverPublicId',
-  onboardingStep: 'onboardingStep',
-  onboardingCompleted: 'onboardingCompleted',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
-  isActive: 'isActive'
+  isActive: 'isActive',
+  onboardingCompleted: 'onboardingCompleted',
+  isPublic: 'isPublic'
 } as const
 
 export type BusinessScalarFieldEnum = (typeof BusinessScalarFieldEnum)[keyof typeof BusinessScalarFieldEnum]
@@ -3192,6 +3339,7 @@ export const WorkingHoursScalarFieldEnum = {
   businessId: 'businessId',
   dayOfWeek: 'dayOfWeek',
   isActive: 'isActive',
+  name: 'name',
   createdAt: 'createdAt',
   staffId: 'staffId',
   endMinutes: 'endMinutes',
@@ -3199,6 +3347,20 @@ export const WorkingHoursScalarFieldEnum = {
 } as const
 
 export type WorkingHoursScalarFieldEnum = (typeof WorkingHoursScalarFieldEnum)[keyof typeof WorkingHoursScalarFieldEnum]
+
+
+export const BusinessWorkingHoursScalarFieldEnum = {
+  id: 'id',
+  businessId: 'businessId',
+  dayOfWeek: 'dayOfWeek',
+  isActive: 'isActive',
+  name: 'name',
+  createdAt: 'createdAt',
+  endMinutes: 'endMinutes',
+  startMinutes: 'startMinutes'
+} as const
+
+export type BusinessWorkingHoursScalarFieldEnum = (typeof BusinessWorkingHoursScalarFieldEnum)[keyof typeof BusinessWorkingHoursScalarFieldEnum]
 
 
 export const ScheduleExceptionScalarFieldEnum = {
@@ -3274,15 +3436,8 @@ export const AppointmentScalarFieldEnum = {
   notes: 'notes',
   internalNotes: 'internalNotes',
   confirmationCode: 'confirmationCode',
-  rescheduleToken: 'rescheduleToken',
-  rescheduleRequestedAt: 'rescheduleRequestedAt',
-  previousStartTime: 'previousStartTime',
-  previousEndTime: 'previousEndTime',
-  rescheduleReason: 'rescheduleReason',
-  rescheduleCount: 'rescheduleCount',
   cancelledAt: 'cancelledAt',
   cancellationReason: 'cancellationReason',
-  cancelToken: 'cancelToken',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   discountFixed: 'discountFixed',
@@ -3292,7 +3447,15 @@ export const AppointmentScalarFieldEnum = {
   initialActiveMinutes: 'initialActiveMinutes',
   passiveMinutes: 'passiveMinutes',
   price: 'price',
-  endTime: 'endTime'
+  endTime: 'endTime',
+  cancelToken: 'cancelToken',
+  previousEndTime: 'previousEndTime',
+  previousStartTime: 'previousStartTime',
+  rescheduleCount: 'rescheduleCount',
+  rescheduleReason: 'rescheduleReason',
+  rescheduleRequestedAt: 'rescheduleRequestedAt',
+  rescheduleToken: 'rescheduleToken',
+  discountAmount: 'discountAmount'
 } as const
 
 export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[keyof typeof AppointmentScalarFieldEnum]
@@ -3418,7 +3581,7 @@ export const NotificationLogScalarFieldEnum = {
 export type NotificationLogScalarFieldEnum = (typeof NotificationLogScalarFieldEnum)[keyof typeof NotificationLogScalarFieldEnum]
 
 
-export const BusinessLimitsScalarFieldEnum = {
+export const BusinessQuotaScalarFieldEnum = {
   id: 'id',
   businessId: 'businessId',
   whatsappLimit: 'whatsappLimit',
@@ -3437,7 +3600,7 @@ export const BusinessLimitsScalarFieldEnum = {
   professionalCount: 'professionalCount'
 } as const
 
-export type BusinessLimitsScalarFieldEnum = (typeof BusinessLimitsScalarFieldEnum)[keyof typeof BusinessLimitsScalarFieldEnum]
+export type BusinessQuotaScalarFieldEnum = (typeof BusinessQuotaScalarFieldEnum)[keyof typeof BusinessQuotaScalarFieldEnum]
 
 
 export const SubscriptionScalarFieldEnum = {
@@ -3588,6 +3751,20 @@ export const WebhookLogScalarFieldEnum = {
 export type WebhookLogScalarFieldEnum = (typeof WebhookLogScalarFieldEnum)[keyof typeof WebhookLogScalarFieldEnum]
 
 
+export const BusinessOnboardingScalarFieldEnum = {
+  id: 'id',
+  businessId: 'businessId',
+  onboardingCompleted: 'onboardingCompleted',
+  hasService: 'hasService',
+  hasSchedule: 'hasSchedule',
+  hasStaff: 'hasStaff',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BusinessOnboardingScalarFieldEnum = (typeof BusinessOnboardingScalarFieldEnum)[keyof typeof BusinessOnboardingScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3681,6 +3858,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanType'
+ */
+export type EnumPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanType'>
+    
+
+
+/**
+ * Reference to a field of type 'PlanType[]'
+ */
+export type ListEnumPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanType[]'>
     
 
 
@@ -3860,20 +4051,6 @@ export type ListEnumBillingCycleFieldRefInput<$PrismaModel> = FieldRefInputType<
 
 
 /**
- * Reference to a field of type 'PlanType'
- */
-export type EnumPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanType'>
-    
-
-
-/**
- * Reference to a field of type 'PlanType[]'
- */
-export type ListEnumPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanType[]'>
-    
-
-
-/**
  * Reference to a field of type 'PaymentStatus'
  */
 export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
@@ -4021,6 +4198,7 @@ export type GlobalOmitConfig = {
   staff?: Prisma.StaffOmit
   memberInvite?: Prisma.MemberInviteOmit
   workingHours?: Prisma.WorkingHoursOmit
+  businessWorkingHours?: Prisma.BusinessWorkingHoursOmit
   scheduleException?: Prisma.ScheduleExceptionOmit
   scheduleExceptionBlock?: Prisma.ScheduleExceptionBlockOmit
   customer?: Prisma.CustomerOmit
@@ -4034,7 +4212,7 @@ export type GlobalOmitConfig = {
   notificationDelivery?: Prisma.NotificationDeliveryOmit
   inAppNotification?: Prisma.InAppNotificationOmit
   notificationLog?: Prisma.NotificationLogOmit
-  businessLimits?: Prisma.BusinessLimitsOmit
+  businessQuota?: Prisma.BusinessQuotaOmit
   subscription?: Prisma.SubscriptionOmit
   plan?: Prisma.PlanOmit
   planLimits?: Prisma.PlanLimitsOmit
@@ -4043,6 +4221,7 @@ export type GlobalOmitConfig = {
   platformStats?: Prisma.PlatformStatsOmit
   platformAdmin?: Prisma.PlatformAdminOmit
   webhookLog?: Prisma.WebhookLogOmit
+  businessOnboarding?: Prisma.BusinessOnboardingOmit
 }
 
 /* Types for Logging */

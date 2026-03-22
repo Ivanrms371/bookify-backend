@@ -9,14 +9,14 @@ export const VerificationEmailEmailTemplate = ({ confirmLink, name = 'Iván Rodr
     <Layout previewText={`Confirma tu correo electrónico en Turnify`}>
       <Section>
         <CustomHeading>Confirma tu correo electrónico</CustomHeading>
-        <Text className="text-gray-600 text-lg leading-relaxed text-center mb-8">
+        <Text className="text-mist-600 text-lg leading-relaxed text-center mb-8">
           Hola <strong>{name}</strong>, gracias por registrarte en Turnify. Por favor, confirma tu correo electrónico haciendo clic en el
           botón de abajo.
         </Text>
       </Section>
       <Button href={confirmLink}>Confirmar cuenta</Button>
       <Hr className="my-4" />
-      <Text className="text-gray-500 text-sm leading-relaxed text-center">
+      <Text className="text-mist-500 text-sm leading-relaxed text-center">
         Si no creaste esta cuenta, por favor ignora este correo electrónico.
       </Text>
     </Layout>

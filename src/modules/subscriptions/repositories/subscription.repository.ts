@@ -18,7 +18,10 @@ export class SubscriptionRepository extends BaseRepository {
 
   private readonly thirtyDaysFromNow = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
-  async findUnique(args: SubscriptionFindUniqueArgs, tx?: TransactionClient) {
+  async findUnique<T extends Prisma.SubscriptionFindUniqueArgs>(
+    args: Prisma.SelectSubset<T, Prisma.SubscriptionFindUniqueArgs>,
+    tx?: TransactionClient,
+  ) {
     return this.db(tx).subscription.findUnique(args);
   }
 
@@ -28,6 +31,13 @@ export class SubscriptionRepository extends BaseRepository {
 
   async findByBusinessId(businessId: string, tx?: TransactionClient) {
     return this.db(tx).subscription.findUnique({ where: { businessId } });
+  }
+
+  async findWithPlanByBusinessId(businessId: string, tx?: TransactionClient) {
+    return this.db(tx).subscription.findUnique({
+      where: { businessId },
+      include: { plan: true },
+    });
   }
 
   async findFirst(args: SubscriptionFindFirstArgs, tx?: TransactionClient) {

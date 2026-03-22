@@ -24,7 +24,7 @@ export class SessionsService {
   async findCurrentSessionByJti(jti: string) {
     const session = await this.sessionsRepository.findByJti(jti);
     if (!session || session.revokedAt || new Date() > session.expiresAt) {
-      console.log('Sesión inválida.');
+      console.log('Sesión inválida.s');
       throw new UnauthorizedException('Sesión inválida.');
     }
     return session;

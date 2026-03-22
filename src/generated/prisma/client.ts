@@ -98,6 +98,11 @@ export type MemberInvite = Prisma.MemberInviteModel
  */
 export type WorkingHours = Prisma.WorkingHoursModel
 /**
+ * Model BusinessWorkingHours
+ * 
+ */
+export type BusinessWorkingHours = Prisma.BusinessWorkingHoursModel
+/**
  * Model ScheduleException
  * 
  */
@@ -163,10 +168,10 @@ export type InAppNotification = Prisma.InAppNotificationModel
  */
 export type NotificationLog = Prisma.NotificationLogModel
 /**
- * Model BusinessLimits
+ * Model BusinessQuota
  * 
  */
-export type BusinessLimits = Prisma.BusinessLimitsModel
+export type BusinessQuota = Prisma.BusinessQuotaModel
 /**
  * Model Subscription
  * 
@@ -207,3 +212,8 @@ export type PlatformAdmin = Prisma.PlatformAdminModel
  * 
  */
 export type WebhookLog = Prisma.WebhookLogModel
+/**
+ * Model BusinessOnboarding
+ * 
+ */
+export type BusinessOnboarding = Prisma.BusinessOnboardingModel

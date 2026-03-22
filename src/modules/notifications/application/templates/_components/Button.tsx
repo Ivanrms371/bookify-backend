@@ -12,7 +12,7 @@ export const Button = ({ children, href, className }: ButtonProps) => {
     <Link
       href={href}
       className={twMerge(
-        'my-2 bg-gray-800 rounded-full text-white text-center font-bold py-4 no-underline text-lg inline-block w-full',
+        'my-2 bg-mist-800 rounded-full text-white text-center font-bold py-4 no-underline text-lg inline-block w-full',
         className,
       )}
     >

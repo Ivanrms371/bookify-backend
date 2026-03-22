@@ -51,7 +51,7 @@ export async function seedZenSpaWellness(ctx: SeedContext) {
       addressLine1: 'Rambla República del Perú 1089',
       addressLine2: 'Punta Carretas',
       phone: '+598 2 614 9012',
-      onboardingStep: 5,
+
       onboardingCompleted: true,
       isActive: true,
     },
@@ -75,7 +75,7 @@ export async function seedZenSpaWellness(ctx: SeedContext) {
   });
 
   // ─── Business Limits ───────────────────────────────────────────────────────
-  await prisma.businessLimits.create({
+  await prisma.businessQuota.create({
     data: {
       businessId: business.id,
       whatsappLimit: 1200,

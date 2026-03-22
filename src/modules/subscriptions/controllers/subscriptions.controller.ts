@@ -1,9 +1,9 @@
 import { Body, Controller, Post, UseGuards, Logger } from '@nestjs/common';
 import { SubscriptionService } from '../services/subscription.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { BusinessGuard } from 'src/auth/guards/business.guard';
-import { BusinessRoles } from 'src/auth/decorators/business-roles.decorator';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { BusinessRoles } from 'src/common/decorators/business-roles.decorator';
 import { PlanType, BusinessRole } from 'src/generated/prisma/enums';
+import { BusinessGuard } from 'src/common/guards/business.guard';
 
 @UseGuards(JwtAuthGuard, BusinessGuard)
 @BusinessRoles(BusinessRole.OWNER)

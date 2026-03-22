@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { MercadoPagoConfig } from './mercadopago.config';
 import axios from 'axios';
 import { MercadoPagoCreatePlanRequest, MercadoPagoCreatePlanResponse } from './types/mp-plan.types';
-import {
-  MercadoPagoCreateSubscriptionRequest,
-  MercadoPagoSubscriptionResponse,
-} from './types/create-subscription.type';
+import { MercadoPagoCreateSubscriptionRequest, MercadoPagoSubscriptionResponse } from './types/create-subscription.type';
 import { MercadoPagoPreapproval } from './types/preapproval-subscription.type';
 import { MercadoPagoPaymentSearchResponse } from './types/payment.types';
 import { ConfigService } from '@nestjs/config';
@@ -30,9 +27,7 @@ export class MercadoPagoService {
    * PLANS
    * Endpoint: /v1/preapproval_plan
    */
-  async createSubscriptionPlan(
-    plan: MercadoPagoCreatePlanRequest,
-  ): Promise<MercadoPagoCreatePlanResponse> {
+  async createSubscriptionPlan(plan: MercadoPagoCreatePlanRequest): Promise<MercadoPagoCreatePlanResponse> {
     const url = `${this.baseUrl}/v1/preapproval_plan`;
     const response = await axios.post(url, plan, { headers: this.headers });
     return response.data;
@@ -42,9 +37,7 @@ export class MercadoPagoService {
    * SUBSCRIPTIONS relation between user and plan
    * Endpoint: /v1/preapproval
    */
-  async createSubscription(
-    subscription: MercadoPagoCreateSubscriptionRequest,
-  ): Promise<MercadoPagoSubscriptionResponse> {
+  async createSubscription(subscription: MercadoPagoCreateSubscriptionRequest): Promise<MercadoPagoSubscriptionResponse> {
     const url = `${this.baseUrl}/v1/preapproval`;
     const response = await axios.post(url, subscription, {
       headers: this.headers,

@@ -6,10 +6,15 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma } from 'src/generated/prisma/client';
 import { UserUpdateInput } from 'src/generated/prisma/models';
 import { CreateFromInvitationDto } from './dto/create-from-invitation.dto';
+import { PrismaService } from 'src/shared/prisma/prisma.service';
+import { UserMapper } from './mappers/user.mapper';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly usersRepository: UsersRepository) {}
+  constructor(
+    private readonly usersRepository: UsersRepository,
+    private readonly prisma: PrismaService,
+  ) {}
 
   async createUser(data: CreateUserDto, tx?: Prisma.TransactionClient) {
     return await this.usersRepository.create({ ...data }, tx);
@@ -29,6 +34,16 @@ export class UsersService {
       },
       tx,
     );
+  }
+
+  async getMe(userId: string) {
+    const user = await this.usersRepository.getMeWithBusiness(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return UserMapper.toMeResponse(user);
   }
 
   async updateUser(id: string, data: UserUpdateInput, tx?: Prisma.TransactionClient) {

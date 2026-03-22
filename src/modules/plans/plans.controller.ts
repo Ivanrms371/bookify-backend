@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { PlansService } from './plans.service';
 import { CreatePlanDto } from './dto/create-plan.dto';
-import { PlatformAdminGuard } from 'src/auth/guards/platform-admin.guard';
+import { PlatformAdminGuard } from 'src/common/guards/platform-admin.guard';
 
 @Controller('plans')
 export class PlansController {

@@ -3,7 +3,7 @@ import { BusinessRole } from 'src/generated/prisma/enums';
 
 export type AuthenticatedRequest = Request & {
   user: AuthUser;
-  member: BusienssMember;
+  member: BusinessMember;
 };
 
 export type AuthUser = {
@@ -16,8 +16,8 @@ export type AuthUser = {
   deviceId: string;
 };
 
-export type BusienssMember = {
-  memberId: string;
+export type BusinessMember = {
+  id: string;
   userId: string;
   businessId: string;
   role: BusinessRole;

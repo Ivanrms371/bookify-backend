@@ -14,18 +14,12 @@ export class ScheduleExceptionsController {
   }
 
   @Post()
-  createScheduleException(
-    @Param() params: BusinessStaffParamsDto,
-    @Body() body: CreateScheduleExceptionDto,
-  ) {
+  createScheduleException(@Param() params: BusinessStaffParamsDto, @Body() body: CreateScheduleExceptionDto) {
     return this.scheduleExceptionsService.createScheduleException(params, body);
   }
 
   @Put(':exceptionId')
-  updateScheduleException(
-    @Param() params: BusinessStaffExceptionsParamsDto,
-    @Body() body: UpdateScheduleExceptionDto,
-  ) {
+  updateScheduleException(@Param() params: BusinessStaffExceptionsParamsDto, @Body() body: UpdateScheduleExceptionDto) {
     return this.scheduleExceptionsService.updateScheduleException(params, body);
   }
 

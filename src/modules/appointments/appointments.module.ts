@@ -9,17 +9,19 @@ import { ServicesModule } from '../services/services/services.module';
 import { StaffsModule } from '../staffs/staffs.module';
 import { InfrastructureModule } from 'src/shared/infrastructure/infrastructure.module';
 import { AvailabilityPolicy } from './domain/policies/appointment-creation.policy';
+import { AppointmentsService } from './application/services/appointments.service';
 
 @Module({
   imports: [CustomersModule, ServicesModule, StaffsModule, InfrastructureModule],
   controllers: [AppointmentsController],
   providers: [
+    AppointmentsService,
     AppointmentCreationService,
     AppointmentCancelationService,
     AppointmentReschedulingService,
     AppointmentsRepository,
     AvailabilityPolicy,
   ],
-  exports: [AppointmentCancelationService, AppointmentReschedulingService],
+  exports: [AppointmentsService, AppointmentCancelationService, AppointmentReschedulingService],
 })
 export class AppointmentsModule {}

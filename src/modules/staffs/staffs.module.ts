@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { StaffsService } from './staffs.service';
 import { StaffsRepository } from './staffs.repository';
-import { PrismaModule } from 'src/shared/prisma/prisma.module';
 import { StaffStatsModule } from './features/stats/staff-stats.module';
 import { WorkingHoursController } from './features/working-hours/working-hours.controller';
 import { ScheduleExceptionsController } from './features/schedule-exceptions/schedule-exceptions.controller';
@@ -13,7 +12,7 @@ import { StaffsController } from './staffs.controller';
 import { AppointmentCreatedListener } from './listeners/appointment-created.listener';
 
 @Module({
-  imports: [PrismaModule, StaffStatsModule],
+  imports: [StaffStatsModule],
   controllers: [StaffsController, WorkingHoursController, ScheduleExceptionsController],
   providers: [
     StaffsService,

@@ -36,10 +36,12 @@ export class AppointmentCancelationService {
     } as AppointmentCancelledEvent);
   }
 
-  async generateCancelUrl(appointmentId: string) {
+  async generateCancelUrl() {
     const rawToken = crypto.randomBytes(32).toString('hex');
     const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
-    await this.appointmentsRepository.updateCancelToken(appointmentId, tokenHash);
-    return `${process.env.FRONTEND_URL}/appointments/${appointmentId}/cancel?token=${rawToken}`;
+    return {
+      cancelUrl: `${process.env.FRONTEND_URL}/appointments/${rawToken}/cancel`,
+      cancelToken: tokenHash,
+    };
   }
 }

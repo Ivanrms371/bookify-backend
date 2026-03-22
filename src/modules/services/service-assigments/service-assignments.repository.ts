@@ -52,12 +52,7 @@ export class ServiceAssignmentsRepository extends BaseRepository {
     });
   }
 
-  update(
-    serviceId: string,
-    staffId: string,
-    data: ServiceAssignmentUpdateInput,
-    client?: PrismaClient,
-  ) {
+  update(serviceId: string, staffId: string, data: ServiceAssignmentUpdateInput, client?: PrismaClient) {
     return this.db(client).serviceAssignment.update({
       where: { staffId_serviceId: { serviceId, staffId } },
       data,

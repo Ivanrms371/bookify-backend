@@ -1,14 +1,26 @@
-import { Controller, Get, Param, Post, Body, Put, Patch, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  Put,
+  Patch,
+  Delete,
+  UseInterceptors,
+  UploadedFiles,
+} from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { ReorderServiceDto } from './dto/reoder-service.dto';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { BusinessGuard } from 'src/auth/guards/business.guard';
-import { BusinessRoles } from 'src/auth/decorators/business-roles.decorator';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { BusinessRoles } from 'src/common/decorators/business-roles.decorator';
 import { BusinessRole } from 'src/generated/prisma/enums';
 import { ParseUUIDv7Pipe } from 'src/common/pipes/validate-uuidv7.pipe';
+import { BusinessGuard } from 'src/common/guards/business.guard';
 
 @UseGuards(JwtAuthGuard, BusinessGuard)
 @BusinessRoles(BusinessRole.OWNER, BusinessRole.ADMIN)
@@ -32,16 +44,19 @@ export class ServicesController {
   }
 
   @Post()
-  create(@Param('businessId') businessId: string, @Body() data: CreateServiceDto) {
-    return this.servicesService.createService(businessId, data);
+  @UseInterceptors(
+    FileFieldsInterceptor([{ name: 'image', maxCount: 1 }]),
+  )
+  create(
+    @Param('businessId') businessId: string,
+    @Body() data: CreateServiceDto,
+    @UploadedFiles() files: { image?: Express.Multer.File[] },
+  ) {
+    return this.servicesService.createService(businessId, data, files);
   }
 
   @Put(':id')
-  update(
-    @Param('id') id: string,
-    @Param('businessId') businessId: string,
-    @Body() data: UpdateServiceDto,
-  ) {
+  update(@Param('id') id: string, @Param('businessId') businessId: string, @Body() data: UpdateServiceDto) {
     return this.servicesService.updateService(id, businessId, data);
   }
 

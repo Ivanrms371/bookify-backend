@@ -9,4 +9,13 @@ export class InAppNotificationsRepository {
   async create(data: InAppNotificationCreateInput) {
     return this.prisma.inAppNotification.create({ data });
   }
+
+  async countUnread(userId: string) {
+    return this.prisma.inAppNotification.count({
+      where: {
+        userId,
+        readAt: null,
+      },
+    });
+  }
 }

@@ -13,9 +13,7 @@ export class PaymentsService {
     const offset = 50;
 
     const lastInvoice = await this.paymentsRepository.findLast(tx);
-    const nextNumber = lastInvoice
-      ? parseInt(lastInvoice.referenceCode.split('-')[2]) + 1
-      : offset + 1;
+    const nextNumber = lastInvoice ? parseInt(lastInvoice.referenceCode.split('-')[2]) + 1 : offset + 1;
 
     const code = `PAY-${year}-${nextNumber.toString().padStart(4, '0')}`;
 
@@ -35,9 +33,7 @@ export class PaymentsService {
       referenceCode: code,
       sequenceNumber: nextNumber,
       business: { connect: { id: payment.businessId } },
-      subscription: payment.subscriptionId
-        ? { connect: { id: payment.subscriptionId } }
-        : undefined,
+      subscription: payment.subscriptionId ? { connect: { id: payment.subscriptionId } } : undefined,
     };
 
     return this.paymentsRepository.create(paymentData, tx);

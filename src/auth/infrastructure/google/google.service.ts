@@ -37,10 +37,8 @@ export class GoogleService {
         redirect_uri: this.redirectUri,
         grant_type: 'authorization_code',
       });
-      console.log(data);
       return GoogleMapper.tokensToDomain(data);
     } catch (error) {
-      console.log(error);
       throw new Error('Error al intercambiar el código de autorización');
     }
   }

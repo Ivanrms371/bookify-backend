@@ -15,13 +15,7 @@ export class WorkingHoursService {
     private readonly workingHoursRepository: WorkingHoursRepository,
   ) {}
 
-  private async validateOverlap({
-    dayOfWeek,
-    endMinutes,
-    staffId,
-    startMinutes,
-    excludeWorkingHourId,
-  }: ValidateOverlapParams) {
+  private async validateOverlap({ dayOfWeek, endMinutes, staffId, startMinutes, excludeWorkingHourId }: ValidateOverlapParams) {
     const existing = await this.workingHoursRepository.findByStaffAndDay(staffId, dayOfWeek);
 
     const overlap = existing
@@ -34,20 +28,14 @@ export class WorkingHoursService {
   }
 
   async findAllWorkingHoursByStaff(params: BusinessStaffParamsDto) {
-    const staff = await this.staffsService.validateStaffAndBusiness(
-      params.staffId,
-      params.businessId,
-    );
+    const staff = await this.staffsService.validateStaffAndBusiness(params.staffId, params.businessId);
 
     const workingHours = await this.workingHoursRepository.findManyByStaff(staff.id);
     return workingHours;
   }
 
   async createWorkingHour(params: BusinessStaffParamsDto, dto: CreateWorkingHourDto) {
-    const staff = await this.staffsService.validateStaffAndBusiness(
-      params.staffId,
-      params.businessId,
-    );
+    const staff = await this.staffsService.validateStaffAndBusiness(params.staffId, params.businessId);
 
     const startMinutes = timeToMinutes(dto.startTime);
     const endMinutes = timeToMinutes(dto.endTime);
@@ -70,10 +58,7 @@ export class WorkingHoursService {
   }
 
   async updateWorkingHour(params: BusinessStaffWorkingHoursParamsDto, dto: UpdateWorkingHourDto) {
-    const staff = await this.staffsService.validateStaffAndBusiness(
-      params.staffId,
-      params.businessId,
-    );
+    const staff = await this.staffsService.validateStaffAndBusiness(params.staffId, params.businessId);
 
     const workingHour = await this.workingHoursRepository.findById(params.workingHourId);
     if (!workingHour || workingHour.staffId !== staff.id) {
@@ -100,10 +85,7 @@ export class WorkingHoursService {
   }
 
   async deleteWorkingHour(params: BusinessStaffWorkingHoursParamsDto) {
-    const staff = await this.staffsService.validateStaffAndBusiness(
-      params.staffId,
-      params.businessId,
-    );
+    const staff = await this.staffsService.validateStaffAndBusiness(params.staffId, params.businessId);
 
     const workingHour = await this.workingHoursRepository.findById(params.workingHourId);
     if (!workingHour || workingHour.staffId !== staff.id) {

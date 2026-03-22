@@ -24,8 +24,8 @@ export const Layout = ({ children, previewText }: { children: React.ReactNode; p
           },
         }}
       >
-        <Body className="bg-gray-50 my-auto mx-auto font-sans">
-          <Container className="bg-white border border-gray-200 rounded-2xl my-8 mx-auto p-10 max-w-[500px]">
+        <Body className="bg-mist-50 my-auto mx-auto font-sans">
+          <Container className="bg-white border border-mist-200 rounded-2xl my-8 mx-auto p-10 max-w-[500px]">
             <Header />
             {children}
           </Container>

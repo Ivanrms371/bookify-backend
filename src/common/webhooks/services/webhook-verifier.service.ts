@@ -67,10 +67,7 @@ export class WebhookVerifierService {
 
       return isValid;
     } catch (error) {
-      this.logger.error(
-        `Error verifying Mercado Pago webhook signature: ${error.message}`,
-        error.stack,
-      );
+      this.logger.error(`Error verifying Mercado Pago webhook signature: ${error.message}`, error.stack);
       return false;
     }
   }
