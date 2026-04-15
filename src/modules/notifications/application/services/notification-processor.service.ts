@@ -29,7 +29,7 @@ export class NotificationProcessorService {
     const { payload, type, id: notificationId } = notification;
 
     try {
-      const canSend = await this.usageService.canSend(notification.businessId, channel);
+      const canSend = await this.usageService.canSend(notification.tenantId, channel);
       if (!canSend) {
         throw new CostProtectionError();
       }
@@ -38,6 +38,7 @@ export class NotificationProcessorService {
       const referenceId = await this.gateways.send(channel, notification, template);
 
       await this.deliveryRepository.markAsSent(delivery.id, referenceId);
+      await this.usageService.incrementUsage(notification.tenantId, channel);
       await this.logRepository.createSuccessLog(delivery.id);
     } catch (error) {
       this.logger.error(`Delivery ${deliveryId} failed`, error.stack);
@@ -70,6 +71,7 @@ export class NotificationProcessorService {
 
   async processAll() {
     const pendingDeliveries = await this.deliveryRepository.findPending();
+    console.log(pendingDeliveries);
     for (let i = 0; i < pendingDeliveries.length; i += this.CONCURRENCY) {
       const batch = pendingDeliveries.slice(i, i + this.CONCURRENCY);
       await Promise.all(batch.map((delivery) => this.process(delivery)));

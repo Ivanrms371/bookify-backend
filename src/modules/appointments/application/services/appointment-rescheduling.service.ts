@@ -11,7 +11,7 @@ export class AppointmentReschedulingService {
     const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
 
     return {
-      rescheduleUrl: `${process.env.FRONTEND_URL}/appointments/${rawToken}/reschedule`,
+      rescheduleUrl: `${process.env.APP_URL}/appointments/${rawToken}/reschedule`,
       rescheduleToken: tokenHash,
     };
   }

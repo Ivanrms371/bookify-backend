@@ -8,7 +8,6 @@ export const AppointmentReminderEmailTemplate = ({
   customerName = 'Iván Rodríguez',
   date = '24 de diciembre de 2024',
   time = '10:00 AM',
-  serviceName = 'Corte de cabello',
   staffName = 'Juan Pérez',
   reminderType = '24h',
   cancelUrl = 'https://localhost:4000/appointments',

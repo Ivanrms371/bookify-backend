@@ -28,7 +28,7 @@ export type InAppNotificationMinAggregateOutputType = {
   id: string | null
   notificationId: string | null
   userId: string | null
-  businessId: string | null
+  tenantId: string | null
   title: string | null
   message: string | null
   actionUrl: string | null
@@ -41,7 +41,7 @@ export type InAppNotificationMaxAggregateOutputType = {
   id: string | null
   notificationId: string | null
   userId: string | null
-  businessId: string | null
+  tenantId: string | null
   title: string | null
   message: string | null
   actionUrl: string | null
@@ -54,7 +54,7 @@ export type InAppNotificationCountAggregateOutputType = {
   id: number
   notificationId: number
   userId: number
-  businessId: number
+  tenantId: number
   title: number
   message: number
   actionUrl: number
@@ -69,7 +69,7 @@ export type InAppNotificationMinAggregateInputType = {
   id?: true
   notificationId?: true
   userId?: true
-  businessId?: true
+  tenantId?: true
   title?: true
   message?: true
   actionUrl?: true
@@ -82,7 +82,7 @@ export type InAppNotificationMaxAggregateInputType = {
   id?: true
   notificationId?: true
   userId?: true
-  businessId?: true
+  tenantId?: true
   title?: true
   message?: true
   actionUrl?: true
@@ -95,7 +95,7 @@ export type InAppNotificationCountAggregateInputType = {
   id?: true
   notificationId?: true
   userId?: true
-  businessId?: true
+  tenantId?: true
   title?: true
   message?: true
   actionUrl?: true
@@ -181,7 +181,7 @@ export type InAppNotificationGroupByOutputType = {
   id: string
   notificationId: string
   userId: string
-  businessId: string
+  tenantId: string
   title: string
   message: string
   actionUrl: string | null
@@ -215,15 +215,15 @@ export type InAppNotificationWhereInput = {
   id?: Prisma.UuidFilter<"InAppNotification"> | string
   notificationId?: Prisma.UuidFilter<"InAppNotification"> | string
   userId?: Prisma.UuidFilter<"InAppNotification"> | string
-  businessId?: Prisma.UuidFilter<"InAppNotification"> | string
+  tenantId?: Prisma.UuidFilter<"InAppNotification"> | string
   title?: Prisma.StringFilter<"InAppNotification"> | string
   message?: Prisma.StringFilter<"InAppNotification"> | string
   actionUrl?: Prisma.StringNullableFilter<"InAppNotification"> | string | null
   type?: Prisma.StringFilter<"InAppNotification"> | string
   readAt?: Prisma.DateTimeNullableFilter<"InAppNotification"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"InAppNotification"> | Date | string
-  business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
   notification?: Prisma.XOR<Prisma.NotificationScalarRelationFilter, Prisma.NotificationWhereInput>
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -231,15 +231,15 @@ export type InAppNotificationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   notificationId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   message?: Prisma.SortOrder
   actionUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   readAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  business?: Prisma.BusinessOrderByWithRelationInput
   notification?: Prisma.NotificationOrderByWithRelationInput
+  tenant?: Prisma.TenantOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -250,15 +250,15 @@ export type InAppNotificationWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.InAppNotificationWhereInput[]
   NOT?: Prisma.InAppNotificationWhereInput | Prisma.InAppNotificationWhereInput[]
   userId?: Prisma.UuidFilter<"InAppNotification"> | string
-  businessId?: Prisma.UuidFilter<"InAppNotification"> | string
+  tenantId?: Prisma.UuidFilter<"InAppNotification"> | string
   title?: Prisma.StringFilter<"InAppNotification"> | string
   message?: Prisma.StringFilter<"InAppNotification"> | string
   actionUrl?: Prisma.StringNullableFilter<"InAppNotification"> | string | null
   type?: Prisma.StringFilter<"InAppNotification"> | string
   readAt?: Prisma.DateTimeNullableFilter<"InAppNotification"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"InAppNotification"> | Date | string
-  business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
   notification?: Prisma.XOR<Prisma.NotificationScalarRelationFilter, Prisma.NotificationWhereInput>
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "notificationId">
 
@@ -266,7 +266,7 @@ export type InAppNotificationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   notificationId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   message?: Prisma.SortOrder
   actionUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -285,7 +285,7 @@ export type InAppNotificationScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"InAppNotification"> | string
   notificationId?: Prisma.UuidWithAggregatesFilter<"InAppNotification"> | string
   userId?: Prisma.UuidWithAggregatesFilter<"InAppNotification"> | string
-  businessId?: Prisma.UuidWithAggregatesFilter<"InAppNotification"> | string
+  tenantId?: Prisma.UuidWithAggregatesFilter<"InAppNotification"> | string
   title?: Prisma.StringWithAggregatesFilter<"InAppNotification"> | string
   message?: Prisma.StringWithAggregatesFilter<"InAppNotification"> | string
   actionUrl?: Prisma.StringNullableWithAggregatesFilter<"InAppNotification"> | string | null
@@ -302,8 +302,8 @@ export type InAppNotificationCreateInput = {
   type: string
   readAt?: Date | string | null
   createdAt?: Date | string
-  business: Prisma.BusinessCreateNestedOneWithoutInAppNotificationsInput
   notification: Prisma.NotificationCreateNestedOneWithoutInAppInput
+  tenant: Prisma.TenantCreateNestedOneWithoutInAppNotificationsInput
   user: Prisma.UserCreateNestedOneWithoutInAppNotificationsInput
 }
 
@@ -311,7 +311,7 @@ export type InAppNotificationUncheckedCreateInput = {
   id?: string
   notificationId: string
   userId: string
-  businessId: string
+  tenantId: string
   title: string
   message: string
   actionUrl?: string | null
@@ -328,8 +328,8 @@ export type InAppNotificationUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  business?: Prisma.BusinessUpdateOneRequiredWithoutInAppNotificationsNestedInput
   notification?: Prisma.NotificationUpdateOneRequiredWithoutInAppNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutInAppNotificationsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutInAppNotificationsNestedInput
 }
 
@@ -337,7 +337,7 @@ export type InAppNotificationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   notificationId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
   actionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -350,7 +350,7 @@ export type InAppNotificationCreateManyInput = {
   id?: string
   notificationId: string
   userId: string
-  businessId: string
+  tenantId: string
   title: string
   message: string
   actionUrl?: string | null
@@ -373,7 +373,7 @@ export type InAppNotificationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   notificationId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
   actionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -401,7 +401,7 @@ export type InAppNotificationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   notificationId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   message?: Prisma.SortOrder
   actionUrl?: Prisma.SortOrder
@@ -414,7 +414,7 @@ export type InAppNotificationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   notificationId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   message?: Prisma.SortOrder
   actionUrl?: Prisma.SortOrder
@@ -427,7 +427,7 @@ export type InAppNotificationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   notificationId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   title?: Prisma.SortOrder
   message?: Prisma.SortOrder
   actionUrl?: Prisma.SortOrder
@@ -478,45 +478,45 @@ export type InAppNotificationUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.InAppNotificationScalarWhereInput | Prisma.InAppNotificationScalarWhereInput[]
 }
 
-export type InAppNotificationCreateNestedManyWithoutBusinessInput = {
-  create?: Prisma.XOR<Prisma.InAppNotificationCreateWithoutBusinessInput, Prisma.InAppNotificationUncheckedCreateWithoutBusinessInput> | Prisma.InAppNotificationCreateWithoutBusinessInput[] | Prisma.InAppNotificationUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.InAppNotificationCreateOrConnectWithoutBusinessInput | Prisma.InAppNotificationCreateOrConnectWithoutBusinessInput[]
-  createMany?: Prisma.InAppNotificationCreateManyBusinessInputEnvelope
+export type InAppNotificationCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.InAppNotificationCreateWithoutTenantInput, Prisma.InAppNotificationUncheckedCreateWithoutTenantInput> | Prisma.InAppNotificationCreateWithoutTenantInput[] | Prisma.InAppNotificationUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.InAppNotificationCreateOrConnectWithoutTenantInput | Prisma.InAppNotificationCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.InAppNotificationCreateManyTenantInputEnvelope
   connect?: Prisma.InAppNotificationWhereUniqueInput | Prisma.InAppNotificationWhereUniqueInput[]
 }
 
-export type InAppNotificationUncheckedCreateNestedManyWithoutBusinessInput = {
-  create?: Prisma.XOR<Prisma.InAppNotificationCreateWithoutBusinessInput, Prisma.InAppNotificationUncheckedCreateWithoutBusinessInput> | Prisma.InAppNotificationCreateWithoutBusinessInput[] | Prisma.InAppNotificationUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.InAppNotificationCreateOrConnectWithoutBusinessInput | Prisma.InAppNotificationCreateOrConnectWithoutBusinessInput[]
-  createMany?: Prisma.InAppNotificationCreateManyBusinessInputEnvelope
+export type InAppNotificationUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.InAppNotificationCreateWithoutTenantInput, Prisma.InAppNotificationUncheckedCreateWithoutTenantInput> | Prisma.InAppNotificationCreateWithoutTenantInput[] | Prisma.InAppNotificationUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.InAppNotificationCreateOrConnectWithoutTenantInput | Prisma.InAppNotificationCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.InAppNotificationCreateManyTenantInputEnvelope
   connect?: Prisma.InAppNotificationWhereUniqueInput | Prisma.InAppNotificationWhereUniqueInput[]
 }
 
-export type InAppNotificationUpdateManyWithoutBusinessNestedInput = {
-  create?: Prisma.XOR<Prisma.InAppNotificationCreateWithoutBusinessInput, Prisma.InAppNotificationUncheckedCreateWithoutBusinessInput> | Prisma.InAppNotificationCreateWithoutBusinessInput[] | Prisma.InAppNotificationUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.InAppNotificationCreateOrConnectWithoutBusinessInput | Prisma.InAppNotificationCreateOrConnectWithoutBusinessInput[]
-  upsert?: Prisma.InAppNotificationUpsertWithWhereUniqueWithoutBusinessInput | Prisma.InAppNotificationUpsertWithWhereUniqueWithoutBusinessInput[]
-  createMany?: Prisma.InAppNotificationCreateManyBusinessInputEnvelope
+export type InAppNotificationUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.InAppNotificationCreateWithoutTenantInput, Prisma.InAppNotificationUncheckedCreateWithoutTenantInput> | Prisma.InAppNotificationCreateWithoutTenantInput[] | Prisma.InAppNotificationUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.InAppNotificationCreateOrConnectWithoutTenantInput | Prisma.InAppNotificationCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.InAppNotificationUpsertWithWhereUniqueWithoutTenantInput | Prisma.InAppNotificationUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.InAppNotificationCreateManyTenantInputEnvelope
   set?: Prisma.InAppNotificationWhereUniqueInput | Prisma.InAppNotificationWhereUniqueInput[]
   disconnect?: Prisma.InAppNotificationWhereUniqueInput | Prisma.InAppNotificationWhereUniqueInput[]
   delete?: Prisma.InAppNotificationWhereUniqueInput | Prisma.InAppNotificationWhereUniqueInput[]
   connect?: Prisma.InAppNotificationWhereUniqueInput | Prisma.InAppNotificationWhereUniqueInput[]
-  update?: Prisma.InAppNotificationUpdateWithWhereUniqueWithoutBusinessInput | Prisma.InAppNotificationUpdateWithWhereUniqueWithoutBusinessInput[]
-  updateMany?: Prisma.InAppNotificationUpdateManyWithWhereWithoutBusinessInput | Prisma.InAppNotificationUpdateManyWithWhereWithoutBusinessInput[]
+  update?: Prisma.InAppNotificationUpdateWithWhereUniqueWithoutTenantInput | Prisma.InAppNotificationUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.InAppNotificationUpdateManyWithWhereWithoutTenantInput | Prisma.InAppNotificationUpdateManyWithWhereWithoutTenantInput[]
   deleteMany?: Prisma.InAppNotificationScalarWhereInput | Prisma.InAppNotificationScalarWhereInput[]
 }
 
-export type InAppNotificationUncheckedUpdateManyWithoutBusinessNestedInput = {
-  create?: Prisma.XOR<Prisma.InAppNotificationCreateWithoutBusinessInput, Prisma.InAppNotificationUncheckedCreateWithoutBusinessInput> | Prisma.InAppNotificationCreateWithoutBusinessInput[] | Prisma.InAppNotificationUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.InAppNotificationCreateOrConnectWithoutBusinessInput | Prisma.InAppNotificationCreateOrConnectWithoutBusinessInput[]
-  upsert?: Prisma.InAppNotificationUpsertWithWhereUniqueWithoutBusinessInput | Prisma.InAppNotificationUpsertWithWhereUniqueWithoutBusinessInput[]
-  createMany?: Prisma.InAppNotificationCreateManyBusinessInputEnvelope
+export type InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.InAppNotificationCreateWithoutTenantInput, Prisma.InAppNotificationUncheckedCreateWithoutTenantInput> | Prisma.InAppNotificationCreateWithoutTenantInput[] | Prisma.InAppNotificationUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.InAppNotificationCreateOrConnectWithoutTenantInput | Prisma.InAppNotificationCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.InAppNotificationUpsertWithWhereUniqueWithoutTenantInput | Prisma.InAppNotificationUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.InAppNotificationCreateManyTenantInputEnvelope
   set?: Prisma.InAppNotificationWhereUniqueInput | Prisma.InAppNotificationWhereUniqueInput[]
   disconnect?: Prisma.InAppNotificationWhereUniqueInput | Prisma.InAppNotificationWhereUniqueInput[]
   delete?: Prisma.InAppNotificationWhereUniqueInput | Prisma.InAppNotificationWhereUniqueInput[]
   connect?: Prisma.InAppNotificationWhereUniqueInput | Prisma.InAppNotificationWhereUniqueInput[]
-  update?: Prisma.InAppNotificationUpdateWithWhereUniqueWithoutBusinessInput | Prisma.InAppNotificationUpdateWithWhereUniqueWithoutBusinessInput[]
-  updateMany?: Prisma.InAppNotificationUpdateManyWithWhereWithoutBusinessInput | Prisma.InAppNotificationUpdateManyWithWhereWithoutBusinessInput[]
+  update?: Prisma.InAppNotificationUpdateWithWhereUniqueWithoutTenantInput | Prisma.InAppNotificationUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.InAppNotificationUpdateManyWithWhereWithoutTenantInput | Prisma.InAppNotificationUpdateManyWithWhereWithoutTenantInput[]
   deleteMany?: Prisma.InAppNotificationScalarWhereInput | Prisma.InAppNotificationScalarWhereInput[]
 }
 
@@ -560,14 +560,14 @@ export type InAppNotificationCreateWithoutUserInput = {
   type: string
   readAt?: Date | string | null
   createdAt?: Date | string
-  business: Prisma.BusinessCreateNestedOneWithoutInAppNotificationsInput
   notification: Prisma.NotificationCreateNestedOneWithoutInAppInput
+  tenant: Prisma.TenantCreateNestedOneWithoutInAppNotificationsInput
 }
 
 export type InAppNotificationUncheckedCreateWithoutUserInput = {
   id?: string
   notificationId: string
-  businessId: string
+  tenantId: string
   title: string
   message: string
   actionUrl?: string | null
@@ -609,7 +609,7 @@ export type InAppNotificationScalarWhereInput = {
   id?: Prisma.UuidFilter<"InAppNotification"> | string
   notificationId?: Prisma.UuidFilter<"InAppNotification"> | string
   userId?: Prisma.UuidFilter<"InAppNotification"> | string
-  businessId?: Prisma.UuidFilter<"InAppNotification"> | string
+  tenantId?: Prisma.UuidFilter<"InAppNotification"> | string
   title?: Prisma.StringFilter<"InAppNotification"> | string
   message?: Prisma.StringFilter<"InAppNotification"> | string
   actionUrl?: Prisma.StringNullableFilter<"InAppNotification"> | string | null
@@ -618,7 +618,7 @@ export type InAppNotificationScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"InAppNotification"> | Date | string
 }
 
-export type InAppNotificationCreateWithoutBusinessInput = {
+export type InAppNotificationCreateWithoutTenantInput = {
   id?: string
   title: string
   message: string
@@ -630,7 +630,7 @@ export type InAppNotificationCreateWithoutBusinessInput = {
   user: Prisma.UserCreateNestedOneWithoutInAppNotificationsInput
 }
 
-export type InAppNotificationUncheckedCreateWithoutBusinessInput = {
+export type InAppNotificationUncheckedCreateWithoutTenantInput = {
   id?: string
   notificationId: string
   userId: string
@@ -642,30 +642,30 @@ export type InAppNotificationUncheckedCreateWithoutBusinessInput = {
   createdAt?: Date | string
 }
 
-export type InAppNotificationCreateOrConnectWithoutBusinessInput = {
+export type InAppNotificationCreateOrConnectWithoutTenantInput = {
   where: Prisma.InAppNotificationWhereUniqueInput
-  create: Prisma.XOR<Prisma.InAppNotificationCreateWithoutBusinessInput, Prisma.InAppNotificationUncheckedCreateWithoutBusinessInput>
+  create: Prisma.XOR<Prisma.InAppNotificationCreateWithoutTenantInput, Prisma.InAppNotificationUncheckedCreateWithoutTenantInput>
 }
 
-export type InAppNotificationCreateManyBusinessInputEnvelope = {
-  data: Prisma.InAppNotificationCreateManyBusinessInput | Prisma.InAppNotificationCreateManyBusinessInput[]
+export type InAppNotificationCreateManyTenantInputEnvelope = {
+  data: Prisma.InAppNotificationCreateManyTenantInput | Prisma.InAppNotificationCreateManyTenantInput[]
   skipDuplicates?: boolean
 }
 
-export type InAppNotificationUpsertWithWhereUniqueWithoutBusinessInput = {
+export type InAppNotificationUpsertWithWhereUniqueWithoutTenantInput = {
   where: Prisma.InAppNotificationWhereUniqueInput
-  update: Prisma.XOR<Prisma.InAppNotificationUpdateWithoutBusinessInput, Prisma.InAppNotificationUncheckedUpdateWithoutBusinessInput>
-  create: Prisma.XOR<Prisma.InAppNotificationCreateWithoutBusinessInput, Prisma.InAppNotificationUncheckedCreateWithoutBusinessInput>
+  update: Prisma.XOR<Prisma.InAppNotificationUpdateWithoutTenantInput, Prisma.InAppNotificationUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.InAppNotificationCreateWithoutTenantInput, Prisma.InAppNotificationUncheckedCreateWithoutTenantInput>
 }
 
-export type InAppNotificationUpdateWithWhereUniqueWithoutBusinessInput = {
+export type InAppNotificationUpdateWithWhereUniqueWithoutTenantInput = {
   where: Prisma.InAppNotificationWhereUniqueInput
-  data: Prisma.XOR<Prisma.InAppNotificationUpdateWithoutBusinessInput, Prisma.InAppNotificationUncheckedUpdateWithoutBusinessInput>
+  data: Prisma.XOR<Prisma.InAppNotificationUpdateWithoutTenantInput, Prisma.InAppNotificationUncheckedUpdateWithoutTenantInput>
 }
 
-export type InAppNotificationUpdateManyWithWhereWithoutBusinessInput = {
+export type InAppNotificationUpdateManyWithWhereWithoutTenantInput = {
   where: Prisma.InAppNotificationScalarWhereInput
-  data: Prisma.XOR<Prisma.InAppNotificationUpdateManyMutationInput, Prisma.InAppNotificationUncheckedUpdateManyWithoutBusinessInput>
+  data: Prisma.XOR<Prisma.InAppNotificationUpdateManyMutationInput, Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantInput>
 }
 
 export type InAppNotificationCreateWithoutNotificationInput = {
@@ -676,14 +676,14 @@ export type InAppNotificationCreateWithoutNotificationInput = {
   type: string
   readAt?: Date | string | null
   createdAt?: Date | string
-  business: Prisma.BusinessCreateNestedOneWithoutInAppNotificationsInput
+  tenant: Prisma.TenantCreateNestedOneWithoutInAppNotificationsInput
   user: Prisma.UserCreateNestedOneWithoutInAppNotificationsInput
 }
 
 export type InAppNotificationUncheckedCreateWithoutNotificationInput = {
   id?: string
   userId: string
-  businessId: string
+  tenantId: string
   title: string
   message: string
   actionUrl?: string | null
@@ -716,14 +716,14 @@ export type InAppNotificationUpdateWithoutNotificationInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  business?: Prisma.BusinessUpdateOneRequiredWithoutInAppNotificationsNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutInAppNotificationsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutInAppNotificationsNestedInput
 }
 
 export type InAppNotificationUncheckedUpdateWithoutNotificationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
   actionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -735,7 +735,7 @@ export type InAppNotificationUncheckedUpdateWithoutNotificationInput = {
 export type InAppNotificationCreateManyUserInput = {
   id?: string
   notificationId: string
-  businessId: string
+  tenantId: string
   title: string
   message: string
   actionUrl?: string | null
@@ -752,14 +752,14 @@ export type InAppNotificationUpdateWithoutUserInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  business?: Prisma.BusinessUpdateOneRequiredWithoutInAppNotificationsNestedInput
   notification?: Prisma.NotificationUpdateOneRequiredWithoutInAppNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutInAppNotificationsNestedInput
 }
 
 export type InAppNotificationUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   notificationId?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
   actionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -771,7 +771,7 @@ export type InAppNotificationUncheckedUpdateWithoutUserInput = {
 export type InAppNotificationUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   notificationId?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
   actionUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -780,7 +780,7 @@ export type InAppNotificationUncheckedUpdateManyWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type InAppNotificationCreateManyBusinessInput = {
+export type InAppNotificationCreateManyTenantInput = {
   id?: string
   notificationId: string
   userId: string
@@ -792,7 +792,7 @@ export type InAppNotificationCreateManyBusinessInput = {
   createdAt?: Date | string
 }
 
-export type InAppNotificationUpdateWithoutBusinessInput = {
+export type InAppNotificationUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   message?: Prisma.StringFieldUpdateOperationsInput | string
@@ -804,7 +804,7 @@ export type InAppNotificationUpdateWithoutBusinessInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutInAppNotificationsNestedInput
 }
 
-export type InAppNotificationUncheckedUpdateWithoutBusinessInput = {
+export type InAppNotificationUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   notificationId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -816,7 +816,7 @@ export type InAppNotificationUncheckedUpdateWithoutBusinessInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type InAppNotificationUncheckedUpdateManyWithoutBusinessInput = {
+export type InAppNotificationUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   notificationId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -834,15 +834,15 @@ export type InAppNotificationSelect<ExtArgs extends runtime.Types.Extensions.Int
   id?: boolean
   notificationId?: boolean
   userId?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   title?: boolean
   message?: boolean
   actionUrl?: boolean
   type?: boolean
   readAt?: boolean
   createdAt?: boolean
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["inAppNotification"]>
 
@@ -850,15 +850,15 @@ export type InAppNotificationSelectCreateManyAndReturn<ExtArgs extends runtime.T
   id?: boolean
   notificationId?: boolean
   userId?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   title?: boolean
   message?: boolean
   actionUrl?: boolean
   type?: boolean
   readAt?: boolean
   createdAt?: boolean
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["inAppNotification"]>
 
@@ -866,15 +866,15 @@ export type InAppNotificationSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   id?: boolean
   notificationId?: boolean
   userId?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   title?: boolean
   message?: boolean
   actionUrl?: boolean
   type?: boolean
   readAt?: boolean
   createdAt?: boolean
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["inAppNotification"]>
 
@@ -882,7 +882,7 @@ export type InAppNotificationSelectScalar = {
   id?: boolean
   notificationId?: boolean
   userId?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   title?: boolean
   message?: boolean
   actionUrl?: boolean
@@ -891,35 +891,35 @@ export type InAppNotificationSelectScalar = {
   createdAt?: boolean
 }
 
-export type InAppNotificationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "notificationId" | "userId" | "businessId" | "title" | "message" | "actionUrl" | "type" | "readAt" | "createdAt", ExtArgs["result"]["inAppNotification"]>
+export type InAppNotificationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "notificationId" | "userId" | "tenantId" | "title" | "message" | "actionUrl" | "type" | "readAt" | "createdAt", ExtArgs["result"]["inAppNotification"]>
 export type InAppNotificationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type InAppNotificationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type InAppNotificationIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   notification?: boolean | Prisma.NotificationDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $InAppNotificationPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "InAppNotification"
   objects: {
-    business: Prisma.$BusinessPayload<ExtArgs>
     notification: Prisma.$NotificationPayload<ExtArgs>
+    tenant: Prisma.$TenantPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     notificationId: string
     userId: string
-    businessId: string
+    tenantId: string
     title: string
     message: string
     actionUrl: string | null
@@ -1320,8 +1320,8 @@ readonly fields: InAppNotificationFieldRefs;
  */
 export interface Prisma__InAppNotificationClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  business<T extends Prisma.BusinessDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BusinessDefaultArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   notification<T extends Prisma.NotificationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.NotificationDefaultArgs<ExtArgs>>): Prisma.Prisma__NotificationClient<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1355,7 +1355,7 @@ export interface InAppNotificationFieldRefs {
   readonly id: Prisma.FieldRef<"InAppNotification", 'String'>
   readonly notificationId: Prisma.FieldRef<"InAppNotification", 'String'>
   readonly userId: Prisma.FieldRef<"InAppNotification", 'String'>
-  readonly businessId: Prisma.FieldRef<"InAppNotification", 'String'>
+  readonly tenantId: Prisma.FieldRef<"InAppNotification", 'String'>
   readonly title: Prisma.FieldRef<"InAppNotification", 'String'>
   readonly message: Prisma.FieldRef<"InAppNotification", 'String'>
   readonly actionUrl: Prisma.FieldRef<"InAppNotification", 'String'>

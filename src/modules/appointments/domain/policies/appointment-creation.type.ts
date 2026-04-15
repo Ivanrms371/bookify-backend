@@ -14,8 +14,9 @@ export interface AvailabilityAppointment {
 }
 
 export interface AvailabilityData {
-  business: {
+  tenant: {
     settings: Settings | null;
+    tenantWorkingHours: Block[];
   };
   workingHours: Block[];
   exceptions: Exception[];

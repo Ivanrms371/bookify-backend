@@ -3,7 +3,7 @@ import { PaymentStatus } from 'src/generated/prisma/enums';
 
 export class CreatePaymentDto {
   @IsString()
-  businessId: string;
+  tenantId: string;
   @IsString()
   subscriptionId: string;
 

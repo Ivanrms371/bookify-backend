@@ -1,5 +1,7 @@
 // Base domain blocks
 
+import { AvailabilityConfig } from './availability-config.type';
+
 export type Block = {
   startMinutes: number;
   endMinutes: number;
@@ -53,12 +55,13 @@ export type GenerateFixedSlotsParams = {
 export type FilterPastSlotsParams = {
   slots: number[];
   date: Date;
+  config: AvailabilityConfig;
 };
 
 export type FilterByMinAdvancedMinutesParams = {
   slots: number[];
-  minAdvancedMinutes: number;
   date: Date;
+  config: AvailabilityConfig;
 };
 
 export type FilterOverlappingSlotsParams = {

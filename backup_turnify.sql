@@ -200,10 +200,10 @@ CREATE TYPE public."BillingCycle" AS ENUM (
 ALTER TYPE public."BillingCycle" OWNER TO postgres;
 
 --
--- Name: BusinessType; Type: TYPE; Schema: public; Owner: postgres
+-- Name: TenantType; Type: TYPE; Schema: public; Owner: postgres
 --
 
-CREATE TYPE public."BusinessType" AS ENUM (
+CREATE TYPE public."TenantType" AS ENUM (
     'BARBERSHOP',
     'HAIRDRESSING_SALON',
     'AESTHETIC_CENTER',
@@ -215,7 +215,7 @@ CREATE TYPE public."BusinessType" AS ENUM (
 );
 
 
-ALTER TYPE public."BusinessType" OWNER TO postgres;
+ALTER TYPE public."TenantType" OWNER TO postgres;
 
 --
 -- Name: EventType; Type: TYPE; Schema: public; Owner: postgres
@@ -461,7 +461,7 @@ ALTER TABLE public.admin_events OWNER TO postgres;
 
 CREATE TABLE public.appointments (
     id text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     service_id text NOT NULL,
     staff_member_id text NOT NULL,
     customer_id text NOT NULL,
@@ -484,12 +484,12 @@ CREATE TABLE public.appointments (
 ALTER TABLE public.appointments OWNER TO postgres;
 
 --
--- Name: business_daily_stats; Type: TABLE; Schema: public; Owner: postgres
+-- Name: tenant_daily_stats; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.business_daily_stats (
+CREATE TABLE public.tenant_daily_stats (
     id text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     date date NOT NULL,
     appointments integer DEFAULT 0 NOT NULL,
     confirmed integer DEFAULT 0 NOT NULL,
@@ -500,15 +500,15 @@ CREATE TABLE public.business_daily_stats (
 );
 
 
-ALTER TABLE public.business_daily_stats OWNER TO postgres;
+ALTER TABLE public.tenant_daily_stats OWNER TO postgres;
 
 --
--- Name: business_daily_usage; Type: TABLE; Schema: public; Owner: postgres
+-- Name: tenant_daily_usage; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.business_daily_usage (
+CREATE TABLE public.tenant_daily_usage (
     id text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     day integer NOT NULL,
     month integer NOT NULL,
     year integer NOT NULL,
@@ -518,15 +518,15 @@ CREATE TABLE public.business_daily_usage (
 );
 
 
-ALTER TABLE public.business_daily_usage OWNER TO postgres;
+ALTER TABLE public.tenant_daily_usage OWNER TO postgres;
 
 --
--- Name: business_lifetime_stats; Type: TABLE; Schema: public; Owner: postgres
+-- Name: tenant_lifetime_stats; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.business_lifetime_stats (
+CREATE TABLE public.tenant_lifetime_stats (
     id text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     total_appointments integer DEFAULT 0 NOT NULL,
     total_revenue numeric(10,2) DEFAULT 0 NOT NULL,
     total_customers integer DEFAULT 0 NOT NULL,
@@ -535,15 +535,15 @@ CREATE TABLE public.business_lifetime_stats (
 );
 
 
-ALTER TABLE public.business_lifetime_stats OWNER TO postgres;
+ALTER TABLE public.tenant_lifetime_stats OWNER TO postgres;
 
 --
--- Name: business_limits; Type: TABLE; Schema: public; Owner: postgres
+-- Name: tenant_limits; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.business_limits (
+CREATE TABLE public.tenant_limits (
     id text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     plan text DEFAULT 'free'::text NOT NULL,
     last_reset_at timestamp(3) without time zone NOT NULL,
     updated_at timestamp(3) without time zone NOT NULL,
@@ -557,13 +557,13 @@ CREATE TABLE public.business_limits (
 );
 
 
-ALTER TABLE public.business_limits OWNER TO postgres;
+ALTER TABLE public.tenant_limits OWNER TO postgres;
 
 --
--- Name: business_settings; Type: TABLE; Schema: public; Owner: postgres
+-- Name: tenant_settings; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.business_settings (
+CREATE TABLE public.tenant_settings (
     id text NOT NULL,
     slot_interval_minutes integer DEFAULT 30 NOT NULL,
     max_advanced_days integer DEFAULT 30 NOT NULL,
@@ -571,7 +571,7 @@ CREATE TABLE public.business_settings (
     cancellation_window_minutes integer DEFAULT 30 NOT NULL,
     timezone text DEFAULT 'America/Montevideo'::text NOT NULL,
     currency text DEFAULT 'UYU'::text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     buffer_time_minutes integer DEFAULT 0 NOT NULL,
     holiday_closure_auto_apply boolean DEFAULT false NOT NULL,
     max_pending_appts_per_client integer DEFAULT 10 NOT NULL,
@@ -579,15 +579,15 @@ CREATE TABLE public.business_settings (
 );
 
 
-ALTER TABLE public.business_settings OWNER TO postgres;
+ALTER TABLE public.tenant_settings OWNER TO postgres;
 
 --
--- Name: business_usage; Type: TABLE; Schema: public; Owner: postgres
+-- Name: tenant_usage; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.business_usage (
+CREATE TABLE public.tenant_usage (
     id text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     month integer NOT NULL,
     year integer NOT NULL,
     messages_usage integer DEFAULT 0 NOT NULL,
@@ -596,18 +596,18 @@ CREATE TABLE public.business_usage (
 );
 
 
-ALTER TABLE public.business_usage OWNER TO postgres;
+ALTER TABLE public.tenant_usage OWNER TO postgres;
 
 --
--- Name: businesses; Type: TABLE; Schema: public; Owner: postgres
+-- Name: tenants; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.businesses (
+CREATE TABLE public.tenants (
     id text NOT NULL,
     owner_id text NOT NULL,
     name text,
     slug text,
-    type public."BusinessType",
+    type public."TenantType",
     description text,
     phone text,
     logo_url text,
@@ -624,7 +624,7 @@ CREATE TABLE public.businesses (
 );
 
 
-ALTER TABLE public.businesses OWNER TO postgres;
+ALTER TABLE public.tenants OWNER TO postgres;
 
 --
 -- Name: customers; Type: TABLE; Schema: public; Owner: postgres
@@ -632,7 +632,7 @@ ALTER TABLE public.businesses OWNER TO postgres;
 
 CREATE TABLE public.customers (
     id text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     notes text,
     internal_notes text,
     total_appointments integer DEFAULT 0 NOT NULL,
@@ -671,7 +671,7 @@ ALTER TABLE public.customers OWNER TO postgres;
 CREATE TABLE public.member_invites (
     id text NOT NULL,
     email text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     inviter_id text NOT NULL,
     token text NOT NULL,
     expires_at timestamp(3) without time zone NOT NULL,
@@ -695,7 +695,7 @@ CREATE TABLE public.notification_logs (
     "providerMessageId" text,
     scheduled_notification_id text,
     created_at timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    business_id text,
+    tenant_id text,
     recipient_id text,
     channel public."NotificationChannel" NOT NULL,
     layer public."NotificationLayer" NOT NULL,
@@ -711,7 +711,7 @@ ALTER TABLE public.notification_logs OWNER TO postgres;
 
 CREATE TABLE public.payments (
     id text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     subscription_id text,
     reference_code text NOT NULL,
     sequence_number integer NOT NULL,
@@ -813,13 +813,13 @@ ALTER TABLE public.platform_admins OWNER TO postgres;
 CREATE TABLE public.platform_stats (
     id text NOT NULL,
     date date NOT NULL,
-    new_businesses_today integer DEFAULT 0 NOT NULL,
-    churned_businesses_today integer DEFAULT 0 NOT NULL,
+    new_tenants_today integer DEFAULT 0 NOT NULL,
+    churned_tenants_today integer DEFAULT 0 NOT NULL,
     appointments_today integer DEFAULT 0 NOT NULL,
     revenue_today numeric(10,2) DEFAULT 0 NOT NULL,
     mrr_lost_today numeric(10,2) DEFAULT 0 NOT NULL,
     costs_today numeric(10,2) DEFAULT 0 NOT NULL,
-    total_businesses integer DEFAULT 0 NOT NULL,
+    total_tenants integer DEFAULT 0 NOT NULL,
     total_active_subs integer DEFAULT 0 NOT NULL,
     mrr_total numeric(10,2) DEFAULT 0 NOT NULL,
     notifications_sent integer DEFAULT 0 NOT NULL,
@@ -837,7 +837,7 @@ ALTER TABLE public.platform_stats OWNER TO postgres;
 
 CREATE TABLE public.schedule_exceptions (
     id text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     staff_member_id text,
     date date NOT NULL,
     is_closed boolean NOT NULL,
@@ -856,7 +856,7 @@ ALTER TABLE public.schedule_exceptions OWNER TO postgres;
 
 CREATE TABLE public.scheduled_notifications (
     id text NOT NULL,
-    business_id text,
+    tenant_id text,
     user_id text,
     recipient_email text,
     recipient_phone text,
@@ -900,7 +900,7 @@ ALTER TABLE public.service_assigments OWNER TO postgres;
 
 CREATE TABLE public.services (
     id text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     name text NOT NULL,
     image text,
     description text,
@@ -981,7 +981,7 @@ ALTER TABLE public.staff_stats OWNER TO postgres;
 CREATE TABLE public.staffs (
     id text NOT NULL,
     user_id text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     slot_interval_minutes integer DEFAULT 30 NOT NULL,
     max_advanced_days integer DEFAULT 30 NOT NULL,
     min_advanced_minutes integer DEFAULT 30 NOT NULL,
@@ -1008,7 +1008,7 @@ ALTER TABLE public.staffs OWNER TO postgres;
 
 CREATE TABLE public.subscriptions (
     id text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     plan_id text NOT NULL,
     status public."SubscriptionStatus" DEFAULT 'TRIAL'::public."SubscriptionStatus" NOT NULL,
     amount numeric(10,2) NOT NULL,
@@ -1126,7 +1126,7 @@ ALTER TABLE public.webhook_logs OWNER TO postgres;
 
 CREATE TABLE public.working_hours (
     id text NOT NULL,
-    business_id text NOT NULL,
+    tenant_id text NOT NULL,
     staff_member_id text,
     day_of_week integer NOT NULL,
     "startTime" time without time zone NOT NULL,
@@ -1146,7 +1146,7 @@ COPY public._prisma_migrations (id, checksum, finished_at, migration_name, logs,
 aa71f7a0-2855-475d-8248-31dc1e17d03c	25ea28dd2f7ba20805c806e0a525c0df21a5c310b0e5335b36198e90553d8b47	2026-01-30 22:31:08.49663+00	20260125014416_init	\N	\N	2026-01-30 22:31:08.387904+00	1
 5cfa2507-d2ed-42dd-933f-4795ed499725	6eb4f6aca0d9129336a95df32102711ad543b19428b5caab3f9d9d97eb6ca863	2026-01-30 22:31:08.50031+00	20260125014938_modifying_plan	\N	\N	2026-01-30 22:31:08.497222+00	1
 36de8f54-89d9-4824-b827-b04aebe1105f	c3972925539fd3de28a059a30fb0037a02af322d7b5bef041d29954cbe156bdd	2026-02-02 02:16:53.103502+00	20260202021653_add_new_notification_type	\N	\N	2026-02-02 02:16:53.097194+00	1
-3dc05da1-b43f-475e-9e16-a4a9ac77fb47	42a7d6437ae4dcbdacad199bfa3249494bfbb3a85cc2078a98d285794b9f736c	2026-01-30 22:31:08.50252+00	20260126220554_adding_customer_stats_and_business_settings	\N	\N	2026-01-30 22:31:08.500814+00	1
+3dc05da1-b43f-475e-9e16-a4a9ac77fb47	42a7d6437ae4dcbdacad199bfa3249494bfbb3a85cc2078a98d285794b9f736c	2026-01-30 22:31:08.50252+00	20260126220554_adding_customer_stats_and_tenant_settings	\N	\N	2026-01-30 22:31:08.500814+00	1
 ab2a1aad-45d9-4601-bf66-c2acc581edb8	ab14469281e98631f8f8cf5788f609564c1445256cfe49c086e17c3289b9d577	2026-01-30 22:31:08.51681+00	20260128212505_change_staff_profile_by_professionals	\N	\N	2026-01-30 22:31:08.503135+00	1
 80026b54-e793-4334-beb5-80fd6f697e25	f29f36760df06f1f979c5862d9525788195df93bb4c24d4bab3c0d5037cd7191	2026-01-30 22:31:08.522003+00	20260129043612_add_service_assigment	\N	\N	2026-01-30 22:31:08.517292+00	1
 273615a2-0a5d-473b-a2f6-77c8ff944833	8f7cc86d606ecb1f0086dab3ae689dcde7dee0d12d0e003881b83fdaaff8be6a	2026-02-02 05:55:05.211823+00	20260202055505_scheduled_notification_optinal	\N	\N	2026-02-02 05:55:05.202654+00	1
@@ -1179,63 +1179,63 @@ COPY public.admin_events (id, event_type, entity_type, entity_id, user_id, ip_ad
 -- Data for Name: appointments; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.appointments (id, business_id, service_id, staff_member_id, customer_id, start_time, end_time, status, customer_name, customer_phone, customer_email, notes, internal_notes, confirmation_code, cancelled_at, cancellation_reason, created_at, updated_at) FROM stdin;
+COPY public.appointments (id, tenant_id, service_id, staff_member_id, customer_id, start_time, end_time, status, customer_name, customer_phone, customer_email, notes, internal_notes, confirmation_code, cancelled_at, cancellation_reason, created_at, updated_at) FROM stdin;
 \.
 
 
 --
--- Data for Name: business_daily_stats; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tenant_daily_stats; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.business_daily_stats (id, business_id, date, appointments, confirmed, cancelled, completed, no_show, revenue) FROM stdin;
+COPY public.tenant_daily_stats (id, tenant_id, date, appointments, confirmed, cancelled, completed, no_show, revenue) FROM stdin;
 \.
 
 
 --
--- Data for Name: business_daily_usage; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tenant_daily_usage; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.business_daily_usage (id, business_id, day, month, year, "messagesUsage", "otpUsage", "createdAt") FROM stdin;
+COPY public.tenant_daily_usage (id, tenant_id, day, month, year, "messagesUsage", "otpUsage", "createdAt") FROM stdin;
 \.
 
 
 --
--- Data for Name: business_lifetime_stats; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tenant_lifetime_stats; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.business_lifetime_stats (id, business_id, total_appointments, total_revenue, total_customers, cancellation_rate, no_show_rate) FROM stdin;
+COPY public.tenant_lifetime_stats (id, tenant_id, total_appointments, total_revenue, total_customers, cancellation_rate, no_show_rate) FROM stdin;
 \.
 
 
 --
--- Data for Name: business_limits; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tenant_limits; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.business_limits (id, business_id, plan, last_reset_at, updated_at, period_month, period_year, email_count, professional_limit, whatsapp_cost, whatsapp_count, whatsapp_limit) FROM stdin;
+COPY public.tenant_limits (id, tenant_id, plan, last_reset_at, updated_at, period_month, period_year, email_count, professional_limit, whatsapp_cost, whatsapp_count, whatsapp_limit) FROM stdin;
 \.
 
 
 --
--- Data for Name: business_settings; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tenant_settings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.business_settings (id, slot_interval_minutes, max_advanced_days, min_advanced_minutes, cancellation_window_minutes, timezone, currency, business_id, buffer_time_minutes, holiday_closure_auto_apply, max_pending_appts_per_client, require_confirmation) FROM stdin;
+COPY public.tenant_settings (id, slot_interval_minutes, max_advanced_days, min_advanced_minutes, cancellation_window_minutes, timezone, currency, tenant_id, buffer_time_minutes, holiday_closure_auto_apply, max_pending_appts_per_client, require_confirmation) FROM stdin;
 \.
 
 
 --
--- Data for Name: business_usage; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tenant_usage; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.business_usage (id, business_id, month, year, messages_usage, otp_usage, updated_at) FROM stdin;
+COPY public.tenant_usage (id, tenant_id, month, year, messages_usage, otp_usage, updated_at) FROM stdin;
 \.
 
 
 --
--- Data for Name: businesses; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: tenants; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.businesses (id, owner_id, name, slug, type, description, phone, logo_url, logo_public_id, cover_url, cover_public_id, onboarding_step, onboarding_completed, created_at, updated_at, deleted_at, address_line_1, address_line_2) FROM stdin;
+COPY public.tenants (id, owner_id, name, slug, type, description, phone, logo_url, logo_public_id, cover_url, cover_public_id, onboarding_step, onboarding_completed, created_at, updated_at, deleted_at, address_line_1, address_line_2) FROM stdin;
 \.
 
 
@@ -1243,7 +1243,7 @@ COPY public.businesses (id, owner_id, name, slug, type, description, phone, logo
 -- Data for Name: customers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.customers (id, business_id, notes, internal_notes, total_appointments, last_appointment_at, created_at, updated_at, deleted_at, accepts_email, accepts_sms, accepts_whatsapp, blocked_at, blocked_reason, cancelled_appointments, completed_appointments, email, email_bounced, email_verified, first_appointment_at, first_name, last_name, no_show_count, phone, phone_country_code, phone_verified, preferred_language, total_spent) FROM stdin;
+COPY public.customers (id, tenant_id, notes, internal_notes, total_appointments, last_appointment_at, created_at, updated_at, deleted_at, accepts_email, accepts_sms, accepts_whatsapp, blocked_at, blocked_reason, cancelled_appointments, completed_appointments, email, email_bounced, email_verified, first_appointment_at, first_name, last_name, no_show_count, phone, phone_country_code, phone_verified, preferred_language, total_spent) FROM stdin;
 \.
 
 
@@ -1251,7 +1251,7 @@ COPY public.customers (id, business_id, notes, internal_notes, total_appointment
 -- Data for Name: member_invites; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.member_invites (id, email, business_id, inviter_id, token, expires_at, accepted_at, role) FROM stdin;
+COPY public.member_invites (id, email, tenant_id, inviter_id, token, expires_at, accepted_at, role) FROM stdin;
 \.
 
 
@@ -1259,7 +1259,7 @@ COPY public.member_invites (id, email, business_id, inviter_id, token, expires_a
 -- Data for Name: notification_logs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.notification_logs (id, type, cost, error, provider, "providerMessageId", scheduled_notification_id, created_at, business_id, recipient_id, channel, layer, status) FROM stdin;
+COPY public.notification_logs (id, type, cost, error, provider, "providerMessageId", scheduled_notification_id, created_at, tenant_id, recipient_id, channel, layer, status) FROM stdin;
 5f40be0c-dac4-4bbb-bda5-91660e5dc7c8	ACCOUNT_CONFIRMATION	0.0000	\N	resend	3bf3671a-1b0c-474f-8e36-b766c3530c48	\N	2026-02-06 05:44:55.9	\N	\N	EMAIL	PLATFORM	SENT
 f79bf663-1364-4b57-8bda-137ab675694e	ACCOUNT_CONFIRMATION	0.0000	\N	resend	b494283f-c3f5-4d3e-ac90-8314d36f2080	\N	2026-02-06 05:46:44.601	\N	\N	EMAIL	PLATFORM	SENT
 900d1477-eaae-4364-b5fa-bd8ae626b40a	ACCOUNT_CONFIRMATION	0.0000	\N	resend	f1e04767-6bb4-4571-999b-c3bee41affa9	\N	2026-02-06 18:19:51.22	\N	\N	EMAIL	PLATFORM	SENT
@@ -1274,7 +1274,7 @@ f79bf663-1364-4b57-8bda-137ab675694e	ACCOUNT_CONFIRMATION	0.0000	\N	resend	b4942
 -- Data for Name: payments; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.payments (id, business_id, subscription_id, reference_code, sequence_number, status, status_details, transaction_amount, net_received_amount, transaction_currency, issued_at, paid_at, due_at, external_id, created_at, updated_at, deleted_at) FROM stdin;
+COPY public.payments (id, tenant_id, subscription_id, reference_code, sequence_number, status, status_details, transaction_amount, net_received_amount, transaction_currency, issued_at, paid_at, due_at, external_id, created_at, updated_at, deleted_at) FROM stdin;
 \.
 
 
@@ -1314,7 +1314,7 @@ COPY public.platform_admins (id, user_id, level) FROM stdin;
 -- Data for Name: platform_stats; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.platform_stats (id, date, new_businesses_today, churned_businesses_today, appointments_today, revenue_today, mrr_lost_today, costs_today, total_businesses, total_active_subs, mrr_total, notifications_sent, notifications_failed, updated_at, created_at) FROM stdin;
+COPY public.platform_stats (id, date, new_tenants_today, churned_tenants_today, appointments_today, revenue_today, mrr_lost_today, costs_today, total_tenants, total_active_subs, mrr_total, notifications_sent, notifications_failed, updated_at, created_at) FROM stdin;
 \.
 
 
@@ -1322,7 +1322,7 @@ COPY public.platform_stats (id, date, new_businesses_today, churned_businesses_t
 -- Data for Name: schedule_exceptions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.schedule_exceptions (id, business_id, staff_member_id, date, is_closed, reason, created_at, custom_start_time, custom_end_time) FROM stdin;
+COPY public.schedule_exceptions (id, tenant_id, staff_member_id, date, is_closed, reason, created_at, custom_start_time, custom_end_time) FROM stdin;
 \.
 
 
@@ -1330,7 +1330,7 @@ COPY public.schedule_exceptions (id, business_id, staff_member_id, date, is_clos
 -- Data for Name: scheduled_notifications; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.scheduled_notifications (id, business_id, user_id, recipient_email, recipient_phone, appointment_id, scheduled_for, status, sent_at, failed_at, error, retry_count, template_variables, created_at, updated_at, type, layer) FROM stdin;
+COPY public.scheduled_notifications (id, tenant_id, user_id, recipient_email, recipient_phone, appointment_id, scheduled_for, status, sent_at, failed_at, error, retry_count, template_variables, created_at, updated_at, type, layer) FROM stdin;
 \.
 
 
@@ -1346,7 +1346,7 @@ COPY public.service_assigments (service_id, "customPrice", custom_discount_perce
 -- Data for Name: services; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.services (id, business_id, name, image, description, initial_active_minutes, passive_time_minutes, final_active_minutes, duration_minutes, price, is_active, display_order, created_at, updated_at, deleted_at, discount_fixed, discount_percentage) FROM stdin;
+COPY public.services (id, tenant_id, name, image, description, initial_active_minutes, passive_time_minutes, final_active_minutes, duration_minutes, price, is_active, display_order, created_at, updated_at, deleted_at, discount_fixed, discount_percentage) FROM stdin;
 \.
 
 
@@ -1382,7 +1382,7 @@ COPY public.staff_stats (id, staff_member_id, date, appointments_count, revenue,
 -- Data for Name: staffs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.staffs (id, user_id, business_id, slot_interval_minutes, max_advanced_days, min_advanced_minutes, title, bio, avatar_url, avatar_public_id, is_active, display_name, display_order, created_at, updated_at, deleted_at, role, is_professional) FROM stdin;
+COPY public.staffs (id, user_id, tenant_id, slot_interval_minutes, max_advanced_days, min_advanced_minutes, title, bio, avatar_url, avatar_public_id, is_active, display_name, display_order, created_at, updated_at, deleted_at, role, is_professional) FROM stdin;
 \.
 
 
@@ -1390,7 +1390,7 @@ COPY public.staffs (id, user_id, business_id, slot_interval_minutes, max_advance
 -- Data for Name: subscriptions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.subscriptions (id, business_id, plan_id, status, amount, currency, billing_cycle, current_period_start, current_period_end, next_payment_date, trial_ends_at, trial_used_at, discount_percent, discount_amount, discount_expires_at, cancelled_at, cancel_reason, payment_method, payment_provider, external_id, created_at, updated_at, deleted_at) FROM stdin;
+COPY public.subscriptions (id, tenant_id, plan_id, status, amount, currency, billing_cycle, current_period_start, current_period_end, next_payment_date, trial_ends_at, trial_used_at, discount_percent, discount_amount, discount_expires_at, cancelled_at, cancel_reason, payment_method, payment_provider, external_id, created_at, updated_at, deleted_at) FROM stdin;
 \.
 
 
@@ -1432,7 +1432,7 @@ COPY public.webhook_logs (id, provider, request_id, type, resource_id, status, e
 -- Data for Name: working_hours; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.working_hours (id, business_id, staff_member_id, day_of_week, "startTime", "endTime", is_active, created_at) FROM stdin;
+COPY public.working_hours (id, tenant_id, staff_member_id, day_of_week, "startTime", "endTime", is_active, created_at) FROM stdin;
 \.
 
 
@@ -1461,59 +1461,59 @@ ALTER TABLE ONLY public.appointments
 
 
 --
--- Name: business_daily_stats business_daily_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tenant_daily_stats tenant_daily_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.business_daily_stats
-    ADD CONSTRAINT business_daily_stats_pkey PRIMARY KEY (id);
-
-
---
--- Name: business_daily_usage business_daily_usage_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.business_daily_usage
-    ADD CONSTRAINT business_daily_usage_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.tenant_daily_stats
+    ADD CONSTRAINT tenant_daily_stats_pkey PRIMARY KEY (id);
 
 
 --
--- Name: business_lifetime_stats business_lifetime_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tenant_daily_usage tenant_daily_usage_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.business_lifetime_stats
-    ADD CONSTRAINT business_lifetime_stats_pkey PRIMARY KEY (id);
-
-
---
--- Name: business_limits business_limits_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.business_limits
-    ADD CONSTRAINT business_limits_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.tenant_daily_usage
+    ADD CONSTRAINT tenant_daily_usage_pkey PRIMARY KEY (id);
 
 
 --
--- Name: business_settings business_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tenant_lifetime_stats tenant_lifetime_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.business_settings
-    ADD CONSTRAINT business_settings_pkey PRIMARY KEY (id);
-
-
---
--- Name: business_usage business_usage_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.business_usage
-    ADD CONSTRAINT business_usage_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.tenant_lifetime_stats
+    ADD CONSTRAINT tenant_lifetime_stats_pkey PRIMARY KEY (id);
 
 
 --
--- Name: businesses businesses_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tenant_limits tenant_limits_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.businesses
-    ADD CONSTRAINT businesses_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.tenant_limits
+    ADD CONSTRAINT tenant_limits_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tenant_settings tenant_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tenant_settings
+    ADD CONSTRAINT tenant_settings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tenant_usage tenant_usage_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tenant_usage
+    ADD CONSTRAINT tenant_usage_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tenants tenants_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tenants
+    ADD CONSTRAINT tenants_pkey PRIMARY KEY (id);
 
 
 --
@@ -1722,17 +1722,17 @@ CREATE INDEX admin_events_event_type_idx ON public.admin_events USING btree (eve
 
 
 --
--- Name: appointments_business_id_start_time_idx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: appointments_tenant_id_start_time_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX appointments_business_id_start_time_idx ON public.appointments USING btree (business_id, start_time);
+CREATE INDEX appointments_tenant_id_start_time_idx ON public.appointments USING btree (tenant_id, start_time);
 
 
 --
--- Name: appointments_business_id_status_idx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: appointments_tenant_id_status_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX appointments_business_id_status_idx ON public.appointments USING btree (business_id, status);
+CREATE INDEX appointments_tenant_id_status_idx ON public.appointments USING btree (tenant_id, status);
 
 
 --
@@ -1771,108 +1771,108 @@ CREATE INDEX appointments_start_time_status_idx ON public.appointments USING btr
 
 
 --
--- Name: business_daily_stats_business_id_date_idx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: tenant_daily_stats_tenant_id_date_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX business_daily_stats_business_id_date_idx ON public.business_daily_stats USING btree (business_id, date);
-
-
---
--- Name: business_daily_stats_business_id_date_key; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX business_daily_stats_business_id_date_key ON public.business_daily_stats USING btree (business_id, date);
+CREATE INDEX tenant_daily_stats_tenant_id_date_idx ON public.tenant_daily_stats USING btree (tenant_id, date);
 
 
 --
--- Name: business_daily_usage_business_id_day_month_year_idx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: tenant_daily_stats_tenant_id_date_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX business_daily_usage_business_id_day_month_year_idx ON public.business_daily_usage USING btree (business_id, day, month, year);
-
-
---
--- Name: business_daily_usage_business_id_day_month_year_key; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX business_daily_usage_business_id_day_month_year_key ON public.business_daily_usage USING btree (business_id, day, month, year);
+CREATE UNIQUE INDEX tenant_daily_stats_tenant_id_date_key ON public.tenant_daily_stats USING btree (tenant_id, date);
 
 
 --
--- Name: business_lifetime_stats_business_id_key; Type: INDEX; Schema: public; Owner: postgres
+-- Name: tenant_daily_usage_tenant_id_day_month_year_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX business_lifetime_stats_business_id_key ON public.business_lifetime_stats USING btree (business_id);
-
-
---
--- Name: business_limits_business_id_idx; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX business_limits_business_id_idx ON public.business_limits USING btree (business_id);
+CREATE INDEX tenant_daily_usage_tenant_id_day_month_year_idx ON public.tenant_daily_usage USING btree (tenant_id, day, month, year);
 
 
 --
--- Name: business_limits_business_id_key; Type: INDEX; Schema: public; Owner: postgres
+-- Name: tenant_daily_usage_tenant_id_day_month_year_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX business_limits_business_id_key ON public.business_limits USING btree (business_id);
-
-
---
--- Name: business_settings_business_id_key; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX business_settings_business_id_key ON public.business_settings USING btree (business_id);
+CREATE UNIQUE INDEX tenant_daily_usage_tenant_id_day_month_year_key ON public.tenant_daily_usage USING btree (tenant_id, day, month, year);
 
 
 --
--- Name: business_usage_business_id_month_year_idx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: tenant_lifetime_stats_tenant_id_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX business_usage_business_id_month_year_idx ON public.business_usage USING btree (business_id, month, year);
-
-
---
--- Name: business_usage_business_id_month_year_key; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX business_usage_business_id_month_year_key ON public.business_usage USING btree (business_id, month, year);
+CREATE UNIQUE INDEX tenant_lifetime_stats_tenant_id_key ON public.tenant_lifetime_stats USING btree (tenant_id);
 
 
 --
--- Name: businesses_owner_id_idx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: tenant_limits_tenant_id_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX businesses_owner_id_idx ON public.businesses USING btree (owner_id);
-
-
---
--- Name: businesses_owner_id_key; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX businesses_owner_id_key ON public.businesses USING btree (owner_id);
+CREATE INDEX tenant_limits_tenant_id_idx ON public.tenant_limits USING btree (tenant_id);
 
 
 --
--- Name: businesses_slug_key; Type: INDEX; Schema: public; Owner: postgres
+-- Name: tenant_limits_tenant_id_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX businesses_slug_key ON public.businesses USING btree (slug);
-
-
---
--- Name: customers_business_id_idx; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX customers_business_id_idx ON public.customers USING btree (business_id);
+CREATE UNIQUE INDEX tenant_limits_tenant_id_key ON public.tenant_limits USING btree (tenant_id);
 
 
 --
--- Name: customers_business_id_phone_key; Type: INDEX; Schema: public; Owner: postgres
+-- Name: tenant_settings_tenant_id_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX customers_business_id_phone_key ON public.customers USING btree (business_id, phone);
+CREATE UNIQUE INDEX tenant_settings_tenant_id_key ON public.tenant_settings USING btree (tenant_id);
+
+
+--
+-- Name: tenant_usage_tenant_id_month_year_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX tenant_usage_tenant_id_month_year_idx ON public.tenant_usage USING btree (tenant_id, month, year);
+
+
+--
+-- Name: tenant_usage_tenant_id_month_year_key; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX tenant_usage_tenant_id_month_year_key ON public.tenant_usage USING btree (tenant_id, month, year);
+
+
+--
+-- Name: tenants_owner_id_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX tenants_owner_id_idx ON public.tenants USING btree (owner_id);
+
+
+--
+-- Name: tenants_owner_id_key; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX tenants_owner_id_key ON public.tenants USING btree (owner_id);
+
+
+--
+-- Name: tenants_slug_key; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX tenants_slug_key ON public.tenants USING btree (slug);
+
+
+--
+-- Name: customers_tenant_id_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX customers_tenant_id_idx ON public.customers USING btree (tenant_id);
+
+
+--
+-- Name: customers_tenant_id_phone_key; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX customers_tenant_id_phone_key ON public.customers USING btree (tenant_id, phone);
 
 
 --
@@ -1911,10 +1911,10 @@ CREATE UNIQUE INDEX member_invites_token_key ON public.member_invites USING btre
 
 
 --
--- Name: notification_logs_business_id_created_at_idx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: notification_logs_tenant_id_created_at_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX notification_logs_business_id_created_at_idx ON public.notification_logs USING btree (business_id, created_at);
+CREATE INDEX notification_logs_tenant_id_created_at_idx ON public.notification_logs USING btree (tenant_id, created_at);
 
 
 --
@@ -1925,10 +1925,10 @@ CREATE INDEX notification_logs_status_idx ON public.notification_logs USING btre
 
 
 --
--- Name: payments_business_id_idx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: payments_tenant_id_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX payments_business_id_idx ON public.payments USING btree (business_id);
+CREATE INDEX payments_tenant_id_idx ON public.payments USING btree (tenant_id);
 
 
 --
@@ -2016,10 +2016,10 @@ CREATE UNIQUE INDEX platform_stats_date_key ON public.platform_stats USING btree
 
 
 --
--- Name: schedule_exceptions_business_id_date_idx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: schedule_exceptions_tenant_id_date_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX schedule_exceptions_business_id_date_idx ON public.schedule_exceptions USING btree (business_id, date);
+CREATE INDEX schedule_exceptions_tenant_id_date_idx ON public.schedule_exceptions USING btree (tenant_id, date);
 
 
 --
@@ -2030,10 +2030,10 @@ CREATE INDEX scheduled_notifications_appointment_id_idx ON public.scheduled_noti
 
 
 --
--- Name: scheduled_notifications_business_id_idx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: scheduled_notifications_tenant_id_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX scheduled_notifications_business_id_idx ON public.scheduled_notifications USING btree (business_id);
+CREATE INDEX scheduled_notifications_tenant_id_idx ON public.scheduled_notifications USING btree (tenant_id);
 
 
 --
@@ -2058,10 +2058,10 @@ CREATE INDEX service_assigments_staff_id_is_active_idx ON public.service_assigme
 
 
 --
--- Name: services_business_id_idx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: services_tenant_id_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX services_business_id_idx ON public.services USING btree (business_id);
+CREATE INDEX services_tenant_id_idx ON public.services USING btree (tenant_id);
 
 
 --
@@ -2114,10 +2114,10 @@ CREATE UNIQUE INDEX staff_stats_staff_member_id_date_key ON public.staff_stats U
 
 
 --
--- Name: staffs_business_id_idx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: staffs_tenant_id_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX staffs_business_id_idx ON public.staffs USING btree (business_id);
+CREATE INDEX staffs_tenant_id_idx ON public.staffs USING btree (tenant_id);
 
 
 --
@@ -2128,17 +2128,17 @@ CREATE UNIQUE INDEX staffs_user_id_key ON public.staffs USING btree (user_id);
 
 
 --
--- Name: subscriptions_business_id_key; Type: INDEX; Schema: public; Owner: postgres
+-- Name: subscriptions_tenant_id_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX subscriptions_business_id_key ON public.subscriptions USING btree (business_id);
+CREATE UNIQUE INDEX subscriptions_tenant_id_key ON public.subscriptions USING btree (tenant_id);
 
 
 --
--- Name: subscriptions_business_id_status_idx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: subscriptions_tenant_id_status_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX subscriptions_business_id_status_idx ON public.subscriptions USING btree (business_id, status);
+CREATE INDEX subscriptions_tenant_id_status_idx ON public.subscriptions USING btree (tenant_id, status);
 
 
 --
@@ -2275,10 +2275,10 @@ CREATE INDEX webhook_logs_status_idx ON public.webhook_logs USING btree (status)
 
 
 --
--- Name: working_hours_business_id_day_of_week_idx; Type: INDEX; Schema: public; Owner: postgres
+-- Name: working_hours_tenant_id_day_of_week_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX working_hours_business_id_day_of_week_idx ON public.working_hours USING btree (business_id, day_of_week);
+CREATE INDEX working_hours_tenant_id_day_of_week_idx ON public.working_hours USING btree (tenant_id, day_of_week);
 
 
 --
@@ -2289,11 +2289,11 @@ CREATE INDEX working_hours_staff_member_id_idx ON public.working_hours USING btr
 
 
 --
--- Name: appointments appointments_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: appointments appointments_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.appointments
-    ADD CONSTRAINT appointments_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT appointments_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -2313,75 +2313,75 @@ ALTER TABLE ONLY public.appointments
 
 
 --
--- Name: business_daily_stats business_daily_stats_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tenant_daily_stats tenant_daily_stats_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.business_daily_stats
-    ADD CONSTRAINT business_daily_stats_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: business_daily_usage business_daily_usage_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.business_daily_usage
-    ADD CONSTRAINT business_daily_usage_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE ONLY public.tenant_daily_stats
+    ADD CONSTRAINT tenant_daily_stats_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- Name: business_lifetime_stats business_lifetime_stats_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tenant_daily_usage tenant_daily_usage_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.business_lifetime_stats
-    ADD CONSTRAINT business_lifetime_stats_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE RESTRICT;
-
-
---
--- Name: business_limits business_limits_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.business_limits
-    ADD CONSTRAINT business_limits_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE ONLY public.tenant_daily_usage
+    ADD CONSTRAINT tenant_daily_usage_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- Name: business_settings business_settings_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tenant_lifetime_stats tenant_lifetime_stats_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.business_settings
-    ADD CONSTRAINT business_settings_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: business_usage business_usage_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.business_usage
-    ADD CONSTRAINT business_usage_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+ALTER TABLE ONLY public.tenant_lifetime_stats
+    ADD CONSTRAINT tenant_lifetime_stats_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- Name: businesses businesses_owner_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tenant_limits tenant_limits_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.businesses
-    ADD CONSTRAINT businesses_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE ONLY public.tenant_limits
+    ADD CONSTRAINT tenant_limits_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- Name: customers customers_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: tenant_settings tenant_settings_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tenant_settings
+    ADD CONSTRAINT tenant_settings_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: tenant_usage tenant_usage_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tenant_usage
+    ADD CONSTRAINT tenant_usage_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: tenants tenants_owner_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tenants
+    ADD CONSTRAINT tenants_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: customers customers_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.customers
-    ADD CONSTRAINT customers_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT customers_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- Name: member_invites member_invites_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: member_invites member_invites_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.member_invites
-    ADD CONSTRAINT member_invites_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT member_invites_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
@@ -2393,11 +2393,11 @@ ALTER TABLE ONLY public.member_invites
 
 
 --
--- Name: notification_logs notification_logs_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: notification_logs notification_logs_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.notification_logs
-    ADD CONSTRAINT notification_logs_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT notification_logs_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -2409,11 +2409,11 @@ ALTER TABLE ONLY public.notification_logs
 
 
 --
--- Name: payments payments_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: payments payments_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.payments
-    ADD CONSTRAINT payments_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT payments_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -2449,11 +2449,11 @@ ALTER TABLE ONLY public.platform_admins
 
 
 --
--- Name: schedule_exceptions schedule_exceptions_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: schedule_exceptions schedule_exceptions_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.schedule_exceptions
-    ADD CONSTRAINT schedule_exceptions_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT schedule_exceptions_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -2465,11 +2465,11 @@ ALTER TABLE ONLY public.scheduled_notifications
 
 
 --
--- Name: scheduled_notifications scheduled_notifications_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: scheduled_notifications scheduled_notifications_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.scheduled_notifications
-    ADD CONSTRAINT scheduled_notifications_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT scheduled_notifications_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -2497,11 +2497,11 @@ ALTER TABLE ONLY public.service_assigments
 
 
 --
--- Name: services services_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: services services_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.services
-    ADD CONSTRAINT services_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT services_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -2529,11 +2529,11 @@ ALTER TABLE ONLY public.staff_stats
 
 
 --
--- Name: staffs staffs_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: staffs staffs_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.staffs
-    ADD CONSTRAINT staffs_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT staffs_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -2545,11 +2545,11 @@ ALTER TABLE ONLY public.staffs
 
 
 --
--- Name: subscriptions subscriptions_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: subscriptions subscriptions_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.subscriptions
-    ADD CONSTRAINT subscriptions_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT subscriptions_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -2577,11 +2577,11 @@ ALTER TABLE ONLY public.verifications
 
 
 --
--- Name: working_hours working_hours_business_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: working_hours working_hours_tenant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.working_hours
-    ADD CONSTRAINT working_hours_business_id_fkey FOREIGN KEY (business_id) REFERENCES public.businesses(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT working_hours_tenant_id_fkey FOREIGN KEY (tenant_id) REFERENCES public.tenants(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

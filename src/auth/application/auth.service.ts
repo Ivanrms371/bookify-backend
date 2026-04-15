@@ -9,7 +9,6 @@ import { JwtService } from '../infrastructure/jwt/jwt.service';
 import { GoogleUserInfo } from '../types/google-domain';
 import { EmailVerificationStrategy } from 'src/modules/verifications/strategies/email-verification.strategy';
 import { PasswordService } from './password.service';
-import { BusinessesService } from 'src/modules/businesses/businesses.service';
 
 @Injectable()
 export class AuthService {
@@ -70,7 +69,7 @@ export class AuthService {
 
   async getMe(userId: string) {
     const user = await this.usersService.findUserById(userId);
-    const businesses = await this.prisma.business.findMany({
+    const tenants = await this.prisma.tenant.findMany({
       where: {
         members: {
           some: { userId },
@@ -82,7 +81,7 @@ export class AuthService {
       email: user.email,
       name: user.name,
       avatarUrl: user.avatarUrl,
-      businesses,
+      tenants,
     };
   }
 

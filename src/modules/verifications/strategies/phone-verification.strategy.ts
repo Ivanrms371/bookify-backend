@@ -10,7 +10,7 @@ export class PhoneVerificationStrategy {
     private readonly usersService: UsersService,
   ) {}
 
-  async sendVerificationCode(userId: string, phone: string, businessId: string) {
+  async sendVerificationCode(userId: string, phone: string, tenantId: string) {
     const { code } = await this.verificationsService.createCodeVerification({
       userId,
       address: phone,

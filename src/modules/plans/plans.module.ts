@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PlansRepository } from './plans.repository';
 import { PlansController } from './plans.controller';
 import { PlansService } from './plans.service';
-import { MercadoPagoModule } from 'src/mercadopago/mercadopago.module';
+import { MercadoPagoModule } from 'src/shared/integrations/mercadopago/mercadopago.module';
 import { GuardsModule } from 'src/common/guards/guards.module';
 
 @Module({

@@ -45,7 +45,7 @@ export type StaffSumAggregateOutputType = {
 export type StaffMinAggregateOutputType = {
   id: string | null
   userId: string | null
-  businessId: string | null
+  tenantId: string | null
   slotIntervalMinutes: number | null
   maxAdvancedDays: number | null
   minAdvancedMinutes: number | null
@@ -66,7 +66,7 @@ export type StaffMinAggregateOutputType = {
 export type StaffMaxAggregateOutputType = {
   id: string | null
   userId: string | null
-  businessId: string | null
+  tenantId: string | null
   slotIntervalMinutes: number | null
   maxAdvancedDays: number | null
   minAdvancedMinutes: number | null
@@ -87,7 +87,7 @@ export type StaffMaxAggregateOutputType = {
 export type StaffCountAggregateOutputType = {
   id: number
   userId: number
-  businessId: number
+  tenantId: number
   slotIntervalMinutes: number
   maxAdvancedDays: number
   minAdvancedMinutes: number
@@ -126,7 +126,7 @@ export type StaffSumAggregateInputType = {
 export type StaffMinAggregateInputType = {
   id?: true
   userId?: true
-  businessId?: true
+  tenantId?: true
   slotIntervalMinutes?: true
   maxAdvancedDays?: true
   minAdvancedMinutes?: true
@@ -147,7 +147,7 @@ export type StaffMinAggregateInputType = {
 export type StaffMaxAggregateInputType = {
   id?: true
   userId?: true
-  businessId?: true
+  tenantId?: true
   slotIntervalMinutes?: true
   maxAdvancedDays?: true
   minAdvancedMinutes?: true
@@ -168,7 +168,7 @@ export type StaffMaxAggregateInputType = {
 export type StaffCountAggregateInputType = {
   id?: true
   userId?: true
-  businessId?: true
+  tenantId?: true
   slotIntervalMinutes?: true
   maxAdvancedDays?: true
   minAdvancedMinutes?: true
@@ -276,7 +276,7 @@ export type StaffGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type StaffGroupByOutputType = {
   id: string
   userId: string
-  businessId: string
+  tenantId: string
   slotIntervalMinutes: number
   maxAdvancedDays: number
   minAdvancedMinutes: number
@@ -320,7 +320,7 @@ export type StaffWhereInput = {
   NOT?: Prisma.StaffWhereInput | Prisma.StaffWhereInput[]
   id?: Prisma.UuidFilter<"Staff"> | string
   userId?: Prisma.UuidFilter<"Staff"> | string
-  businessId?: Prisma.UuidFilter<"Staff"> | string
+  tenantId?: Prisma.UuidFilter<"Staff"> | string
   slotIntervalMinutes?: Prisma.IntFilter<"Staff"> | number
   maxAdvancedDays?: Prisma.IntFilter<"Staff"> | number
   minAdvancedMinutes?: Prisma.IntFilter<"Staff"> | number
@@ -341,7 +341,7 @@ export type StaffWhereInput = {
   assignments?: Prisma.ServiceAssignmentListRelationFilter
   lifetimeStats?: Prisma.XOR<Prisma.StaffLifetimeStatsNullableScalarRelationFilter, Prisma.StaffLifetimeStatsWhereInput> | null
   stats?: Prisma.StaffDailyStatsListRelationFilter
-  business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   workingHours?: Prisma.WorkingHoursListRelationFilter
 }
@@ -349,7 +349,7 @@ export type StaffWhereInput = {
 export type StaffOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   slotIntervalMinutes?: Prisma.SortOrder
   maxAdvancedDays?: Prisma.SortOrder
   minAdvancedMinutes?: Prisma.SortOrder
@@ -370,19 +370,19 @@ export type StaffOrderByWithRelationInput = {
   assignments?: Prisma.ServiceAssignmentOrderByRelationAggregateInput
   lifetimeStats?: Prisma.StaffLifetimeStatsOrderByWithRelationInput
   stats?: Prisma.StaffDailyStatsOrderByRelationAggregateInput
-  business?: Prisma.BusinessOrderByWithRelationInput
+  tenant?: Prisma.TenantOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
   workingHours?: Prisma.WorkingHoursOrderByRelationAggregateInput
 }
 
 export type StaffWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  userId?: string
-  userId_businessId?: Prisma.StaffUserIdBusinessIdCompoundUniqueInput
+  userId_tenantId?: Prisma.StaffUserIdTenantIdCompoundUniqueInput
   AND?: Prisma.StaffWhereInput | Prisma.StaffWhereInput[]
   OR?: Prisma.StaffWhereInput[]
   NOT?: Prisma.StaffWhereInput | Prisma.StaffWhereInput[]
-  businessId?: Prisma.UuidFilter<"Staff"> | string
+  userId?: Prisma.UuidFilter<"Staff"> | string
+  tenantId?: Prisma.UuidFilter<"Staff"> | string
   slotIntervalMinutes?: Prisma.IntFilter<"Staff"> | number
   maxAdvancedDays?: Prisma.IntFilter<"Staff"> | number
   minAdvancedMinutes?: Prisma.IntFilter<"Staff"> | number
@@ -403,15 +403,15 @@ export type StaffWhereUniqueInput = Prisma.AtLeast<{
   assignments?: Prisma.ServiceAssignmentListRelationFilter
   lifetimeStats?: Prisma.XOR<Prisma.StaffLifetimeStatsNullableScalarRelationFilter, Prisma.StaffLifetimeStatsWhereInput> | null
   stats?: Prisma.StaffDailyStatsListRelationFilter
-  business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   workingHours?: Prisma.WorkingHoursListRelationFilter
-}, "id" | "userId" | "userId_businessId">
+}, "id" | "userId_tenantId">
 
 export type StaffOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   slotIntervalMinutes?: Prisma.SortOrder
   maxAdvancedDays?: Prisma.SortOrder
   minAdvancedMinutes?: Prisma.SortOrder
@@ -440,7 +440,7 @@ export type StaffScalarWhereWithAggregatesInput = {
   NOT?: Prisma.StaffScalarWhereWithAggregatesInput | Prisma.StaffScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"Staff"> | string
   userId?: Prisma.UuidWithAggregatesFilter<"Staff"> | string
-  businessId?: Prisma.UuidWithAggregatesFilter<"Staff"> | string
+  tenantId?: Prisma.UuidWithAggregatesFilter<"Staff"> | string
   slotIntervalMinutes?: Prisma.IntWithAggregatesFilter<"Staff"> | number
   maxAdvancedDays?: Prisma.IntWithAggregatesFilter<"Staff"> | number
   minAdvancedMinutes?: Prisma.IntWithAggregatesFilter<"Staff"> | number
@@ -480,15 +480,15 @@ export type StaffCreateInput = {
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutStaffInput
   lifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedOneWithoutStaffInput
   stats?: Prisma.StaffDailyStatsCreateNestedManyWithoutStaffInput
-  business: Prisma.BusinessCreateNestedOneWithoutStaffsInput
-  user: Prisma.UserCreateNestedOneWithoutStaffInput
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffsInput
+  user: Prisma.UserCreateNestedOneWithoutStaffsInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutStaffInput
 }
 
 export type StaffUncheckedCreateInput = {
   id?: string
   userId: string
-  businessId: string
+  tenantId: string
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
@@ -534,15 +534,15 @@ export type StaffUpdateInput = {
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutStaffNestedInput
   lifetimeStats?: Prisma.StaffLifetimeStatsUpdateOneWithoutStaffNestedInput
   stats?: Prisma.StaffDailyStatsUpdateManyWithoutStaffNestedInput
-  business?: Prisma.BusinessUpdateOneRequiredWithoutStaffsNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutStaffNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutStaffsNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -569,7 +569,7 @@ export type StaffUncheckedUpdateInput = {
 export type StaffCreateManyInput = {
   id?: string
   userId: string
-  businessId: string
+  tenantId: string
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
@@ -609,7 +609,7 @@ export type StaffUpdateManyMutationInput = {
 export type StaffUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -627,11 +627,6 @@ export type StaffUncheckedUpdateManyInput = {
   commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
-export type StaffNullableScalarRelationFilter = {
-  is?: Prisma.StaffWhereInput | null
-  isNot?: Prisma.StaffWhereInput | null
-}
-
 export type StaffListRelationFilter = {
   every?: Prisma.StaffWhereInput
   some?: Prisma.StaffWhereInput
@@ -647,15 +642,15 @@ export type StaffScalarRelationFilter = {
   isNot?: Prisma.StaffWhereInput
 }
 
-export type StaffUserIdBusinessIdCompoundUniqueInput = {
+export type StaffUserIdTenantIdCompoundUniqueInput = {
   userId: string
-  businessId: string
+  tenantId: string
 }
 
 export type StaffCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   slotIntervalMinutes?: Prisma.SortOrder
   maxAdvancedDays?: Prisma.SortOrder
   minAdvancedMinutes?: Prisma.SortOrder
@@ -684,7 +679,7 @@ export type StaffAvgOrderByAggregateInput = {
 export type StaffMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   slotIntervalMinutes?: Prisma.SortOrder
   maxAdvancedDays?: Prisma.SortOrder
   minAdvancedMinutes?: Prisma.SortOrder
@@ -705,7 +700,7 @@ export type StaffMaxOrderByAggregateInput = {
 export type StaffMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   slotIntervalMinutes?: Prisma.SortOrder
   maxAdvancedDays?: Prisma.SortOrder
   minAdvancedMinutes?: Prisma.SortOrder
@@ -731,77 +726,92 @@ export type StaffSumOrderByAggregateInput = {
   commissionPercent?: Prisma.SortOrder
 }
 
-export type StaffCreateNestedOneWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.StaffCreateWithoutUserInput, Prisma.StaffUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutUserInput
-  connect?: Prisma.StaffWhereUniqueInput
+export type StaffNullableScalarRelationFilter = {
+  is?: Prisma.StaffWhereInput | null
+  isNot?: Prisma.StaffWhereInput | null
 }
 
-export type StaffUncheckedCreateNestedOneWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.StaffCreateWithoutUserInput, Prisma.StaffUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutUserInput
-  connect?: Prisma.StaffWhereUniqueInput
-}
-
-export type StaffUpdateOneWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.StaffCreateWithoutUserInput, Prisma.StaffUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutUserInput
-  upsert?: Prisma.StaffUpsertWithoutUserInput
-  disconnect?: Prisma.StaffWhereInput | boolean
-  delete?: Prisma.StaffWhereInput | boolean
-  connect?: Prisma.StaffWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.StaffUpdateToOneWithWhereWithoutUserInput, Prisma.StaffUpdateWithoutUserInput>, Prisma.StaffUncheckedUpdateWithoutUserInput>
-}
-
-export type StaffUncheckedUpdateOneWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.StaffCreateWithoutUserInput, Prisma.StaffUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutUserInput
-  upsert?: Prisma.StaffUpsertWithoutUserInput
-  disconnect?: Prisma.StaffWhereInput | boolean
-  delete?: Prisma.StaffWhereInput | boolean
-  connect?: Prisma.StaffWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.StaffUpdateToOneWithWhereWithoutUserInput, Prisma.StaffUpdateWithoutUserInput>, Prisma.StaffUncheckedUpdateWithoutUserInput>
-}
-
-export type StaffCreateNestedManyWithoutBusinessInput = {
-  create?: Prisma.XOR<Prisma.StaffCreateWithoutBusinessInput, Prisma.StaffUncheckedCreateWithoutBusinessInput> | Prisma.StaffCreateWithoutBusinessInput[] | Prisma.StaffUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutBusinessInput | Prisma.StaffCreateOrConnectWithoutBusinessInput[]
-  createMany?: Prisma.StaffCreateManyBusinessInputEnvelope
+export type StaffCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutUserInput, Prisma.StaffUncheckedCreateWithoutUserInput> | Prisma.StaffCreateWithoutUserInput[] | Prisma.StaffUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutUserInput | Prisma.StaffCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.StaffCreateManyUserInputEnvelope
   connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
 }
 
-export type StaffUncheckedCreateNestedManyWithoutBusinessInput = {
-  create?: Prisma.XOR<Prisma.StaffCreateWithoutBusinessInput, Prisma.StaffUncheckedCreateWithoutBusinessInput> | Prisma.StaffCreateWithoutBusinessInput[] | Prisma.StaffUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutBusinessInput | Prisma.StaffCreateOrConnectWithoutBusinessInput[]
-  createMany?: Prisma.StaffCreateManyBusinessInputEnvelope
+export type StaffUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutUserInput, Prisma.StaffUncheckedCreateWithoutUserInput> | Prisma.StaffCreateWithoutUserInput[] | Prisma.StaffUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutUserInput | Prisma.StaffCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.StaffCreateManyUserInputEnvelope
   connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
 }
 
-export type StaffUpdateManyWithoutBusinessNestedInput = {
-  create?: Prisma.XOR<Prisma.StaffCreateWithoutBusinessInput, Prisma.StaffUncheckedCreateWithoutBusinessInput> | Prisma.StaffCreateWithoutBusinessInput[] | Prisma.StaffUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutBusinessInput | Prisma.StaffCreateOrConnectWithoutBusinessInput[]
-  upsert?: Prisma.StaffUpsertWithWhereUniqueWithoutBusinessInput | Prisma.StaffUpsertWithWhereUniqueWithoutBusinessInput[]
-  createMany?: Prisma.StaffCreateManyBusinessInputEnvelope
+export type StaffUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutUserInput, Prisma.StaffUncheckedCreateWithoutUserInput> | Prisma.StaffCreateWithoutUserInput[] | Prisma.StaffUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutUserInput | Prisma.StaffCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.StaffUpsertWithWhereUniqueWithoutUserInput | Prisma.StaffUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.StaffCreateManyUserInputEnvelope
   set?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
   disconnect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
   delete?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
   connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
-  update?: Prisma.StaffUpdateWithWhereUniqueWithoutBusinessInput | Prisma.StaffUpdateWithWhereUniqueWithoutBusinessInput[]
-  updateMany?: Prisma.StaffUpdateManyWithWhereWithoutBusinessInput | Prisma.StaffUpdateManyWithWhereWithoutBusinessInput[]
+  update?: Prisma.StaffUpdateWithWhereUniqueWithoutUserInput | Prisma.StaffUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.StaffUpdateManyWithWhereWithoutUserInput | Prisma.StaffUpdateManyWithWhereWithoutUserInput[]
   deleteMany?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
 }
 
-export type StaffUncheckedUpdateManyWithoutBusinessNestedInput = {
-  create?: Prisma.XOR<Prisma.StaffCreateWithoutBusinessInput, Prisma.StaffUncheckedCreateWithoutBusinessInput> | Prisma.StaffCreateWithoutBusinessInput[] | Prisma.StaffUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutBusinessInput | Prisma.StaffCreateOrConnectWithoutBusinessInput[]
-  upsert?: Prisma.StaffUpsertWithWhereUniqueWithoutBusinessInput | Prisma.StaffUpsertWithWhereUniqueWithoutBusinessInput[]
-  createMany?: Prisma.StaffCreateManyBusinessInputEnvelope
+export type StaffUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutUserInput, Prisma.StaffUncheckedCreateWithoutUserInput> | Prisma.StaffCreateWithoutUserInput[] | Prisma.StaffUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutUserInput | Prisma.StaffCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.StaffUpsertWithWhereUniqueWithoutUserInput | Prisma.StaffUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.StaffCreateManyUserInputEnvelope
   set?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
   disconnect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
   delete?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
   connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
-  update?: Prisma.StaffUpdateWithWhereUniqueWithoutBusinessInput | Prisma.StaffUpdateWithWhereUniqueWithoutBusinessInput[]
-  updateMany?: Prisma.StaffUpdateManyWithWhereWithoutBusinessInput | Prisma.StaffUpdateManyWithWhereWithoutBusinessInput[]
+  update?: Prisma.StaffUpdateWithWhereUniqueWithoutUserInput | Prisma.StaffUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.StaffUpdateManyWithWhereWithoutUserInput | Prisma.StaffUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
+}
+
+export type StaffCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutTenantInput, Prisma.StaffUncheckedCreateWithoutTenantInput> | Prisma.StaffCreateWithoutTenantInput[] | Prisma.StaffUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutTenantInput | Prisma.StaffCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.StaffCreateManyTenantInputEnvelope
+  connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+}
+
+export type StaffUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutTenantInput, Prisma.StaffUncheckedCreateWithoutTenantInput> | Prisma.StaffCreateWithoutTenantInput[] | Prisma.StaffUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutTenantInput | Prisma.StaffCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.StaffCreateManyTenantInputEnvelope
+  connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+}
+
+export type StaffUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutTenantInput, Prisma.StaffUncheckedCreateWithoutTenantInput> | Prisma.StaffCreateWithoutTenantInput[] | Prisma.StaffUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutTenantInput | Prisma.StaffCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.StaffUpsertWithWhereUniqueWithoutTenantInput | Prisma.StaffUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.StaffCreateManyTenantInputEnvelope
+  set?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  disconnect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  delete?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  update?: Prisma.StaffUpdateWithWhereUniqueWithoutTenantInput | Prisma.StaffUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.StaffUpdateManyWithWhereWithoutTenantInput | Prisma.StaffUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
+}
+
+export type StaffUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffCreateWithoutTenantInput, Prisma.StaffUncheckedCreateWithoutTenantInput> | Prisma.StaffCreateWithoutTenantInput[] | Prisma.StaffUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffCreateOrConnectWithoutTenantInput | Prisma.StaffCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.StaffUpsertWithWhereUniqueWithoutTenantInput | Prisma.StaffUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.StaffCreateManyTenantInputEnvelope
+  set?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  disconnect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  delete?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  connect?: Prisma.StaffWhereUniqueInput | Prisma.StaffWhereUniqueInput[]
+  update?: Prisma.StaffUpdateWithWhereUniqueWithoutTenantInput | Prisma.StaffUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.StaffUpdateManyWithWhereWithoutTenantInput | Prisma.StaffUpdateManyWithWhereWithoutTenantInput[]
   deleteMany?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
 }
 
@@ -913,13 +923,13 @@ export type StaffCreateWithoutUserInput = {
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutStaffInput
   lifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedOneWithoutStaffInput
   stats?: Prisma.StaffDailyStatsCreateNestedManyWithoutStaffInput
-  business: Prisma.BusinessCreateNestedOneWithoutStaffsInput
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffsInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutStaffInput
 }
 
 export type StaffUncheckedCreateWithoutUserInput = {
   id?: string
-  businessId: string
+  tenantId: string
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
@@ -948,70 +958,52 @@ export type StaffCreateOrConnectWithoutUserInput = {
   create: Prisma.XOR<Prisma.StaffCreateWithoutUserInput, Prisma.StaffUncheckedCreateWithoutUserInput>
 }
 
-export type StaffUpsertWithoutUserInput = {
-  update: Prisma.XOR<Prisma.StaffUpdateWithoutUserInput, Prisma.StaffUncheckedUpdateWithoutUserInput>
-  create: Prisma.XOR<Prisma.StaffCreateWithoutUserInput, Prisma.StaffUncheckedCreateWithoutUserInput>
-  where?: Prisma.StaffWhereInput
+export type StaffCreateManyUserInputEnvelope = {
+  data: Prisma.StaffCreateManyUserInput | Prisma.StaffCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
-export type StaffUpdateToOneWithWhereWithoutUserInput = {
-  where?: Prisma.StaffWhereInput
+export type StaffUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.StaffWhereUniqueInput
+  update: Prisma.XOR<Prisma.StaffUpdateWithoutUserInput, Prisma.StaffUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.StaffCreateWithoutUserInput, Prisma.StaffUncheckedCreateWithoutUserInput>
+}
+
+export type StaffUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.StaffWhereUniqueInput
   data: Prisma.XOR<Prisma.StaffUpdateWithoutUserInput, Prisma.StaffUncheckedUpdateWithoutUserInput>
 }
 
-export type StaffUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
-  minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.StringFieldUpdateOperationsInput | string
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  appointments?: Prisma.AppointmentUpdateManyWithoutStaffNestedInput
-  exceptions?: Prisma.ScheduleExceptionUpdateManyWithoutStaffNestedInput
-  assignments?: Prisma.ServiceAssignmentUpdateManyWithoutStaffNestedInput
-  lifetimeStats?: Prisma.StaffLifetimeStatsUpdateOneWithoutStaffNestedInput
-  stats?: Prisma.StaffDailyStatsUpdateManyWithoutStaffNestedInput
-  business?: Prisma.BusinessUpdateOneRequiredWithoutStaffsNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutStaffNestedInput
+export type StaffUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.StaffScalarWhereInput
+  data: Prisma.XOR<Prisma.StaffUpdateManyMutationInput, Prisma.StaffUncheckedUpdateManyWithoutUserInput>
 }
 
-export type StaffUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
-  slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
-  minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.StringFieldUpdateOperationsInput | string
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutStaffNestedInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutStaffNestedInput
-  assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutStaffNestedInput
-  lifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateOneWithoutStaffNestedInput
-  stats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutStaffNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutStaffNestedInput
+export type StaffScalarWhereInput = {
+  AND?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
+  OR?: Prisma.StaffScalarWhereInput[]
+  NOT?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
+  id?: Prisma.UuidFilter<"Staff"> | string
+  userId?: Prisma.UuidFilter<"Staff"> | string
+  tenantId?: Prisma.UuidFilter<"Staff"> | string
+  slotIntervalMinutes?: Prisma.IntFilter<"Staff"> | number
+  maxAdvancedDays?: Prisma.IntFilter<"Staff"> | number
+  minAdvancedMinutes?: Prisma.IntFilter<"Staff"> | number
+  title?: Prisma.StringNullableFilter<"Staff"> | string | null
+  bio?: Prisma.StringNullableFilter<"Staff"> | string | null
+  avatarUrl?: Prisma.StringNullableFilter<"Staff"> | string | null
+  avatarPublicId?: Prisma.StringNullableFilter<"Staff"> | string | null
+  isActive?: Prisma.BoolFilter<"Staff"> | boolean
+  displayName?: Prisma.StringFilter<"Staff"> | string
+  displayOrder?: Prisma.IntFilter<"Staff"> | number
+  createdAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Staff"> | Date | string | null
+  colorTheme?: Prisma.StringNullableFilter<"Staff"> | string | null
+  commissionPercent?: Prisma.DecimalNullableFilter<"Staff"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
-export type StaffCreateWithoutBusinessInput = {
+export type StaffCreateWithoutTenantInput = {
   id?: string
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
@@ -1033,11 +1025,11 @@ export type StaffCreateWithoutBusinessInput = {
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutStaffInput
   lifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedOneWithoutStaffInput
   stats?: Prisma.StaffDailyStatsCreateNestedManyWithoutStaffInput
-  user: Prisma.UserCreateNestedOneWithoutStaffInput
+  user: Prisma.UserCreateNestedOneWithoutStaffsInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutStaffInput
 }
 
-export type StaffUncheckedCreateWithoutBusinessInput = {
+export type StaffUncheckedCreateWithoutTenantInput = {
   id?: string
   userId: string
   slotIntervalMinutes?: number
@@ -1063,54 +1055,30 @@ export type StaffUncheckedCreateWithoutBusinessInput = {
   workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutStaffInput
 }
 
-export type StaffCreateOrConnectWithoutBusinessInput = {
+export type StaffCreateOrConnectWithoutTenantInput = {
   where: Prisma.StaffWhereUniqueInput
-  create: Prisma.XOR<Prisma.StaffCreateWithoutBusinessInput, Prisma.StaffUncheckedCreateWithoutBusinessInput>
+  create: Prisma.XOR<Prisma.StaffCreateWithoutTenantInput, Prisma.StaffUncheckedCreateWithoutTenantInput>
 }
 
-export type StaffCreateManyBusinessInputEnvelope = {
-  data: Prisma.StaffCreateManyBusinessInput | Prisma.StaffCreateManyBusinessInput[]
+export type StaffCreateManyTenantInputEnvelope = {
+  data: Prisma.StaffCreateManyTenantInput | Prisma.StaffCreateManyTenantInput[]
   skipDuplicates?: boolean
 }
 
-export type StaffUpsertWithWhereUniqueWithoutBusinessInput = {
+export type StaffUpsertWithWhereUniqueWithoutTenantInput = {
   where: Prisma.StaffWhereUniqueInput
-  update: Prisma.XOR<Prisma.StaffUpdateWithoutBusinessInput, Prisma.StaffUncheckedUpdateWithoutBusinessInput>
-  create: Prisma.XOR<Prisma.StaffCreateWithoutBusinessInput, Prisma.StaffUncheckedCreateWithoutBusinessInput>
+  update: Prisma.XOR<Prisma.StaffUpdateWithoutTenantInput, Prisma.StaffUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.StaffCreateWithoutTenantInput, Prisma.StaffUncheckedCreateWithoutTenantInput>
 }
 
-export type StaffUpdateWithWhereUniqueWithoutBusinessInput = {
+export type StaffUpdateWithWhereUniqueWithoutTenantInput = {
   where: Prisma.StaffWhereUniqueInput
-  data: Prisma.XOR<Prisma.StaffUpdateWithoutBusinessInput, Prisma.StaffUncheckedUpdateWithoutBusinessInput>
+  data: Prisma.XOR<Prisma.StaffUpdateWithoutTenantInput, Prisma.StaffUncheckedUpdateWithoutTenantInput>
 }
 
-export type StaffUpdateManyWithWhereWithoutBusinessInput = {
+export type StaffUpdateManyWithWhereWithoutTenantInput = {
   where: Prisma.StaffScalarWhereInput
-  data: Prisma.XOR<Prisma.StaffUpdateManyMutationInput, Prisma.StaffUncheckedUpdateManyWithoutBusinessInput>
-}
-
-export type StaffScalarWhereInput = {
-  AND?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
-  OR?: Prisma.StaffScalarWhereInput[]
-  NOT?: Prisma.StaffScalarWhereInput | Prisma.StaffScalarWhereInput[]
-  id?: Prisma.UuidFilter<"Staff"> | string
-  userId?: Prisma.UuidFilter<"Staff"> | string
-  businessId?: Prisma.UuidFilter<"Staff"> | string
-  slotIntervalMinutes?: Prisma.IntFilter<"Staff"> | number
-  maxAdvancedDays?: Prisma.IntFilter<"Staff"> | number
-  minAdvancedMinutes?: Prisma.IntFilter<"Staff"> | number
-  title?: Prisma.StringNullableFilter<"Staff"> | string | null
-  bio?: Prisma.StringNullableFilter<"Staff"> | string | null
-  avatarUrl?: Prisma.StringNullableFilter<"Staff"> | string | null
-  avatarPublicId?: Prisma.StringNullableFilter<"Staff"> | string | null
-  isActive?: Prisma.BoolFilter<"Staff"> | boolean
-  displayName?: Prisma.StringFilter<"Staff"> | string
-  displayOrder?: Prisma.IntFilter<"Staff"> | number
-  createdAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Staff"> | Date | string
-  deletedAt?: Prisma.DateTimeNullableFilter<"Staff"> | Date | string | null
-  colorTheme?: Prisma.StringNullableFilter<"Staff"> | string | null
-  commissionPercent?: Prisma.DecimalNullableFilter<"Staff"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  data: Prisma.XOR<Prisma.StaffUpdateManyMutationInput, Prisma.StaffUncheckedUpdateManyWithoutTenantInput>
 }
 
 export type StaffCreateWithoutAssignmentsInput = {
@@ -1134,15 +1102,15 @@ export type StaffCreateWithoutAssignmentsInput = {
   exceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutStaffInput
   lifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedOneWithoutStaffInput
   stats?: Prisma.StaffDailyStatsCreateNestedManyWithoutStaffInput
-  business: Prisma.BusinessCreateNestedOneWithoutStaffsInput
-  user: Prisma.UserCreateNestedOneWithoutStaffInput
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffsInput
+  user: Prisma.UserCreateNestedOneWithoutStaffsInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutStaffInput
 }
 
 export type StaffUncheckedCreateWithoutAssignmentsInput = {
   id?: string
   userId: string
-  businessId: string
+  tenantId: string
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
@@ -1202,15 +1170,15 @@ export type StaffUpdateWithoutAssignmentsInput = {
   exceptions?: Prisma.ScheduleExceptionUpdateManyWithoutStaffNestedInput
   lifetimeStats?: Prisma.StaffLifetimeStatsUpdateOneWithoutStaffNestedInput
   stats?: Prisma.StaffDailyStatsUpdateManyWithoutStaffNestedInput
-  business?: Prisma.BusinessUpdateOneRequiredWithoutStaffsNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutStaffNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutStaffsNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateWithoutAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1255,14 +1223,14 @@ export type StaffCreateWithoutWorkingHoursInput = {
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutStaffInput
   lifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedOneWithoutStaffInput
   stats?: Prisma.StaffDailyStatsCreateNestedManyWithoutStaffInput
-  business: Prisma.BusinessCreateNestedOneWithoutStaffsInput
-  user: Prisma.UserCreateNestedOneWithoutStaffInput
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffsInput
+  user: Prisma.UserCreateNestedOneWithoutStaffsInput
 }
 
 export type StaffUncheckedCreateWithoutWorkingHoursInput = {
   id?: string
   userId: string
-  businessId: string
+  tenantId: string
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
@@ -1323,14 +1291,14 @@ export type StaffUpdateWithoutWorkingHoursInput = {
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutStaffNestedInput
   lifetimeStats?: Prisma.StaffLifetimeStatsUpdateOneWithoutStaffNestedInput
   stats?: Prisma.StaffDailyStatsUpdateManyWithoutStaffNestedInput
-  business?: Prisma.BusinessUpdateOneRequiredWithoutStaffsNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutStaffNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutStaffsNestedInput
 }
 
 export type StaffUncheckedUpdateWithoutWorkingHoursInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1374,15 +1342,15 @@ export type StaffCreateWithoutExceptionsInput = {
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutStaffInput
   lifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedOneWithoutStaffInput
   stats?: Prisma.StaffDailyStatsCreateNestedManyWithoutStaffInput
-  business: Prisma.BusinessCreateNestedOneWithoutStaffsInput
-  user: Prisma.UserCreateNestedOneWithoutStaffInput
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffsInput
+  user: Prisma.UserCreateNestedOneWithoutStaffsInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutStaffInput
 }
 
 export type StaffUncheckedCreateWithoutExceptionsInput = {
   id?: string
   userId: string
-  businessId: string
+  tenantId: string
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
@@ -1442,15 +1410,15 @@ export type StaffUpdateWithoutExceptionsInput = {
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutStaffNestedInput
   lifetimeStats?: Prisma.StaffLifetimeStatsUpdateOneWithoutStaffNestedInput
   stats?: Prisma.StaffDailyStatsUpdateManyWithoutStaffNestedInput
-  business?: Prisma.BusinessUpdateOneRequiredWithoutStaffsNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutStaffNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutStaffsNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateWithoutExceptionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1494,15 +1462,15 @@ export type StaffCreateWithoutAppointmentsInput = {
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutStaffInput
   lifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedOneWithoutStaffInput
   stats?: Prisma.StaffDailyStatsCreateNestedManyWithoutStaffInput
-  business: Prisma.BusinessCreateNestedOneWithoutStaffsInput
-  user: Prisma.UserCreateNestedOneWithoutStaffInput
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffsInput
+  user: Prisma.UserCreateNestedOneWithoutStaffsInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutStaffInput
 }
 
 export type StaffUncheckedCreateWithoutAppointmentsInput = {
   id?: string
   userId: string
-  businessId: string
+  tenantId: string
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
@@ -1562,15 +1530,15 @@ export type StaffUpdateWithoutAppointmentsInput = {
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutStaffNestedInput
   lifetimeStats?: Prisma.StaffLifetimeStatsUpdateOneWithoutStaffNestedInput
   stats?: Prisma.StaffDailyStatsUpdateManyWithoutStaffNestedInput
-  business?: Prisma.BusinessUpdateOneRequiredWithoutStaffsNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutStaffNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutStaffsNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateWithoutAppointmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1614,15 +1582,15 @@ export type StaffCreateWithoutStatsInput = {
   exceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutStaffInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutStaffInput
   lifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedOneWithoutStaffInput
-  business: Prisma.BusinessCreateNestedOneWithoutStaffsInput
-  user: Prisma.UserCreateNestedOneWithoutStaffInput
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffsInput
+  user: Prisma.UserCreateNestedOneWithoutStaffsInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutStaffInput
 }
 
 export type StaffUncheckedCreateWithoutStatsInput = {
   id?: string
   userId: string
-  businessId: string
+  tenantId: string
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
@@ -1682,15 +1650,15 @@ export type StaffUpdateWithoutStatsInput = {
   exceptions?: Prisma.ScheduleExceptionUpdateManyWithoutStaffNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutStaffNestedInput
   lifetimeStats?: Prisma.StaffLifetimeStatsUpdateOneWithoutStaffNestedInput
-  business?: Prisma.BusinessUpdateOneRequiredWithoutStaffsNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutStaffNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutStaffsNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateWithoutStatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1734,15 +1702,15 @@ export type StaffCreateWithoutLifetimeStatsInput = {
   exceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutStaffInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutStaffInput
   stats?: Prisma.StaffDailyStatsCreateNestedManyWithoutStaffInput
-  business: Prisma.BusinessCreateNestedOneWithoutStaffsInput
-  user: Prisma.UserCreateNestedOneWithoutStaffInput
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffsInput
+  user: Prisma.UserCreateNestedOneWithoutStaffsInput
   workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutStaffInput
 }
 
 export type StaffUncheckedCreateWithoutLifetimeStatsInput = {
   id?: string
   userId: string
-  businessId: string
+  tenantId: string
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
@@ -1802,15 +1770,15 @@ export type StaffUpdateWithoutLifetimeStatsInput = {
   exceptions?: Prisma.ScheduleExceptionUpdateManyWithoutStaffNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutStaffNestedInput
   stats?: Prisma.StaffDailyStatsUpdateManyWithoutStaffNestedInput
-  business?: Prisma.BusinessUpdateOneRequiredWithoutStaffsNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutStaffNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutStaffsNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutStaffNestedInput
 }
 
 export type StaffUncheckedUpdateWithoutLifetimeStatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1833,9 +1801,9 @@ export type StaffUncheckedUpdateWithoutLifetimeStatsInput = {
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutStaffNestedInput
 }
 
-export type StaffCreateManyBusinessInput = {
+export type StaffCreateManyUserInput = {
   id?: string
-  userId: string
+  tenantId: string
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
@@ -1853,7 +1821,7 @@ export type StaffCreateManyBusinessInput = {
   commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
-export type StaffUpdateWithoutBusinessInput = {
+export type StaffUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1875,11 +1843,103 @@ export type StaffUpdateWithoutBusinessInput = {
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutStaffNestedInput
   lifetimeStats?: Prisma.StaffLifetimeStatsUpdateOneWithoutStaffNestedInput
   stats?: Prisma.StaffDailyStatsUpdateManyWithoutStaffNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutStaffNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffsNestedInput
   workingHours?: Prisma.WorkingHoursUpdateManyWithoutStaffNestedInput
 }
 
-export type StaffUncheckedUpdateWithoutBusinessInput = {
+export type StaffUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutStaffNestedInput
+  exceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutStaffNestedInput
+  assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutStaffNestedInput
+  lifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateOneWithoutStaffNestedInput
+  stats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutStaffNestedInput
+  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutStaffNestedInput
+}
+
+export type StaffUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+}
+
+export type StaffCreateManyTenantInput = {
+  id?: string
+  userId: string
+  slotIntervalMinutes?: number
+  maxAdvancedDays?: number
+  minAdvancedMinutes?: number
+  title?: string | null
+  bio?: string | null
+  avatarUrl?: string | null
+  avatarPublicId?: string | null
+  isActive?: boolean
+  displayName: string
+  displayOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  colorTheme?: string | null
+  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+}
+
+export type StaffUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  displayName?: Prisma.StringFieldUpdateOperationsInput | string
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  appointments?: Prisma.AppointmentUpdateManyWithoutStaffNestedInput
+  exceptions?: Prisma.ScheduleExceptionUpdateManyWithoutStaffNestedInput
+  assignments?: Prisma.ServiceAssignmentUpdateManyWithoutStaffNestedInput
+  lifetimeStats?: Prisma.StaffLifetimeStatsUpdateOneWithoutStaffNestedInput
+  stats?: Prisma.StaffDailyStatsUpdateManyWithoutStaffNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutStaffsNestedInput
+  workingHours?: Prisma.WorkingHoursUpdateManyWithoutStaffNestedInput
+}
+
+export type StaffUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1905,7 +1965,7 @@ export type StaffUncheckedUpdateWithoutBusinessInput = {
   workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutStaffNestedInput
 }
 
-export type StaffUncheckedUpdateManyWithoutBusinessInput = {
+export type StaffUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1995,7 +2055,7 @@ export type StaffCountOutputTypeCountWorkingHoursArgs<ExtArgs extends runtime.Ty
 export type StaffSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   slotIntervalMinutes?: boolean
   maxAdvancedDays?: boolean
   minAdvancedMinutes?: boolean
@@ -2016,7 +2076,7 @@ export type StaffSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   assignments?: boolean | Prisma.Staff$assignmentsArgs<ExtArgs>
   lifetimeStats?: boolean | Prisma.Staff$lifetimeStatsArgs<ExtArgs>
   stats?: boolean | Prisma.Staff$statsArgs<ExtArgs>
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   workingHours?: boolean | Prisma.Staff$workingHoursArgs<ExtArgs>
   _count?: boolean | Prisma.StaffCountOutputTypeDefaultArgs<ExtArgs>
@@ -2025,7 +2085,7 @@ export type StaffSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type StaffSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   slotIntervalMinutes?: boolean
   maxAdvancedDays?: boolean
   minAdvancedMinutes?: boolean
@@ -2041,14 +2101,14 @@ export type StaffSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   deletedAt?: boolean
   colorTheme?: boolean
   commissionPercent?: boolean
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staff"]>
 
 export type StaffSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   slotIntervalMinutes?: boolean
   maxAdvancedDays?: boolean
   minAdvancedMinutes?: boolean
@@ -2064,14 +2124,14 @@ export type StaffSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   deletedAt?: boolean
   colorTheme?: boolean
   commissionPercent?: boolean
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staff"]>
 
 export type StaffSelectScalar = {
   id?: boolean
   userId?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   slotIntervalMinutes?: boolean
   maxAdvancedDays?: boolean
   minAdvancedMinutes?: boolean
@@ -2089,24 +2149,24 @@ export type StaffSelectScalar = {
   commissionPercent?: boolean
 }
 
-export type StaffOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "businessId" | "slotIntervalMinutes" | "maxAdvancedDays" | "minAdvancedMinutes" | "title" | "bio" | "avatarUrl" | "avatarPublicId" | "isActive" | "displayName" | "displayOrder" | "createdAt" | "updatedAt" | "deletedAt" | "colorTheme" | "commissionPercent", ExtArgs["result"]["staff"]>
+export type StaffOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "tenantId" | "slotIntervalMinutes" | "maxAdvancedDays" | "minAdvancedMinutes" | "title" | "bio" | "avatarUrl" | "avatarPublicId" | "isActive" | "displayName" | "displayOrder" | "createdAt" | "updatedAt" | "deletedAt" | "colorTheme" | "commissionPercent", ExtArgs["result"]["staff"]>
 export type StaffInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   appointments?: boolean | Prisma.Staff$appointmentsArgs<ExtArgs>
   exceptions?: boolean | Prisma.Staff$exceptionsArgs<ExtArgs>
   assignments?: boolean | Prisma.Staff$assignmentsArgs<ExtArgs>
   lifetimeStats?: boolean | Prisma.Staff$lifetimeStatsArgs<ExtArgs>
   stats?: boolean | Prisma.Staff$statsArgs<ExtArgs>
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   workingHours?: boolean | Prisma.Staff$workingHoursArgs<ExtArgs>
   _count?: boolean | Prisma.StaffCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StaffIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type StaffIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
@@ -2118,14 +2178,14 @@ export type $StaffPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     assignments: Prisma.$ServiceAssignmentPayload<ExtArgs>[]
     lifetimeStats: Prisma.$StaffLifetimeStatsPayload<ExtArgs> | null
     stats: Prisma.$StaffDailyStatsPayload<ExtArgs>[]
-    business: Prisma.$BusinessPayload<ExtArgs>
+    tenant: Prisma.$TenantPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs>
     workingHours: Prisma.$WorkingHoursPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    businessId: string
+    tenantId: string
     slotIntervalMinutes: number
     maxAdvancedDays: number
     minAdvancedMinutes: number
@@ -2540,7 +2600,7 @@ export interface Prisma__StaffClient<T, Null = never, ExtArgs extends runtime.Ty
   assignments<T extends Prisma.Staff$assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$assignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServiceAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   lifetimeStats<T extends Prisma.Staff$lifetimeStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$lifetimeStatsArgs<ExtArgs>>): Prisma.Prisma__StaffLifetimeStatsClient<runtime.Types.Result.GetResult<Prisma.$StaffLifetimeStatsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   stats<T extends Prisma.Staff$statsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$statsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StaffDailyStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  business<T extends Prisma.BusinessDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BusinessDefaultArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   workingHours<T extends Prisma.Staff$workingHoursArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Staff$workingHoursArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkingHoursPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2574,7 +2634,7 @@ export interface Prisma__StaffClient<T, Null = never, ExtArgs extends runtime.Ty
 export interface StaffFieldRefs {
   readonly id: Prisma.FieldRef<"Staff", 'String'>
   readonly userId: Prisma.FieldRef<"Staff", 'String'>
-  readonly businessId: Prisma.FieldRef<"Staff", 'String'>
+  readonly tenantId: Prisma.FieldRef<"Staff", 'String'>
   readonly slotIntervalMinutes: Prisma.FieldRef<"Staff", 'Int'>
   readonly maxAdvancedDays: Prisma.FieldRef<"Staff", 'Int'>
   readonly minAdvancedMinutes: Prisma.FieldRef<"Staff", 'Int'>

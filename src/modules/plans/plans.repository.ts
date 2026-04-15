@@ -26,9 +26,9 @@ export class PlansRepository {
     });
   }
 
-  findByKey(key: PlanType) {
+  findByType(planType: PlanType) {
     return this.prisma.plan.findFirst({
-      where: { planType: key },
+      where: { planType },
       include: {
         limits: true,
       },

@@ -20,7 +20,7 @@ export class AppointmentCancelationService {
     await this.appointmentsRepository.markAsCancelled(appointment.id, 'Customer requested cancellation');
 
     this.eventEmitter.emit('appointment.cancelled', {
-      businessId: appointment.businessId,
+      tenantId: appointment.tenantId,
       appointmentId: appointment.id,
       staffId: appointment.staffId,
       staffName: appointment.staff.user.name,
@@ -40,7 +40,7 @@ export class AppointmentCancelationService {
     const rawToken = crypto.randomBytes(32).toString('hex');
     const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
     return {
-      cancelUrl: `${process.env.FRONTEND_URL}/appointments/${rawToken}/cancel`,
+      cancelUrl: `${process.env.APP_URL}/appointments/${rawToken}/cancel`,
       cancelToken: tokenHash,
     };
   }

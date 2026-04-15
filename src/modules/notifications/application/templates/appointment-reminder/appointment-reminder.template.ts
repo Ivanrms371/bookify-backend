@@ -23,7 +23,7 @@ export class AppointmentReminderTemplate implements NotificationTemplate {
     }
   }
 
-  private async buildEmail(variables: AppointmentReminderVariables): Promise<BuildEmailResponse> {
+  private buildEmail(variables: AppointmentReminderVariables): BuildEmailResponse {
     return {
       subject: `Nueva cita para el ${variables.date} a las ${variables.time}`,
       react: AppointmentReminderEmailTemplate(variables),

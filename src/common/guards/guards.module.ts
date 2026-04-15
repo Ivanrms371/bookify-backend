@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { BusinessGuard } from './business.guard';
+import { TenantGuard } from './tenant.guard';
 import { PlatformAdminGuard } from './platform-admin.guard';
+import { StaffGuard } from './staff.guard';
 
 @Module({
-  providers: [BusinessGuard, PlatformAdminGuard],
-  exports: [BusinessGuard, PlatformAdminGuard],
+  providers: [TenantGuard, PlatformAdminGuard, StaffGuard],
+  exports: [TenantGuard, PlatformAdminGuard, StaffGuard],
 })
 export class GuardsModule {}

@@ -29,13 +29,23 @@ export const VerificationType = {
 export type VerificationType = (typeof VerificationType)[keyof typeof VerificationType]
 
 
-export const BusinessRole = {
+export const MembershipRole = {
   OWNER: 'OWNER',
   ADMIN: 'ADMIN',
   STAFF: 'STAFF'
 } as const
 
-export type BusinessRole = (typeof BusinessRole)[keyof typeof BusinessRole]
+export type MembershipRole = (typeof MembershipRole)[keyof typeof MembershipRole]
+
+
+export const MembershipStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  PENDING: 'PENDING',
+  INVITED: 'INVITED'
+} as const
+
+export type MembershipStatus = (typeof MembershipStatus)[keyof typeof MembershipStatus]
 
 
 export const PlatformAdminLevel = {
@@ -47,7 +57,7 @@ export const PlatformAdminLevel = {
 export type PlatformAdminLevel = (typeof PlatformAdminLevel)[keyof typeof PlatformAdminLevel]
 
 
-export const BusinessType = {
+export const TenantType = {
   BARBERSHOP: 'BARBERSHOP',
   HAIRDRESSING_SALON: 'HAIRDRESSING_SALON',
   AESTHETIC_CENTER: 'AESTHETIC_CENTER',
@@ -58,7 +68,7 @@ export const BusinessType = {
   OTHER: 'OTHER'
 } as const
 
-export type BusinessType = (typeof BusinessType)[keyof typeof BusinessType]
+export type TenantType = (typeof TenantType)[keyof typeof TenantType]
 
 
 export const PlanType = {
@@ -107,7 +117,8 @@ export const AppointmentStatus = {
   CONFIRMED: 'CONFIRMED',
   CANCELLED: 'CANCELLED',
   COMPLETED: 'COMPLETED',
-  NO_SHOW: 'NO_SHOW'
+  NO_SHOW: 'NO_SHOW',
+  PENDING: 'PENDING'
 } as const
 
 export type AppointmentStatus = (typeof AppointmentStatus)[keyof typeof AppointmentStatus]
@@ -120,32 +131,6 @@ export const NotificationChannel = {
 } as const
 
 export type NotificationChannel = (typeof NotificationChannel)[keyof typeof NotificationChannel]
-
-
-export const NotificationType = {
-  ACCOUNT_CONFIRMATION: 'ACCOUNT_CONFIRMATION',
-  PASSWORD_RESET: 'PASSWORD_RESET',
-  AUTH_OTP: 'AUTH_OTP',
-  TRIAL_EXPIRING_7D: 'TRIAL_EXPIRING_7D',
-  TRIAL_EXPIRING_3D: 'TRIAL_EXPIRING_3D',
-  TRIAL_EXPIRED: 'TRIAL_EXPIRED',
-  SUBSCRIPTION_RENEWAL_REMINDER: 'SUBSCRIPTION_RENEWAL_REMINDER',
-  SUBSCRIPTION_RENEWED: 'SUBSCRIPTION_RENEWED',
-  PAYMENT_FAILED: 'PAYMENT_FAILED',
-  SUBSCRIPTION_PAUSED: 'SUBSCRIPTION_PAUSED',
-  PLAN_UPGRADED: 'PLAN_UPGRADED',
-  PLAN_DOWNGRADED: 'PLAN_DOWNGRADED',
-  QUOTA_WARNING_80: 'QUOTA_WARNING_80',
-  QUOTA_EXCEEDED: 'QUOTA_EXCEEDED',
-  APPOINTMENT_CONFIRMATION: 'APPOINTMENT_CONFIRMATION',
-  APPOINTMENT_REMINDER_24H: 'APPOINTMENT_REMINDER_24H',
-  APPOINTMENT_REMINDER_2H: 'APPOINTMENT_REMINDER_2H',
-  APPOINTMENT_CANCELLED: 'APPOINTMENT_CANCELLED',
-  POST_APPOINTMENT_THANKYOU: 'POST_APPOINTMENT_THANKYOU',
-  INVITATION_EMAIL: 'INVITATION_EMAIL'
-} as const
-
-export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
 
 
 export const RecipientType = {

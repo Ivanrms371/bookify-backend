@@ -57,7 +57,7 @@ describe('AvailabilityPolicy', () => {
 
   const setupMocks = (availabilityOverrides?: Partial<AvailabilityData>, serviceOverrides?: Partial<Service>) => {
     const defaultAvailability: AvailabilityData = {
-      business: { settings: defaultSettings },
+      tenant: { settings: defaultSettings },
       workingHours: [{ startMinutes: 540, endMinutes: 1080 }], // 9:00 - 18:00
       exceptions: [],
       appointments: [],
@@ -79,8 +79,8 @@ describe('AvailabilityPolicy', () => {
       await expect(policy.validate({ staffId: '1', serviceId: '1', startTime: at(10, 0) })).rejects.toThrow(BadRequestException);
     });
 
-    it('throws if business has no settings', async () => {
-      queryMock.getAvailabilityData.mockResolvedValue({ business: { settings: null } } as any);
+    it('throws if tenant has no settings', async () => {
+      queryMock.getAvailabilityData.mockResolvedValue({ tenant: { settings: null } } as any);
       await expect(policy.validate({ staffId: '1', serviceId: '1', startTime: at(10, 0) })).rejects.toThrow(BadRequestException);
     });
 
@@ -238,7 +238,7 @@ describe('AvailabilityPolicy', () => {
     describe('Buffer time', () => {
       it('throws if new appointment violates buffer time of existing appointment', async () => {
         setupMocks({
-          business: { settings: { ...defaultSettings, bufferTimeMinutes: 10 } },
+          tenant: { settings: { ...defaultSettings, bufferTimeMinutes: 10 } },
           appointments: [{ blocks: [{ startTime: at(10, 0), endTime: at(10, 30) }] }],
         });
 
@@ -248,7 +248,7 @@ describe('AvailabilityPolicy', () => {
 
       it('passes if buffer time is respected', async () => {
         setupMocks({
-          business: { settings: { ...defaultSettings, bufferTimeMinutes: 10 } },
+          tenant: { settings: { ...defaultSettings, bufferTimeMinutes: 10 } },
           appointments: [{ blocks: [{ startTime: at(10, 0), endTime: at(10, 30) }] }],
         });
 

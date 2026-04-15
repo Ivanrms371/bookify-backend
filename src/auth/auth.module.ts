@@ -7,12 +7,11 @@ import { GoogleMapper } from './infrastructure/google/google.mapper';
 import { AuthService } from './application/auth.service';
 import { VerificationsModule } from 'src/modules/verifications/verifications.module';
 import { PasswordService } from './application/password.service';
-import { MembersModule } from 'src/modules/businesses/features/members/members.module';
 import { UsersModule } from 'src/modules/users/users.module';
 import { CookieModule } from 'src/shared/cookies/cookie.module';
 
 @Module({
-  imports: [CookieModule, UsersModule, SessionsModule, MembersModule, VerificationsModule],
+  imports: [CookieModule, UsersModule, SessionsModule, VerificationsModule],
   controllers: [AuthController],
   providers: [AuthService, AuthCallbackHandler, PasswordService, GoogleService, GoogleMapper],
 })

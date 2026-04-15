@@ -8,12 +8,12 @@ export class InAppGateway {
   constructor(private readonly inAppNotificationsRepository: InAppNotificationsRepository) {}
 
   async send(notification: Notification, content: BuildInAppResponse) {
-    if (!notification.businessId) {
-      throw new Error('Business ID is required for in-app notifications');
+    if (!notification.tenantId) {
+      throw new Error('Tenant ID is required for in-app notifications');
     }
     const data = await this.inAppNotificationsRepository.create({
       user: { connect: { id: notification.recipientId } },
-      business: { connect: { id: notification.businessId } },
+      tenant: { connect: { id: notification.tenantId } },
       notification: { connect: { id: notification.id } },
       type: notification.type,
       title: content.title,

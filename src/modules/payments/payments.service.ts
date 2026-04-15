@@ -32,7 +32,7 @@ export class PaymentsService {
       ...payment,
       referenceCode: code,
       sequenceNumber: nextNumber,
-      business: { connect: { id: payment.businessId } },
+      tenant: { connect: { id: payment.tenantId } },
       subscription: payment.subscriptionId ? { connect: { id: payment.subscriptionId } } : undefined,
     };
 

@@ -31,7 +31,7 @@ export type CustomerAvgAggregateOutputType = {
   completedAppointments: number | null
   cancelledAppointments: number | null
   noShowCount: number | null
-  totalSpent: number | null
+  totalSpent: runtime.Decimal | null
 }
 
 export type CustomerSumAggregateOutputType = {
@@ -39,12 +39,12 @@ export type CustomerSumAggregateOutputType = {
   completedAppointments: number | null
   cancelledAppointments: number | null
   noShowCount: number | null
-  totalSpent: number | null
+  totalSpent: runtime.Decimal | null
 }
 
 export type CustomerMinAggregateOutputType = {
   id: string | null
-  businessId: string | null
+  tenantId: string | null
   phone: string | null
   phoneCountryCode: string | null
   phoneVerified: boolean | null
@@ -55,26 +55,24 @@ export type CustomerMinAggregateOutputType = {
   acceptsEmail: boolean | null
   preferredLanguage: string | null
   notes: string | null
-  internalNotes: string | null
   firstAppointmentAt: Date | null
   lastAppointmentAt: Date | null
   totalAppointments: number | null
   completedAppointments: number | null
   cancelledAppointments: number | null
   noShowCount: number | null
-  totalSpent: number | null
+  totalSpent: runtime.Decimal | null
   blockedReason: string | null
   blockedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
   name: string | null
-  nextAppointmentAt: Date | null
 }
 
 export type CustomerMaxAggregateOutputType = {
   id: string | null
-  businessId: string | null
+  tenantId: string | null
   phone: string | null
   phoneCountryCode: string | null
   phoneVerified: boolean | null
@@ -85,26 +83,24 @@ export type CustomerMaxAggregateOutputType = {
   acceptsEmail: boolean | null
   preferredLanguage: string | null
   notes: string | null
-  internalNotes: string | null
   firstAppointmentAt: Date | null
   lastAppointmentAt: Date | null
   totalAppointments: number | null
   completedAppointments: number | null
   cancelledAppointments: number | null
   noShowCount: number | null
-  totalSpent: number | null
+  totalSpent: runtime.Decimal | null
   blockedReason: string | null
   blockedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
   name: string | null
-  nextAppointmentAt: Date | null
 }
 
 export type CustomerCountAggregateOutputType = {
   id: number
-  businessId: number
+  tenantId: number
   phone: number
   phoneCountryCode: number
   phoneVerified: number
@@ -115,7 +111,6 @@ export type CustomerCountAggregateOutputType = {
   acceptsEmail: number
   preferredLanguage: number
   notes: number
-  internalNotes: number
   firstAppointmentAt: number
   lastAppointmentAt: number
   totalAppointments: number
@@ -129,7 +124,6 @@ export type CustomerCountAggregateOutputType = {
   updatedAt: number
   deletedAt: number
   name: number
-  nextAppointmentAt: number
   _all: number
 }
 
@@ -152,7 +146,7 @@ export type CustomerSumAggregateInputType = {
 
 export type CustomerMinAggregateInputType = {
   id?: true
-  businessId?: true
+  tenantId?: true
   phone?: true
   phoneCountryCode?: true
   phoneVerified?: true
@@ -163,7 +157,6 @@ export type CustomerMinAggregateInputType = {
   acceptsEmail?: true
   preferredLanguage?: true
   notes?: true
-  internalNotes?: true
   firstAppointmentAt?: true
   lastAppointmentAt?: true
   totalAppointments?: true
@@ -177,12 +170,11 @@ export type CustomerMinAggregateInputType = {
   updatedAt?: true
   deletedAt?: true
   name?: true
-  nextAppointmentAt?: true
 }
 
 export type CustomerMaxAggregateInputType = {
   id?: true
-  businessId?: true
+  tenantId?: true
   phone?: true
   phoneCountryCode?: true
   phoneVerified?: true
@@ -193,7 +185,6 @@ export type CustomerMaxAggregateInputType = {
   acceptsEmail?: true
   preferredLanguage?: true
   notes?: true
-  internalNotes?: true
   firstAppointmentAt?: true
   lastAppointmentAt?: true
   totalAppointments?: true
@@ -207,12 +198,11 @@ export type CustomerMaxAggregateInputType = {
   updatedAt?: true
   deletedAt?: true
   name?: true
-  nextAppointmentAt?: true
 }
 
 export type CustomerCountAggregateInputType = {
   id?: true
-  businessId?: true
+  tenantId?: true
   phone?: true
   phoneCountryCode?: true
   phoneVerified?: true
@@ -223,7 +213,6 @@ export type CustomerCountAggregateInputType = {
   acceptsEmail?: true
   preferredLanguage?: true
   notes?: true
-  internalNotes?: true
   firstAppointmentAt?: true
   lastAppointmentAt?: true
   totalAppointments?: true
@@ -237,7 +226,6 @@ export type CustomerCountAggregateInputType = {
   updatedAt?: true
   deletedAt?: true
   name?: true
-  nextAppointmentAt?: true
   _all?: true
 }
 
@@ -329,7 +317,7 @@ export type CustomerGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type CustomerGroupByOutputType = {
   id: string
-  businessId: string
+  tenantId: string
   phone: string
   phoneCountryCode: string
   phoneVerified: boolean
@@ -340,21 +328,19 @@ export type CustomerGroupByOutputType = {
   acceptsEmail: boolean
   preferredLanguage: string
   notes: string | null
-  internalNotes: string | null
   firstAppointmentAt: Date | null
   lastAppointmentAt: Date | null
   totalAppointments: number
   completedAppointments: number
   cancelledAppointments: number
   noShowCount: number
-  totalSpent: number
+  totalSpent: runtime.Decimal
   blockedReason: string | null
   blockedAt: Date | null
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
   name: string
-  nextAppointmentAt: Date | null
   _count: CustomerCountAggregateOutputType | null
   _avg: CustomerAvgAggregateOutputType | null
   _sum: CustomerSumAggregateOutputType | null
@@ -382,7 +368,7 @@ export type CustomerWhereInput = {
   OR?: Prisma.CustomerWhereInput[]
   NOT?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
   id?: Prisma.UuidFilter<"Customer"> | string
-  businessId?: Prisma.UuidFilter<"Customer"> | string
+  tenantId?: Prisma.UuidFilter<"Customer"> | string
   phone?: Prisma.StringFilter<"Customer"> | string
   phoneCountryCode?: Prisma.StringFilter<"Customer"> | string
   phoneVerified?: Prisma.BoolFilter<"Customer"> | boolean
@@ -393,28 +379,26 @@ export type CustomerWhereInput = {
   acceptsEmail?: Prisma.BoolFilter<"Customer"> | boolean
   preferredLanguage?: Prisma.StringFilter<"Customer"> | string
   notes?: Prisma.StringNullableFilter<"Customer"> | string | null
-  internalNotes?: Prisma.StringNullableFilter<"Customer"> | string | null
   firstAppointmentAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   lastAppointmentAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   totalAppointments?: Prisma.IntFilter<"Customer"> | number
   completedAppointments?: Prisma.IntFilter<"Customer"> | number
   cancelledAppointments?: Prisma.IntFilter<"Customer"> | number
   noShowCount?: Prisma.IntFilter<"Customer"> | number
-  totalSpent?: Prisma.FloatFilter<"Customer"> | number
+  totalSpent?: Prisma.DecimalFilter<"Customer"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: Prisma.StringNullableFilter<"Customer"> | string | null
   blockedAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   name?: Prisma.StringFilter<"Customer"> | string
-  nextAppointmentAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   appointments?: Prisma.AppointmentListRelationFilter
-  business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }
 
 export type CustomerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   phoneCountryCode?: Prisma.SortOrder
   phoneVerified?: Prisma.SortOrder
@@ -425,7 +409,6 @@ export type CustomerOrderByWithRelationInput = {
   acceptsEmail?: Prisma.SortOrder
   preferredLanguage?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
-  internalNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   firstAppointmentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastAppointmentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   totalAppointments?: Prisma.SortOrder
@@ -439,18 +422,17 @@ export type CustomerOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
-  nextAppointmentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   appointments?: Prisma.AppointmentOrderByRelationAggregateInput
-  business?: Prisma.BusinessOrderByWithRelationInput
+  tenant?: Prisma.TenantOrderByWithRelationInput
 }
 
 export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  businessId_phone?: Prisma.CustomerBusinessIdPhoneCompoundUniqueInput
+  tenantId_phone?: Prisma.CustomerTenantIdPhoneCompoundUniqueInput
   AND?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
   OR?: Prisma.CustomerWhereInput[]
   NOT?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
-  businessId?: Prisma.UuidFilter<"Customer"> | string
+  tenantId?: Prisma.UuidFilter<"Customer"> | string
   phone?: Prisma.StringFilter<"Customer"> | string
   phoneCountryCode?: Prisma.StringFilter<"Customer"> | string
   phoneVerified?: Prisma.BoolFilter<"Customer"> | boolean
@@ -461,28 +443,26 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   acceptsEmail?: Prisma.BoolFilter<"Customer"> | boolean
   preferredLanguage?: Prisma.StringFilter<"Customer"> | string
   notes?: Prisma.StringNullableFilter<"Customer"> | string | null
-  internalNotes?: Prisma.StringNullableFilter<"Customer"> | string | null
   firstAppointmentAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   lastAppointmentAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   totalAppointments?: Prisma.IntFilter<"Customer"> | number
   completedAppointments?: Prisma.IntFilter<"Customer"> | number
   cancelledAppointments?: Prisma.IntFilter<"Customer"> | number
   noShowCount?: Prisma.IntFilter<"Customer"> | number
-  totalSpent?: Prisma.FloatFilter<"Customer"> | number
+  totalSpent?: Prisma.DecimalFilter<"Customer"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: Prisma.StringNullableFilter<"Customer"> | string | null
   blockedAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   name?: Prisma.StringFilter<"Customer"> | string
-  nextAppointmentAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   appointments?: Prisma.AppointmentListRelationFilter
-  business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
-}, "id" | "businessId_phone">
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
+}, "id" | "tenantId_phone">
 
 export type CustomerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   phoneCountryCode?: Prisma.SortOrder
   phoneVerified?: Prisma.SortOrder
@@ -493,7 +473,6 @@ export type CustomerOrderByWithAggregationInput = {
   acceptsEmail?: Prisma.SortOrder
   preferredLanguage?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
-  internalNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   firstAppointmentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastAppointmentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   totalAppointments?: Prisma.SortOrder
@@ -507,7 +486,6 @@ export type CustomerOrderByWithAggregationInput = {
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrder
-  nextAppointmentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CustomerCountOrderByAggregateInput
   _avg?: Prisma.CustomerAvgOrderByAggregateInput
   _max?: Prisma.CustomerMaxOrderByAggregateInput
@@ -520,7 +498,7 @@ export type CustomerScalarWhereWithAggregatesInput = {
   OR?: Prisma.CustomerScalarWhereWithAggregatesInput[]
   NOT?: Prisma.CustomerScalarWhereWithAggregatesInput | Prisma.CustomerScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"Customer"> | string
-  businessId?: Prisma.UuidWithAggregatesFilter<"Customer"> | string
+  tenantId?: Prisma.UuidWithAggregatesFilter<"Customer"> | string
   phone?: Prisma.StringWithAggregatesFilter<"Customer"> | string
   phoneCountryCode?: Prisma.StringWithAggregatesFilter<"Customer"> | string
   phoneVerified?: Prisma.BoolWithAggregatesFilter<"Customer"> | boolean
@@ -531,21 +509,19 @@ export type CustomerScalarWhereWithAggregatesInput = {
   acceptsEmail?: Prisma.BoolWithAggregatesFilter<"Customer"> | boolean
   preferredLanguage?: Prisma.StringWithAggregatesFilter<"Customer"> | string
   notes?: Prisma.StringNullableWithAggregatesFilter<"Customer"> | string | null
-  internalNotes?: Prisma.StringNullableWithAggregatesFilter<"Customer"> | string | null
   firstAppointmentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Customer"> | Date | string | null
   lastAppointmentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Customer"> | Date | string | null
   totalAppointments?: Prisma.IntWithAggregatesFilter<"Customer"> | number
   completedAppointments?: Prisma.IntWithAggregatesFilter<"Customer"> | number
   cancelledAppointments?: Prisma.IntWithAggregatesFilter<"Customer"> | number
   noShowCount?: Prisma.IntWithAggregatesFilter<"Customer"> | number
-  totalSpent?: Prisma.FloatWithAggregatesFilter<"Customer"> | number
+  totalSpent?: Prisma.DecimalWithAggregatesFilter<"Customer"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: Prisma.StringNullableWithAggregatesFilter<"Customer"> | string | null
   blockedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Customer"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Customer"> | Date | string | null
   name?: Prisma.StringWithAggregatesFilter<"Customer"> | string
-  nextAppointmentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Customer"> | Date | string | null
 }
 
 export type CustomerCreateInput = {
@@ -560,28 +536,26 @@ export type CustomerCreateInput = {
   acceptsEmail?: boolean
   preferredLanguage?: string
   notes?: string | null
-  internalNotes?: string | null
   firstAppointmentAt?: Date | string | null
   lastAppointmentAt?: Date | string | null
   totalAppointments?: number
   completedAppointments?: number
   cancelledAppointments?: number
   noShowCount?: number
-  totalSpent?: number
+  totalSpent?: runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: string | null
   blockedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   name: string
-  nextAppointmentAt?: Date | string | null
   appointments?: Prisma.AppointmentCreateNestedManyWithoutCustomerInput
-  business: Prisma.BusinessCreateNestedOneWithoutCustomersInput
+  tenant: Prisma.TenantCreateNestedOneWithoutCustomersInput
 }
 
 export type CustomerUncheckedCreateInput = {
   id?: string
-  businessId: string
+  tenantId: string
   phone: string
   phoneCountryCode?: string
   phoneVerified?: boolean
@@ -592,21 +566,19 @@ export type CustomerUncheckedCreateInput = {
   acceptsEmail?: boolean
   preferredLanguage?: string
   notes?: string | null
-  internalNotes?: string | null
   firstAppointmentAt?: Date | string | null
   lastAppointmentAt?: Date | string | null
   totalAppointments?: number
   completedAppointments?: number
   cancelledAppointments?: number
   noShowCount?: number
-  totalSpent?: number
+  totalSpent?: runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: string | null
   blockedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   name: string
-  nextAppointmentAt?: Date | string | null
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutCustomerInput
 }
 
@@ -622,28 +594,26 @@ export type CustomerUpdateInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   completedAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalSpent?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalSpent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nextAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   appointments?: Prisma.AppointmentUpdateManyWithoutCustomerNestedInput
-  business?: Prisma.BusinessUpdateOneRequiredWithoutCustomersNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutCustomersNestedInput
 }
 
 export type CustomerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -654,27 +624,25 @@ export type CustomerUncheckedUpdateInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   completedAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalSpent?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalSpent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nextAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutCustomerNestedInput
 }
 
 export type CustomerCreateManyInput = {
   id?: string
-  businessId: string
+  tenantId: string
   phone: string
   phoneCountryCode?: string
   phoneVerified?: boolean
@@ -685,21 +653,19 @@ export type CustomerCreateManyInput = {
   acceptsEmail?: boolean
   preferredLanguage?: string
   notes?: string | null
-  internalNotes?: string | null
   firstAppointmentAt?: Date | string | null
   lastAppointmentAt?: Date | string | null
   totalAppointments?: number
   completedAppointments?: number
   cancelledAppointments?: number
   noShowCount?: number
-  totalSpent?: number
+  totalSpent?: runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: string | null
   blockedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   name: string
-  nextAppointmentAt?: Date | string | null
 }
 
 export type CustomerUpdateManyMutationInput = {
@@ -714,26 +680,24 @@ export type CustomerUpdateManyMutationInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   completedAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalSpent?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalSpent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nextAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CustomerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -744,21 +708,19 @@ export type CustomerUncheckedUpdateManyInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   completedAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalSpent?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalSpent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nextAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CustomerListRelationFilter = {
@@ -771,14 +733,14 @@ export type CustomerOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type CustomerBusinessIdPhoneCompoundUniqueInput = {
-  businessId: string
+export type CustomerTenantIdPhoneCompoundUniqueInput = {
+  tenantId: string
   phone: string
 }
 
 export type CustomerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   phoneCountryCode?: Prisma.SortOrder
   phoneVerified?: Prisma.SortOrder
@@ -789,7 +751,6 @@ export type CustomerCountOrderByAggregateInput = {
   acceptsEmail?: Prisma.SortOrder
   preferredLanguage?: Prisma.SortOrder
   notes?: Prisma.SortOrder
-  internalNotes?: Prisma.SortOrder
   firstAppointmentAt?: Prisma.SortOrder
   lastAppointmentAt?: Prisma.SortOrder
   totalAppointments?: Prisma.SortOrder
@@ -803,7 +764,6 @@ export type CustomerCountOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  nextAppointmentAt?: Prisma.SortOrder
 }
 
 export type CustomerAvgOrderByAggregateInput = {
@@ -816,7 +776,7 @@ export type CustomerAvgOrderByAggregateInput = {
 
 export type CustomerMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   phoneCountryCode?: Prisma.SortOrder
   phoneVerified?: Prisma.SortOrder
@@ -827,7 +787,6 @@ export type CustomerMaxOrderByAggregateInput = {
   acceptsEmail?: Prisma.SortOrder
   preferredLanguage?: Prisma.SortOrder
   notes?: Prisma.SortOrder
-  internalNotes?: Prisma.SortOrder
   firstAppointmentAt?: Prisma.SortOrder
   lastAppointmentAt?: Prisma.SortOrder
   totalAppointments?: Prisma.SortOrder
@@ -841,12 +800,11 @@ export type CustomerMaxOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  nextAppointmentAt?: Prisma.SortOrder
 }
 
 export type CustomerMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   phoneCountryCode?: Prisma.SortOrder
   phoneVerified?: Prisma.SortOrder
@@ -857,7 +815,6 @@ export type CustomerMinOrderByAggregateInput = {
   acceptsEmail?: Prisma.SortOrder
   preferredLanguage?: Prisma.SortOrder
   notes?: Prisma.SortOrder
-  internalNotes?: Prisma.SortOrder
   firstAppointmentAt?: Prisma.SortOrder
   lastAppointmentAt?: Prisma.SortOrder
   totalAppointments?: Prisma.SortOrder
@@ -871,7 +828,6 @@ export type CustomerMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  nextAppointmentAt?: Prisma.SortOrder
 }
 
 export type CustomerSumOrderByAggregateInput = {
@@ -887,54 +843,46 @@ export type CustomerScalarRelationFilter = {
   isNot?: Prisma.CustomerWhereInput
 }
 
-export type CustomerCreateNestedManyWithoutBusinessInput = {
-  create?: Prisma.XOR<Prisma.CustomerCreateWithoutBusinessInput, Prisma.CustomerUncheckedCreateWithoutBusinessInput> | Prisma.CustomerCreateWithoutBusinessInput[] | Prisma.CustomerUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutBusinessInput | Prisma.CustomerCreateOrConnectWithoutBusinessInput[]
-  createMany?: Prisma.CustomerCreateManyBusinessInputEnvelope
+export type CustomerCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutTenantInput, Prisma.CustomerUncheckedCreateWithoutTenantInput> | Prisma.CustomerCreateWithoutTenantInput[] | Prisma.CustomerUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutTenantInput | Prisma.CustomerCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.CustomerCreateManyTenantInputEnvelope
   connect?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
 }
 
-export type CustomerUncheckedCreateNestedManyWithoutBusinessInput = {
-  create?: Prisma.XOR<Prisma.CustomerCreateWithoutBusinessInput, Prisma.CustomerUncheckedCreateWithoutBusinessInput> | Prisma.CustomerCreateWithoutBusinessInput[] | Prisma.CustomerUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutBusinessInput | Prisma.CustomerCreateOrConnectWithoutBusinessInput[]
-  createMany?: Prisma.CustomerCreateManyBusinessInputEnvelope
+export type CustomerUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutTenantInput, Prisma.CustomerUncheckedCreateWithoutTenantInput> | Prisma.CustomerCreateWithoutTenantInput[] | Prisma.CustomerUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutTenantInput | Prisma.CustomerCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.CustomerCreateManyTenantInputEnvelope
   connect?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
 }
 
-export type CustomerUpdateManyWithoutBusinessNestedInput = {
-  create?: Prisma.XOR<Prisma.CustomerCreateWithoutBusinessInput, Prisma.CustomerUncheckedCreateWithoutBusinessInput> | Prisma.CustomerCreateWithoutBusinessInput[] | Prisma.CustomerUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutBusinessInput | Prisma.CustomerCreateOrConnectWithoutBusinessInput[]
-  upsert?: Prisma.CustomerUpsertWithWhereUniqueWithoutBusinessInput | Prisma.CustomerUpsertWithWhereUniqueWithoutBusinessInput[]
-  createMany?: Prisma.CustomerCreateManyBusinessInputEnvelope
+export type CustomerUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutTenantInput, Prisma.CustomerUncheckedCreateWithoutTenantInput> | Prisma.CustomerCreateWithoutTenantInput[] | Prisma.CustomerUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutTenantInput | Prisma.CustomerCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.CustomerUpsertWithWhereUniqueWithoutTenantInput | Prisma.CustomerUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.CustomerCreateManyTenantInputEnvelope
   set?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
   disconnect?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
   delete?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
   connect?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
-  update?: Prisma.CustomerUpdateWithWhereUniqueWithoutBusinessInput | Prisma.CustomerUpdateWithWhereUniqueWithoutBusinessInput[]
-  updateMany?: Prisma.CustomerUpdateManyWithWhereWithoutBusinessInput | Prisma.CustomerUpdateManyWithWhereWithoutBusinessInput[]
+  update?: Prisma.CustomerUpdateWithWhereUniqueWithoutTenantInput | Prisma.CustomerUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.CustomerUpdateManyWithWhereWithoutTenantInput | Prisma.CustomerUpdateManyWithWhereWithoutTenantInput[]
   deleteMany?: Prisma.CustomerScalarWhereInput | Prisma.CustomerScalarWhereInput[]
 }
 
-export type CustomerUncheckedUpdateManyWithoutBusinessNestedInput = {
-  create?: Prisma.XOR<Prisma.CustomerCreateWithoutBusinessInput, Prisma.CustomerUncheckedCreateWithoutBusinessInput> | Prisma.CustomerCreateWithoutBusinessInput[] | Prisma.CustomerUncheckedCreateWithoutBusinessInput[]
-  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutBusinessInput | Prisma.CustomerCreateOrConnectWithoutBusinessInput[]
-  upsert?: Prisma.CustomerUpsertWithWhereUniqueWithoutBusinessInput | Prisma.CustomerUpsertWithWhereUniqueWithoutBusinessInput[]
-  createMany?: Prisma.CustomerCreateManyBusinessInputEnvelope
+export type CustomerUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.CustomerCreateWithoutTenantInput, Prisma.CustomerUncheckedCreateWithoutTenantInput> | Prisma.CustomerCreateWithoutTenantInput[] | Prisma.CustomerUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.CustomerCreateOrConnectWithoutTenantInput | Prisma.CustomerCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.CustomerUpsertWithWhereUniqueWithoutTenantInput | Prisma.CustomerUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.CustomerCreateManyTenantInputEnvelope
   set?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
   disconnect?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
   delete?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
   connect?: Prisma.CustomerWhereUniqueInput | Prisma.CustomerWhereUniqueInput[]
-  update?: Prisma.CustomerUpdateWithWhereUniqueWithoutBusinessInput | Prisma.CustomerUpdateWithWhereUniqueWithoutBusinessInput[]
-  updateMany?: Prisma.CustomerUpdateManyWithWhereWithoutBusinessInput | Prisma.CustomerUpdateManyWithWhereWithoutBusinessInput[]
+  update?: Prisma.CustomerUpdateWithWhereUniqueWithoutTenantInput | Prisma.CustomerUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.CustomerUpdateManyWithWhereWithoutTenantInput | Prisma.CustomerUpdateManyWithWhereWithoutTenantInput[]
   deleteMany?: Prisma.CustomerScalarWhereInput | Prisma.CustomerScalarWhereInput[]
-}
-
-export type FloatFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type CustomerCreateNestedOneWithoutAppointmentsInput = {
@@ -951,7 +899,7 @@ export type CustomerUpdateOneRequiredWithoutAppointmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CustomerUpdateToOneWithWhereWithoutAppointmentsInput, Prisma.CustomerUpdateWithoutAppointmentsInput>, Prisma.CustomerUncheckedUpdateWithoutAppointmentsInput>
 }
 
-export type CustomerCreateWithoutBusinessInput = {
+export type CustomerCreateWithoutTenantInput = {
   id?: string
   phone: string
   phoneCountryCode?: string
@@ -963,25 +911,23 @@ export type CustomerCreateWithoutBusinessInput = {
   acceptsEmail?: boolean
   preferredLanguage?: string
   notes?: string | null
-  internalNotes?: string | null
   firstAppointmentAt?: Date | string | null
   lastAppointmentAt?: Date | string | null
   totalAppointments?: number
   completedAppointments?: number
   cancelledAppointments?: number
   noShowCount?: number
-  totalSpent?: number
+  totalSpent?: runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: string | null
   blockedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   name: string
-  nextAppointmentAt?: Date | string | null
   appointments?: Prisma.AppointmentCreateNestedManyWithoutCustomerInput
 }
 
-export type CustomerUncheckedCreateWithoutBusinessInput = {
+export type CustomerUncheckedCreateWithoutTenantInput = {
   id?: string
   phone: string
   phoneCountryCode?: string
@@ -993,48 +939,46 @@ export type CustomerUncheckedCreateWithoutBusinessInput = {
   acceptsEmail?: boolean
   preferredLanguage?: string
   notes?: string | null
-  internalNotes?: string | null
   firstAppointmentAt?: Date | string | null
   lastAppointmentAt?: Date | string | null
   totalAppointments?: number
   completedAppointments?: number
   cancelledAppointments?: number
   noShowCount?: number
-  totalSpent?: number
+  totalSpent?: runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: string | null
   blockedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   name: string
-  nextAppointmentAt?: Date | string | null
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutCustomerInput
 }
 
-export type CustomerCreateOrConnectWithoutBusinessInput = {
+export type CustomerCreateOrConnectWithoutTenantInput = {
   where: Prisma.CustomerWhereUniqueInput
-  create: Prisma.XOR<Prisma.CustomerCreateWithoutBusinessInput, Prisma.CustomerUncheckedCreateWithoutBusinessInput>
+  create: Prisma.XOR<Prisma.CustomerCreateWithoutTenantInput, Prisma.CustomerUncheckedCreateWithoutTenantInput>
 }
 
-export type CustomerCreateManyBusinessInputEnvelope = {
-  data: Prisma.CustomerCreateManyBusinessInput | Prisma.CustomerCreateManyBusinessInput[]
+export type CustomerCreateManyTenantInputEnvelope = {
+  data: Prisma.CustomerCreateManyTenantInput | Prisma.CustomerCreateManyTenantInput[]
   skipDuplicates?: boolean
 }
 
-export type CustomerUpsertWithWhereUniqueWithoutBusinessInput = {
+export type CustomerUpsertWithWhereUniqueWithoutTenantInput = {
   where: Prisma.CustomerWhereUniqueInput
-  update: Prisma.XOR<Prisma.CustomerUpdateWithoutBusinessInput, Prisma.CustomerUncheckedUpdateWithoutBusinessInput>
-  create: Prisma.XOR<Prisma.CustomerCreateWithoutBusinessInput, Prisma.CustomerUncheckedCreateWithoutBusinessInput>
+  update: Prisma.XOR<Prisma.CustomerUpdateWithoutTenantInput, Prisma.CustomerUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.CustomerCreateWithoutTenantInput, Prisma.CustomerUncheckedCreateWithoutTenantInput>
 }
 
-export type CustomerUpdateWithWhereUniqueWithoutBusinessInput = {
+export type CustomerUpdateWithWhereUniqueWithoutTenantInput = {
   where: Prisma.CustomerWhereUniqueInput
-  data: Prisma.XOR<Prisma.CustomerUpdateWithoutBusinessInput, Prisma.CustomerUncheckedUpdateWithoutBusinessInput>
+  data: Prisma.XOR<Prisma.CustomerUpdateWithoutTenantInput, Prisma.CustomerUncheckedUpdateWithoutTenantInput>
 }
 
-export type CustomerUpdateManyWithWhereWithoutBusinessInput = {
+export type CustomerUpdateManyWithWhereWithoutTenantInput = {
   where: Prisma.CustomerScalarWhereInput
-  data: Prisma.XOR<Prisma.CustomerUpdateManyMutationInput, Prisma.CustomerUncheckedUpdateManyWithoutBusinessInput>
+  data: Prisma.XOR<Prisma.CustomerUpdateManyMutationInput, Prisma.CustomerUncheckedUpdateManyWithoutTenantInput>
 }
 
 export type CustomerScalarWhereInput = {
@@ -1042,7 +986,7 @@ export type CustomerScalarWhereInput = {
   OR?: Prisma.CustomerScalarWhereInput[]
   NOT?: Prisma.CustomerScalarWhereInput | Prisma.CustomerScalarWhereInput[]
   id?: Prisma.UuidFilter<"Customer"> | string
-  businessId?: Prisma.UuidFilter<"Customer"> | string
+  tenantId?: Prisma.UuidFilter<"Customer"> | string
   phone?: Prisma.StringFilter<"Customer"> | string
   phoneCountryCode?: Prisma.StringFilter<"Customer"> | string
   phoneVerified?: Prisma.BoolFilter<"Customer"> | boolean
@@ -1053,21 +997,19 @@ export type CustomerScalarWhereInput = {
   acceptsEmail?: Prisma.BoolFilter<"Customer"> | boolean
   preferredLanguage?: Prisma.StringFilter<"Customer"> | string
   notes?: Prisma.StringNullableFilter<"Customer"> | string | null
-  internalNotes?: Prisma.StringNullableFilter<"Customer"> | string | null
   firstAppointmentAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   lastAppointmentAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   totalAppointments?: Prisma.IntFilter<"Customer"> | number
   completedAppointments?: Prisma.IntFilter<"Customer"> | number
   cancelledAppointments?: Prisma.IntFilter<"Customer"> | number
   noShowCount?: Prisma.IntFilter<"Customer"> | number
-  totalSpent?: Prisma.FloatFilter<"Customer"> | number
+  totalSpent?: Prisma.DecimalFilter<"Customer"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: Prisma.StringNullableFilter<"Customer"> | string | null
   blockedAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
   name?: Prisma.StringFilter<"Customer"> | string
-  nextAppointmentAt?: Prisma.DateTimeNullableFilter<"Customer"> | Date | string | null
 }
 
 export type CustomerCreateWithoutAppointmentsInput = {
@@ -1082,27 +1024,25 @@ export type CustomerCreateWithoutAppointmentsInput = {
   acceptsEmail?: boolean
   preferredLanguage?: string
   notes?: string | null
-  internalNotes?: string | null
   firstAppointmentAt?: Date | string | null
   lastAppointmentAt?: Date | string | null
   totalAppointments?: number
   completedAppointments?: number
   cancelledAppointments?: number
   noShowCount?: number
-  totalSpent?: number
+  totalSpent?: runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: string | null
   blockedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   name: string
-  nextAppointmentAt?: Date | string | null
-  business: Prisma.BusinessCreateNestedOneWithoutCustomersInput
+  tenant: Prisma.TenantCreateNestedOneWithoutCustomersInput
 }
 
 export type CustomerUncheckedCreateWithoutAppointmentsInput = {
   id?: string
-  businessId: string
+  tenantId: string
   phone: string
   phoneCountryCode?: string
   phoneVerified?: boolean
@@ -1113,21 +1053,19 @@ export type CustomerUncheckedCreateWithoutAppointmentsInput = {
   acceptsEmail?: boolean
   preferredLanguage?: string
   notes?: string | null
-  internalNotes?: string | null
   firstAppointmentAt?: Date | string | null
   lastAppointmentAt?: Date | string | null
   totalAppointments?: number
   completedAppointments?: number
   cancelledAppointments?: number
   noShowCount?: number
-  totalSpent?: number
+  totalSpent?: runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: string | null
   blockedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   name: string
-  nextAppointmentAt?: Date | string | null
 }
 
 export type CustomerCreateOrConnectWithoutAppointmentsInput = {
@@ -1158,27 +1096,25 @@ export type CustomerUpdateWithoutAppointmentsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   completedAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalSpent?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalSpent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nextAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  business?: Prisma.BusinessUpdateOneRequiredWithoutCustomersNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutCustomersNestedInput
 }
 
 export type CustomerUncheckedUpdateWithoutAppointmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
   phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1189,24 +1125,22 @@ export type CustomerUncheckedUpdateWithoutAppointmentsInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   completedAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalSpent?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalSpent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nextAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
-export type CustomerCreateManyBusinessInput = {
+export type CustomerCreateManyTenantInput = {
   id?: string
   phone: string
   phoneCountryCode?: string
@@ -1218,24 +1152,22 @@ export type CustomerCreateManyBusinessInput = {
   acceptsEmail?: boolean
   preferredLanguage?: string
   notes?: string | null
-  internalNotes?: string | null
   firstAppointmentAt?: Date | string | null
   lastAppointmentAt?: Date | string | null
   totalAppointments?: number
   completedAppointments?: number
   cancelledAppointments?: number
   noShowCount?: number
-  totalSpent?: number
+  totalSpent?: runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: string | null
   blockedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   name: string
-  nextAppointmentAt?: Date | string | null
 }
 
-export type CustomerUpdateWithoutBusinessInput = {
+export type CustomerUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1247,25 +1179,23 @@ export type CustomerUpdateWithoutBusinessInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   completedAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalSpent?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalSpent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nextAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   appointments?: Prisma.AppointmentUpdateManyWithoutCustomerNestedInput
 }
 
-export type CustomerUncheckedUpdateWithoutBusinessInput = {
+export type CustomerUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1277,25 +1207,23 @@ export type CustomerUncheckedUpdateWithoutBusinessInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   completedAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalSpent?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalSpent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nextAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutCustomerNestedInput
 }
 
-export type CustomerUncheckedUpdateManyWithoutBusinessInput = {
+export type CustomerUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1307,21 +1235,19 @@ export type CustomerUncheckedUpdateManyWithoutBusinessInput = {
   acceptsEmail?: Prisma.BoolFieldUpdateOperationsInput | boolean
   preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  internalNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   firstAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   completedAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   cancelledAppointments?: Prisma.IntFieldUpdateOperationsInput | number
   noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
-  totalSpent?: Prisma.FloatFieldUpdateOperationsInput | number
+  totalSpent?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   blockedReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   blockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  nextAppointmentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -1357,7 +1283,7 @@ export type CustomerCountOutputTypeCountAppointmentsArgs<ExtArgs extends runtime
 
 export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   phone?: boolean
   phoneCountryCode?: boolean
   phoneVerified?: boolean
@@ -1368,7 +1294,6 @@ export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   acceptsEmail?: boolean
   preferredLanguage?: boolean
   notes?: boolean
-  internalNotes?: boolean
   firstAppointmentAt?: boolean
   lastAppointmentAt?: boolean
   totalAppointments?: boolean
@@ -1382,15 +1307,14 @@ export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   updatedAt?: boolean
   deletedAt?: boolean
   name?: boolean
-  nextAppointmentAt?: boolean
   appointments?: boolean | Prisma.Customer$appointmentsArgs<ExtArgs>
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.CustomerCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["customer"]>
 
 export type CustomerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   phone?: boolean
   phoneCountryCode?: boolean
   phoneVerified?: boolean
@@ -1401,7 +1325,6 @@ export type CustomerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   acceptsEmail?: boolean
   preferredLanguage?: boolean
   notes?: boolean
-  internalNotes?: boolean
   firstAppointmentAt?: boolean
   lastAppointmentAt?: boolean
   totalAppointments?: boolean
@@ -1415,13 +1338,12 @@ export type CustomerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   updatedAt?: boolean
   deletedAt?: boolean
   name?: boolean
-  nextAppointmentAt?: boolean
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["customer"]>
 
 export type CustomerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   phone?: boolean
   phoneCountryCode?: boolean
   phoneVerified?: boolean
@@ -1432,7 +1354,6 @@ export type CustomerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   acceptsEmail?: boolean
   preferredLanguage?: boolean
   notes?: boolean
-  internalNotes?: boolean
   firstAppointmentAt?: boolean
   lastAppointmentAt?: boolean
   totalAppointments?: boolean
@@ -1446,13 +1367,12 @@ export type CustomerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   updatedAt?: boolean
   deletedAt?: boolean
   name?: boolean
-  nextAppointmentAt?: boolean
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["customer"]>
 
 export type CustomerSelectScalar = {
   id?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   phone?: boolean
   phoneCountryCode?: boolean
   phoneVerified?: boolean
@@ -1463,7 +1383,6 @@ export type CustomerSelectScalar = {
   acceptsEmail?: boolean
   preferredLanguage?: boolean
   notes?: boolean
-  internalNotes?: boolean
   firstAppointmentAt?: boolean
   lastAppointmentAt?: boolean
   totalAppointments?: boolean
@@ -1477,31 +1396,30 @@ export type CustomerSelectScalar = {
   updatedAt?: boolean
   deletedAt?: boolean
   name?: boolean
-  nextAppointmentAt?: boolean
 }
 
-export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "phone" | "phoneCountryCode" | "phoneVerified" | "email" | "emailVerified" | "emailBounced" | "acceptsWhatsapp" | "acceptsEmail" | "preferredLanguage" | "notes" | "internalNotes" | "firstAppointmentAt" | "lastAppointmentAt" | "totalAppointments" | "completedAppointments" | "cancelledAppointments" | "noShowCount" | "totalSpent" | "blockedReason" | "blockedAt" | "createdAt" | "updatedAt" | "deletedAt" | "name" | "nextAppointmentAt", ExtArgs["result"]["customer"]>
+export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "phone" | "phoneCountryCode" | "phoneVerified" | "email" | "emailVerified" | "emailBounced" | "acceptsWhatsapp" | "acceptsEmail" | "preferredLanguage" | "notes" | "firstAppointmentAt" | "lastAppointmentAt" | "totalAppointments" | "completedAppointments" | "cancelledAppointments" | "noShowCount" | "totalSpent" | "blockedReason" | "blockedAt" | "createdAt" | "updatedAt" | "deletedAt" | "name", ExtArgs["result"]["customer"]>
 export type CustomerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   appointments?: boolean | Prisma.Customer$appointmentsArgs<ExtArgs>
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.CustomerCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CustomerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
 export type CustomerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
 
 export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Customer"
   objects: {
     appointments: Prisma.$AppointmentPayload<ExtArgs>[]
-    business: Prisma.$BusinessPayload<ExtArgs>
+    tenant: Prisma.$TenantPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    businessId: string
+    tenantId: string
     phone: string
     phoneCountryCode: string
     phoneVerified: boolean
@@ -1512,21 +1430,19 @@ export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     acceptsEmail: boolean
     preferredLanguage: string
     notes: string | null
-    internalNotes: string | null
     firstAppointmentAt: Date | null
     lastAppointmentAt: Date | null
     totalAppointments: number
     completedAppointments: number
     cancelledAppointments: number
     noShowCount: number
-    totalSpent: number
+    totalSpent: runtime.Decimal
     blockedReason: string | null
     blockedAt: Date | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
     name: string
-    nextAppointmentAt: Date | null
   }, ExtArgs["result"]["customer"]>
   composites: {}
 }
@@ -1922,7 +1838,7 @@ readonly fields: CustomerFieldRefs;
 export interface Prisma__CustomerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   appointments<T extends Prisma.Customer$appointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Customer$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  business<T extends Prisma.BusinessDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BusinessDefaultArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1953,7 +1869,7 @@ export interface Prisma__CustomerClient<T, Null = never, ExtArgs extends runtime
  */
 export interface CustomerFieldRefs {
   readonly id: Prisma.FieldRef<"Customer", 'String'>
-  readonly businessId: Prisma.FieldRef<"Customer", 'String'>
+  readonly tenantId: Prisma.FieldRef<"Customer", 'String'>
   readonly phone: Prisma.FieldRef<"Customer", 'String'>
   readonly phoneCountryCode: Prisma.FieldRef<"Customer", 'String'>
   readonly phoneVerified: Prisma.FieldRef<"Customer", 'Boolean'>
@@ -1964,21 +1880,19 @@ export interface CustomerFieldRefs {
   readonly acceptsEmail: Prisma.FieldRef<"Customer", 'Boolean'>
   readonly preferredLanguage: Prisma.FieldRef<"Customer", 'String'>
   readonly notes: Prisma.FieldRef<"Customer", 'String'>
-  readonly internalNotes: Prisma.FieldRef<"Customer", 'String'>
   readonly firstAppointmentAt: Prisma.FieldRef<"Customer", 'DateTime'>
   readonly lastAppointmentAt: Prisma.FieldRef<"Customer", 'DateTime'>
   readonly totalAppointments: Prisma.FieldRef<"Customer", 'Int'>
   readonly completedAppointments: Prisma.FieldRef<"Customer", 'Int'>
   readonly cancelledAppointments: Prisma.FieldRef<"Customer", 'Int'>
   readonly noShowCount: Prisma.FieldRef<"Customer", 'Int'>
-  readonly totalSpent: Prisma.FieldRef<"Customer", 'Float'>
+  readonly totalSpent: Prisma.FieldRef<"Customer", 'Decimal'>
   readonly blockedReason: Prisma.FieldRef<"Customer", 'String'>
   readonly blockedAt: Prisma.FieldRef<"Customer", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Customer", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Customer", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"Customer", 'DateTime'>
   readonly name: Prisma.FieldRef<"Customer", 'String'>
-  readonly nextAppointmentAt: Prisma.FieldRef<"Customer", 'DateTime'>
 }
     
 

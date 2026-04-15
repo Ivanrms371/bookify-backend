@@ -1,12 +1,12 @@
 import { Body, Controller, Post, UseGuards, Logger } from '@nestjs/common';
 import { SubscriptionService } from '../services/subscription.service';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
-import { BusinessRoles } from 'src/common/decorators/business-roles.decorator';
-import { PlanType, BusinessRole } from 'src/generated/prisma/enums';
-import { BusinessGuard } from 'src/common/guards/business.guard';
+import { MembershipRoles } from 'src/common/decorators/tenant-roles.decorator';
+import { PlanType, MembershipRole } from 'src/generated/prisma/enums';
+import { TenantGuard } from 'src/common/guards/tenant.guard';
 
-@UseGuards(JwtAuthGuard, BusinessGuard)
-@BusinessRoles(BusinessRole.OWNER)
+@UseGuards(JwtAuthGuard, TenantGuard)
+@MembershipRoles(MembershipRole.OWNER)
 @Controller('subscriptions')
 export class SubscriptionController {
   private readonly logger = new Logger(SubscriptionController.name);
@@ -18,8 +18,8 @@ export class SubscriptionController {
    */
 
   @Post('free')
-  async createFree(@Body() body: { businessId: string }) {
-    return this.subscriptionService.createFreeSubscription(body.businessId);
+  async createFree(@Body() body: { tenantId: string }) {
+    return this.subscriptionService.createFreeSubscription(body.tenantId);
   }
 
   /**
@@ -27,8 +27,8 @@ export class SubscriptionController {
    * Start a trial
    */
   @Post('trial')
-  async startTrial(@Body() body: { businessId: string; planType: PlanType }) {
-    return this.subscriptionService.startTrial(body.businessId, body.planType);
+  async startTrial(@Body() body: { tenantId: string; planType: PlanType }) {
+    return this.subscriptionService.startTrial(body.tenantId, body.planType);
   }
 
   /**
@@ -36,16 +36,16 @@ export class SubscriptionController {
    * Create a paid subscription
    */
   @Post('paid')
-  async createPaid(@Body() body: { businessId: string; planType: PlanType }) {
-    return this.subscriptionService.createPaidSubscription(body.businessId, body.planType);
+  async createPaid(@Body() body: { tenantId: string; planType: PlanType }) {
+    return this.subscriptionService.createPaidSubscription(body.tenantId, body.planType);
   }
 
   /**
    * POST /subscriptions/downgrade
-   * Get subscription of a business
+   * Get subscription of a tenant
    */
-  @Post('business')
-  async getMyBusiness(@Body() body: { businessId: string }) {
+  @Post('tenant')
+  async getMyTenant(@Body() body: { tenantId: string }) {
     // return this.subscriptionService.
   }
 
@@ -54,7 +54,7 @@ export class SubscriptionController {
    * Cancel a subscription
    */
   @Post(':id')
-  async cancel(@Body() body: { businessId: string }) {
-    return this.subscriptionService.cancelSubscription(body.businessId);
+  async cancel(@Body() body: { tenantId: string }) {
+    return this.subscriptionService.cancelSubscription(body.tenantId);
   }
 }

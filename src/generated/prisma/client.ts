@@ -43,10 +43,10 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
- * Model BusinessMember
+ * Model Membership
  * 
  */
-export type BusinessMember = Prisma.BusinessMemberModel
+export type Membership = Prisma.MembershipModel
 /**
  * Model Session
  * 
@@ -63,15 +63,15 @@ export type Verification = Prisma.VerificationModel
  */
 export type VerificationLock = Prisma.VerificationLockModel
 /**
- * Model Business
+ * Model Tenant
  * 
  */
-export type Business = Prisma.BusinessModel
+export type Tenant = Prisma.TenantModel
 /**
- * Model BusinessSettings
+ * Model TenantSettings
  * 
  */
-export type BusinessSettings = Prisma.BusinessSettingsModel
+export type TenantSettings = Prisma.TenantSettingsModel
 /**
  * Model Service
  * 
@@ -88,20 +88,15 @@ export type ServiceAssignment = Prisma.ServiceAssignmentModel
  */
 export type Staff = Prisma.StaffModel
 /**
- * Model MemberInvite
- * 
- */
-export type MemberInvite = Prisma.MemberInviteModel
-/**
  * Model WorkingHours
  * 
  */
 export type WorkingHours = Prisma.WorkingHoursModel
 /**
- * Model BusinessWorkingHours
+ * Model TenantWorkingHours
  * 
  */
-export type BusinessWorkingHours = Prisma.BusinessWorkingHoursModel
+export type TenantWorkingHours = Prisma.TenantWorkingHoursModel
 /**
  * Model ScheduleException
  * 
@@ -128,15 +123,15 @@ export type Appointment = Prisma.AppointmentModel
  */
 export type AppointmentBlock = Prisma.AppointmentBlockModel
 /**
- * Model BusinessDailyStats
+ * Model TenantDailyStats
  * 
  */
-export type BusinessDailyStats = Prisma.BusinessDailyStatsModel
+export type TenantDailyStats = Prisma.TenantDailyStatsModel
 /**
- * Model BusinessLifetimeStats
+ * Model TenantLifetimeStats
  * 
  */
-export type BusinessLifetimeStats = Prisma.BusinessLifetimeStatsModel
+export type TenantLifetimeStats = Prisma.TenantLifetimeStatsModel
 /**
  * Model StaffDailyStats
  * 
@@ -168,10 +163,10 @@ export type InAppNotification = Prisma.InAppNotificationModel
  */
 export type NotificationLog = Prisma.NotificationLogModel
 /**
- * Model BusinessQuota
+ * Model TenantQuota
  * 
  */
-export type BusinessQuota = Prisma.BusinessQuotaModel
+export type TenantQuota = Prisma.TenantQuotaModel
 /**
  * Model Subscription
  * 
@@ -213,7 +208,7 @@ export type PlatformAdmin = Prisma.PlatformAdminModel
  */
 export type WebhookLog = Prisma.WebhookLogModel
 /**
- * Model BusinessOnboarding
+ * Model TenantOnboarding
  * 
  */
-export type BusinessOnboarding = Prisma.BusinessOnboardingModel
+export type TenantOnboarding = Prisma.TenantOnboardingModel

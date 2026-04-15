@@ -12,14 +12,16 @@ export interface UploadResult {
 export class MediaService {
   constructor(private readonly cloudinaryService: CloudinaryService) {}
 
-  async upload(file: Express.Multer.File, type: ImageType, businessId: string): Promise<UploadResult> {
+  async upload(file: Express.Multer.File, type: ImageType, tenantId: string): Promise<UploadResult> {
     const config = getImageConfig(type);
+
+    console.log(file);
 
     validateImage(file, config);
 
     const processed = await processImage(file.buffer, config);
 
-    const path = generateFilePath(businessId, type);
+    const path = generateFilePath(tenantId, type);
 
     const result = await this.cloudinaryService.upload(processed, path);
 

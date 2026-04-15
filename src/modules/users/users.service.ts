@@ -37,7 +37,7 @@ export class UsersService {
   }
 
   async getMe(userId: string) {
-    const user = await this.usersRepository.getMeWithBusiness(userId);
+    const user = await this.usersRepository.getMeWithTenant(userId);
 
     if (!user) {
       throw new NotFoundException('User not found');

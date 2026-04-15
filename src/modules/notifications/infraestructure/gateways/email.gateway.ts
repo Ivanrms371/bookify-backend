@@ -2,9 +2,9 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Resend } from 'resend';
 import { Notification, RecipientType } from 'src/generated/prisma/client';
-import { CustomersService } from 'src/modules/customers/customers.service';
 import { UsersService } from 'src/modules/users/users.service';
 import { BuildEmailResponse } from '../../domain/templates/build-email.interface';
+import { CustomersService } from 'src/modules/tenants/features/customers/customers.service';
 
 @Injectable()
 export class EmailGateway {
@@ -68,7 +68,7 @@ export class EmailGateway {
     switch (recipientType) {
       case RecipientType.CUSTOMER: {
         const customer = await this.customersService.findById(recipientId);
-        if (!customer.email) {
+        if (!customer?.email) {
           throw new Error('Customer has no email');
         }
         return customer.email;

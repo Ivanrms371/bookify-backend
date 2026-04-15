@@ -6,10 +6,11 @@ import { CreateAppointmentDto } from '../../dto/create-appointment.dto';
 import { AppointmentCreatedEvent } from '../../domain/events/appointment-created.event';
 import { AvailabilityPolicy } from '../../domain/policies/appointment-creation.policy';
 import { buildTimeBlocks } from '../../domain/appointment-block.builder';
-import { CustomersService } from 'src/modules/customers/customers.service';
-import { ServicesService } from 'src/modules/services/services/services.service';
+import { CustomersService } from 'src/modules/tenants/features/customers/customers.service';
+import { ServicesService } from 'src/modules/tenants/features/services/services/services.service';
 import { AppointmentCancelationService } from './appointment-cancelation.service';
 import { AppointmentReschedulingService } from './appointment-rescheduling.service';
+import { AppointmentStatsService } from './appointment-stats.service';
 
 @Injectable()
 export class AppointmentCreationService {
@@ -22,6 +23,7 @@ export class AppointmentCreationService {
     private readonly appointmentsRepository: AppointmentsRepository,
     private readonly appointmentCancelationService: AppointmentCancelationService,
     private readonly appointmentReschedulingService: AppointmentReschedulingService,
+    private readonly appointmentStatsService: AppointmentStatsService,
   ) {}
 
   private generateConfirmationCode() {
@@ -30,7 +32,7 @@ export class AppointmentCreationService {
 
   async createAppointment(dto: CreateAppointmentDto) {
     const startTime = new Date(dto.appointment.date);
-    const service = await this.servicesService.findServiceById(dto.appointment.serviceId);
+    const service = await this.servicesService.findServiceById(dto.appointment.serviceId, dto.appointment.staffId);
     const endTime = new Date(startTime.getTime() + service.durationMinutes * 60 * 1000);
 
     await this.policy.validate({
@@ -40,14 +42,14 @@ export class AppointmentCreationService {
     });
 
     const result = await this.prisma.$transaction(async (tx) => {
-      const customer = await this.customersService.findOrCreateCustomer(dto.appointment.businessId, dto.customer);
+      const { customer, isNewCustomer } = await this.customersService.findOrCreate(dto.appointment.tenantId, dto.customer);
 
       const { rescheduleUrl, rescheduleToken } = await this.appointmentReschedulingService.generateRescheduleUrl();
       const { cancelUrl, cancelToken } = await this.appointmentCancelationService.generateCancelUrl();
 
       const appointment = await this.appointmentsRepository.create(
         {
-          business: { connect: { id: dto.appointment.businessId } },
+          tenant: { connect: { id: dto.appointment.tenantId } },
           staff: { connect: { id: dto.appointment.staffId } },
           service: { connect: { id: dto.appointment.serviceId } },
           customer: { connect: { id: customer.id } },
@@ -88,6 +90,17 @@ export class AppointmentCreationService {
         await tx.appointmentBlock.createMany({ data: appointmentBlocks });
       }
 
+      await this.appointmentStatsService.onCreated(
+        {
+          customerId: appointment.customerId,
+          staffId: appointment.staffId,
+          tenantId: appointment.tenantId,
+          isNewCustomer,
+          startTime,
+        },
+        tx,
+      );
+
       return {
         customer,
         appointment,
@@ -97,7 +110,7 @@ export class AppointmentCreationService {
     });
 
     this.eventEmitter.emit('appointment.created', {
-      businessId: result.appointment.businessId,
+      tenantId: result.appointment.tenantId,
       staffId: result.appointment.staffId,
       serviceId: result.appointment.serviceId,
       customerId: result.customer.id,
@@ -111,6 +124,7 @@ export class AppointmentCreationService {
       userId: result.appointment.staff.userId,
       cancelUrl: result.cancelUrl,
       rescheduleUrl: result.rescheduleUrl,
+      createdBy: 'CUSTOMER',
     } as AppointmentCreatedEvent);
 
     return result;

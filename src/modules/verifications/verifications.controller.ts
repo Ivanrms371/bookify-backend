@@ -27,7 +27,7 @@ export class VerificationsController {
 
   // @Post('phone/send')
   // async sendPhoneCode(@Request() req, @Body('phone') phone: string) {
-  //   return this.phoneVerification.sendVerificationCode(req.user.id, phone, req.user.businessId, req.ip);
+  //   return this.phoneVerification.sendVerificationCode(req.user.id, phone, req.user.tenantId, req.ip);
   // }
 
   // @Post('phone/verify')

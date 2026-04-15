@@ -31,17 +31,18 @@ export class UsersRepository extends BaseRepository {
     return this.db(tx).user.findUnique({ where: { googleId } });
   }
 
-  async getMeWithBusiness(userId: string, tx?: TransactionClient) {
+  async getMeWithTenant(userId: string, tx?: TransactionClient) {
     return this.db(tx).user.findUnique({
       where: { id: userId },
       select: {
+        id: true,
         avatarUrl: true,
         name: true,
         email: true,
         phone: true,
-        businessMembers: {
+        memberships: {
           select: {
-            business: {
+            tenant: {
               select: {
                 id: true,
                 name: true,
@@ -51,6 +52,19 @@ export class UsersRepository extends BaseRepository {
                   where: { userId },
                   select: {
                     role: true,
+                  },
+                },
+                subscription: {
+                  select: {
+                    status: true,
+                    trialEndsAt: true,
+                    currentPeriodEnd: true,
+                    cancelledAt: true,
+                    plan: {
+                      select: {
+                        planType: true,
+                      },
+                    },
                   },
                 },
               },

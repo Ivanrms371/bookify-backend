@@ -27,13 +27,13 @@ export type AggregatePlatformStats = {
 }
 
 export type PlatformStatsAvgAggregateOutputType = {
-  newBusinessesToday: number | null
-  churnedBusinessesToday: number | null
+  newTenantesToday: number | null
+  churnedTenantesToday: number | null
   appointmentsToday: number | null
   revenueToday: runtime.Decimal | null
   mrrLostToday: runtime.Decimal | null
   costsToday: runtime.Decimal | null
-  totalBusinesses: number | null
+  totalTenantes: number | null
   totalActiveSubscriptions: number | null
   mrrTotal: runtime.Decimal | null
   notificationsSent: number | null
@@ -41,13 +41,13 @@ export type PlatformStatsAvgAggregateOutputType = {
 }
 
 export type PlatformStatsSumAggregateOutputType = {
-  newBusinessesToday: number | null
-  churnedBusinessesToday: number | null
+  newTenantesToday: number | null
+  churnedTenantesToday: number | null
   appointmentsToday: number | null
   revenueToday: runtime.Decimal | null
   mrrLostToday: runtime.Decimal | null
   costsToday: runtime.Decimal | null
-  totalBusinesses: number | null
+  totalTenantes: number | null
   totalActiveSubscriptions: number | null
   mrrTotal: runtime.Decimal | null
   notificationsSent: number | null
@@ -57,13 +57,13 @@ export type PlatformStatsSumAggregateOutputType = {
 export type PlatformStatsMinAggregateOutputType = {
   id: string | null
   date: Date | null
-  newBusinessesToday: number | null
-  churnedBusinessesToday: number | null
+  newTenantesToday: number | null
+  churnedTenantesToday: number | null
   appointmentsToday: number | null
   revenueToday: runtime.Decimal | null
   mrrLostToday: runtime.Decimal | null
   costsToday: runtime.Decimal | null
-  totalBusinesses: number | null
+  totalTenantes: number | null
   totalActiveSubscriptions: number | null
   mrrTotal: runtime.Decimal | null
   notificationsSent: number | null
@@ -75,13 +75,13 @@ export type PlatformStatsMinAggregateOutputType = {
 export type PlatformStatsMaxAggregateOutputType = {
   id: string | null
   date: Date | null
-  newBusinessesToday: number | null
-  churnedBusinessesToday: number | null
+  newTenantesToday: number | null
+  churnedTenantesToday: number | null
   appointmentsToday: number | null
   revenueToday: runtime.Decimal | null
   mrrLostToday: runtime.Decimal | null
   costsToday: runtime.Decimal | null
-  totalBusinesses: number | null
+  totalTenantes: number | null
   totalActiveSubscriptions: number | null
   mrrTotal: runtime.Decimal | null
   notificationsSent: number | null
@@ -93,13 +93,13 @@ export type PlatformStatsMaxAggregateOutputType = {
 export type PlatformStatsCountAggregateOutputType = {
   id: number
   date: number
-  newBusinessesToday: number
-  churnedBusinessesToday: number
+  newTenantesToday: number
+  churnedTenantesToday: number
   appointmentsToday: number
   revenueToday: number
   mrrLostToday: number
   costsToday: number
-  totalBusinesses: number
+  totalTenantes: number
   totalActiveSubscriptions: number
   mrrTotal: number
   notificationsSent: number
@@ -111,13 +111,13 @@ export type PlatformStatsCountAggregateOutputType = {
 
 
 export type PlatformStatsAvgAggregateInputType = {
-  newBusinessesToday?: true
-  churnedBusinessesToday?: true
+  newTenantesToday?: true
+  churnedTenantesToday?: true
   appointmentsToday?: true
   revenueToday?: true
   mrrLostToday?: true
   costsToday?: true
-  totalBusinesses?: true
+  totalTenantes?: true
   totalActiveSubscriptions?: true
   mrrTotal?: true
   notificationsSent?: true
@@ -125,13 +125,13 @@ export type PlatformStatsAvgAggregateInputType = {
 }
 
 export type PlatformStatsSumAggregateInputType = {
-  newBusinessesToday?: true
-  churnedBusinessesToday?: true
+  newTenantesToday?: true
+  churnedTenantesToday?: true
   appointmentsToday?: true
   revenueToday?: true
   mrrLostToday?: true
   costsToday?: true
-  totalBusinesses?: true
+  totalTenantes?: true
   totalActiveSubscriptions?: true
   mrrTotal?: true
   notificationsSent?: true
@@ -141,13 +141,13 @@ export type PlatformStatsSumAggregateInputType = {
 export type PlatformStatsMinAggregateInputType = {
   id?: true
   date?: true
-  newBusinessesToday?: true
-  churnedBusinessesToday?: true
+  newTenantesToday?: true
+  churnedTenantesToday?: true
   appointmentsToday?: true
   revenueToday?: true
   mrrLostToday?: true
   costsToday?: true
-  totalBusinesses?: true
+  totalTenantes?: true
   totalActiveSubscriptions?: true
   mrrTotal?: true
   notificationsSent?: true
@@ -159,13 +159,13 @@ export type PlatformStatsMinAggregateInputType = {
 export type PlatformStatsMaxAggregateInputType = {
   id?: true
   date?: true
-  newBusinessesToday?: true
-  churnedBusinessesToday?: true
+  newTenantesToday?: true
+  churnedTenantesToday?: true
   appointmentsToday?: true
   revenueToday?: true
   mrrLostToday?: true
   costsToday?: true
-  totalBusinesses?: true
+  totalTenantes?: true
   totalActiveSubscriptions?: true
   mrrTotal?: true
   notificationsSent?: true
@@ -177,13 +177,13 @@ export type PlatformStatsMaxAggregateInputType = {
 export type PlatformStatsCountAggregateInputType = {
   id?: true
   date?: true
-  newBusinessesToday?: true
-  churnedBusinessesToday?: true
+  newTenantesToday?: true
+  churnedTenantesToday?: true
   appointmentsToday?: true
   revenueToday?: true
   mrrLostToday?: true
   costsToday?: true
-  totalBusinesses?: true
+  totalTenantes?: true
   totalActiveSubscriptions?: true
   mrrTotal?: true
   notificationsSent?: true
@@ -282,13 +282,13 @@ export type PlatformStatsGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type PlatformStatsGroupByOutputType = {
   id: string
   date: Date
-  newBusinessesToday: number
-  churnedBusinessesToday: number
+  newTenantesToday: number
+  churnedTenantesToday: number
   appointmentsToday: number
   revenueToday: runtime.Decimal
   mrrLostToday: runtime.Decimal
   costsToday: runtime.Decimal
-  totalBusinesses: number
+  totalTenantes: number
   totalActiveSubscriptions: number
   mrrTotal: runtime.Decimal
   notificationsSent: number
@@ -323,13 +323,13 @@ export type PlatformStatsWhereInput = {
   NOT?: Prisma.PlatformStatsWhereInput | Prisma.PlatformStatsWhereInput[]
   id?: Prisma.UuidFilter<"PlatformStats"> | string
   date?: Prisma.DateTimeFilter<"PlatformStats"> | Date | string
-  newBusinessesToday?: Prisma.IntFilter<"PlatformStats"> | number
-  churnedBusinessesToday?: Prisma.IntFilter<"PlatformStats"> | number
+  newTenantesToday?: Prisma.IntFilter<"PlatformStats"> | number
+  churnedTenantesToday?: Prisma.IntFilter<"PlatformStats"> | number
   appointmentsToday?: Prisma.IntFilter<"PlatformStats"> | number
   revenueToday?: Prisma.DecimalFilter<"PlatformStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   mrrLostToday?: Prisma.DecimalFilter<"PlatformStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   costsToday?: Prisma.DecimalFilter<"PlatformStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalBusinesses?: Prisma.IntFilter<"PlatformStats"> | number
+  totalTenantes?: Prisma.IntFilter<"PlatformStats"> | number
   totalActiveSubscriptions?: Prisma.IntFilter<"PlatformStats"> | number
   mrrTotal?: Prisma.DecimalFilter<"PlatformStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   notificationsSent?: Prisma.IntFilter<"PlatformStats"> | number
@@ -341,13 +341,13 @@ export type PlatformStatsWhereInput = {
 export type PlatformStatsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
-  newBusinessesToday?: Prisma.SortOrder
-  churnedBusinessesToday?: Prisma.SortOrder
+  newTenantesToday?: Prisma.SortOrder
+  churnedTenantesToday?: Prisma.SortOrder
   appointmentsToday?: Prisma.SortOrder
   revenueToday?: Prisma.SortOrder
   mrrLostToday?: Prisma.SortOrder
   costsToday?: Prisma.SortOrder
-  totalBusinesses?: Prisma.SortOrder
+  totalTenantes?: Prisma.SortOrder
   totalActiveSubscriptions?: Prisma.SortOrder
   mrrTotal?: Prisma.SortOrder
   notificationsSent?: Prisma.SortOrder
@@ -362,13 +362,13 @@ export type PlatformStatsWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PlatformStatsWhereInput | Prisma.PlatformStatsWhereInput[]
   OR?: Prisma.PlatformStatsWhereInput[]
   NOT?: Prisma.PlatformStatsWhereInput | Prisma.PlatformStatsWhereInput[]
-  newBusinessesToday?: Prisma.IntFilter<"PlatformStats"> | number
-  churnedBusinessesToday?: Prisma.IntFilter<"PlatformStats"> | number
+  newTenantesToday?: Prisma.IntFilter<"PlatformStats"> | number
+  churnedTenantesToday?: Prisma.IntFilter<"PlatformStats"> | number
   appointmentsToday?: Prisma.IntFilter<"PlatformStats"> | number
   revenueToday?: Prisma.DecimalFilter<"PlatformStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   mrrLostToday?: Prisma.DecimalFilter<"PlatformStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   costsToday?: Prisma.DecimalFilter<"PlatformStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalBusinesses?: Prisma.IntFilter<"PlatformStats"> | number
+  totalTenantes?: Prisma.IntFilter<"PlatformStats"> | number
   totalActiveSubscriptions?: Prisma.IntFilter<"PlatformStats"> | number
   mrrTotal?: Prisma.DecimalFilter<"PlatformStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   notificationsSent?: Prisma.IntFilter<"PlatformStats"> | number
@@ -380,13 +380,13 @@ export type PlatformStatsWhereUniqueInput = Prisma.AtLeast<{
 export type PlatformStatsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
-  newBusinessesToday?: Prisma.SortOrder
-  churnedBusinessesToday?: Prisma.SortOrder
+  newTenantesToday?: Prisma.SortOrder
+  churnedTenantesToday?: Prisma.SortOrder
   appointmentsToday?: Prisma.SortOrder
   revenueToday?: Prisma.SortOrder
   mrrLostToday?: Prisma.SortOrder
   costsToday?: Prisma.SortOrder
-  totalBusinesses?: Prisma.SortOrder
+  totalTenantes?: Prisma.SortOrder
   totalActiveSubscriptions?: Prisma.SortOrder
   mrrTotal?: Prisma.SortOrder
   notificationsSent?: Prisma.SortOrder
@@ -406,13 +406,13 @@ export type PlatformStatsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.PlatformStatsScalarWhereWithAggregatesInput | Prisma.PlatformStatsScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"PlatformStats"> | string
   date?: Prisma.DateTimeWithAggregatesFilter<"PlatformStats"> | Date | string
-  newBusinessesToday?: Prisma.IntWithAggregatesFilter<"PlatformStats"> | number
-  churnedBusinessesToday?: Prisma.IntWithAggregatesFilter<"PlatformStats"> | number
+  newTenantesToday?: Prisma.IntWithAggregatesFilter<"PlatformStats"> | number
+  churnedTenantesToday?: Prisma.IntWithAggregatesFilter<"PlatformStats"> | number
   appointmentsToday?: Prisma.IntWithAggregatesFilter<"PlatformStats"> | number
   revenueToday?: Prisma.DecimalWithAggregatesFilter<"PlatformStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   mrrLostToday?: Prisma.DecimalWithAggregatesFilter<"PlatformStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   costsToday?: Prisma.DecimalWithAggregatesFilter<"PlatformStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalBusinesses?: Prisma.IntWithAggregatesFilter<"PlatformStats"> | number
+  totalTenantes?: Prisma.IntWithAggregatesFilter<"PlatformStats"> | number
   totalActiveSubscriptions?: Prisma.IntWithAggregatesFilter<"PlatformStats"> | number
   mrrTotal?: Prisma.DecimalWithAggregatesFilter<"PlatformStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   notificationsSent?: Prisma.IntWithAggregatesFilter<"PlatformStats"> | number
@@ -424,13 +424,13 @@ export type PlatformStatsScalarWhereWithAggregatesInput = {
 export type PlatformStatsCreateInput = {
   id?: string
   date: Date | string
-  newBusinessesToday?: number
-  churnedBusinessesToday?: number
+  newTenantesToday?: number
+  churnedTenantesToday?: number
   appointmentsToday?: number
   revenueToday?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mrrLostToday?: runtime.Decimal | runtime.DecimalJsLike | number | string
   costsToday?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalBusinesses?: number
+  totalTenantes?: number
   totalActiveSubscriptions?: number
   mrrTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   notificationsSent?: number
@@ -442,13 +442,13 @@ export type PlatformStatsCreateInput = {
 export type PlatformStatsUncheckedCreateInput = {
   id?: string
   date: Date | string
-  newBusinessesToday?: number
-  churnedBusinessesToday?: number
+  newTenantesToday?: number
+  churnedTenantesToday?: number
   appointmentsToday?: number
   revenueToday?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mrrLostToday?: runtime.Decimal | runtime.DecimalJsLike | number | string
   costsToday?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalBusinesses?: number
+  totalTenantes?: number
   totalActiveSubscriptions?: number
   mrrTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   notificationsSent?: number
@@ -460,13 +460,13 @@ export type PlatformStatsUncheckedCreateInput = {
 export type PlatformStatsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  newBusinessesToday?: Prisma.IntFieldUpdateOperationsInput | number
-  churnedBusinessesToday?: Prisma.IntFieldUpdateOperationsInput | number
+  newTenantesToday?: Prisma.IntFieldUpdateOperationsInput | number
+  churnedTenantesToday?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentsToday?: Prisma.IntFieldUpdateOperationsInput | number
   revenueToday?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mrrLostToday?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   costsToday?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalBusinesses?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTenantes?: Prisma.IntFieldUpdateOperationsInput | number
   totalActiveSubscriptions?: Prisma.IntFieldUpdateOperationsInput | number
   mrrTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   notificationsSent?: Prisma.IntFieldUpdateOperationsInput | number
@@ -478,13 +478,13 @@ export type PlatformStatsUpdateInput = {
 export type PlatformStatsUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  newBusinessesToday?: Prisma.IntFieldUpdateOperationsInput | number
-  churnedBusinessesToday?: Prisma.IntFieldUpdateOperationsInput | number
+  newTenantesToday?: Prisma.IntFieldUpdateOperationsInput | number
+  churnedTenantesToday?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentsToday?: Prisma.IntFieldUpdateOperationsInput | number
   revenueToday?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mrrLostToday?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   costsToday?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalBusinesses?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTenantes?: Prisma.IntFieldUpdateOperationsInput | number
   totalActiveSubscriptions?: Prisma.IntFieldUpdateOperationsInput | number
   mrrTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   notificationsSent?: Prisma.IntFieldUpdateOperationsInput | number
@@ -496,13 +496,13 @@ export type PlatformStatsUncheckedUpdateInput = {
 export type PlatformStatsCreateManyInput = {
   id?: string
   date: Date | string
-  newBusinessesToday?: number
-  churnedBusinessesToday?: number
+  newTenantesToday?: number
+  churnedTenantesToday?: number
   appointmentsToday?: number
   revenueToday?: runtime.Decimal | runtime.DecimalJsLike | number | string
   mrrLostToday?: runtime.Decimal | runtime.DecimalJsLike | number | string
   costsToday?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalBusinesses?: number
+  totalTenantes?: number
   totalActiveSubscriptions?: number
   mrrTotal?: runtime.Decimal | runtime.DecimalJsLike | number | string
   notificationsSent?: number
@@ -514,13 +514,13 @@ export type PlatformStatsCreateManyInput = {
 export type PlatformStatsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  newBusinessesToday?: Prisma.IntFieldUpdateOperationsInput | number
-  churnedBusinessesToday?: Prisma.IntFieldUpdateOperationsInput | number
+  newTenantesToday?: Prisma.IntFieldUpdateOperationsInput | number
+  churnedTenantesToday?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentsToday?: Prisma.IntFieldUpdateOperationsInput | number
   revenueToday?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mrrLostToday?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   costsToday?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalBusinesses?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTenantes?: Prisma.IntFieldUpdateOperationsInput | number
   totalActiveSubscriptions?: Prisma.IntFieldUpdateOperationsInput | number
   mrrTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   notificationsSent?: Prisma.IntFieldUpdateOperationsInput | number
@@ -532,13 +532,13 @@ export type PlatformStatsUpdateManyMutationInput = {
 export type PlatformStatsUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  newBusinessesToday?: Prisma.IntFieldUpdateOperationsInput | number
-  churnedBusinessesToday?: Prisma.IntFieldUpdateOperationsInput | number
+  newTenantesToday?: Prisma.IntFieldUpdateOperationsInput | number
+  churnedTenantesToday?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentsToday?: Prisma.IntFieldUpdateOperationsInput | number
   revenueToday?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   mrrLostToday?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   costsToday?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  totalBusinesses?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTenantes?: Prisma.IntFieldUpdateOperationsInput | number
   totalActiveSubscriptions?: Prisma.IntFieldUpdateOperationsInput | number
   mrrTotal?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   notificationsSent?: Prisma.IntFieldUpdateOperationsInput | number
@@ -550,13 +550,13 @@ export type PlatformStatsUncheckedUpdateManyInput = {
 export type PlatformStatsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
-  newBusinessesToday?: Prisma.SortOrder
-  churnedBusinessesToday?: Prisma.SortOrder
+  newTenantesToday?: Prisma.SortOrder
+  churnedTenantesToday?: Prisma.SortOrder
   appointmentsToday?: Prisma.SortOrder
   revenueToday?: Prisma.SortOrder
   mrrLostToday?: Prisma.SortOrder
   costsToday?: Prisma.SortOrder
-  totalBusinesses?: Prisma.SortOrder
+  totalTenantes?: Prisma.SortOrder
   totalActiveSubscriptions?: Prisma.SortOrder
   mrrTotal?: Prisma.SortOrder
   notificationsSent?: Prisma.SortOrder
@@ -566,13 +566,13 @@ export type PlatformStatsCountOrderByAggregateInput = {
 }
 
 export type PlatformStatsAvgOrderByAggregateInput = {
-  newBusinessesToday?: Prisma.SortOrder
-  churnedBusinessesToday?: Prisma.SortOrder
+  newTenantesToday?: Prisma.SortOrder
+  churnedTenantesToday?: Prisma.SortOrder
   appointmentsToday?: Prisma.SortOrder
   revenueToday?: Prisma.SortOrder
   mrrLostToday?: Prisma.SortOrder
   costsToday?: Prisma.SortOrder
-  totalBusinesses?: Prisma.SortOrder
+  totalTenantes?: Prisma.SortOrder
   totalActiveSubscriptions?: Prisma.SortOrder
   mrrTotal?: Prisma.SortOrder
   notificationsSent?: Prisma.SortOrder
@@ -582,13 +582,13 @@ export type PlatformStatsAvgOrderByAggregateInput = {
 export type PlatformStatsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
-  newBusinessesToday?: Prisma.SortOrder
-  churnedBusinessesToday?: Prisma.SortOrder
+  newTenantesToday?: Prisma.SortOrder
+  churnedTenantesToday?: Prisma.SortOrder
   appointmentsToday?: Prisma.SortOrder
   revenueToday?: Prisma.SortOrder
   mrrLostToday?: Prisma.SortOrder
   costsToday?: Prisma.SortOrder
-  totalBusinesses?: Prisma.SortOrder
+  totalTenantes?: Prisma.SortOrder
   totalActiveSubscriptions?: Prisma.SortOrder
   mrrTotal?: Prisma.SortOrder
   notificationsSent?: Prisma.SortOrder
@@ -600,13 +600,13 @@ export type PlatformStatsMaxOrderByAggregateInput = {
 export type PlatformStatsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
-  newBusinessesToday?: Prisma.SortOrder
-  churnedBusinessesToday?: Prisma.SortOrder
+  newTenantesToday?: Prisma.SortOrder
+  churnedTenantesToday?: Prisma.SortOrder
   appointmentsToday?: Prisma.SortOrder
   revenueToday?: Prisma.SortOrder
   mrrLostToday?: Prisma.SortOrder
   costsToday?: Prisma.SortOrder
-  totalBusinesses?: Prisma.SortOrder
+  totalTenantes?: Prisma.SortOrder
   totalActiveSubscriptions?: Prisma.SortOrder
   mrrTotal?: Prisma.SortOrder
   notificationsSent?: Prisma.SortOrder
@@ -616,13 +616,13 @@ export type PlatformStatsMinOrderByAggregateInput = {
 }
 
 export type PlatformStatsSumOrderByAggregateInput = {
-  newBusinessesToday?: Prisma.SortOrder
-  churnedBusinessesToday?: Prisma.SortOrder
+  newTenantesToday?: Prisma.SortOrder
+  churnedTenantesToday?: Prisma.SortOrder
   appointmentsToday?: Prisma.SortOrder
   revenueToday?: Prisma.SortOrder
   mrrLostToday?: Prisma.SortOrder
   costsToday?: Prisma.SortOrder
-  totalBusinesses?: Prisma.SortOrder
+  totalTenantes?: Prisma.SortOrder
   totalActiveSubscriptions?: Prisma.SortOrder
   mrrTotal?: Prisma.SortOrder
   notificationsSent?: Prisma.SortOrder
@@ -634,13 +634,13 @@ export type PlatformStatsSumOrderByAggregateInput = {
 export type PlatformStatsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   date?: boolean
-  newBusinessesToday?: boolean
-  churnedBusinessesToday?: boolean
+  newTenantesToday?: boolean
+  churnedTenantesToday?: boolean
   appointmentsToday?: boolean
   revenueToday?: boolean
   mrrLostToday?: boolean
   costsToday?: boolean
-  totalBusinesses?: boolean
+  totalTenantes?: boolean
   totalActiveSubscriptions?: boolean
   mrrTotal?: boolean
   notificationsSent?: boolean
@@ -652,13 +652,13 @@ export type PlatformStatsSelect<ExtArgs extends runtime.Types.Extensions.Interna
 export type PlatformStatsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   date?: boolean
-  newBusinessesToday?: boolean
-  churnedBusinessesToday?: boolean
+  newTenantesToday?: boolean
+  churnedTenantesToday?: boolean
   appointmentsToday?: boolean
   revenueToday?: boolean
   mrrLostToday?: boolean
   costsToday?: boolean
-  totalBusinesses?: boolean
+  totalTenantes?: boolean
   totalActiveSubscriptions?: boolean
   mrrTotal?: boolean
   notificationsSent?: boolean
@@ -670,13 +670,13 @@ export type PlatformStatsSelectCreateManyAndReturn<ExtArgs extends runtime.Types
 export type PlatformStatsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   date?: boolean
-  newBusinessesToday?: boolean
-  churnedBusinessesToday?: boolean
+  newTenantesToday?: boolean
+  churnedTenantesToday?: boolean
   appointmentsToday?: boolean
   revenueToday?: boolean
   mrrLostToday?: boolean
   costsToday?: boolean
-  totalBusinesses?: boolean
+  totalTenantes?: boolean
   totalActiveSubscriptions?: boolean
   mrrTotal?: boolean
   notificationsSent?: boolean
@@ -688,13 +688,13 @@ export type PlatformStatsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
 export type PlatformStatsSelectScalar = {
   id?: boolean
   date?: boolean
-  newBusinessesToday?: boolean
-  churnedBusinessesToday?: boolean
+  newTenantesToday?: boolean
+  churnedTenantesToday?: boolean
   appointmentsToday?: boolean
   revenueToday?: boolean
   mrrLostToday?: boolean
   costsToday?: boolean
-  totalBusinesses?: boolean
+  totalTenantes?: boolean
   totalActiveSubscriptions?: boolean
   mrrTotal?: boolean
   notificationsSent?: boolean
@@ -703,7 +703,7 @@ export type PlatformStatsSelectScalar = {
   createdAt?: boolean
 }
 
-export type PlatformStatsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "date" | "newBusinessesToday" | "churnedBusinessesToday" | "appointmentsToday" | "revenueToday" | "mrrLostToday" | "costsToday" | "totalBusinesses" | "totalActiveSubscriptions" | "mrrTotal" | "notificationsSent" | "notificationsFailed" | "updatedAt" | "createdAt", ExtArgs["result"]["platformStats"]>
+export type PlatformStatsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "date" | "newTenantesToday" | "churnedTenantesToday" | "appointmentsToday" | "revenueToday" | "mrrLostToday" | "costsToday" | "totalTenantes" | "totalActiveSubscriptions" | "mrrTotal" | "notificationsSent" | "notificationsFailed" | "updatedAt" | "createdAt", ExtArgs["result"]["platformStats"]>
 
 export type $PlatformStatsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PlatformStats"
@@ -711,13 +711,13 @@ export type $PlatformStatsPayload<ExtArgs extends runtime.Types.Extensions.Inter
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     date: Date
-    newBusinessesToday: number
-    churnedBusinessesToday: number
+    newTenantesToday: number
+    churnedTenantesToday: number
     appointmentsToday: number
     revenueToday: runtime.Decimal
     mrrLostToday: runtime.Decimal
     costsToday: runtime.Decimal
-    totalBusinesses: number
+    totalTenantes: number
     totalActiveSubscriptions: number
     mrrTotal: runtime.Decimal
     notificationsSent: number
@@ -1149,13 +1149,13 @@ export interface Prisma__PlatformStatsClient<T, Null = never, ExtArgs extends ru
 export interface PlatformStatsFieldRefs {
   readonly id: Prisma.FieldRef<"PlatformStats", 'String'>
   readonly date: Prisma.FieldRef<"PlatformStats", 'DateTime'>
-  readonly newBusinessesToday: Prisma.FieldRef<"PlatformStats", 'Int'>
-  readonly churnedBusinessesToday: Prisma.FieldRef<"PlatformStats", 'Int'>
+  readonly newTenantesToday: Prisma.FieldRef<"PlatformStats", 'Int'>
+  readonly churnedTenantesToday: Prisma.FieldRef<"PlatformStats", 'Int'>
   readonly appointmentsToday: Prisma.FieldRef<"PlatformStats", 'Int'>
   readonly revenueToday: Prisma.FieldRef<"PlatformStats", 'Decimal'>
   readonly mrrLostToday: Prisma.FieldRef<"PlatformStats", 'Decimal'>
   readonly costsToday: Prisma.FieldRef<"PlatformStats", 'Decimal'>
-  readonly totalBusinesses: Prisma.FieldRef<"PlatformStats", 'Int'>
+  readonly totalTenantes: Prisma.FieldRef<"PlatformStats", 'Int'>
   readonly totalActiveSubscriptions: Prisma.FieldRef<"PlatformStats", 'Int'>
   readonly mrrTotal: Prisma.FieldRef<"PlatformStats", 'Decimal'>
   readonly notificationsSent: Prisma.FieldRef<"PlatformStats", 'Int'>

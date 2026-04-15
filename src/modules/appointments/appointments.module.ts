@@ -1,24 +1,36 @@
 import { Module } from '@nestjs/common';
-import { AppointmentsController } from './appointments.controller';
-import { AppointmentCreationService } from './application/services/appointment-creation.service';
+import { WidgetAppointmentsController } from './controllers/widget-appointments.controller';
+import { TenantAppointmentsController } from './controllers/tenant-appointments.controller';
+import { CoreAppointmentCreator } from './application/services/core-appointment-creator.service';
+import { WidgetAppointmentUseCase } from './application/usecases/widget-appointment.usecase';
+import { StaffAppointmentUseCase } from './application/usecases/staff-appointment.usecase';
 import { AppointmentCancelationService } from './application/services/appointment-cancelation.service';
 import { AppointmentReschedulingService } from './application/services/appointment-rescheduling.service';
 import { AppointmentsRepository } from './infrastructure/appointments.repository';
-import { CustomersModule } from '../customers/customers.module';
-import { ServicesModule } from '../services/services/services.module';
-import { StaffsModule } from '../staffs/staffs.module';
+import { CustomersModule } from '../tenants/features/customers/customers.module';
+import { ServicesModule } from '../tenants/features/services/services/services.module';
+import { StaffsModule } from '../tenants/features/staffs/staffs.module';
 import { InfrastructureModule } from 'src/shared/infrastructure/infrastructure.module';
 import { AvailabilityPolicy } from './domain/policies/appointment-creation.policy';
 import { AppointmentsService } from './application/services/appointments.service';
+import { TenantAppointmentsService } from './application/services/tenant-appointments.service';
+import { StatsModule } from 'src/common/stats/stats.module';
+import { AppointmentStatsService } from './application/services/appointment-stats.service';
+import { AppointmentCompletationScheduler } from './application/schedulers/appointment-completion.scheduler';
 
 @Module({
-  imports: [CustomersModule, ServicesModule, StaffsModule, InfrastructureModule],
-  controllers: [AppointmentsController],
+  imports: [CustomersModule, ServicesModule, StaffsModule, InfrastructureModule, StatsModule],
+  controllers: [WidgetAppointmentsController, TenantAppointmentsController],
   providers: [
     AppointmentsService,
-    AppointmentCreationService,
+    TenantAppointmentsService,
+    AppointmentStatsService,
+    CoreAppointmentCreator,
+    WidgetAppointmentUseCase,
+    StaffAppointmentUseCase,
     AppointmentCancelationService,
     AppointmentReschedulingService,
+    AppointmentCompletationScheduler,
     AppointmentsRepository,
     AvailabilityPolicy,
   ],

@@ -6,6 +6,7 @@ import { RecipientType } from 'src/generated/prisma/enums';
 import { NotificationsService } from '../../application/services/notifications.service';
 import { AppointmentCreatedVariables } from '../../application/templates/appointment-created/appointment-created.type';
 import { AppointmentCreatedEvent } from 'src/modules/appointments/domain/events/appointment-created.event';
+import { AppointmentBookedByStaffVariables } from '../../application/templates/appointment-booked-by-staff/appointment-booked-by-staff.type';
 
 @Injectable()
 export class AppointmentCreatedListener {
@@ -15,7 +16,7 @@ export class AppointmentCreatedListener {
   async handle(event: AppointmentCreatedEvent) {
     const {
       startAppointmentDate,
-      businessId,
+      tenantId,
       userId,
       customerId,
       appointmentId,
@@ -24,6 +25,7 @@ export class AppointmentCreatedListener {
       customerName,
       cancelUrl,
       rescheduleUrl,
+      createdBy,
     } = event;
 
     const payload = {
@@ -37,17 +39,37 @@ export class AppointmentCreatedListener {
       time: format(startAppointmentDate, 'HH:mm'),
     } as AppointmentCreatedVariables;
 
-    await this.notificationsService.create({
-      businessId,
-      payload,
-      recipientId: userId,
-      recipientType: RecipientType.USER,
-      type: 'appointment.created',
-    });
+    if (createdBy === 'STAFF') {
+      // Instant email for the Customer: "Staff booked you"
+      await this.notificationsService.create({
+        tenantId,
+        payload: {
+          customerName,
+          staffName,
+          date: format(startAppointmentDate, "dd 'de' MMMM 'de' yyyy", { locale: es }),
+          time: format(startAppointmentDate, 'HH:mm'),
+          appointmentId,
+          serviceName,
+        } as AppointmentBookedByStaffVariables,
+        recipientId: customerId,
+        recipientType: RecipientType.CUSTOMER,
+        type: 'appointment.booked.by_staff',
+      });
+    } else {
+      // Default behavior for CUSTOMER creation
+      // 1. "New booking" notification for the Staff member
+      await this.notificationsService.create({
+        tenantId,
+        payload,
+        recipientId: userId,
+        recipientType: RecipientType.USER,
+        type: 'appointment.created',
+      });
+    }
 
     await this.scheduleCustomerReminders({
       startAppointmentDate,
-      businessId,
+      tenantId,
       customerId,
       payload,
     });
@@ -55,11 +77,11 @@ export class AppointmentCreatedListener {
 
   private async scheduleCustomerReminders(params: {
     startAppointmentDate: Date;
-    businessId: string;
+    tenantId: string;
     customerId: string;
     payload: AppointmentCreatedVariables;
   }) {
-    const { startAppointmentDate, businessId, customerId, payload } = params;
+    const { startAppointmentDate, tenantId, customerId, payload } = params;
 
     const now = new Date();
     const remindersHours = [24, 2];
@@ -69,7 +91,7 @@ export class AppointmentCreatedListener {
       if (executeAt < now) continue;
       await this.notificationsService.create({
         payload,
-        businessId,
+        tenantId,
         recipientId: customerId,
         recipientType: RecipientType.CUSTOMER,
         executeAt,

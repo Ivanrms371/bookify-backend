@@ -55,4 +55,39 @@ export const NotificationConfig: NotificationConfigMap = {
       USER: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL }],
     },
   },
+
+  'tenant.created': {
+    retry: {
+      retryable: true,
+      maxRetries: 3,
+    },
+    channels: {
+      USER: [{ channel: NotificationChannel.IN_APP }],
+    },
+  },
+
+  'appointment.booked.by_staff': {
+    retry: {
+      retryable: true,
+      maxRetries: 3,
+    },
+    channels: {
+      CUSTOMER: [
+        {
+          channel: NotificationChannel.EMAIL,
+          fallback: [NotificationChannel.WHATSAPP],
+        },
+      ],
+    },
+  },
+
+  'appointment.cancelled.by_staff': {
+    retry: {
+      retryable: true,
+      maxRetries: 3,
+    },
+    channels: {
+      USER: [{ channel: NotificationChannel.EMAIL }],
+    },
+  },
 };

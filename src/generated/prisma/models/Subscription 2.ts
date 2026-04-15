@@ -40,7 +40,7 @@ export type SubscriptionSumAggregateOutputType = {
 
 export type SubscriptionMinAggregateOutputType = {
   id: string | null
-  businessId: string | null
+  tenantId: string | null
   planId: string | null
   status: $Enums.SubscriptionStatus | null
   amount: runtime.Decimal | null
@@ -66,7 +66,7 @@ export type SubscriptionMinAggregateOutputType = {
 
 export type SubscriptionMaxAggregateOutputType = {
   id: string | null
-  businessId: string | null
+  tenantId: string | null
   planId: string | null
   status: $Enums.SubscriptionStatus | null
   amount: runtime.Decimal | null
@@ -92,7 +92,7 @@ export type SubscriptionMaxAggregateOutputType = {
 
 export type SubscriptionCountAggregateOutputType = {
   id: number
-  businessId: number
+  tenantId: number
   planId: number
   status: number
   amount: number
@@ -132,7 +132,7 @@ export type SubscriptionSumAggregateInputType = {
 
 export type SubscriptionMinAggregateInputType = {
   id?: true
-  businessId?: true
+  tenantId?: true
   planId?: true
   status?: true
   amount?: true
@@ -158,7 +158,7 @@ export type SubscriptionMinAggregateInputType = {
 
 export type SubscriptionMaxAggregateInputType = {
   id?: true
-  businessId?: true
+  tenantId?: true
   planId?: true
   status?: true
   amount?: true
@@ -184,7 +184,7 @@ export type SubscriptionMaxAggregateInputType = {
 
 export type SubscriptionCountAggregateInputType = {
   id?: true
-  businessId?: true
+  tenantId?: true
   planId?: true
   status?: true
   amount?: true
@@ -297,7 +297,7 @@ export type SubscriptionGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 
 export type SubscriptionGroupByOutputType = {
   id: string
-  businessId: string
+  tenantId: string
   planId: string
   status: $Enums.SubscriptionStatus
   amount: runtime.Decimal
@@ -346,7 +346,7 @@ export type SubscriptionWhereInput = {
   OR?: Prisma.SubscriptionWhereInput[]
   NOT?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
   id?: Prisma.UuidFilter<"Subscription"> | string
-  businessId?: Prisma.UuidFilter<"Subscription"> | string
+  tenantId?: Prisma.UuidFilter<"Subscription"> | string
   planId?: Prisma.UuidFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -369,13 +369,13 @@ export type SubscriptionWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   payments?: Prisma.PaymentListRelationFilter
-  business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
   plan?: Prisma.XOR<Prisma.PlanScalarRelationFilter, Prisma.PlanWhereInput>
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }
 
 export type SubscriptionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   planId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -398,13 +398,13 @@ export type SubscriptionOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   payments?: Prisma.PaymentOrderByRelationAggregateInput
-  business?: Prisma.BusinessOrderByWithRelationInput
   plan?: Prisma.PlanOrderByWithRelationInput
+  tenant?: Prisma.TenantOrderByWithRelationInput
 }
 
 export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  businessId?: string
+  tenantId?: string
   AND?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
   OR?: Prisma.SubscriptionWhereInput[]
   NOT?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
@@ -430,13 +430,13 @@ export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Subscription"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   payments?: Prisma.PaymentListRelationFilter
-  business?: Prisma.XOR<Prisma.BusinessScalarRelationFilter, Prisma.BusinessWhereInput>
   plan?: Prisma.XOR<Prisma.PlanScalarRelationFilter, Prisma.PlanWhereInput>
-}, "id" | "businessId">
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
+}, "id" | "tenantId">
 
 export type SubscriptionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   planId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -470,7 +470,7 @@ export type SubscriptionScalarWhereWithAggregatesInput = {
   OR?: Prisma.SubscriptionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SubscriptionScalarWhereWithAggregatesInput | Prisma.SubscriptionScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"Subscription"> | string
-  businessId?: Prisma.UuidWithAggregatesFilter<"Subscription"> | string
+  tenantId?: Prisma.UuidWithAggregatesFilter<"Subscription"> | string
   planId?: Prisma.UuidWithAggregatesFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusWithAggregatesFilter<"Subscription"> | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalWithAggregatesFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -517,13 +517,13 @@ export type SubscriptionCreateInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   payments?: Prisma.PaymentCreateNestedManyWithoutSubscriptionInput
-  business: Prisma.BusinessCreateNestedOneWithoutSubscriptionInput
   plan: Prisma.PlanCreateNestedOneWithoutSubscriptionsInput
+  tenant: Prisma.TenantCreateNestedOneWithoutSubscriptionInput
 }
 
 export type SubscriptionUncheckedCreateInput = {
   id?: string
-  businessId: string
+  tenantId: string
   planId: string
   status?: $Enums.SubscriptionStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -571,13 +571,13 @@ export type SubscriptionUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   payments?: Prisma.PaymentUpdateManyWithoutSubscriptionNestedInput
-  business?: Prisma.BusinessUpdateOneRequiredWithoutSubscriptionNestedInput
   plan?: Prisma.PlanUpdateOneRequiredWithoutSubscriptionsNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutSubscriptionNestedInput
 }
 
 export type SubscriptionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   planId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -604,7 +604,7 @@ export type SubscriptionUncheckedUpdateInput = {
 
 export type SubscriptionCreateManyInput = {
   id?: string
-  businessId: string
+  tenantId: string
   planId: string
   status?: $Enums.SubscriptionStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -654,7 +654,7 @@ export type SubscriptionUpdateManyMutationInput = {
 
 export type SubscriptionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   planId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -685,7 +685,7 @@ export type SubscriptionNullableScalarRelationFilter = {
 
 export type SubscriptionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   planId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -717,7 +717,7 @@ export type SubscriptionAvgOrderByAggregateInput = {
 
 export type SubscriptionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   planId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -743,7 +743,7 @@ export type SubscriptionMaxOrderByAggregateInput = {
 
 export type SubscriptionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  businessId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   planId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -783,36 +783,36 @@ export type SubscriptionOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type SubscriptionCreateNestedOneWithoutBusinessInput = {
-  create?: Prisma.XOR<Prisma.SubscriptionCreateWithoutBusinessInput, Prisma.SubscriptionUncheckedCreateWithoutBusinessInput>
-  connectOrCreate?: Prisma.SubscriptionCreateOrConnectWithoutBusinessInput
+export type SubscriptionCreateNestedOneWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.SubscriptionCreateWithoutTenantInput, Prisma.SubscriptionUncheckedCreateWithoutTenantInput>
+  connectOrCreate?: Prisma.SubscriptionCreateOrConnectWithoutTenantInput
   connect?: Prisma.SubscriptionWhereUniqueInput
 }
 
-export type SubscriptionUncheckedCreateNestedOneWithoutBusinessInput = {
-  create?: Prisma.XOR<Prisma.SubscriptionCreateWithoutBusinessInput, Prisma.SubscriptionUncheckedCreateWithoutBusinessInput>
-  connectOrCreate?: Prisma.SubscriptionCreateOrConnectWithoutBusinessInput
+export type SubscriptionUncheckedCreateNestedOneWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.SubscriptionCreateWithoutTenantInput, Prisma.SubscriptionUncheckedCreateWithoutTenantInput>
+  connectOrCreate?: Prisma.SubscriptionCreateOrConnectWithoutTenantInput
   connect?: Prisma.SubscriptionWhereUniqueInput
 }
 
-export type SubscriptionUpdateOneWithoutBusinessNestedInput = {
-  create?: Prisma.XOR<Prisma.SubscriptionCreateWithoutBusinessInput, Prisma.SubscriptionUncheckedCreateWithoutBusinessInput>
-  connectOrCreate?: Prisma.SubscriptionCreateOrConnectWithoutBusinessInput
-  upsert?: Prisma.SubscriptionUpsertWithoutBusinessInput
+export type SubscriptionUpdateOneWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.SubscriptionCreateWithoutTenantInput, Prisma.SubscriptionUncheckedCreateWithoutTenantInput>
+  connectOrCreate?: Prisma.SubscriptionCreateOrConnectWithoutTenantInput
+  upsert?: Prisma.SubscriptionUpsertWithoutTenantInput
   disconnect?: Prisma.SubscriptionWhereInput | boolean
   delete?: Prisma.SubscriptionWhereInput | boolean
   connect?: Prisma.SubscriptionWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.SubscriptionUpdateToOneWithWhereWithoutBusinessInput, Prisma.SubscriptionUpdateWithoutBusinessInput>, Prisma.SubscriptionUncheckedUpdateWithoutBusinessInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SubscriptionUpdateToOneWithWhereWithoutTenantInput, Prisma.SubscriptionUpdateWithoutTenantInput>, Prisma.SubscriptionUncheckedUpdateWithoutTenantInput>
 }
 
-export type SubscriptionUncheckedUpdateOneWithoutBusinessNestedInput = {
-  create?: Prisma.XOR<Prisma.SubscriptionCreateWithoutBusinessInput, Prisma.SubscriptionUncheckedCreateWithoutBusinessInput>
-  connectOrCreate?: Prisma.SubscriptionCreateOrConnectWithoutBusinessInput
-  upsert?: Prisma.SubscriptionUpsertWithoutBusinessInput
+export type SubscriptionUncheckedUpdateOneWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.SubscriptionCreateWithoutTenantInput, Prisma.SubscriptionUncheckedCreateWithoutTenantInput>
+  connectOrCreate?: Prisma.SubscriptionCreateOrConnectWithoutTenantInput
+  upsert?: Prisma.SubscriptionUpsertWithoutTenantInput
   disconnect?: Prisma.SubscriptionWhereInput | boolean
   delete?: Prisma.SubscriptionWhereInput | boolean
   connect?: Prisma.SubscriptionWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.SubscriptionUpdateToOneWithWhereWithoutBusinessInput, Prisma.SubscriptionUpdateWithoutBusinessInput>, Prisma.SubscriptionUncheckedUpdateWithoutBusinessInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SubscriptionUpdateToOneWithWhereWithoutTenantInput, Prisma.SubscriptionUpdateWithoutTenantInput>, Prisma.SubscriptionUncheckedUpdateWithoutTenantInput>
 }
 
 export type EnumSubscriptionStatusFieldUpdateOperationsInput = {
@@ -881,7 +881,7 @@ export type SubscriptionUpdateOneWithoutPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SubscriptionUpdateToOneWithWhereWithoutPaymentsInput, Prisma.SubscriptionUpdateWithoutPaymentsInput>, Prisma.SubscriptionUncheckedUpdateWithoutPaymentsInput>
 }
 
-export type SubscriptionCreateWithoutBusinessInput = {
+export type SubscriptionCreateWithoutTenantInput = {
   id?: string
   status?: $Enums.SubscriptionStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -907,7 +907,7 @@ export type SubscriptionCreateWithoutBusinessInput = {
   plan: Prisma.PlanCreateNestedOneWithoutSubscriptionsInput
 }
 
-export type SubscriptionUncheckedCreateWithoutBusinessInput = {
+export type SubscriptionUncheckedCreateWithoutTenantInput = {
   id?: string
   planId: string
   status?: $Enums.SubscriptionStatus
@@ -933,23 +933,23 @@ export type SubscriptionUncheckedCreateWithoutBusinessInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutSubscriptionInput
 }
 
-export type SubscriptionCreateOrConnectWithoutBusinessInput = {
+export type SubscriptionCreateOrConnectWithoutTenantInput = {
   where: Prisma.SubscriptionWhereUniqueInput
-  create: Prisma.XOR<Prisma.SubscriptionCreateWithoutBusinessInput, Prisma.SubscriptionUncheckedCreateWithoutBusinessInput>
+  create: Prisma.XOR<Prisma.SubscriptionCreateWithoutTenantInput, Prisma.SubscriptionUncheckedCreateWithoutTenantInput>
 }
 
-export type SubscriptionUpsertWithoutBusinessInput = {
-  update: Prisma.XOR<Prisma.SubscriptionUpdateWithoutBusinessInput, Prisma.SubscriptionUncheckedUpdateWithoutBusinessInput>
-  create: Prisma.XOR<Prisma.SubscriptionCreateWithoutBusinessInput, Prisma.SubscriptionUncheckedCreateWithoutBusinessInput>
+export type SubscriptionUpsertWithoutTenantInput = {
+  update: Prisma.XOR<Prisma.SubscriptionUpdateWithoutTenantInput, Prisma.SubscriptionUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.SubscriptionCreateWithoutTenantInput, Prisma.SubscriptionUncheckedCreateWithoutTenantInput>
   where?: Prisma.SubscriptionWhereInput
 }
 
-export type SubscriptionUpdateToOneWithWhereWithoutBusinessInput = {
+export type SubscriptionUpdateToOneWithWhereWithoutTenantInput = {
   where?: Prisma.SubscriptionWhereInput
-  data: Prisma.XOR<Prisma.SubscriptionUpdateWithoutBusinessInput, Prisma.SubscriptionUncheckedUpdateWithoutBusinessInput>
+  data: Prisma.XOR<Prisma.SubscriptionUpdateWithoutTenantInput, Prisma.SubscriptionUncheckedUpdateWithoutTenantInput>
 }
 
-export type SubscriptionUpdateWithoutBusinessInput = {
+export type SubscriptionUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -975,7 +975,7 @@ export type SubscriptionUpdateWithoutBusinessInput = {
   plan?: Prisma.PlanUpdateOneRequiredWithoutSubscriptionsNestedInput
 }
 
-export type SubscriptionUncheckedUpdateWithoutBusinessInput = {
+export type SubscriptionUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   planId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
@@ -1024,12 +1024,12 @@ export type SubscriptionCreateWithoutPlanInput = {
   updatedAt?: Date | string
   deletedAt?: Date | string | null
   payments?: Prisma.PaymentCreateNestedManyWithoutSubscriptionInput
-  business: Prisma.BusinessCreateNestedOneWithoutSubscriptionInput
+  tenant: Prisma.TenantCreateNestedOneWithoutSubscriptionInput
 }
 
 export type SubscriptionUncheckedCreateWithoutPlanInput = {
   id?: string
-  businessId: string
+  tenantId: string
   status?: $Enums.SubscriptionStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
@@ -1084,7 +1084,7 @@ export type SubscriptionScalarWhereInput = {
   OR?: Prisma.SubscriptionScalarWhereInput[]
   NOT?: Prisma.SubscriptionScalarWhereInput | Prisma.SubscriptionScalarWhereInput[]
   id?: Prisma.UuidFilter<"Subscription"> | string
-  businessId?: Prisma.UuidFilter<"Subscription"> | string
+  tenantId?: Prisma.UuidFilter<"Subscription"> | string
   planId?: Prisma.UuidFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1130,13 +1130,13 @@ export type SubscriptionCreateWithoutPaymentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  business: Prisma.BusinessCreateNestedOneWithoutSubscriptionInput
   plan: Prisma.PlanCreateNestedOneWithoutSubscriptionsInput
+  tenant: Prisma.TenantCreateNestedOneWithoutSubscriptionInput
 }
 
 export type SubscriptionUncheckedCreateWithoutPaymentsInput = {
   id?: string
-  businessId: string
+  tenantId: string
   planId: string
   status?: $Enums.SubscriptionStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1198,13 +1198,13 @@ export type SubscriptionUpdateWithoutPaymentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  business?: Prisma.BusinessUpdateOneRequiredWithoutSubscriptionNestedInput
   plan?: Prisma.PlanUpdateOneRequiredWithoutSubscriptionsNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutSubscriptionNestedInput
 }
 
 export type SubscriptionUncheckedUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   planId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -1230,7 +1230,7 @@ export type SubscriptionUncheckedUpdateWithoutPaymentsInput = {
 
 export type SubscriptionCreateManyPlanInput = {
   id?: string
-  businessId: string
+  tenantId: string
   status?: $Enums.SubscriptionStatus
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
@@ -1276,12 +1276,12 @@ export type SubscriptionUpdateWithoutPlanInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   payments?: Prisma.PaymentUpdateManyWithoutSubscriptionNestedInput
-  business?: Prisma.BusinessUpdateOneRequiredWithoutSubscriptionNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutSubscriptionNestedInput
 }
 
 export type SubscriptionUncheckedUpdateWithoutPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1307,7 +1307,7 @@ export type SubscriptionUncheckedUpdateWithoutPlanInput = {
 
 export type SubscriptionUncheckedUpdateManyWithoutPlanInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  businessId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1363,7 +1363,7 @@ export type SubscriptionCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime
 
 export type SubscriptionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   planId?: boolean
   status?: boolean
   amount?: boolean
@@ -1386,14 +1386,14 @@ export type SubscriptionSelect<ExtArgs extends runtime.Types.Extensions.Internal
   updatedAt?: boolean
   deletedAt?: boolean
   payments?: boolean | Prisma.Subscription$paymentsArgs<ExtArgs>
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.SubscriptionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subscription"]>
 
 export type SubscriptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   planId?: boolean
   status?: boolean
   amount?: boolean
@@ -1415,13 +1415,13 @@ export type SubscriptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subscription"]>
 
 export type SubscriptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   planId?: boolean
   status?: boolean
   amount?: boolean
@@ -1443,13 +1443,13 @@ export type SubscriptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["subscription"]>
 
 export type SubscriptionSelectScalar = {
   id?: boolean
-  businessId?: boolean
+  tenantId?: boolean
   planId?: boolean
   status?: boolean
   amount?: boolean
@@ -1473,32 +1473,32 @@ export type SubscriptionSelectScalar = {
   deletedAt?: boolean
 }
 
-export type SubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "businessId" | "planId" | "status" | "amount" | "currency" | "billingCycle" | "currentPeriodStart" | "currentPeriodEnd" | "nextPaymentDate" | "trialEndsAt" | "trialUsedAt" | "discountPercent" | "discountAmount" | "discountExpiresAt" | "cancelledAt" | "cancelReason" | "paymentMethod" | "paymentProvider" | "externalId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["subscription"]>
+export type SubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "planId" | "status" | "amount" | "currency" | "billingCycle" | "currentPeriodStart" | "currentPeriodEnd" | "nextPaymentDate" | "trialEndsAt" | "trialUsedAt" | "discountPercent" | "discountAmount" | "discountExpiresAt" | "cancelledAt" | "cancelReason" | "paymentMethod" | "paymentProvider" | "externalId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["subscription"]>
 export type SubscriptionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   payments?: boolean | Prisma.Subscription$paymentsArgs<ExtArgs>
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.SubscriptionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SubscriptionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
 export type SubscriptionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  business?: boolean | Prisma.BusinessDefaultArgs<ExtArgs>
   plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
 
 export type $SubscriptionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Subscription"
   objects: {
     payments: Prisma.$PaymentPayload<ExtArgs>[]
-    business: Prisma.$BusinessPayload<ExtArgs>
     plan: Prisma.$PlanPayload<ExtArgs>
+    tenant: Prisma.$TenantPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    businessId: string
+    tenantId: string
     planId: string
     status: $Enums.SubscriptionStatus
     amount: runtime.Decimal
@@ -1915,8 +1915,8 @@ readonly fields: SubscriptionFieldRefs;
 export interface Prisma__SubscriptionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   payments<T extends Prisma.Subscription$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Subscription$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  business<T extends Prisma.BusinessDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BusinessDefaultArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   plan<T extends Prisma.PlanDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PlanDefaultArgs<ExtArgs>>): Prisma.Prisma__PlanClient<runtime.Types.Result.GetResult<Prisma.$PlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1947,7 +1947,7 @@ export interface Prisma__SubscriptionClient<T, Null = never, ExtArgs extends run
  */
 export interface SubscriptionFieldRefs {
   readonly id: Prisma.FieldRef<"Subscription", 'String'>
-  readonly businessId: Prisma.FieldRef<"Subscription", 'String'>
+  readonly tenantId: Prisma.FieldRef<"Subscription", 'String'>
   readonly planId: Prisma.FieldRef<"Subscription", 'String'>
   readonly status: Prisma.FieldRef<"Subscription", 'SubscriptionStatus'>
   readonly amount: Prisma.FieldRef<"Subscription", 'Decimal'>

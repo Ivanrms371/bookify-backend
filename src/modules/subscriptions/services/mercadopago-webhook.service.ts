@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { MercadoPagoService } from 'src/mercadopago/mercadopago.service';
+import { MercadoPagoService } from 'src/shared/integrations/mercadopago/mercadopago.service';
 import { SubscriptionService } from './subscription.service';
-import { MercadoPagoPreapproval } from 'src/mercadopago/types/preapproval-subscription.type';
+import { MercadoPagoPreapproval } from 'src/shared/integrations/mercadopago/types/preapproval-subscription.type';
 import { MercadoPagoWebhookBody } from '../types/webhook.types';
 
 @Injectable()

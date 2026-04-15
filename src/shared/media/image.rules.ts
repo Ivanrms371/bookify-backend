@@ -44,11 +44,14 @@ export function getImageConfig(type: ImageType) {
 }
 
 export function validateImage(file: { size: number }, config: { maxSizeMB: number }) {
+  console.log(file.size);
+  console.log(config.maxSizeMB * 1024 * 1024);
+
   if (file.size > config.maxSizeMB * 1024 * 1024) {
     throw new Error('Image too large');
   }
 }
 
-export function generateFilePath(businessId: string, type: ImageType) {
-  return `${businessId}/${type}/${Date.now()}`;
+export function generateFilePath(tenantId: string, type: ImageType) {
+  return `${tenantId}/${type}/${Date.now()}`;
 }

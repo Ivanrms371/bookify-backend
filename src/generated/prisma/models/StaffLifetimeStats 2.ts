@@ -29,37 +29,55 @@ export type AggregateStaffLifetimeStats = {
 export type StaffLifetimeStatsAvgAggregateOutputType = {
   totalRevenue: runtime.Decimal | null
   totalAppointments: number | null
-  noShowCount: number | null
+  totalCompleted: number | null
+  totalCancelled: number | null
+  totalNoShow: number | null
+  totalNewCustomers: number | null
 }
 
 export type StaffLifetimeStatsSumAggregateOutputType = {
   totalRevenue: runtime.Decimal | null
   totalAppointments: number | null
-  noShowCount: number | null
+  totalCompleted: number | null
+  totalCancelled: number | null
+  totalNoShow: number | null
+  totalNewCustomers: number | null
 }
 
 export type StaffLifetimeStatsMinAggregateOutputType = {
   id: string | null
   staffId: string | null
+  tenantId: string | null
   totalRevenue: runtime.Decimal | null
   totalAppointments: number | null
-  noShowCount: number | null
+  totalCompleted: number | null
+  totalCancelled: number | null
+  totalNoShow: number | null
+  totalNewCustomers: number | null
 }
 
 export type StaffLifetimeStatsMaxAggregateOutputType = {
   id: string | null
   staffId: string | null
+  tenantId: string | null
   totalRevenue: runtime.Decimal | null
   totalAppointments: number | null
-  noShowCount: number | null
+  totalCompleted: number | null
+  totalCancelled: number | null
+  totalNoShow: number | null
+  totalNewCustomers: number | null
 }
 
 export type StaffLifetimeStatsCountAggregateOutputType = {
   id: number
   staffId: number
+  tenantId: number
   totalRevenue: number
   totalAppointments: number
-  noShowCount: number
+  totalCompleted: number
+  totalCancelled: number
+  totalNoShow: number
+  totalNewCustomers: number
   _all: number
 }
 
@@ -67,37 +85,55 @@ export type StaffLifetimeStatsCountAggregateOutputType = {
 export type StaffLifetimeStatsAvgAggregateInputType = {
   totalRevenue?: true
   totalAppointments?: true
-  noShowCount?: true
+  totalCompleted?: true
+  totalCancelled?: true
+  totalNoShow?: true
+  totalNewCustomers?: true
 }
 
 export type StaffLifetimeStatsSumAggregateInputType = {
   totalRevenue?: true
   totalAppointments?: true
-  noShowCount?: true
+  totalCompleted?: true
+  totalCancelled?: true
+  totalNoShow?: true
+  totalNewCustomers?: true
 }
 
 export type StaffLifetimeStatsMinAggregateInputType = {
   id?: true
   staffId?: true
+  tenantId?: true
   totalRevenue?: true
   totalAppointments?: true
-  noShowCount?: true
+  totalCompleted?: true
+  totalCancelled?: true
+  totalNoShow?: true
+  totalNewCustomers?: true
 }
 
 export type StaffLifetimeStatsMaxAggregateInputType = {
   id?: true
   staffId?: true
+  tenantId?: true
   totalRevenue?: true
   totalAppointments?: true
-  noShowCount?: true
+  totalCompleted?: true
+  totalCancelled?: true
+  totalNoShow?: true
+  totalNewCustomers?: true
 }
 
 export type StaffLifetimeStatsCountAggregateInputType = {
   id?: true
   staffId?: true
+  tenantId?: true
   totalRevenue?: true
   totalAppointments?: true
-  noShowCount?: true
+  totalCompleted?: true
+  totalCancelled?: true
+  totalNoShow?: true
+  totalNewCustomers?: true
   _all?: true
 }
 
@@ -190,9 +226,13 @@ export type StaffLifetimeStatsGroupByArgs<ExtArgs extends runtime.Types.Extensio
 export type StaffLifetimeStatsGroupByOutputType = {
   id: string
   staffId: string
+  tenantId: string
   totalRevenue: runtime.Decimal
   totalAppointments: number
-  noShowCount: number
+  totalCompleted: number
+  totalCancelled: number
+  totalNoShow: number
+  totalNewCustomers: number
   _count: StaffLifetimeStatsCountAggregateOutputType | null
   _avg: StaffLifetimeStatsAvgAggregateOutputType | null
   _sum: StaffLifetimeStatsSumAggregateOutputType | null
@@ -221,39 +261,59 @@ export type StaffLifetimeStatsWhereInput = {
   NOT?: Prisma.StaffLifetimeStatsWhereInput | Prisma.StaffLifetimeStatsWhereInput[]
   id?: Prisma.UuidFilter<"StaffLifetimeStats"> | string
   staffId?: Prisma.UuidFilter<"StaffLifetimeStats"> | string
+  tenantId?: Prisma.UuidFilter<"StaffLifetimeStats"> | string
   totalRevenue?: Prisma.DecimalFilter<"StaffLifetimeStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalAppointments?: Prisma.IntFilter<"StaffLifetimeStats"> | number
-  noShowCount?: Prisma.IntFilter<"StaffLifetimeStats"> | number
+  totalCompleted?: Prisma.IntFilter<"StaffLifetimeStats"> | number
+  totalCancelled?: Prisma.IntFilter<"StaffLifetimeStats"> | number
+  totalNoShow?: Prisma.IntFilter<"StaffLifetimeStats"> | number
+  totalNewCustomers?: Prisma.IntFilter<"StaffLifetimeStats"> | number
   staff?: Prisma.XOR<Prisma.StaffScalarRelationFilter, Prisma.StaffWhereInput>
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }
 
 export type StaffLifetimeStatsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   staffId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   totalRevenue?: Prisma.SortOrder
   totalAppointments?: Prisma.SortOrder
-  noShowCount?: Prisma.SortOrder
+  totalCompleted?: Prisma.SortOrder
+  totalCancelled?: Prisma.SortOrder
+  totalNoShow?: Prisma.SortOrder
+  totalNewCustomers?: Prisma.SortOrder
   staff?: Prisma.StaffOrderByWithRelationInput
+  tenant?: Prisma.TenantOrderByWithRelationInput
 }
 
 export type StaffLifetimeStatsWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   staffId?: string
+  tenantId_staffId?: Prisma.StaffLifetimeStatsTenantIdStaffIdCompoundUniqueInput
   AND?: Prisma.StaffLifetimeStatsWhereInput | Prisma.StaffLifetimeStatsWhereInput[]
   OR?: Prisma.StaffLifetimeStatsWhereInput[]
   NOT?: Prisma.StaffLifetimeStatsWhereInput | Prisma.StaffLifetimeStatsWhereInput[]
+  tenantId?: Prisma.UuidFilter<"StaffLifetimeStats"> | string
   totalRevenue?: Prisma.DecimalFilter<"StaffLifetimeStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalAppointments?: Prisma.IntFilter<"StaffLifetimeStats"> | number
-  noShowCount?: Prisma.IntFilter<"StaffLifetimeStats"> | number
+  totalCompleted?: Prisma.IntFilter<"StaffLifetimeStats"> | number
+  totalCancelled?: Prisma.IntFilter<"StaffLifetimeStats"> | number
+  totalNoShow?: Prisma.IntFilter<"StaffLifetimeStats"> | number
+  totalNewCustomers?: Prisma.IntFilter<"StaffLifetimeStats"> | number
   staff?: Prisma.XOR<Prisma.StaffScalarRelationFilter, Prisma.StaffWhereInput>
-}, "id" | "staffId">
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
+}, "id" | "staffId" | "tenantId_staffId">
 
 export type StaffLifetimeStatsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   staffId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   totalRevenue?: Prisma.SortOrder
   totalAppointments?: Prisma.SortOrder
-  noShowCount?: Prisma.SortOrder
+  totalCompleted?: Prisma.SortOrder
+  totalCancelled?: Prisma.SortOrder
+  totalNoShow?: Prisma.SortOrder
+  totalNewCustomers?: Prisma.SortOrder
   _count?: Prisma.StaffLifetimeStatsCountOrderByAggregateInput
   _avg?: Prisma.StaffLifetimeStatsAvgOrderByAggregateInput
   _max?: Prisma.StaffLifetimeStatsMaxOrderByAggregateInput
@@ -267,64 +327,105 @@ export type StaffLifetimeStatsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.StaffLifetimeStatsScalarWhereWithAggregatesInput | Prisma.StaffLifetimeStatsScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"StaffLifetimeStats"> | string
   staffId?: Prisma.UuidWithAggregatesFilter<"StaffLifetimeStats"> | string
+  tenantId?: Prisma.UuidWithAggregatesFilter<"StaffLifetimeStats"> | string
   totalRevenue?: Prisma.DecimalWithAggregatesFilter<"StaffLifetimeStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalAppointments?: Prisma.IntWithAggregatesFilter<"StaffLifetimeStats"> | number
-  noShowCount?: Prisma.IntWithAggregatesFilter<"StaffLifetimeStats"> | number
+  totalCompleted?: Prisma.IntWithAggregatesFilter<"StaffLifetimeStats"> | number
+  totalCancelled?: Prisma.IntWithAggregatesFilter<"StaffLifetimeStats"> | number
+  totalNoShow?: Prisma.IntWithAggregatesFilter<"StaffLifetimeStats"> | number
+  totalNewCustomers?: Prisma.IntWithAggregatesFilter<"StaffLifetimeStats"> | number
 }
 
 export type StaffLifetimeStatsCreateInput = {
   id?: string
   totalRevenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalAppointments?: number
-  noShowCount?: number
+  totalCompleted?: number
+  totalCancelled?: number
+  totalNoShow?: number
+  totalNewCustomers?: number
   staff: Prisma.StaffCreateNestedOneWithoutLifetimeStatsInput
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffLifetimeStatsInput
 }
 
 export type StaffLifetimeStatsUncheckedCreateInput = {
   id?: string
   staffId: string
+  tenantId: string
   totalRevenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalAppointments?: number
-  noShowCount?: number
+  totalCompleted?: number
+  totalCancelled?: number
+  totalNoShow?: number
+  totalNewCustomers?: number
 }
 
 export type StaffLifetimeStatsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   totalRevenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
-  noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCompleted?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNoShow?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNewCustomers?: Prisma.IntFieldUpdateOperationsInput | number
   staff?: Prisma.StaffUpdateOneRequiredWithoutLifetimeStatsNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffLifetimeStatsNestedInput
 }
 
 export type StaffLifetimeStatsUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   staffId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   totalRevenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
-  noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCompleted?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNoShow?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNewCustomers?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type StaffLifetimeStatsCreateManyInput = {
   id?: string
   staffId: string
+  tenantId: string
   totalRevenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalAppointments?: number
-  noShowCount?: number
+  totalCompleted?: number
+  totalCancelled?: number
+  totalNoShow?: number
+  totalNewCustomers?: number
 }
 
 export type StaffLifetimeStatsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   totalRevenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
-  noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCompleted?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNoShow?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNewCustomers?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type StaffLifetimeStatsUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   staffId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   totalRevenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
-  noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCompleted?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNoShow?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNewCustomers?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type StaffLifetimeStatsListRelationFilter = {
+  every?: Prisma.StaffLifetimeStatsWhereInput
+  some?: Prisma.StaffLifetimeStatsWhereInput
+  none?: Prisma.StaffLifetimeStatsWhereInput
+}
+
+export type StaffLifetimeStatsOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type StaffLifetimeStatsNullableScalarRelationFilter = {
@@ -332,40 +433,105 @@ export type StaffLifetimeStatsNullableScalarRelationFilter = {
   isNot?: Prisma.StaffLifetimeStatsWhereInput | null
 }
 
+export type StaffLifetimeStatsTenantIdStaffIdCompoundUniqueInput = {
+  tenantId: string
+  staffId: string
+}
+
 export type StaffLifetimeStatsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   staffId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   totalRevenue?: Prisma.SortOrder
   totalAppointments?: Prisma.SortOrder
-  noShowCount?: Prisma.SortOrder
+  totalCompleted?: Prisma.SortOrder
+  totalCancelled?: Prisma.SortOrder
+  totalNoShow?: Prisma.SortOrder
+  totalNewCustomers?: Prisma.SortOrder
 }
 
 export type StaffLifetimeStatsAvgOrderByAggregateInput = {
   totalRevenue?: Prisma.SortOrder
   totalAppointments?: Prisma.SortOrder
-  noShowCount?: Prisma.SortOrder
+  totalCompleted?: Prisma.SortOrder
+  totalCancelled?: Prisma.SortOrder
+  totalNoShow?: Prisma.SortOrder
+  totalNewCustomers?: Prisma.SortOrder
 }
 
 export type StaffLifetimeStatsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   staffId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   totalRevenue?: Prisma.SortOrder
   totalAppointments?: Prisma.SortOrder
-  noShowCount?: Prisma.SortOrder
+  totalCompleted?: Prisma.SortOrder
+  totalCancelled?: Prisma.SortOrder
+  totalNoShow?: Prisma.SortOrder
+  totalNewCustomers?: Prisma.SortOrder
 }
 
 export type StaffLifetimeStatsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   staffId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   totalRevenue?: Prisma.SortOrder
   totalAppointments?: Prisma.SortOrder
-  noShowCount?: Prisma.SortOrder
+  totalCompleted?: Prisma.SortOrder
+  totalCancelled?: Prisma.SortOrder
+  totalNoShow?: Prisma.SortOrder
+  totalNewCustomers?: Prisma.SortOrder
 }
 
 export type StaffLifetimeStatsSumOrderByAggregateInput = {
   totalRevenue?: Prisma.SortOrder
   totalAppointments?: Prisma.SortOrder
-  noShowCount?: Prisma.SortOrder
+  totalCompleted?: Prisma.SortOrder
+  totalCancelled?: Prisma.SortOrder
+  totalNoShow?: Prisma.SortOrder
+  totalNewCustomers?: Prisma.SortOrder
+}
+
+export type StaffLifetimeStatsCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.StaffLifetimeStatsCreateWithoutTenantInput, Prisma.StaffLifetimeStatsUncheckedCreateWithoutTenantInput> | Prisma.StaffLifetimeStatsCreateWithoutTenantInput[] | Prisma.StaffLifetimeStatsUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffLifetimeStatsCreateOrConnectWithoutTenantInput | Prisma.StaffLifetimeStatsCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.StaffLifetimeStatsCreateManyTenantInputEnvelope
+  connect?: Prisma.StaffLifetimeStatsWhereUniqueInput | Prisma.StaffLifetimeStatsWhereUniqueInput[]
+}
+
+export type StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.StaffLifetimeStatsCreateWithoutTenantInput, Prisma.StaffLifetimeStatsUncheckedCreateWithoutTenantInput> | Prisma.StaffLifetimeStatsCreateWithoutTenantInput[] | Prisma.StaffLifetimeStatsUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffLifetimeStatsCreateOrConnectWithoutTenantInput | Prisma.StaffLifetimeStatsCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.StaffLifetimeStatsCreateManyTenantInputEnvelope
+  connect?: Prisma.StaffLifetimeStatsWhereUniqueInput | Prisma.StaffLifetimeStatsWhereUniqueInput[]
+}
+
+export type StaffLifetimeStatsUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffLifetimeStatsCreateWithoutTenantInput, Prisma.StaffLifetimeStatsUncheckedCreateWithoutTenantInput> | Prisma.StaffLifetimeStatsCreateWithoutTenantInput[] | Prisma.StaffLifetimeStatsUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffLifetimeStatsCreateOrConnectWithoutTenantInput | Prisma.StaffLifetimeStatsCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.StaffLifetimeStatsUpsertWithWhereUniqueWithoutTenantInput | Prisma.StaffLifetimeStatsUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.StaffLifetimeStatsCreateManyTenantInputEnvelope
+  set?: Prisma.StaffLifetimeStatsWhereUniqueInput | Prisma.StaffLifetimeStatsWhereUniqueInput[]
+  disconnect?: Prisma.StaffLifetimeStatsWhereUniqueInput | Prisma.StaffLifetimeStatsWhereUniqueInput[]
+  delete?: Prisma.StaffLifetimeStatsWhereUniqueInput | Prisma.StaffLifetimeStatsWhereUniqueInput[]
+  connect?: Prisma.StaffLifetimeStatsWhereUniqueInput | Prisma.StaffLifetimeStatsWhereUniqueInput[]
+  update?: Prisma.StaffLifetimeStatsUpdateWithWhereUniqueWithoutTenantInput | Prisma.StaffLifetimeStatsUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.StaffLifetimeStatsUpdateManyWithWhereWithoutTenantInput | Prisma.StaffLifetimeStatsUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.StaffLifetimeStatsScalarWhereInput | Prisma.StaffLifetimeStatsScalarWhereInput[]
+}
+
+export type StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffLifetimeStatsCreateWithoutTenantInput, Prisma.StaffLifetimeStatsUncheckedCreateWithoutTenantInput> | Prisma.StaffLifetimeStatsCreateWithoutTenantInput[] | Prisma.StaffLifetimeStatsUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffLifetimeStatsCreateOrConnectWithoutTenantInput | Prisma.StaffLifetimeStatsCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.StaffLifetimeStatsUpsertWithWhereUniqueWithoutTenantInput | Prisma.StaffLifetimeStatsUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.StaffLifetimeStatsCreateManyTenantInputEnvelope
+  set?: Prisma.StaffLifetimeStatsWhereUniqueInput | Prisma.StaffLifetimeStatsWhereUniqueInput[]
+  disconnect?: Prisma.StaffLifetimeStatsWhereUniqueInput | Prisma.StaffLifetimeStatsWhereUniqueInput[]
+  delete?: Prisma.StaffLifetimeStatsWhereUniqueInput | Prisma.StaffLifetimeStatsWhereUniqueInput[]
+  connect?: Prisma.StaffLifetimeStatsWhereUniqueInput | Prisma.StaffLifetimeStatsWhereUniqueInput[]
+  update?: Prisma.StaffLifetimeStatsUpdateWithWhereUniqueWithoutTenantInput | Prisma.StaffLifetimeStatsUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.StaffLifetimeStatsUpdateManyWithWhereWithoutTenantInput | Prisma.StaffLifetimeStatsUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.StaffLifetimeStatsScalarWhereInput | Prisma.StaffLifetimeStatsScalarWhereInput[]
 }
 
 export type StaffLifetimeStatsCreateNestedOneWithoutStaffInput = {
@@ -400,18 +566,89 @@ export type StaffLifetimeStatsUncheckedUpdateOneWithoutStaffNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StaffLifetimeStatsUpdateToOneWithWhereWithoutStaffInput, Prisma.StaffLifetimeStatsUpdateWithoutStaffInput>, Prisma.StaffLifetimeStatsUncheckedUpdateWithoutStaffInput>
 }
 
+export type StaffLifetimeStatsCreateWithoutTenantInput = {
+  id?: string
+  totalRevenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalAppointments?: number
+  totalCompleted?: number
+  totalCancelled?: number
+  totalNoShow?: number
+  totalNewCustomers?: number
+  staff: Prisma.StaffCreateNestedOneWithoutLifetimeStatsInput
+}
+
+export type StaffLifetimeStatsUncheckedCreateWithoutTenantInput = {
+  id?: string
+  staffId: string
+  totalRevenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalAppointments?: number
+  totalCompleted?: number
+  totalCancelled?: number
+  totalNoShow?: number
+  totalNewCustomers?: number
+}
+
+export type StaffLifetimeStatsCreateOrConnectWithoutTenantInput = {
+  where: Prisma.StaffLifetimeStatsWhereUniqueInput
+  create: Prisma.XOR<Prisma.StaffLifetimeStatsCreateWithoutTenantInput, Prisma.StaffLifetimeStatsUncheckedCreateWithoutTenantInput>
+}
+
+export type StaffLifetimeStatsCreateManyTenantInputEnvelope = {
+  data: Prisma.StaffLifetimeStatsCreateManyTenantInput | Prisma.StaffLifetimeStatsCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type StaffLifetimeStatsUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.StaffLifetimeStatsWhereUniqueInput
+  update: Prisma.XOR<Prisma.StaffLifetimeStatsUpdateWithoutTenantInput, Prisma.StaffLifetimeStatsUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.StaffLifetimeStatsCreateWithoutTenantInput, Prisma.StaffLifetimeStatsUncheckedCreateWithoutTenantInput>
+}
+
+export type StaffLifetimeStatsUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.StaffLifetimeStatsWhereUniqueInput
+  data: Prisma.XOR<Prisma.StaffLifetimeStatsUpdateWithoutTenantInput, Prisma.StaffLifetimeStatsUncheckedUpdateWithoutTenantInput>
+}
+
+export type StaffLifetimeStatsUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.StaffLifetimeStatsScalarWhereInput
+  data: Prisma.XOR<Prisma.StaffLifetimeStatsUpdateManyMutationInput, Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type StaffLifetimeStatsScalarWhereInput = {
+  AND?: Prisma.StaffLifetimeStatsScalarWhereInput | Prisma.StaffLifetimeStatsScalarWhereInput[]
+  OR?: Prisma.StaffLifetimeStatsScalarWhereInput[]
+  NOT?: Prisma.StaffLifetimeStatsScalarWhereInput | Prisma.StaffLifetimeStatsScalarWhereInput[]
+  id?: Prisma.UuidFilter<"StaffLifetimeStats"> | string
+  staffId?: Prisma.UuidFilter<"StaffLifetimeStats"> | string
+  tenantId?: Prisma.UuidFilter<"StaffLifetimeStats"> | string
+  totalRevenue?: Prisma.DecimalFilter<"StaffLifetimeStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalAppointments?: Prisma.IntFilter<"StaffLifetimeStats"> | number
+  totalCompleted?: Prisma.IntFilter<"StaffLifetimeStats"> | number
+  totalCancelled?: Prisma.IntFilter<"StaffLifetimeStats"> | number
+  totalNoShow?: Prisma.IntFilter<"StaffLifetimeStats"> | number
+  totalNewCustomers?: Prisma.IntFilter<"StaffLifetimeStats"> | number
+}
+
 export type StaffLifetimeStatsCreateWithoutStaffInput = {
   id?: string
   totalRevenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalAppointments?: number
-  noShowCount?: number
+  totalCompleted?: number
+  totalCancelled?: number
+  totalNoShow?: number
+  totalNewCustomers?: number
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffLifetimeStatsInput
 }
 
 export type StaffLifetimeStatsUncheckedCreateWithoutStaffInput = {
   id?: string
+  tenantId: string
   totalRevenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalAppointments?: number
-  noShowCount?: number
+  totalCompleted?: number
+  totalCancelled?: number
+  totalNoShow?: number
+  totalNewCustomers?: number
 }
 
 export type StaffLifetimeStatsCreateOrConnectWithoutStaffInput = {
@@ -434,14 +671,66 @@ export type StaffLifetimeStatsUpdateWithoutStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   totalRevenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
-  noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCompleted?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNoShow?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNewCustomers?: Prisma.IntFieldUpdateOperationsInput | number
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffLifetimeStatsNestedInput
 }
 
 export type StaffLifetimeStatsUncheckedUpdateWithoutStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   totalRevenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
-  noShowCount?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCompleted?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNoShow?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNewCustomers?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type StaffLifetimeStatsCreateManyTenantInput = {
+  id?: string
+  staffId: string
+  totalRevenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalAppointments?: number
+  totalCompleted?: number
+  totalCancelled?: number
+  totalNoShow?: number
+  totalNewCustomers?: number
+}
+
+export type StaffLifetimeStatsUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  totalRevenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCompleted?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNoShow?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNewCustomers?: Prisma.IntFieldUpdateOperationsInput | number
+  staff?: Prisma.StaffUpdateOneRequiredWithoutLifetimeStatsNestedInput
+}
+
+export type StaffLifetimeStatsUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  staffId?: Prisma.StringFieldUpdateOperationsInput | string
+  totalRevenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCompleted?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNoShow?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNewCustomers?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type StaffLifetimeStatsUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  staffId?: Prisma.StringFieldUpdateOperationsInput | string
+  totalRevenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalAppointments?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCompleted?: Prisma.IntFieldUpdateOperationsInput | number
+  totalCancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNoShow?: Prisma.IntFieldUpdateOperationsInput | number
+  totalNewCustomers?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -449,60 +738,87 @@ export type StaffLifetimeStatsUncheckedUpdateWithoutStaffInput = {
 export type StaffLifetimeStatsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   staffId?: boolean
+  tenantId?: boolean
   totalRevenue?: boolean
   totalAppointments?: boolean
-  noShowCount?: boolean
+  totalCompleted?: boolean
+  totalCancelled?: boolean
+  totalNoShow?: boolean
+  totalNewCustomers?: boolean
   staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staffLifetimeStats"]>
 
 export type StaffLifetimeStatsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   staffId?: boolean
+  tenantId?: boolean
   totalRevenue?: boolean
   totalAppointments?: boolean
-  noShowCount?: boolean
+  totalCompleted?: boolean
+  totalCancelled?: boolean
+  totalNoShow?: boolean
+  totalNewCustomers?: boolean
   staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staffLifetimeStats"]>
 
 export type StaffLifetimeStatsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   staffId?: boolean
+  tenantId?: boolean
   totalRevenue?: boolean
   totalAppointments?: boolean
-  noShowCount?: boolean
+  totalCompleted?: boolean
+  totalCancelled?: boolean
+  totalNoShow?: boolean
+  totalNewCustomers?: boolean
   staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staffLifetimeStats"]>
 
 export type StaffLifetimeStatsSelectScalar = {
   id?: boolean
   staffId?: boolean
+  tenantId?: boolean
   totalRevenue?: boolean
   totalAppointments?: boolean
-  noShowCount?: boolean
+  totalCompleted?: boolean
+  totalCancelled?: boolean
+  totalNoShow?: boolean
+  totalNewCustomers?: boolean
 }
 
-export type StaffLifetimeStatsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "staffId" | "totalRevenue" | "totalAppointments" | "noShowCount", ExtArgs["result"]["staffLifetimeStats"]>
+export type StaffLifetimeStatsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "staffId" | "tenantId" | "totalRevenue" | "totalAppointments" | "totalCompleted" | "totalCancelled" | "totalNoShow" | "totalNewCustomers", ExtArgs["result"]["staffLifetimeStats"]>
 export type StaffLifetimeStatsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
 export type StaffLifetimeStatsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
 export type StaffLifetimeStatsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
 
 export type $StaffLifetimeStatsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "StaffLifetimeStats"
   objects: {
     staff: Prisma.$StaffPayload<ExtArgs>
+    tenant: Prisma.$TenantPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     staffId: string
+    tenantId: string
     totalRevenue: runtime.Decimal
     totalAppointments: number
-    noShowCount: number
+    totalCompleted: number
+    totalCancelled: number
+    totalNoShow: number
+    totalNewCustomers: number
   }, ExtArgs["result"]["staffLifetimeStats"]>
   composites: {}
 }
@@ -898,6 +1214,7 @@ readonly fields: StaffLifetimeStatsFieldRefs;
 export interface Prisma__StaffLifetimeStatsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   staff<T extends Prisma.StaffDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StaffDefaultArgs<ExtArgs>>): Prisma.Prisma__StaffClient<runtime.Types.Result.GetResult<Prisma.$StaffPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -929,9 +1246,13 @@ export interface Prisma__StaffLifetimeStatsClient<T, Null = never, ExtArgs exten
 export interface StaffLifetimeStatsFieldRefs {
   readonly id: Prisma.FieldRef<"StaffLifetimeStats", 'String'>
   readonly staffId: Prisma.FieldRef<"StaffLifetimeStats", 'String'>
+  readonly tenantId: Prisma.FieldRef<"StaffLifetimeStats", 'String'>
   readonly totalRevenue: Prisma.FieldRef<"StaffLifetimeStats", 'Decimal'>
   readonly totalAppointments: Prisma.FieldRef<"StaffLifetimeStats", 'Int'>
-  readonly noShowCount: Prisma.FieldRef<"StaffLifetimeStats", 'Int'>
+  readonly totalCompleted: Prisma.FieldRef<"StaffLifetimeStats", 'Int'>
+  readonly totalCancelled: Prisma.FieldRef<"StaffLifetimeStats", 'Int'>
+  readonly totalNoShow: Prisma.FieldRef<"StaffLifetimeStats", 'Int'>
+  readonly totalNewCustomers: Prisma.FieldRef<"StaffLifetimeStats", 'Int'>
 }
     
 

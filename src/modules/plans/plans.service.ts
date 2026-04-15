@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePlanDto } from './dto/create-plan.dto';
 import { PlansRepository } from './plans.repository';
-import { MercadoPagoService } from 'src/mercadopago/mercadopago.service';
+import { MercadoPagoService } from 'src/shared/integrations/mercadopago/mercadopago.service';
 import { Plan, PlanType } from 'src/generated/prisma/client';
 
 @Injectable()
@@ -27,8 +27,8 @@ export class PlansService {
     return plan;
   }
 
-  async findPlanByKey(key: PlanType) {
-    const plan = await this.plansRepository.findByKey(key);
+  async findPlanByType(planType: PlanType) {
+    const plan = await this.plansRepository.findByType(planType);
     if (!plan) {
       throw new NotFoundException('Plan no encontrado');
     }

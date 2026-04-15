@@ -48,7 +48,6 @@ export type UserMinAggregateOutputType = {
   tokenVersion: number | null
   createdAt: Date | null
   updatedAt: Date | null
-  pending_plan: $Enums.PlanType | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -65,7 +64,6 @@ export type UserMaxAggregateOutputType = {
   tokenVersion: number | null
   createdAt: Date | null
   updatedAt: Date | null
-  pending_plan: $Enums.PlanType | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -82,7 +80,6 @@ export type UserCountAggregateOutputType = {
   tokenVersion: number
   createdAt: number
   updatedAt: number
-  pending_plan: number
   _all: number
 }
 
@@ -109,7 +106,6 @@ export type UserMinAggregateInputType = {
   tokenVersion?: true
   createdAt?: true
   updatedAt?: true
-  pending_plan?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -126,7 +122,6 @@ export type UserMaxAggregateInputType = {
   tokenVersion?: true
   createdAt?: true
   updatedAt?: true
-  pending_plan?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -143,7 +138,6 @@ export type UserCountAggregateInputType = {
   tokenVersion?: true
   createdAt?: true
   updatedAt?: true
-  pending_plan?: true
   _all?: true
 }
 
@@ -247,7 +241,6 @@ export type UserGroupByOutputType = {
   tokenVersion: number
   createdAt: Date
   updatedAt: Date
-  pending_plan: $Enums.PlanType | null
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -287,14 +280,11 @@ export type UserWhereInput = {
   tokenVersion?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  pending_plan?: Prisma.EnumPlanTypeNullableFilter<"User"> | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberListRelationFilter
-  business?: Prisma.XOR<Prisma.BusinessNullableScalarRelationFilter, Prisma.BusinessWhereInput> | null
   inAppNotifications?: Prisma.InAppNotificationListRelationFilter
-  invites?: Prisma.MemberInviteListRelationFilter
+  memberships?: Prisma.MembershipListRelationFilter
   platformAdmin?: Prisma.XOR<Prisma.PlatformAdminNullableScalarRelationFilter, Prisma.PlatformAdminWhereInput> | null
   sessions?: Prisma.SessionListRelationFilter
-  staff?: Prisma.XOR<Prisma.StaffNullableScalarRelationFilter, Prisma.StaffWhereInput> | null
+  staffs?: Prisma.StaffListRelationFilter
   verificationLocks?: Prisma.XOR<Prisma.VerificationLockNullableScalarRelationFilter, Prisma.VerificationLockWhereInput> | null
   verifications?: Prisma.VerificationListRelationFilter
 }
@@ -313,14 +303,11 @@ export type UserOrderByWithRelationInput = {
   tokenVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  pending_plan?: Prisma.SortOrderInput | Prisma.SortOrder
-  businessMembers?: Prisma.BusinessMemberOrderByRelationAggregateInput
-  business?: Prisma.BusinessOrderByWithRelationInput
   inAppNotifications?: Prisma.InAppNotificationOrderByRelationAggregateInput
-  invites?: Prisma.MemberInviteOrderByRelationAggregateInput
+  memberships?: Prisma.MembershipOrderByRelationAggregateInput
   platformAdmin?: Prisma.PlatformAdminOrderByWithRelationInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
-  staff?: Prisma.StaffOrderByWithRelationInput
+  staffs?: Prisma.StaffOrderByRelationAggregateInput
   verificationLocks?: Prisma.VerificationLockOrderByWithRelationInput
   verifications?: Prisma.VerificationOrderByRelationAggregateInput
 }
@@ -342,14 +329,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   tokenVersion?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  pending_plan?: Prisma.EnumPlanTypeNullableFilter<"User"> | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberListRelationFilter
-  business?: Prisma.XOR<Prisma.BusinessNullableScalarRelationFilter, Prisma.BusinessWhereInput> | null
   inAppNotifications?: Prisma.InAppNotificationListRelationFilter
-  invites?: Prisma.MemberInviteListRelationFilter
+  memberships?: Prisma.MembershipListRelationFilter
   platformAdmin?: Prisma.XOR<Prisma.PlatformAdminNullableScalarRelationFilter, Prisma.PlatformAdminWhereInput> | null
   sessions?: Prisma.SessionListRelationFilter
-  staff?: Prisma.XOR<Prisma.StaffNullableScalarRelationFilter, Prisma.StaffWhereInput> | null
+  staffs?: Prisma.StaffListRelationFilter
   verificationLocks?: Prisma.XOR<Prisma.VerificationLockNullableScalarRelationFilter, Prisma.VerificationLockWhereInput> | null
   verifications?: Prisma.VerificationListRelationFilter
 }, "id" | "email" | "googleId">
@@ -368,7 +352,6 @@ export type UserOrderByWithAggregationInput = {
   tokenVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  pending_plan?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -393,7 +376,6 @@ export type UserScalarWhereWithAggregatesInput = {
   tokenVersion?: Prisma.IntWithAggregatesFilter<"User"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
-  pending_plan?: Prisma.EnumPlanTypeNullableWithAggregatesFilter<"User"> | $Enums.PlanType | null
 }
 
 export type UserCreateInput = {
@@ -410,14 +392,11 @@ export type UserCreateInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
   inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
 }
@@ -436,14 +415,11 @@ export type UserUncheckedCreateInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
 }
@@ -462,14 +438,11 @@ export type UserUpdateInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
   inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
 }
@@ -488,14 +461,11 @@ export type UserUncheckedUpdateInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -514,7 +484,6 @@ export type UserCreateManyInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -531,7 +500,6 @@ export type UserUpdateManyMutationInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -548,7 +516,6 @@ export type UserUncheckedUpdateManyInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -565,7 +532,6 @@ export type UserCountOrderByAggregateInput = {
   tokenVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  pending_plan?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -586,7 +552,6 @@ export type UserMaxOrderByAggregateInput = {
   tokenVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  pending_plan?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -603,7 +568,6 @@ export type UserMinOrderByAggregateInput = {
   tokenVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  pending_plan?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -639,22 +603,18 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type NullableEnumPlanTypeFieldUpdateOperationsInput = {
-  set?: $Enums.PlanType | null
-}
-
-export type UserCreateNestedOneWithoutBusinessMembersInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutBusinessMembersInput, Prisma.UserUncheckedCreateWithoutBusinessMembersInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBusinessMembersInput
+export type UserCreateNestedOneWithoutMembershipsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMembershipsInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutBusinessMembersNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutBusinessMembersInput, Prisma.UserUncheckedCreateWithoutBusinessMembersInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBusinessMembersInput
-  upsert?: Prisma.UserUpsertWithoutBusinessMembersInput
+export type UserUpdateOneRequiredWithoutMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMembershipsInput
+  upsert?: Prisma.UserUpsertWithoutMembershipsInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBusinessMembersInput, Prisma.UserUpdateWithoutBusinessMembersInput>, Prisma.UserUncheckedUpdateWithoutBusinessMembersInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMembershipsInput, Prisma.UserUpdateWithoutMembershipsInput>, Prisma.UserUncheckedUpdateWithoutMembershipsInput>
 }
 
 export type UserCreateNestedOneWithoutSessionsInput = {
@@ -699,46 +659,18 @@ export type UserUpdateOneRequiredWithoutVerificationLocksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVerificationLocksInput, Prisma.UserUpdateWithoutVerificationLocksInput>, Prisma.UserUncheckedUpdateWithoutVerificationLocksInput>
 }
 
-export type UserCreateNestedOneWithoutBusinessInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutBusinessInput, Prisma.UserUncheckedCreateWithoutBusinessInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBusinessInput
+export type UserCreateNestedOneWithoutStaffsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStaffsInput, Prisma.UserUncheckedCreateWithoutStaffsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStaffsInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutBusinessNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutBusinessInput, Prisma.UserUncheckedCreateWithoutBusinessInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBusinessInput
-  upsert?: Prisma.UserUpsertWithoutBusinessInput
+export type UserUpdateOneRequiredWithoutStaffsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStaffsInput, Prisma.UserUncheckedCreateWithoutStaffsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStaffsInput
+  upsert?: Prisma.UserUpsertWithoutStaffsInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBusinessInput, Prisma.UserUpdateWithoutBusinessInput>, Prisma.UserUncheckedUpdateWithoutBusinessInput>
-}
-
-export type UserCreateNestedOneWithoutStaffInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutStaffInput, Prisma.UserUncheckedCreateWithoutStaffInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStaffInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutStaffNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutStaffInput, Prisma.UserUncheckedCreateWithoutStaffInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStaffInput
-  upsert?: Prisma.UserUpsertWithoutStaffInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStaffInput, Prisma.UserUpdateWithoutStaffInput>, Prisma.UserUncheckedUpdateWithoutStaffInput>
-}
-
-export type UserCreateNestedOneWithoutInvitesInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutInvitesInput, Prisma.UserUncheckedCreateWithoutInvitesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvitesInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutInvitesNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutInvitesInput, Prisma.UserUncheckedCreateWithoutInvitesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvitesInput
-  upsert?: Prisma.UserUpsertWithoutInvitesInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInvitesInput, Prisma.UserUpdateWithoutInvitesInput>, Prisma.UserUncheckedUpdateWithoutInvitesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStaffsInput, Prisma.UserUpdateWithoutStaffsInput>, Prisma.UserUncheckedUpdateWithoutStaffsInput>
 }
 
 export type UserCreateNestedOneWithoutInAppNotificationsInput = {
@@ -769,7 +701,7 @@ export type UserUpdateOneRequiredWithoutPlatformAdminNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPlatformAdminInput, Prisma.UserUpdateWithoutPlatformAdminInput>, Prisma.UserUncheckedUpdateWithoutPlatformAdminInput>
 }
 
-export type UserCreateWithoutBusinessMembersInput = {
+export type UserCreateWithoutMembershipsInput = {
   id?: string
   name: string
   email: string
@@ -783,18 +715,15 @@ export type UserCreateWithoutBusinessMembersInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
   inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutBusinessMembersInput = {
+export type UserUncheckedCreateWithoutMembershipsInput = {
   id?: string
   name: string
   email: string
@@ -808,34 +737,31 @@ export type UserUncheckedCreateWithoutBusinessMembersInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutBusinessMembersInput = {
+export type UserCreateOrConnectWithoutMembershipsInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutBusinessMembersInput, Prisma.UserUncheckedCreateWithoutBusinessMembersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
 }
 
-export type UserUpsertWithoutBusinessMembersInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutBusinessMembersInput, Prisma.UserUncheckedUpdateWithoutBusinessMembersInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutBusinessMembersInput, Prisma.UserUncheckedCreateWithoutBusinessMembersInput>
+export type UserUpsertWithoutMembershipsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMembershipsInput, Prisma.UserUncheckedUpdateWithoutMembershipsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMembershipsInput, Prisma.UserUncheckedCreateWithoutMembershipsInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutBusinessMembersInput = {
+export type UserUpdateToOneWithWhereWithoutMembershipsInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutBusinessMembersInput, Prisma.UserUncheckedUpdateWithoutBusinessMembersInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMembershipsInput, Prisma.UserUncheckedUpdateWithoutMembershipsInput>
 }
 
-export type UserUpdateWithoutBusinessMembersInput = {
+export type UserUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -849,18 +775,15 @@ export type UserUpdateWithoutBusinessMembersInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
   inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutBusinessMembersInput = {
+export type UserUncheckedUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -874,13 +797,10 @@ export type UserUncheckedUpdateWithoutBusinessMembersInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -899,13 +819,10 @@ export type UserCreateWithoutSessionsInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
   inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
-  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
 }
@@ -924,13 +841,10 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
-  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
 }
@@ -965,13 +879,10 @@ export type UserUpdateWithoutSessionsInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
   inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
-  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
 }
@@ -990,13 +901,10 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
-  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1015,14 +923,11 @@ export type UserCreateWithoutVerificationsInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
   inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
 }
 
@@ -1040,14 +945,11 @@ export type UserUncheckedCreateWithoutVerificationsInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -1081,14 +983,11 @@ export type UserUpdateWithoutVerificationsInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
   inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
 }
 
@@ -1106,14 +1005,11 @@ export type UserUncheckedUpdateWithoutVerificationsInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
 }
 
@@ -1131,14 +1027,11 @@ export type UserCreateWithoutVerificationLocksInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
   inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
 }
 
@@ -1156,14 +1049,11 @@ export type UserUncheckedCreateWithoutVerificationLocksInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -1197,14 +1087,11 @@ export type UserUpdateWithoutVerificationLocksInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
   inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
 }
 
@@ -1222,18 +1109,15 @@ export type UserUncheckedUpdateWithoutVerificationLocksInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
-export type UserCreateWithoutBusinessInput = {
+export type UserCreateWithoutStaffsInput = {
   id?: string
   name: string
   email: string
@@ -1247,134 +1131,15 @@ export type UserCreateWithoutBusinessInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
   inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
-  platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
-  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutBusinessInput = {
-  id?: string
-  name: string
-  email: string
-  emailVerifiedAt?: Date | string | null
-  phone?: string | null
-  phoneVerifiedAt?: Date | string | null
-  password?: string | null
-  avatarUrl?: string | null
-  googleId?: string | null
-  lastLoginAt?: Date | string | null
-  tokenVersion?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
-  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutBusinessInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutBusinessInput, Prisma.UserUncheckedCreateWithoutBusinessInput>
-}
-
-export type UserUpsertWithoutBusinessInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutBusinessInput, Prisma.UserUncheckedUpdateWithoutBusinessInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutBusinessInput, Prisma.UserUncheckedCreateWithoutBusinessInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutBusinessInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutBusinessInput, Prisma.UserUncheckedUpdateWithoutBusinessInput>
-}
-
-export type UserUpdateWithoutBusinessInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
-  platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
-  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutBusinessInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
-  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutStaffInput = {
-  id?: string
-  name: string
-  email: string
-  emailVerifiedAt?: Date | string | null
-  phone?: string | null
-  phoneVerifiedAt?: Date | string | null
-  password?: string | null
-  avatarUrl?: string | null
-  googleId?: string | null
-  lastLoginAt?: Date | string | null
-  tokenVersion?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutStaffInput = {
+export type UserUncheckedCreateWithoutStaffsInput = {
   id?: string
   name: string
   email: string
@@ -1388,34 +1153,31 @@ export type UserUncheckedCreateWithoutStaffInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutStaffInput = {
+export type UserCreateOrConnectWithoutStaffsInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutStaffInput, Prisma.UserUncheckedCreateWithoutStaffInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutStaffsInput, Prisma.UserUncheckedCreateWithoutStaffsInput>
 }
 
-export type UserUpsertWithoutStaffInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutStaffInput, Prisma.UserUncheckedUpdateWithoutStaffInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutStaffInput, Prisma.UserUncheckedCreateWithoutStaffInput>
+export type UserUpsertWithoutStaffsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutStaffsInput, Prisma.UserUncheckedUpdateWithoutStaffsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutStaffsInput, Prisma.UserUncheckedCreateWithoutStaffsInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutStaffInput = {
+export type UserUpdateToOneWithWhereWithoutStaffsInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutStaffInput, Prisma.UserUncheckedUpdateWithoutStaffInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutStaffsInput, Prisma.UserUncheckedUpdateWithoutStaffsInput>
 }
 
-export type UserUpdateWithoutStaffInput = {
+export type UserUpdateWithoutStaffsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1429,18 +1191,15 @@ export type UserUpdateWithoutStaffInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
   inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutStaffInput = {
+export type UserUncheckedUpdateWithoutStaffsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1454,129 +1213,10 @@ export type UserUncheckedUpdateWithoutStaffInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
-  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutInvitesInput = {
-  id?: string
-  name: string
-  email: string
-  emailVerifiedAt?: Date | string | null
-  phone?: string | null
-  phoneVerifiedAt?: Date | string | null
-  password?: string | null
-  avatarUrl?: string | null
-  googleId?: string | null
-  lastLoginAt?: Date | string | null
-  tokenVersion?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
-  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutInvitesInput = {
-  id?: string
-  name: string
-  email: string
-  emailVerifiedAt?: Date | string | null
-  phone?: string | null
-  phoneVerifiedAt?: Date | string | null
-  password?: string | null
-  avatarUrl?: string | null
-  googleId?: string | null
-  lastLoginAt?: Date | string | null
-  tokenVersion?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
-  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutInvitesInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutInvitesInput, Prisma.UserUncheckedCreateWithoutInvitesInput>
-}
-
-export type UserUpsertWithoutInvitesInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutInvitesInput, Prisma.UserUncheckedUpdateWithoutInvitesInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutInvitesInput, Prisma.UserUncheckedCreateWithoutInvitesInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutInvitesInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutInvitesInput, Prisma.UserUncheckedUpdateWithoutInvitesInput>
-}
-
-export type UserUpdateWithoutInvitesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
-  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutInvitesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1595,13 +1235,10 @@ export type UserCreateWithoutInAppNotificationsInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
-  invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
 }
@@ -1620,13 +1257,10 @@ export type UserUncheckedCreateWithoutInAppNotificationsInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
-  invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
   platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1661,13 +1295,10 @@ export type UserUpdateWithoutInAppNotificationsInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
-  invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
 }
@@ -1686,13 +1317,10 @@ export type UserUncheckedUpdateWithoutInAppNotificationsInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
-  invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
   platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1711,13 +1339,10 @@ export type UserCreateWithoutPlatformAdminInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessCreateNestedOneWithoutOwnerInput
   inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteCreateNestedManyWithoutInviterInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffCreateNestedOneWithoutUserInput
+  staffs?: Prisma.StaffCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
 }
@@ -1736,13 +1361,10 @@ export type UserUncheckedCreateWithoutPlatformAdminInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  pending_plan?: $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedCreateNestedManyWithoutUserInput
-  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutOwnerInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
-  invites?: Prisma.MemberInviteUncheckedCreateNestedManyWithoutInviterInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  staff?: Prisma.StaffUncheckedCreateNestedOneWithoutUserInput
+  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1777,13 +1399,10 @@ export type UserUpdateWithoutPlatformAdminInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUpdateOneWithoutOwnerNestedInput
   inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUpdateManyWithoutInviterNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUpdateOneWithoutUserNestedInput
+  staffs?: Prisma.StaffUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
 }
@@ -1802,13 +1421,10 @@ export type UserUncheckedUpdateWithoutPlatformAdminInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pending_plan?: Prisma.NullableEnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType | null
-  businessMembers?: Prisma.BusinessMemberUncheckedUpdateManyWithoutUserNestedInput
-  business?: Prisma.BusinessUncheckedUpdateOneWithoutOwnerNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
-  invites?: Prisma.MemberInviteUncheckedUpdateManyWithoutInviterNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  staff?: Prisma.StaffUncheckedUpdateOneWithoutUserNestedInput
+  staffs?: Prisma.StaffUncheckedUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1819,18 +1435,18 @@ export type UserUncheckedUpdateWithoutPlatformAdminInput = {
  */
 
 export type UserCountOutputType = {
-  businessMembers: number
   inAppNotifications: number
-  invites: number
+  memberships: number
   sessions: number
+  staffs: number
   verifications: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  businessMembers?: boolean | UserCountOutputTypeCountBusinessMembersArgs
   inAppNotifications?: boolean | UserCountOutputTypeCountInAppNotificationsArgs
-  invites?: boolean | UserCountOutputTypeCountInvitesArgs
+  memberships?: boolean | UserCountOutputTypeCountMembershipsArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
+  staffs?: boolean | UserCountOutputTypeCountStaffsArgs
   verifications?: boolean | UserCountOutputTypeCountVerificationsArgs
 }
 
@@ -1847,13 +1463,6 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountBusinessMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.BusinessMemberWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
 export type UserCountOutputTypeCountInAppNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.InAppNotificationWhereInput
 }
@@ -1861,8 +1470,8 @@ export type UserCountOutputTypeCountInAppNotificationsArgs<ExtArgs extends runti
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountInvitesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.MemberInviteWhereInput
+export type UserCountOutputTypeCountMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MembershipWhereInput
 }
 
 /**
@@ -1870,6 +1479,13 @@ export type UserCountOutputTypeCountInvitesArgs<ExtArgs extends runtime.Types.Ex
  */
 export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.SessionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountStaffsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StaffWhereInput
 }
 
 /**
@@ -1894,14 +1510,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   tokenVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  pending_plan?: boolean
-  businessMembers?: boolean | Prisma.User$businessMembersArgs<ExtArgs>
-  business?: boolean | Prisma.User$businessArgs<ExtArgs>
   inAppNotifications?: boolean | Prisma.User$inAppNotificationsArgs<ExtArgs>
-  invites?: boolean | Prisma.User$invitesArgs<ExtArgs>
+  memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
   platformAdmin?: boolean | Prisma.User$platformAdminArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
-  staff?: boolean | Prisma.User$staffArgs<ExtArgs>
+  staffs?: boolean | Prisma.User$staffsArgs<ExtArgs>
   verificationLocks?: boolean | Prisma.User$verificationLocksArgs<ExtArgs>
   verifications?: boolean | Prisma.User$verificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1921,7 +1534,6 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   tokenVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  pending_plan?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1938,7 +1550,6 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   tokenVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  pending_plan?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -1955,18 +1566,15 @@ export type UserSelectScalar = {
   tokenVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  pending_plan?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerifiedAt" | "phone" | "phoneVerifiedAt" | "password" | "avatarUrl" | "googleId" | "lastLoginAt" | "tokenVersion" | "createdAt" | "updatedAt" | "pending_plan", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerifiedAt" | "phone" | "phoneVerifiedAt" | "password" | "avatarUrl" | "googleId" | "lastLoginAt" | "tokenVersion" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  businessMembers?: boolean | Prisma.User$businessMembersArgs<ExtArgs>
-  business?: boolean | Prisma.User$businessArgs<ExtArgs>
   inAppNotifications?: boolean | Prisma.User$inAppNotificationsArgs<ExtArgs>
-  invites?: boolean | Prisma.User$invitesArgs<ExtArgs>
+  memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
   platformAdmin?: boolean | Prisma.User$platformAdminArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
-  staff?: boolean | Prisma.User$staffArgs<ExtArgs>
+  staffs?: boolean | Prisma.User$staffsArgs<ExtArgs>
   verificationLocks?: boolean | Prisma.User$verificationLocksArgs<ExtArgs>
   verifications?: boolean | Prisma.User$verificationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1977,13 +1585,11 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    businessMembers: Prisma.$BusinessMemberPayload<ExtArgs>[]
-    business: Prisma.$BusinessPayload<ExtArgs> | null
     inAppNotifications: Prisma.$InAppNotificationPayload<ExtArgs>[]
-    invites: Prisma.$MemberInvitePayload<ExtArgs>[]
+    memberships: Prisma.$MembershipPayload<ExtArgs>[]
     platformAdmin: Prisma.$PlatformAdminPayload<ExtArgs> | null
     sessions: Prisma.$SessionPayload<ExtArgs>[]
-    staff: Prisma.$StaffPayload<ExtArgs> | null
+    staffs: Prisma.$StaffPayload<ExtArgs>[]
     verificationLocks: Prisma.$VerificationLockPayload<ExtArgs> | null
     verifications: Prisma.$VerificationPayload<ExtArgs>[]
   }
@@ -2001,7 +1607,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     tokenVersion: number
     createdAt: Date
     updatedAt: Date
-    pending_plan: $Enums.PlanType | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -2396,13 +2001,11 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  businessMembers<T extends Prisma.User$businessMembersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$businessMembersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BusinessMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  business<T extends Prisma.User$businessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$businessArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   inAppNotifications<T extends Prisma.User$inAppNotificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$inAppNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  invites<T extends Prisma.User$invitesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invitesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MemberInvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  memberships<T extends Prisma.User$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   platformAdmin<T extends Prisma.User$platformAdminArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$platformAdminArgs<ExtArgs>>): Prisma.Prisma__PlatformAdminClient<runtime.Types.Result.GetResult<Prisma.$PlatformAdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  staff<T extends Prisma.User$staffArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$staffArgs<ExtArgs>>): Prisma.Prisma__StaffClient<runtime.Types.Result.GetResult<Prisma.$StaffPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  staffs<T extends Prisma.User$staffsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$staffsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StaffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   verificationLocks<T extends Prisma.User$verificationLocksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationLocksArgs<ExtArgs>>): Prisma.Prisma__VerificationLockClient<runtime.Types.Result.GetResult<Prisma.$VerificationLockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   verifications<T extends Prisma.User$verificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -2447,7 +2050,6 @@ export interface UserFieldRefs {
   readonly tokenVersion: Prisma.FieldRef<"User", 'Int'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
-  readonly pending_plan: Prisma.FieldRef<"User", 'PlanType'>
 }
     
 
@@ -2836,49 +2438,6 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.businessMembers
- */
-export type User$businessMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the BusinessMember
-   */
-  select?: Prisma.BusinessMemberSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the BusinessMember
-   */
-  omit?: Prisma.BusinessMemberOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.BusinessMemberInclude<ExtArgs> | null
-  where?: Prisma.BusinessMemberWhereInput
-  orderBy?: Prisma.BusinessMemberOrderByWithRelationInput | Prisma.BusinessMemberOrderByWithRelationInput[]
-  cursor?: Prisma.BusinessMemberWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.BusinessMemberScalarFieldEnum | Prisma.BusinessMemberScalarFieldEnum[]
-}
-
-/**
- * User.business
- */
-export type User$businessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Business
-   */
-  select?: Prisma.BusinessSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Business
-   */
-  omit?: Prisma.BusinessOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.BusinessInclude<ExtArgs> | null
-  where?: Prisma.BusinessWhereInput
-}
-
-/**
  * User.inAppNotifications
  */
 export type User$inAppNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2903,27 +2462,27 @@ export type User$inAppNotificationsArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
- * User.invites
+ * User.memberships
  */
-export type User$invitesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$membershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the MemberInvite
+   * Select specific fields to fetch from the Membership
    */
-  select?: Prisma.MemberInviteSelect<ExtArgs> | null
+  select?: Prisma.MembershipSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the MemberInvite
+   * Omit specific fields from the Membership
    */
-  omit?: Prisma.MemberInviteOmit<ExtArgs> | null
+  omit?: Prisma.MembershipOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.MemberInviteInclude<ExtArgs> | null
-  where?: Prisma.MemberInviteWhereInput
-  orderBy?: Prisma.MemberInviteOrderByWithRelationInput | Prisma.MemberInviteOrderByWithRelationInput[]
-  cursor?: Prisma.MemberInviteWhereUniqueInput
+  include?: Prisma.MembershipInclude<ExtArgs> | null
+  where?: Prisma.MembershipWhereInput
+  orderBy?: Prisma.MembershipOrderByWithRelationInput | Prisma.MembershipOrderByWithRelationInput[]
+  cursor?: Prisma.MembershipWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.MemberInviteScalarFieldEnum | Prisma.MemberInviteScalarFieldEnum[]
+  distinct?: Prisma.MembershipScalarFieldEnum | Prisma.MembershipScalarFieldEnum[]
 }
 
 /**
@@ -2970,9 +2529,9 @@ export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 }
 
 /**
- * User.staff
+ * User.staffs
  */
-export type User$staffArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$staffsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Staff
    */
@@ -2986,6 +2545,11 @@ export type User$staffArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   include?: Prisma.StaffInclude<ExtArgs> | null
   where?: Prisma.StaffWhereInput
+  orderBy?: Prisma.StaffOrderByWithRelationInput | Prisma.StaffOrderByWithRelationInput[]
+  cursor?: Prisma.StaffWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StaffScalarFieldEnum | Prisma.StaffScalarFieldEnum[]
 }
 
 /**

@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from 'src/modules/users/users.module';
-import { CustomersModule } from 'src/modules/customers/customers.module';
-import { BusinessQuotaModule } from 'src/modules/businesses/features/quota/business-quota.module';
+import { TenantQuotaModule } from 'src/modules/tenants/features/quota/tenant-quota.module';
 import { NotificationsService } from './application/services/notifications.service';
 import { NotificationDeliveryRepository } from './infraestructure/repositories/notification-delivery.repository';
 import { NotificationLogsRepository } from './infraestructure/repositories/notification-logs.repository';
@@ -10,7 +9,6 @@ import { TemplateService } from './application/services/template.service';
 import { EmailGateway } from './infraestructure/gateways/email.gateway';
 import { WhatsappGateway } from './infraestructure/gateways/whatsapp.gateway';
 import { NotificationGatewaysService } from './infraestructure/gateways/notification-gateways.service';
-import { InAppGateway } from './infraestructure/gateways/in-app.gateway';
 import { NotificationProcessorService } from './application/services/notification-processor.service';
 import { NotificationScheduler } from './schedulers/notification-scheduler.service';
 import { NotificationConfigService } from './notification-config.service';
@@ -28,9 +26,16 @@ import { AppointmentCancelledListener } from './listeners/appointments/appointme
 import { AppointmentRescheduledListener } from './listeners/appointments/appointment-rescheduled.listener';
 import { NotificationsController } from './notifications.controller';
 import { InAppNotificationsService } from './application/services/in-app-notifications.service';
+import { NotificationsWsGateway } from './infraestructure/gateways/notifications.ws.gateway';
+import { TenantCreatedTemplate } from './application/templates/tenant-created/tenant-created.template';
+import { TenantCreatedListener } from './listeners/tenants/tenant-created.listener';
+import { CustomersModule } from '../tenants/features/customers/customers.module';
+import { AppointmentBookedByStaffTemplate } from './application/templates/appointment-booked-by-staff/appointment-booked-by-staff.template';
+import { AppointmentCancelledByStaffTemplate } from './application/templates/appointment-cancelled-by-staff/appointment-cancelled-by-staff.template';
+import { AppointmentCancelledByStaffListener } from './listeners/appointments/appointment-cancelled-by-staff.listener';
 
 @Module({
-  imports: [BusinessQuotaModule, UsersModule, CustomersModule],
+  imports: [TenantQuotaModule, UsersModule, CustomersModule],
   controllers: [NotificationsController],
   providers: [
     // Services
@@ -46,7 +51,7 @@ import { InAppNotificationsService } from './application/services/in-app-notific
     NotificationGatewaysService,
     EmailGateway,
     WhatsappGateway,
-    InAppGateway,
+    NotificationsWsGateway,
 
     // Repositories
     InAppNotificationsRepository,
@@ -66,13 +71,18 @@ import { InAppNotificationsService } from './application/services/in-app-notific
     AppointmentCancelledTemplate,
     AppointmentRescheduledTemplate,
     AppointmentReminderTemplate,
+    AppointmentBookedByStaffTemplate,
+    AppointmentCancelledByStaffTemplate,
     VerificationEmailTemplate,
+    TenantCreatedTemplate,
 
     // Listeners
     AppointmentCreatedListener,
     AppointmentCancelledListener,
+    AppointmentCancelledByStaffListener,
     AppointmentRescheduledListener,
     VerificationCreatedListener,
+    TenantCreatedListener,
   ],
 })
 export class NotificationsModule {}

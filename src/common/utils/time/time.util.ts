@@ -1,4 +1,4 @@
-import { getHours, getMinutes } from 'date-fns';
+import { format } from 'date-fns-tz';
 
 export function timeToMinutes(time: string): number {
   const [h, m] = time.split(':').map(Number);
@@ -13,8 +13,9 @@ export function minutesToTime(minutes: number): string {
   return `${h}:${m}`;
 }
 
-export function dateToMinutes(date: Date): number {
-  const hours = getHours(date);
-  const minutes = getMinutes(date);
+export function dateToMinutes(date: Date, timeZone: string): number {
+  const hours = parseInt(format(date, 'H', { timeZone }), 10);
+  const minutes = parseInt(format(date, 'm', { timeZone }), 10);
+
   return hours * 60 + minutes;
 }

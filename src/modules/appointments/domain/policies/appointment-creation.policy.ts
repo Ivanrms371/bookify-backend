@@ -16,13 +16,15 @@ export class AvailabilityPolicy {
   async validate(params: ValidateAvailabilityParams) {
     const { staffId, serviceId, startTime } = params;
 
-    const availability = await this.availabilityQuery.getAvailabilityData(staffId, startTime);
+    console.log(params);
+
+    const availability = await this.availabilityQuery.getAvailabilityContextData(staffId, startTime);
 
     if (!availability) {
       throw new BadRequestException('El staff no tiene disponibilidad configurada');
     }
 
-    const settings = availability.business.settings;
+    const settings = availability.tenant.settings;
     if (!settings) {
       throw new BadRequestException('El negocio no tiene configuración');
     }
@@ -66,7 +68,12 @@ export class AvailabilityPolicy {
   private resolveEffectiveBlocks(availability: AvailabilityData) {
     const exception = availability.exceptions?.[0];
 
+    console.log(availability.tenant.tenantWorkingHours);
+
     if (!exception) {
+      if (availability.workingHours.length === 0) {
+        return availability.tenant.tenantWorkingHours;
+      }
       return availability.workingHours;
     }
 
@@ -98,7 +105,7 @@ export class AvailabilityPolicy {
       );
 
       if (!fitsInWorkingHours) {
-        throw new BadRequestException('El horario está fuera del horario laboral');
+        throw new BadRequestException('El horario está fuera del horario laboral.');
       }
     }
   }

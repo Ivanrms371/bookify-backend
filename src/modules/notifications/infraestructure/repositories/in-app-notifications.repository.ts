@@ -18,4 +18,26 @@ export class InAppNotificationsRepository {
       },
     });
   }
+
+  async findMany(userId: string, limit: number = 10) {
+    return this.prisma.inAppNotification.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+    });
+  }
+
+  async markAsRead(id: string, userId: string) {
+    return this.prisma.inAppNotification.updateMany({
+      where: { id, userId },
+      data: { readAt: new Date() },
+    });
+  }
+
+  async markAllAsRead(userId: string) {
+    return this.prisma.inAppNotification.updateMany({
+      where: { userId, readAt: null },
+      data: { readAt: new Date() },
+    });
+  }
 }

@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PlansService } from 'src/modules/plans/plans.service';
 import { SubscriptionRepository } from '../repositories/subscription.repository';
-import { MercadoPagoService } from 'src/mercadopago/mercadopago.service';
+import { MercadoPagoService } from 'src/shared/integrations/mercadopago/mercadopago.service';
 import { addDays } from 'date-fns';
-import { MercadoPagoPreapproval } from 'src/mercadopago/types/preapproval-subscription.type';
+import { MercadoPagoPreapproval } from 'src/shared/integrations/mercadopago/types/preapproval-subscription.type';
 import { PlanType, SubscriptionStatus } from 'src/generated/prisma/enums';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 import { Subscription } from 'src/generated/prisma/client';
@@ -20,9 +20,9 @@ export class SubscriptionService {
     return planType === PlanType.FREE;
   }
 
-  async findSubscriptionByBusinessId(businessId: string) {
+  async findSubscriptionByTenantId(tenantId: string) {
     const subscription = await this.subscriptionRepository.findUnique({
-      where: { businessId },
+      where: { tenantId },
     });
     if (!subscription) {
       throw new NotFoundException('Subscription not found');
@@ -30,24 +30,24 @@ export class SubscriptionService {
     return subscription;
   }
 
-  async findByBusinessId(businessId: string) {
-    return this.subscriptionRepository.findWithPlanByBusinessId(businessId);
+  async findByTenantId(tenantId: string) {
+    return this.subscriptionRepository.findWithPlanByTenantId(tenantId);
   }
 
-  async createSubscription(businessId: string, planKey: PlanType, tx: TransactionClient) {
-    if (this.isFree(planKey)) {
-      return this.createFreeSubscription(businessId, tx);
+  async createSubscription(tenantId: string, planType: PlanType, tx: TransactionClient) {
+    if (this.isFree(planType)) {
+      return this.createFreeSubscription(tenantId, tx);
     }
-    return this.startTrial(businessId, planKey, tx);
+    return this.startTrial(tenantId, planType, tx);
   }
 
-  async createFreeSubscription(businessId: string, tx?: TransactionClient) {
+  async createFreeSubscription(tenantId: string, tx?: TransactionClient) {
     const freePlan = await this.plansService.findFreePlan();
 
     const subscription = await this.subscriptionRepository.upsert(
-      businessId,
+      tenantId,
       {
-        business: { connect: { id: businessId } },
+        tenant: { connect: { id: tenantId } },
         plan: { connect: { id: freePlan.id } },
         status: 'ACTIVE',
         amount: freePlan.price,
@@ -65,12 +65,12 @@ export class SubscriptionService {
     return subscription;
   }
 
-  async startTrial(businessId: string, planKey: PlanType, tx?: TransactionClient) {
-    const plan = await this.plansService.findPlanByKey(planKey);
+  async startTrial(tenantId: string, planType: PlanType, tx?: TransactionClient) {
+    const plan = await this.plansService.findPlanByType(planType);
     const trialEndsAt = addDays(new Date(), plan.trialDays);
 
-    const subscription = await this.subscriptionRepository.upsert(businessId, {
-      business: { connect: { id: businessId } },
+    const subscription = await this.subscriptionRepository.upsert(tenantId, {
+      tenant: { connect: { id: tenantId } },
       plan: { connect: { id: plan.id } },
       status: 'TRIAL',
       amount: plan.price,
@@ -86,16 +86,16 @@ export class SubscriptionService {
     return subscription;
   }
 
-  async createPaidSubscription(businessId: string, planKey: PlanType) {
-    const plan = await this.plansService.findPlanByKey(planKey);
+  async createPaidSubscription(tenantId: string, planType: PlanType) {
+    const plan = await this.plansService.findPlanByType(planType);
 
     if (this.plansService.isFreePlan(plan)) {
       throw new BadRequestException('Este plan es gratuito.');
     }
 
-    // await this.businessService.(businessId);
+    // await this.tenantService.(tenantId);
 
-    const existingSubscription = await this.subscriptionRepository.findByBusinessId(businessId);
+    const existingSubscription = await this.subscriptionRepository.findByTenantId(tenantId);
 
     // frequency in base billin cycle
     const frequency = plan.billingCycle === 'MONTHLY' ? 1 : 12;
@@ -115,11 +115,11 @@ export class SubscriptionService {
       },
       back_url: 'https://turnify.com',
       payer_email: '[EMAIL_ADDRESS]',
-      external_reference: businessId,
+      external_reference: tenantId,
     });
 
-    const subscription = await this.subscriptionRepository.upsert(businessId, {
-      business: { connect: { id: businessId } },
+    const subscription = await this.subscriptionRepository.upsert(tenantId, {
+      tenant: { connect: { id: tenantId } },
       plan: { connect: { id: plan.id } },
       status: 'PENDING_PAYMENT',
       amount: plan.price,
@@ -168,11 +168,11 @@ export class SubscriptionService {
       },
       include: {
         plan: true,
-        business: true,
+        tenant: true,
       },
     });
 
-    await this.downgradeToFree(subscription.businessId);
+    await this.downgradeToFree(subscription.tenantId);
 
     return cancelled;
   }
@@ -181,11 +181,11 @@ export class SubscriptionService {
    * Downgrade to plan FREE
    */
 
-  async downgradeToFree(businessId: string) {
+  async downgradeToFree(tenantId: string) {
     const freePlan = await this.plansService.findFreePlan();
 
     return await this.subscriptionRepository.update({
-      where: { businessId },
+      where: { tenantId },
       data: {
         planId: freePlan.id,
         status: 'ACTIVE',
@@ -199,15 +199,15 @@ export class SubscriptionService {
       },
       include: {
         plan: true,
-        business: true,
+        tenant: true,
       },
     });
   }
 
   async syncSubscriptionState(mpData: MercadoPagoPreapproval) {
-    const businessId = mpData.external_reference;
+    const tenantId = mpData.external_reference;
     const subscription = await this.subscriptionRepository.findUnique({
-      where: { businessId },
+      where: { tenantId },
     });
 
     if (!subscription) {
@@ -229,7 +229,7 @@ export class SubscriptionService {
       },
       include: {
         plan: true,
-        business: true,
+        tenant: true,
       },
     });
   }

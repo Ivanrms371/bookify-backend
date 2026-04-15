@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { Business, Plan, Prisma } from 'src/generated/prisma/client';
+import { Tenant, Plan, Prisma } from 'src/generated/prisma/client';
 import { BaseRepository } from 'src/common/database/base.repository';
 import {
   SubscriptionCreateInput,
@@ -29,13 +29,13 @@ export class SubscriptionRepository extends BaseRepository {
     return this.db(tx).subscription.findUnique({ where: { id } });
   }
 
-  async findByBusinessId(businessId: string, tx?: TransactionClient) {
-    return this.db(tx).subscription.findUnique({ where: { businessId } });
+  async findByTenantId(tenantId: string, tx?: TransactionClient) {
+    return this.db(tx).subscription.findUnique({ where: { tenantId } });
   }
 
-  async findWithPlanByBusinessId(businessId: string, tx?: TransactionClient) {
+  async findWithPlanByTenantId(tenantId: string, tx?: TransactionClient) {
     return this.db(tx).subscription.findUnique({
-      where: { businessId },
+      where: { tenantId },
       include: { plan: true },
     });
   }
@@ -56,10 +56,10 @@ export class SubscriptionRepository extends BaseRepository {
     return this.db(tx).subscription.update(args);
   }
 
-  async upsert(businessId: string, data: SubscriptionCreateInput, tx?: TransactionClient) {
+  async upsert(tenantId: string, data: SubscriptionCreateInput, tx?: TransactionClient) {
     return this.db(tx).subscription.upsert({
       where: {
-        businessId,
+        tenantId,
       },
       create: data,
       update: data,
@@ -81,11 +81,6 @@ export class SubscriptionRepository extends BaseRepository {
         ]),
       },
       include: {
-        business: {
-          include: {
-            owner: true,
-          },
-        },
         plan: true,
       },
     });

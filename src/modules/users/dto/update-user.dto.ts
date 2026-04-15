@@ -15,5 +15,5 @@ export class UpdateUserDto {
 
   @IsString()
   @IsOptional()
-  businessId?: string;
+  tenantId?: string;
 }

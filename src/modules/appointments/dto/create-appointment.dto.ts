@@ -14,7 +14,7 @@ class Customer {
 class Appointment {
   @IsString()
   @IsUUID()
-  businessId: string;
+  tenantId: string;
 
   @IsString()
   @IsUUID()

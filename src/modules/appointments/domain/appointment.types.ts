@@ -1,6 +1,6 @@
 import { AppointmentStatus } from 'src/generated/prisma/enums';
 
-export type FindBusinessAppointmentsFilters = {
+export type FindTenantAppointmentsFilters = {
   startDate?: Date;
   endDate?: Date;
   status?: AppointmentStatus;

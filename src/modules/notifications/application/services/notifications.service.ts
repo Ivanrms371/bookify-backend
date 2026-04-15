@@ -30,7 +30,7 @@ export class NotificationsService {
 
   async create(params: {
     type: string;
-    businessId?: string;
+    tenantId?: string;
     recipientId: string;
     recipientType: RecipientType;
     payload: Record<string, any>;
@@ -41,7 +41,7 @@ export class NotificationsService {
       recipientId: params.recipientId,
       recipientType: params.recipientType,
       payload: params.payload,
-      businessId: params.businessId,
+      tenantId: params.tenantId,
     });
 
     const channels = this.resolveChannels(params.type, params.recipientType);

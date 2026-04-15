@@ -148,7 +148,7 @@ export class WebhookLoggerService {
         },
       });
 
-      this.logger.warn(`⚠️ Webhook failed (business error): ${logId} | ${error.message}`);
+      this.logger.warn(`⚠️ Webhook failed (tenant error): ${logId} | ${error.message}`);
     } catch (error) {
       this.logger.error(`Error marking webhook as failed: ${error.message}`, error.stack);
       throw error;

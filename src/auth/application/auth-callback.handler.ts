@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { GoogleService } from '../infrastructure/google/google.service';
 import { AuthService } from './auth.service';
-import { ClientInfo } from 'src/common/types/client.type';
 
 @Injectable()
 export class AuthCallbackHandler {

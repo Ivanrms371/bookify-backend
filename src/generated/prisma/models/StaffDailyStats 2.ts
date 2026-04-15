@@ -27,89 +27,119 @@ export type AggregateStaffDailyStats = {
 }
 
 export type StaffDailyStatsAvgAggregateOutputType = {
-  appointmentsCount: number | null
+  appointments: number | null
+  cancelled: number | null
+  noShow: number | null
+  completed: number | null
+  newCustomers: number | null
   revenue: runtime.Decimal | null
-  newCustomersCount: number | null
 }
 
 export type StaffDailyStatsSumAggregateOutputType = {
-  appointmentsCount: number | null
+  appointments: number | null
+  cancelled: number | null
+  noShow: number | null
+  completed: number | null
+  newCustomers: number | null
   revenue: runtime.Decimal | null
-  newCustomersCount: number | null
 }
 
 export type StaffDailyStatsMinAggregateOutputType = {
   id: string | null
   staffId: string | null
+  tenantId: string | null
   date: Date | null
-  appointmentsCount: number | null
+  appointments: number | null
+  cancelled: number | null
+  noShow: number | null
+  completed: number | null
+  newCustomers: number | null
   revenue: runtime.Decimal | null
-  mostSoldServiceId: string | null
-  newCustomersCount: number | null
 }
 
 export type StaffDailyStatsMaxAggregateOutputType = {
   id: string | null
   staffId: string | null
+  tenantId: string | null
   date: Date | null
-  appointmentsCount: number | null
+  appointments: number | null
+  cancelled: number | null
+  noShow: number | null
+  completed: number | null
+  newCustomers: number | null
   revenue: runtime.Decimal | null
-  mostSoldServiceId: string | null
-  newCustomersCount: number | null
 }
 
 export type StaffDailyStatsCountAggregateOutputType = {
   id: number
   staffId: number
+  tenantId: number
   date: number
-  appointmentsCount: number
+  appointments: number
+  cancelled: number
+  noShow: number
+  completed: number
+  newCustomers: number
   revenue: number
-  mostSoldServiceId: number
-  newCustomersCount: number
   _all: number
 }
 
 
 export type StaffDailyStatsAvgAggregateInputType = {
-  appointmentsCount?: true
+  appointments?: true
+  cancelled?: true
+  noShow?: true
+  completed?: true
+  newCustomers?: true
   revenue?: true
-  newCustomersCount?: true
 }
 
 export type StaffDailyStatsSumAggregateInputType = {
-  appointmentsCount?: true
+  appointments?: true
+  cancelled?: true
+  noShow?: true
+  completed?: true
+  newCustomers?: true
   revenue?: true
-  newCustomersCount?: true
 }
 
 export type StaffDailyStatsMinAggregateInputType = {
   id?: true
   staffId?: true
+  tenantId?: true
   date?: true
-  appointmentsCount?: true
+  appointments?: true
+  cancelled?: true
+  noShow?: true
+  completed?: true
+  newCustomers?: true
   revenue?: true
-  mostSoldServiceId?: true
-  newCustomersCount?: true
 }
 
 export type StaffDailyStatsMaxAggregateInputType = {
   id?: true
   staffId?: true
+  tenantId?: true
   date?: true
-  appointmentsCount?: true
+  appointments?: true
+  cancelled?: true
+  noShow?: true
+  completed?: true
+  newCustomers?: true
   revenue?: true
-  mostSoldServiceId?: true
-  newCustomersCount?: true
 }
 
 export type StaffDailyStatsCountAggregateInputType = {
   id?: true
   staffId?: true
+  tenantId?: true
   date?: true
-  appointmentsCount?: true
+  appointments?: true
+  cancelled?: true
+  noShow?: true
+  completed?: true
+  newCustomers?: true
   revenue?: true
-  mostSoldServiceId?: true
-  newCustomersCount?: true
   _all?: true
 }
 
@@ -202,11 +232,14 @@ export type StaffDailyStatsGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 export type StaffDailyStatsGroupByOutputType = {
   id: string
   staffId: string
+  tenantId: string
   date: Date
-  appointmentsCount: number
+  appointments: number
+  cancelled: number
+  noShow: number
+  completed: number
+  newCustomers: number
   revenue: runtime.Decimal
-  mostSoldServiceId: string | null
-  newCustomersCount: number
   _count: StaffDailyStatsCountAggregateOutputType | null
   _avg: StaffDailyStatsAvgAggregateOutputType | null
   _sum: StaffDailyStatsSumAggregateOutputType | null
@@ -235,23 +268,31 @@ export type StaffDailyStatsWhereInput = {
   NOT?: Prisma.StaffDailyStatsWhereInput | Prisma.StaffDailyStatsWhereInput[]
   id?: Prisma.UuidFilter<"StaffDailyStats"> | string
   staffId?: Prisma.UuidFilter<"StaffDailyStats"> | string
+  tenantId?: Prisma.UuidFilter<"StaffDailyStats"> | string
   date?: Prisma.DateTimeFilter<"StaffDailyStats"> | Date | string
-  appointmentsCount?: Prisma.IntFilter<"StaffDailyStats"> | number
+  appointments?: Prisma.IntFilter<"StaffDailyStats"> | number
+  cancelled?: Prisma.IntFilter<"StaffDailyStats"> | number
+  noShow?: Prisma.IntFilter<"StaffDailyStats"> | number
+  completed?: Prisma.IntFilter<"StaffDailyStats"> | number
+  newCustomers?: Prisma.IntFilter<"StaffDailyStats"> | number
   revenue?: Prisma.DecimalFilter<"StaffDailyStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: Prisma.StringNullableFilter<"StaffDailyStats"> | string | null
-  newCustomersCount?: Prisma.IntFilter<"StaffDailyStats"> | number
   staff?: Prisma.XOR<Prisma.StaffScalarRelationFilter, Prisma.StaffWhereInput>
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }
 
 export type StaffDailyStatsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   staffId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   date?: Prisma.SortOrder
-  appointmentsCount?: Prisma.SortOrder
+  appointments?: Prisma.SortOrder
+  cancelled?: Prisma.SortOrder
+  noShow?: Prisma.SortOrder
+  completed?: Prisma.SortOrder
+  newCustomers?: Prisma.SortOrder
   revenue?: Prisma.SortOrder
-  mostSoldServiceId?: Prisma.SortOrderInput | Prisma.SortOrder
-  newCustomersCount?: Prisma.SortOrder
   staff?: Prisma.StaffOrderByWithRelationInput
+  tenant?: Prisma.TenantOrderByWithRelationInput
 }
 
 export type StaffDailyStatsWhereUniqueInput = Prisma.AtLeast<{
@@ -261,22 +302,29 @@ export type StaffDailyStatsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.StaffDailyStatsWhereInput[]
   NOT?: Prisma.StaffDailyStatsWhereInput | Prisma.StaffDailyStatsWhereInput[]
   staffId?: Prisma.UuidFilter<"StaffDailyStats"> | string
+  tenantId?: Prisma.UuidFilter<"StaffDailyStats"> | string
   date?: Prisma.DateTimeFilter<"StaffDailyStats"> | Date | string
-  appointmentsCount?: Prisma.IntFilter<"StaffDailyStats"> | number
+  appointments?: Prisma.IntFilter<"StaffDailyStats"> | number
+  cancelled?: Prisma.IntFilter<"StaffDailyStats"> | number
+  noShow?: Prisma.IntFilter<"StaffDailyStats"> | number
+  completed?: Prisma.IntFilter<"StaffDailyStats"> | number
+  newCustomers?: Prisma.IntFilter<"StaffDailyStats"> | number
   revenue?: Prisma.DecimalFilter<"StaffDailyStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: Prisma.StringNullableFilter<"StaffDailyStats"> | string | null
-  newCustomersCount?: Prisma.IntFilter<"StaffDailyStats"> | number
   staff?: Prisma.XOR<Prisma.StaffScalarRelationFilter, Prisma.StaffWhereInput>
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }, "id" | "staffId_date">
 
 export type StaffDailyStatsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   staffId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   date?: Prisma.SortOrder
-  appointmentsCount?: Prisma.SortOrder
+  appointments?: Prisma.SortOrder
+  cancelled?: Prisma.SortOrder
+  noShow?: Prisma.SortOrder
+  completed?: Prisma.SortOrder
+  newCustomers?: Prisma.SortOrder
   revenue?: Prisma.SortOrder
-  mostSoldServiceId?: Prisma.SortOrderInput | Prisma.SortOrder
-  newCustomersCount?: Prisma.SortOrder
   _count?: Prisma.StaffDailyStatsCountOrderByAggregateInput
   _avg?: Prisma.StaffDailyStatsAvgOrderByAggregateInput
   _max?: Prisma.StaffDailyStatsMaxOrderByAggregateInput
@@ -290,80 +338,103 @@ export type StaffDailyStatsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.StaffDailyStatsScalarWhereWithAggregatesInput | Prisma.StaffDailyStatsScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"StaffDailyStats"> | string
   staffId?: Prisma.UuidWithAggregatesFilter<"StaffDailyStats"> | string
+  tenantId?: Prisma.UuidWithAggregatesFilter<"StaffDailyStats"> | string
   date?: Prisma.DateTimeWithAggregatesFilter<"StaffDailyStats"> | Date | string
-  appointmentsCount?: Prisma.IntWithAggregatesFilter<"StaffDailyStats"> | number
+  appointments?: Prisma.IntWithAggregatesFilter<"StaffDailyStats"> | number
+  cancelled?: Prisma.IntWithAggregatesFilter<"StaffDailyStats"> | number
+  noShow?: Prisma.IntWithAggregatesFilter<"StaffDailyStats"> | number
+  completed?: Prisma.IntWithAggregatesFilter<"StaffDailyStats"> | number
+  newCustomers?: Prisma.IntWithAggregatesFilter<"StaffDailyStats"> | number
   revenue?: Prisma.DecimalWithAggregatesFilter<"StaffDailyStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: Prisma.StringNullableWithAggregatesFilter<"StaffDailyStats"> | string | null
-  newCustomersCount?: Prisma.IntWithAggregatesFilter<"StaffDailyStats"> | number
 }
 
 export type StaffDailyStatsCreateInput = {
   id?: string
   date: Date | string
-  appointmentsCount?: number
+  appointments?: number
+  cancelled?: number
+  noShow?: number
+  completed?: number
+  newCustomers?: number
   revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: string | null
-  newCustomersCount: number
   staff: Prisma.StaffCreateNestedOneWithoutStatsInput
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffDailyStatsInput
 }
 
 export type StaffDailyStatsUncheckedCreateInput = {
   id?: string
   staffId: string
+  tenantId: string
   date: Date | string
-  appointmentsCount?: number
+  appointments?: number
+  cancelled?: number
+  noShow?: number
+  completed?: number
+  newCustomers?: number
   revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: string | null
-  newCustomersCount: number
 }
 
 export type StaffDailyStatsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  appointmentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  appointments?: Prisma.IntFieldUpdateOperationsInput | number
+  cancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  noShow?: Prisma.IntFieldUpdateOperationsInput | number
+  completed?: Prisma.IntFieldUpdateOperationsInput | number
+  newCustomers?: Prisma.IntFieldUpdateOperationsInput | number
   revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  newCustomersCount?: Prisma.IntFieldUpdateOperationsInput | number
   staff?: Prisma.StaffUpdateOneRequiredWithoutStatsNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffDailyStatsNestedInput
 }
 
 export type StaffDailyStatsUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   staffId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  appointmentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  appointments?: Prisma.IntFieldUpdateOperationsInput | number
+  cancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  noShow?: Prisma.IntFieldUpdateOperationsInput | number
+  completed?: Prisma.IntFieldUpdateOperationsInput | number
+  newCustomers?: Prisma.IntFieldUpdateOperationsInput | number
   revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  newCustomersCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type StaffDailyStatsCreateManyInput = {
   id?: string
   staffId: string
+  tenantId: string
   date: Date | string
-  appointmentsCount?: number
+  appointments?: number
+  cancelled?: number
+  noShow?: number
+  completed?: number
+  newCustomers?: number
   revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: string | null
-  newCustomersCount: number
 }
 
 export type StaffDailyStatsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  appointmentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  appointments?: Prisma.IntFieldUpdateOperationsInput | number
+  cancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  noShow?: Prisma.IntFieldUpdateOperationsInput | number
+  completed?: Prisma.IntFieldUpdateOperationsInput | number
+  newCustomers?: Prisma.IntFieldUpdateOperationsInput | number
   revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  newCustomersCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type StaffDailyStatsUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   staffId?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  appointmentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  appointments?: Prisma.IntFieldUpdateOperationsInput | number
+  cancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  noShow?: Prisma.IntFieldUpdateOperationsInput | number
+  completed?: Prisma.IntFieldUpdateOperationsInput | number
+  newCustomers?: Prisma.IntFieldUpdateOperationsInput | number
   revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  newCustomersCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type StaffDailyStatsListRelationFilter = {
@@ -384,43 +455,100 @@ export type StaffDailyStatsStaffIdDateCompoundUniqueInput = {
 export type StaffDailyStatsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   staffId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   date?: Prisma.SortOrder
-  appointmentsCount?: Prisma.SortOrder
+  appointments?: Prisma.SortOrder
+  cancelled?: Prisma.SortOrder
+  noShow?: Prisma.SortOrder
+  completed?: Prisma.SortOrder
+  newCustomers?: Prisma.SortOrder
   revenue?: Prisma.SortOrder
-  mostSoldServiceId?: Prisma.SortOrder
-  newCustomersCount?: Prisma.SortOrder
 }
 
 export type StaffDailyStatsAvgOrderByAggregateInput = {
-  appointmentsCount?: Prisma.SortOrder
+  appointments?: Prisma.SortOrder
+  cancelled?: Prisma.SortOrder
+  noShow?: Prisma.SortOrder
+  completed?: Prisma.SortOrder
+  newCustomers?: Prisma.SortOrder
   revenue?: Prisma.SortOrder
-  newCustomersCount?: Prisma.SortOrder
 }
 
 export type StaffDailyStatsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   staffId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   date?: Prisma.SortOrder
-  appointmentsCount?: Prisma.SortOrder
+  appointments?: Prisma.SortOrder
+  cancelled?: Prisma.SortOrder
+  noShow?: Prisma.SortOrder
+  completed?: Prisma.SortOrder
+  newCustomers?: Prisma.SortOrder
   revenue?: Prisma.SortOrder
-  mostSoldServiceId?: Prisma.SortOrder
-  newCustomersCount?: Prisma.SortOrder
 }
 
 export type StaffDailyStatsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   staffId?: Prisma.SortOrder
+  tenantId?: Prisma.SortOrder
   date?: Prisma.SortOrder
-  appointmentsCount?: Prisma.SortOrder
+  appointments?: Prisma.SortOrder
+  cancelled?: Prisma.SortOrder
+  noShow?: Prisma.SortOrder
+  completed?: Prisma.SortOrder
+  newCustomers?: Prisma.SortOrder
   revenue?: Prisma.SortOrder
-  mostSoldServiceId?: Prisma.SortOrder
-  newCustomersCount?: Prisma.SortOrder
 }
 
 export type StaffDailyStatsSumOrderByAggregateInput = {
-  appointmentsCount?: Prisma.SortOrder
+  appointments?: Prisma.SortOrder
+  cancelled?: Prisma.SortOrder
+  noShow?: Prisma.SortOrder
+  completed?: Prisma.SortOrder
+  newCustomers?: Prisma.SortOrder
   revenue?: Prisma.SortOrder
-  newCustomersCount?: Prisma.SortOrder
+}
+
+export type StaffDailyStatsCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.StaffDailyStatsCreateWithoutTenantInput, Prisma.StaffDailyStatsUncheckedCreateWithoutTenantInput> | Prisma.StaffDailyStatsCreateWithoutTenantInput[] | Prisma.StaffDailyStatsUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffDailyStatsCreateOrConnectWithoutTenantInput | Prisma.StaffDailyStatsCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.StaffDailyStatsCreateManyTenantInputEnvelope
+  connect?: Prisma.StaffDailyStatsWhereUniqueInput | Prisma.StaffDailyStatsWhereUniqueInput[]
+}
+
+export type StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput = {
+  create?: Prisma.XOR<Prisma.StaffDailyStatsCreateWithoutTenantInput, Prisma.StaffDailyStatsUncheckedCreateWithoutTenantInput> | Prisma.StaffDailyStatsCreateWithoutTenantInput[] | Prisma.StaffDailyStatsUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffDailyStatsCreateOrConnectWithoutTenantInput | Prisma.StaffDailyStatsCreateOrConnectWithoutTenantInput[]
+  createMany?: Prisma.StaffDailyStatsCreateManyTenantInputEnvelope
+  connect?: Prisma.StaffDailyStatsWhereUniqueInput | Prisma.StaffDailyStatsWhereUniqueInput[]
+}
+
+export type StaffDailyStatsUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffDailyStatsCreateWithoutTenantInput, Prisma.StaffDailyStatsUncheckedCreateWithoutTenantInput> | Prisma.StaffDailyStatsCreateWithoutTenantInput[] | Prisma.StaffDailyStatsUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffDailyStatsCreateOrConnectWithoutTenantInput | Prisma.StaffDailyStatsCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.StaffDailyStatsUpsertWithWhereUniqueWithoutTenantInput | Prisma.StaffDailyStatsUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.StaffDailyStatsCreateManyTenantInputEnvelope
+  set?: Prisma.StaffDailyStatsWhereUniqueInput | Prisma.StaffDailyStatsWhereUniqueInput[]
+  disconnect?: Prisma.StaffDailyStatsWhereUniqueInput | Prisma.StaffDailyStatsWhereUniqueInput[]
+  delete?: Prisma.StaffDailyStatsWhereUniqueInput | Prisma.StaffDailyStatsWhereUniqueInput[]
+  connect?: Prisma.StaffDailyStatsWhereUniqueInput | Prisma.StaffDailyStatsWhereUniqueInput[]
+  update?: Prisma.StaffDailyStatsUpdateWithWhereUniqueWithoutTenantInput | Prisma.StaffDailyStatsUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.StaffDailyStatsUpdateManyWithWhereWithoutTenantInput | Prisma.StaffDailyStatsUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.StaffDailyStatsScalarWhereInput | Prisma.StaffDailyStatsScalarWhereInput[]
+}
+
+export type StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput = {
+  create?: Prisma.XOR<Prisma.StaffDailyStatsCreateWithoutTenantInput, Prisma.StaffDailyStatsUncheckedCreateWithoutTenantInput> | Prisma.StaffDailyStatsCreateWithoutTenantInput[] | Prisma.StaffDailyStatsUncheckedCreateWithoutTenantInput[]
+  connectOrCreate?: Prisma.StaffDailyStatsCreateOrConnectWithoutTenantInput | Prisma.StaffDailyStatsCreateOrConnectWithoutTenantInput[]
+  upsert?: Prisma.StaffDailyStatsUpsertWithWhereUniqueWithoutTenantInput | Prisma.StaffDailyStatsUpsertWithWhereUniqueWithoutTenantInput[]
+  createMany?: Prisma.StaffDailyStatsCreateManyTenantInputEnvelope
+  set?: Prisma.StaffDailyStatsWhereUniqueInput | Prisma.StaffDailyStatsWhereUniqueInput[]
+  disconnect?: Prisma.StaffDailyStatsWhereUniqueInput | Prisma.StaffDailyStatsWhereUniqueInput[]
+  delete?: Prisma.StaffDailyStatsWhereUniqueInput | Prisma.StaffDailyStatsWhereUniqueInput[]
+  connect?: Prisma.StaffDailyStatsWhereUniqueInput | Prisma.StaffDailyStatsWhereUniqueInput[]
+  update?: Prisma.StaffDailyStatsUpdateWithWhereUniqueWithoutTenantInput | Prisma.StaffDailyStatsUpdateWithWhereUniqueWithoutTenantInput[]
+  updateMany?: Prisma.StaffDailyStatsUpdateManyWithWhereWithoutTenantInput | Prisma.StaffDailyStatsUpdateManyWithWhereWithoutTenantInput[]
+  deleteMany?: Prisma.StaffDailyStatsScalarWhereInput | Prisma.StaffDailyStatsScalarWhereInput[]
 }
 
 export type StaffDailyStatsCreateNestedManyWithoutStaffInput = {
@@ -465,22 +593,94 @@ export type StaffDailyStatsUncheckedUpdateManyWithoutStaffNestedInput = {
   deleteMany?: Prisma.StaffDailyStatsScalarWhereInput | Prisma.StaffDailyStatsScalarWhereInput[]
 }
 
+export type StaffDailyStatsCreateWithoutTenantInput = {
+  id?: string
+  date: Date | string
+  appointments?: number
+  cancelled?: number
+  noShow?: number
+  completed?: number
+  newCustomers?: number
+  revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  staff: Prisma.StaffCreateNestedOneWithoutStatsInput
+}
+
+export type StaffDailyStatsUncheckedCreateWithoutTenantInput = {
+  id?: string
+  staffId: string
+  date: Date | string
+  appointments?: number
+  cancelled?: number
+  noShow?: number
+  completed?: number
+  newCustomers?: number
+  revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
+export type StaffDailyStatsCreateOrConnectWithoutTenantInput = {
+  where: Prisma.StaffDailyStatsWhereUniqueInput
+  create: Prisma.XOR<Prisma.StaffDailyStatsCreateWithoutTenantInput, Prisma.StaffDailyStatsUncheckedCreateWithoutTenantInput>
+}
+
+export type StaffDailyStatsCreateManyTenantInputEnvelope = {
+  data: Prisma.StaffDailyStatsCreateManyTenantInput | Prisma.StaffDailyStatsCreateManyTenantInput[]
+  skipDuplicates?: boolean
+}
+
+export type StaffDailyStatsUpsertWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.StaffDailyStatsWhereUniqueInput
+  update: Prisma.XOR<Prisma.StaffDailyStatsUpdateWithoutTenantInput, Prisma.StaffDailyStatsUncheckedUpdateWithoutTenantInput>
+  create: Prisma.XOR<Prisma.StaffDailyStatsCreateWithoutTenantInput, Prisma.StaffDailyStatsUncheckedCreateWithoutTenantInput>
+}
+
+export type StaffDailyStatsUpdateWithWhereUniqueWithoutTenantInput = {
+  where: Prisma.StaffDailyStatsWhereUniqueInput
+  data: Prisma.XOR<Prisma.StaffDailyStatsUpdateWithoutTenantInput, Prisma.StaffDailyStatsUncheckedUpdateWithoutTenantInput>
+}
+
+export type StaffDailyStatsUpdateManyWithWhereWithoutTenantInput = {
+  where: Prisma.StaffDailyStatsScalarWhereInput
+  data: Prisma.XOR<Prisma.StaffDailyStatsUpdateManyMutationInput, Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantInput>
+}
+
+export type StaffDailyStatsScalarWhereInput = {
+  AND?: Prisma.StaffDailyStatsScalarWhereInput | Prisma.StaffDailyStatsScalarWhereInput[]
+  OR?: Prisma.StaffDailyStatsScalarWhereInput[]
+  NOT?: Prisma.StaffDailyStatsScalarWhereInput | Prisma.StaffDailyStatsScalarWhereInput[]
+  id?: Prisma.UuidFilter<"StaffDailyStats"> | string
+  staffId?: Prisma.UuidFilter<"StaffDailyStats"> | string
+  tenantId?: Prisma.UuidFilter<"StaffDailyStats"> | string
+  date?: Prisma.DateTimeFilter<"StaffDailyStats"> | Date | string
+  appointments?: Prisma.IntFilter<"StaffDailyStats"> | number
+  cancelled?: Prisma.IntFilter<"StaffDailyStats"> | number
+  noShow?: Prisma.IntFilter<"StaffDailyStats"> | number
+  completed?: Prisma.IntFilter<"StaffDailyStats"> | number
+  newCustomers?: Prisma.IntFilter<"StaffDailyStats"> | number
+  revenue?: Prisma.DecimalFilter<"StaffDailyStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
 export type StaffDailyStatsCreateWithoutStaffInput = {
   id?: string
   date: Date | string
-  appointmentsCount?: number
+  appointments?: number
+  cancelled?: number
+  noShow?: number
+  completed?: number
+  newCustomers?: number
   revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: string | null
-  newCustomersCount: number
+  tenant: Prisma.TenantCreateNestedOneWithoutStaffDailyStatsInput
 }
 
 export type StaffDailyStatsUncheckedCreateWithoutStaffInput = {
   id?: string
+  tenantId: string
   date: Date | string
-  appointmentsCount?: number
+  appointments?: number
+  cancelled?: number
+  noShow?: number
+  completed?: number
+  newCustomers?: number
   revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: string | null
-  newCustomersCount: number
 }
 
 export type StaffDailyStatsCreateOrConnectWithoutStaffInput = {
@@ -509,53 +709,100 @@ export type StaffDailyStatsUpdateManyWithWhereWithoutStaffInput = {
   data: Prisma.XOR<Prisma.StaffDailyStatsUpdateManyMutationInput, Prisma.StaffDailyStatsUncheckedUpdateManyWithoutStaffInput>
 }
 
-export type StaffDailyStatsScalarWhereInput = {
-  AND?: Prisma.StaffDailyStatsScalarWhereInput | Prisma.StaffDailyStatsScalarWhereInput[]
-  OR?: Prisma.StaffDailyStatsScalarWhereInput[]
-  NOT?: Prisma.StaffDailyStatsScalarWhereInput | Prisma.StaffDailyStatsScalarWhereInput[]
-  id?: Prisma.UuidFilter<"StaffDailyStats"> | string
-  staffId?: Prisma.UuidFilter<"StaffDailyStats"> | string
-  date?: Prisma.DateTimeFilter<"StaffDailyStats"> | Date | string
-  appointmentsCount?: Prisma.IntFilter<"StaffDailyStats"> | number
-  revenue?: Prisma.DecimalFilter<"StaffDailyStats"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: Prisma.StringNullableFilter<"StaffDailyStats"> | string | null
-  newCustomersCount?: Prisma.IntFilter<"StaffDailyStats"> | number
+export type StaffDailyStatsCreateManyTenantInput = {
+  id?: string
+  staffId: string
+  date: Date | string
+  appointments?: number
+  cancelled?: number
+  noShow?: number
+  completed?: number
+  newCustomers?: number
+  revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
+export type StaffDailyStatsUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appointments?: Prisma.IntFieldUpdateOperationsInput | number
+  cancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  noShow?: Prisma.IntFieldUpdateOperationsInput | number
+  completed?: Prisma.IntFieldUpdateOperationsInput | number
+  newCustomers?: Prisma.IntFieldUpdateOperationsInput | number
+  revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  staff?: Prisma.StaffUpdateOneRequiredWithoutStatsNestedInput
+}
+
+export type StaffDailyStatsUncheckedUpdateWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  staffId?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appointments?: Prisma.IntFieldUpdateOperationsInput | number
+  cancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  noShow?: Prisma.IntFieldUpdateOperationsInput | number
+  completed?: Prisma.IntFieldUpdateOperationsInput | number
+  newCustomers?: Prisma.IntFieldUpdateOperationsInput | number
+  revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
+export type StaffDailyStatsUncheckedUpdateManyWithoutTenantInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  staffId?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appointments?: Prisma.IntFieldUpdateOperationsInput | number
+  cancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  noShow?: Prisma.IntFieldUpdateOperationsInput | number
+  completed?: Prisma.IntFieldUpdateOperationsInput | number
+  newCustomers?: Prisma.IntFieldUpdateOperationsInput | number
+  revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type StaffDailyStatsCreateManyStaffInput = {
   id?: string
+  tenantId: string
   date: Date | string
-  appointmentsCount?: number
+  appointments?: number
+  cancelled?: number
+  noShow?: number
+  completed?: number
+  newCustomers?: number
   revenue?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: string | null
-  newCustomersCount: number
 }
 
 export type StaffDailyStatsUpdateWithoutStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  appointmentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  appointments?: Prisma.IntFieldUpdateOperationsInput | number
+  cancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  noShow?: Prisma.IntFieldUpdateOperationsInput | number
+  completed?: Prisma.IntFieldUpdateOperationsInput | number
+  newCustomers?: Prisma.IntFieldUpdateOperationsInput | number
   revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  newCustomersCount?: Prisma.IntFieldUpdateOperationsInput | number
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutStaffDailyStatsNestedInput
 }
 
 export type StaffDailyStatsUncheckedUpdateWithoutStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  appointmentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  appointments?: Prisma.IntFieldUpdateOperationsInput | number
+  cancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  noShow?: Prisma.IntFieldUpdateOperationsInput | number
+  completed?: Prisma.IntFieldUpdateOperationsInput | number
+  newCustomers?: Prisma.IntFieldUpdateOperationsInput | number
   revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  newCustomersCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type StaffDailyStatsUncheckedUpdateManyWithoutStaffInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  appointmentsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  appointments?: Prisma.IntFieldUpdateOperationsInput | number
+  cancelled?: Prisma.IntFieldUpdateOperationsInput | number
+  noShow?: Prisma.IntFieldUpdateOperationsInput | number
+  completed?: Prisma.IntFieldUpdateOperationsInput | number
+  newCustomers?: Prisma.IntFieldUpdateOperationsInput | number
   revenue?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  mostSoldServiceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  newCustomersCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -563,70 +810,92 @@ export type StaffDailyStatsUncheckedUpdateManyWithoutStaffInput = {
 export type StaffDailyStatsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   staffId?: boolean
+  tenantId?: boolean
   date?: boolean
-  appointmentsCount?: boolean
+  appointments?: boolean
+  cancelled?: boolean
+  noShow?: boolean
+  completed?: boolean
+  newCustomers?: boolean
   revenue?: boolean
-  mostSoldServiceId?: boolean
-  newCustomersCount?: boolean
   staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staffDailyStats"]>
 
 export type StaffDailyStatsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   staffId?: boolean
+  tenantId?: boolean
   date?: boolean
-  appointmentsCount?: boolean
+  appointments?: boolean
+  cancelled?: boolean
+  noShow?: boolean
+  completed?: boolean
+  newCustomers?: boolean
   revenue?: boolean
-  mostSoldServiceId?: boolean
-  newCustomersCount?: boolean
   staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staffDailyStats"]>
 
 export type StaffDailyStatsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   staffId?: boolean
+  tenantId?: boolean
   date?: boolean
-  appointmentsCount?: boolean
+  appointments?: boolean
+  cancelled?: boolean
+  noShow?: boolean
+  completed?: boolean
+  newCustomers?: boolean
   revenue?: boolean
-  mostSoldServiceId?: boolean
-  newCustomersCount?: boolean
   staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["staffDailyStats"]>
 
 export type StaffDailyStatsSelectScalar = {
   id?: boolean
   staffId?: boolean
+  tenantId?: boolean
   date?: boolean
-  appointmentsCount?: boolean
+  appointments?: boolean
+  cancelled?: boolean
+  noShow?: boolean
+  completed?: boolean
+  newCustomers?: boolean
   revenue?: boolean
-  mostSoldServiceId?: boolean
-  newCustomersCount?: boolean
 }
 
-export type StaffDailyStatsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "staffId" | "date" | "appointmentsCount" | "revenue" | "mostSoldServiceId" | "newCustomersCount", ExtArgs["result"]["staffDailyStats"]>
+export type StaffDailyStatsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "staffId" | "tenantId" | "date" | "appointments" | "cancelled" | "noShow" | "completed" | "newCustomers" | "revenue", ExtArgs["result"]["staffDailyStats"]>
 export type StaffDailyStatsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
 export type StaffDailyStatsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
 export type StaffDailyStatsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   staff?: boolean | Prisma.StaffDefaultArgs<ExtArgs>
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
 
 export type $StaffDailyStatsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "StaffDailyStats"
   objects: {
     staff: Prisma.$StaffPayload<ExtArgs>
+    tenant: Prisma.$TenantPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     staffId: string
+    tenantId: string
     date: Date
-    appointmentsCount: number
+    appointments: number
+    cancelled: number
+    noShow: number
+    completed: number
+    newCustomers: number
     revenue: runtime.Decimal
-    mostSoldServiceId: string | null
-    newCustomersCount: number
   }, ExtArgs["result"]["staffDailyStats"]>
   composites: {}
 }
@@ -1022,6 +1291,7 @@ readonly fields: StaffDailyStatsFieldRefs;
 export interface Prisma__StaffDailyStatsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   staff<T extends Prisma.StaffDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StaffDefaultArgs<ExtArgs>>): Prisma.Prisma__StaffClient<runtime.Types.Result.GetResult<Prisma.$StaffPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1053,11 +1323,14 @@ export interface Prisma__StaffDailyStatsClient<T, Null = never, ExtArgs extends 
 export interface StaffDailyStatsFieldRefs {
   readonly id: Prisma.FieldRef<"StaffDailyStats", 'String'>
   readonly staffId: Prisma.FieldRef<"StaffDailyStats", 'String'>
+  readonly tenantId: Prisma.FieldRef<"StaffDailyStats", 'String'>
   readonly date: Prisma.FieldRef<"StaffDailyStats", 'DateTime'>
-  readonly appointmentsCount: Prisma.FieldRef<"StaffDailyStats", 'Int'>
+  readonly appointments: Prisma.FieldRef<"StaffDailyStats", 'Int'>
+  readonly cancelled: Prisma.FieldRef<"StaffDailyStats", 'Int'>
+  readonly noShow: Prisma.FieldRef<"StaffDailyStats", 'Int'>
+  readonly completed: Prisma.FieldRef<"StaffDailyStats", 'Int'>
+  readonly newCustomers: Prisma.FieldRef<"StaffDailyStats", 'Int'>
   readonly revenue: Prisma.FieldRef<"StaffDailyStats", 'Decimal'>
-  readonly mostSoldServiceId: Prisma.FieldRef<"StaffDailyStats", 'String'>
-  readonly newCustomersCount: Prisma.FieldRef<"StaffDailyStats", 'Int'>
 }
     
 

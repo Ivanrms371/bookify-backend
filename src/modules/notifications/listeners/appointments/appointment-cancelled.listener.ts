@@ -22,7 +22,7 @@ export class AppointmentCancelledListener {
     } as AppointmentCancelledVariables;
 
     await this.notificationsService.create({
-      businessId: event.businessId,
+      tenantId: event.tenantId,
       payload,
       recipientId: event.userId,
       recipientType: RecipientType.USER,
