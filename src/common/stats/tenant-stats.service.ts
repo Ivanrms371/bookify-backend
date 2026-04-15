@@ -284,7 +284,7 @@ export class TenantStatsService {
   // --- Reading Methods (Migrated for unification) ---
 
   async getStatsForDateRange(tenantId: string, startDate: Date, endDate: Date) {
-    const result =await this.prisma.tenantDailyStats.aggregate({
+    return await this.prisma.tenantDailyStats.aggregate({
       where: {
         tenantId,
         date: {
@@ -303,18 +303,6 @@ export class TenantStatsService {
       },
     });
 
-    const dailyStats = await this.prisma.tenantDailyStats.findMany({
-      where: {
-        tenantId,
-        date: {
-          gte: startOfDay(startDate),
-          lte: startOfDay(endDate),
-        },
-      },
-    });
-
-
-    return result
   }
 
   async getStatsForToday(tenantId: string) {
