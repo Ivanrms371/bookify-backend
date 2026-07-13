@@ -2,7 +2,7 @@ import { Decimal } from '@prisma/client/runtime/client';
 import { AppointmentStatus } from 'src/generated/prisma/enums';
 
 export type OnAppointmentNoShowData = {
-  staffId: string;
+  employeeId: string;
   customerId: string;
   tenantId: string;
   startTime: Date;

@@ -7,7 +7,7 @@ import { AppointmentStatsService } from './appointment-stats.service';
 import { CancelAppointmentDto } from '../../dto/cancel-appointment.dto';
 import { RescheduleAppointmentDto } from '../../dto/reschedule-appointment.dto';
 import EventEmitter2 from 'eventemitter2';
-import { AppointmentCancelledByStaffEvent } from '../../domain/events/appointment-cancelled.event';
+import { AppointmentCancelledByEmployeeEvent } from '../../domain/events/appointment-cancelled.event';
 import { GetAppointmentsQueryDto } from '../../dto/appointment-query.dto';
 import { differenceInDays } from 'date-fns';
 import { ServicesService } from 'src/modules/tenants/features/services/services/services.service';
@@ -64,7 +64,7 @@ export class TenantAppointmentsService {
       await this.appointmentStatsService.onNoShow(
         {
           customerId: appointment.customerId,
-          staffId: appointment.staff.id,
+          employeeId: appointment.employee.id,
           startTime: appointment.startTime,
           previousStatus: appointment.status,
           revenue: appointment.price,
@@ -90,7 +90,7 @@ export class TenantAppointmentsService {
       await this.appointmentStatsService.onCancelled(
         {
           customerId: appointment.customerId,
-          staffId: appointment.staff.id,
+          employeeId: appointment.employee.id,
           startTime: appointment.startTime,
           isCustomerFault: false,
           tenantId,
@@ -101,13 +101,13 @@ export class TenantAppointmentsService {
       );
     });
 
-    this.eventEmitter.emit('appointment.cancelled.by_staff', {
+    this.eventEmitter.emit('appointment.cancelled.by_employee', {
       appointmentId,
       reason: dto.reason,
-      staffName: appointment.staff.displayName,
+      employeeName: appointment.employee.displayName,
       customerName: appointment.customerName,
       startTime: appointment.startTime,
-    } as AppointmentCancelledByStaffEvent);
+    } as AppointmentCancelledByEmployeeEvent);
   }
 
   async reschedule(tenantId: string, appointmentId: string, dto: RescheduleAppointmentDto) {
@@ -119,19 +119,17 @@ export class TenantAppointmentsService {
       throw new BadRequestException('No es posible reagendar una cita cancelada o marcada como no asistió.');
     }
 
-    const service = await this.servicesService.findServiceById(dto.serviceId, dto.staffId);
+    const service = await this.servicesService.findServiceById(dto.serviceId, dto.employeeId);
     const startTime = new Date(dto.date);
     const endTime = new Date(startTime.getTime() + service.durationMinutes * 60 * 1000);
 
     const timeBlocks = buildTimeBlocks({
       startTime,
-      initialActiveMinutes: service.initialActiveMinutes,
-      passiveTimeMinutes: service.passiveTimeMinutes,
-      finalActiveMinutes: service.finalActiveMinutes,
+      durationMinutes: service.durationMinutes,
     });
 
     const blocks = timeBlocks.map((block) => ({
-      staffId: dto.staffId,
+      employeeId: dto.employeeId,
       startTime: block.startTime,
       endTime: block.endTime,
     }));
@@ -139,14 +137,11 @@ export class TenantAppointmentsService {
     await this.appointmentsRepository.reschedule(
       appointmentId,
       {
-        staffId: dto.staffId,
+        employeeId: dto.employeeId,
         serviceId: dto.serviceId,
         startTime,
         endTime,
         durationMinutes: service.durationMinutes,
-        initialActiveMinutes: service.initialActiveMinutes,
-        passiveMinutes: service.passiveTimeMinutes,
-        finalActiveMinutes: service.finalActiveMinutes,
         price: service.price,
         discountFixed: service.discountFixed,
         discountPercentage: service.discountPercentage,
@@ -156,4 +151,3 @@ export class TenantAppointmentsService {
     );
   }
 }
-

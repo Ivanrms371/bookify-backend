@@ -1,54 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { endOfDay, startOfDay, eachDayOfInterval, format } from 'date-fns';
+import { TenantDailyStatsSelect, TenantLifetimeStatsSelect } from 'src/generated/prisma/models';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
+import { TenantStatsRepository } from './tenant-stats.repository';
+import { TenantDailyStatsMapper } from './mappers/tenant-daily-stats.mapper';
+import { TenantDailyStat } from './types/tenant-daily-stats.type';
+import { TenantLifetimeStat } from 'src/modules/portal/domain/types/tenant-lifetime-stats.type';
+import { TenantLifetimeStatsMapper } from 'src/modules/portal/infrastructure/mappers/tenant-lifetime-stats.mapper';
 
 @Injectable()
 export class TenantStatsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly tenantStatsRepository: TenantStatsRepository,
+  ) {}
 
-  async incrementDailyAppointments(tenantId: string, date: Date) {
-    const day = startOfDay(date);
-    await this.prisma.tenantDailyStats.upsert({
-      where: { tenantId_date: { tenantId, date: day } },
-      update: { appointments: { increment: 1 } },
-      create: { tenantId, date: day, appointments: 1 },
-    });
+  async getRange(tenantId: string, startDate: Date, endDate: Date, fields: TenantDailyStatsSelect): Promise<Partial<TenantDailyStat>[]> {
+    const dailyStats = await this.tenantStatsRepository.getDailyStatsByRange(tenantId, startDate, endDate, fields);
+    return TenantDailyStatsMapper.toDomainList(dailyStats, startDate, endDate);
   }
 
-  async incrementLifetimeAppointments(tenantId: string) {
-    await this.prisma.tenantLifetimeStats.upsert({
-      where: { tenantId },
-      update: { totalAppointments: { increment: 1 } },
-      create: { tenantId, totalAppointments: 1, totalRevenue: 0, totalCustomers: 0 },
+  async getSummary(tenantId: string, fields: TenantLifetimeStatsSelect): Promise<Partial<TenantLifetimeStat>> {
+    const lifetimeStats = await this.prisma.tenantLifetimeStats.findUnique({
+      where: { id: tenantId },
+      select: fields,
     });
+    return TenantLifetimeStatsMapper.toDomain(lifetimeStats);
   }
 
-  async getStatsForDateRange(tenantId: string, startDate: Date, endDate: Date) {
-    return this.prisma.tenantDailyStats.aggregate({
-      where: {
-        tenantId,
-        date: {
-          gte: startOfDay(startDate),
-          lte: endOfDay(endDate),
-        },
-      },
-      _sum: {
-        appointments: true,
-        confirmed: true,
-        cancelled: true,
-        completed: true,
-        noShow: true,
-        revenue: true,
-        newCustomers: true,
-      },
-    });
+  async getAggregateRange(tenantId: string, startDate: Date, endDate: Date) {
+    return this.tenantStatsRepository.aggregateStatsByRange(tenantId, startDate, endDate);
   }
 
-  async getStatsForToday(tenantId: string) {
-    const today = startOfDay(new Date());
-    const row = await this.prisma.tenantDailyStats.findUnique({
-      where: { tenantId_date: { tenantId, date: today } },
-    });
+  async getStatsForDate(tenantId: string, date: Date) {
+    const targetDate = startOfDay(date);
+    const row = await this.tenantStatsRepository.getDailyStatsByDate(tenantId, targetDate);
     return {
       appointments: row?.appointments ?? 0,
       customers: row?.newCustomers ?? 0,
@@ -56,15 +42,8 @@ export class TenantStatsService {
     };
   }
 
-  async getLifetimeStats(tenantId: string) {
-    const row = await this.prisma.tenantLifetimeStats.findUnique({
-      where: { tenantId },
-    });
-    return {
-      totalAppointments: row?.totalAppointments ?? 0,
-      totalRevenue: row?.totalRevenue ?? 0,
-      totalCustomers: row?.totalCustomers ?? 0,
-    };
+  async getStatsForToday(tenantId: string) {
+    return this.getStatsForDate(tenantId, new Date());
   }
 
   async getDailyRevenueForRange(tenantId: string, startDate: Date, endDate: Date) {

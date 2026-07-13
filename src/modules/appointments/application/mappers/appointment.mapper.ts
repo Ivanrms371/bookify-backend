@@ -7,7 +7,7 @@ export class AppointmentMapper {
       customerName: appt.customerName,
       customerPhone: appt.customerPhone,
       confirmationCode: appt.confirmationCode,
-      staffName: appt.staff?.displayName || 'Desconocido',
+      employeeName: appt.employee?.displayName || 'Desconocido',
       total: Number(appt.price),
     };
   }
@@ -21,12 +21,12 @@ export class AppointmentMapper {
       durationMinutes: appt.durationMinutes,
       customerName: appt.customerName,
       confirmationCode: appt.confirmationCode,
-      staff: appt.staff
+      employee: appt.employee
         ? {
-            id: appt.staff.id,
-            displayName: appt.staff.displayName,
-            colorTheme: appt.staff.colorTheme,
-            avatarUrl: appt.staff.avatarUrl,
+            id: appt.employee.id,
+            displayName: appt.employee.displayName,
+            colorTheme: appt.employee.colorTheme,
+            avatarUrl: appt.employee.avatarUrl,
           }
         : null,
     };
@@ -44,12 +44,12 @@ export class AppointmentMapper {
       confirmationCode: appt.confirmationCode,
       notes: appt.notes,
       price: Number(appt.price),
-      staff: appt.staff
+      employee: appt.employee
         ? {
-            id: appt.staff.id,
-            displayName: appt.staff.displayName,
-            colorTheme: appt.staff.colorTheme,
-            avatarUrl: appt.staff.avatarUrl,
+            id: appt.employee.id,
+            displayName: appt.employee.displayName,
+            colorTheme: appt.employee.colorTheme,
+            avatarUrl: appt.employee.avatarUrl,
           }
         : null,
       service: appt.service

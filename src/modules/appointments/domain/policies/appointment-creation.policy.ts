@@ -4,7 +4,7 @@ import { AvailabilityData, Settings, Service } from './appointment-creation.type
 import { buildTimeBlocks } from '../appointment-block.builder';
 
 interface ValidateAvailabilityParams {
-  staffId: string;
+  employeeId: string;
   serviceId: string;
   startTime: Date;
 }
@@ -14,14 +14,14 @@ export class AvailabilityPolicy {
   constructor(private readonly availabilityQuery: AvailabilityQuery) {}
 
   async validate(params: ValidateAvailabilityParams) {
-    const { staffId, serviceId, startTime } = params;
+    const { employeeId, serviceId, startTime } = params;
 
     console.log(params);
 
-    const availability = await this.availabilityQuery.getAvailabilityContextData(staffId, startTime);
+    const availability = await this.availabilityQuery.getAvailabilityContextData(employeeId, startTime);
 
     if (!availability) {
-      throw new BadRequestException('El staff no tiene disponibilidad configurada');
+      throw new BadRequestException('El employee no tiene disponibilidad configurada');
     }
 
     const settings = availability.tenant.settings;
@@ -29,10 +29,10 @@ export class AvailabilityPolicy {
       throw new BadRequestException('El negocio no tiene configuración');
     }
 
-    const assignment = await this.availabilityQuery.findServiceAssignment(staffId, serviceId);
+    const assignment = await this.availabilityQuery.findServiceAssignment(employeeId, serviceId);
 
     if (!assignment) {
-      throw new BadRequestException('El servicio no está asignado al staff');
+      throw new BadRequestException('El servicio no está asignado al employee');
     }
 
     const service = assignment.service;
@@ -84,16 +84,14 @@ export class AvailabilityPolicy {
     return exception.blocks;
   }
 
-  private validateWorkingHours(startTime: Date, service: Service, blocks: { startMinutes: number; endMinutes: number }[]) {
+  private validateWorkingHours(startTime: Date, service: Service, blocks: { opensAt: number; closesAt: number }[]) {
     if (!blocks.length) {
       throw new BadRequestException('El negocio está cerrado en esa fecha');
     }
 
     const newBlocks = buildTimeBlocks({
       startTime,
-      initialActiveMinutes: service.initialActiveMinutes,
-      passiveTimeMinutes: service.passiveTimeMinutes,
-      finalActiveMinutes: service.finalActiveMinutes,
+      durationMinutes: service.durationMinutes,
     });
 
     for (const newBlock of newBlocks) {
@@ -101,7 +99,7 @@ export class AvailabilityPolicy {
       const blockEndMins = newBlock.endTime.getHours() * 60 + newBlock.endTime.getMinutes();
 
       const fitsInWorkingHours = blocks.some(
-        (workingBlock) => blockStartMins >= workingBlock.startMinutes && blockEndMins <= workingBlock.endMinutes,
+        (workingBlock) => blockStartMins >= workingBlock.opensAt && blockEndMins <= workingBlock.closesAt,
       );
 
       if (!fitsInWorkingHours) {
@@ -115,9 +113,7 @@ export class AvailabilityPolicy {
 
     const newBlocks = buildTimeBlocks({
       startTime,
-      initialActiveMinutes: service.initialActiveMinutes,
-      passiveTimeMinutes: service.passiveTimeMinutes,
-      finalActiveMinutes: service.finalActiveMinutes,
+      durationMinutes: service.durationMinutes,
     });
 
     for (const newBlock of newBlocks) {

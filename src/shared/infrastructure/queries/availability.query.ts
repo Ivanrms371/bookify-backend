@@ -11,13 +11,13 @@ export class AvailabilityQuery extends BaseRepository {
     super(prisma);
   }
 
-  async getAvailabilityContextData(staffId: string, date: Date, tx?: TransactionClient) {
+  async getAvailabilityContextData(employeeId: string, date: Date, tx?: TransactionClient) {
     const dayOfWeek = getDay(date);
     const start = startOfDay(date);
     const end = endOfDay(date);
 
-    return this.db(tx).staff.findUnique({
-      where: { id: staffId },
+    return this.db(tx).employee.findUnique({
+      where: { id: employeeId },
       select: {
         slotIntervalMinutes: true,
         minAdvancedMinutes: true,
@@ -36,8 +36,8 @@ export class AvailabilityQuery extends BaseRepository {
             tenantWorkingHours: {
               where: { dayOfWeek },
               select: {
-                startMinutes: true,
-                endMinutes: true,
+                opensAt: true,
+                closesAt: true,
                 dayOfWeek: true,
               },
             },
@@ -47,8 +47,8 @@ export class AvailabilityQuery extends BaseRepository {
         workingHours: {
           where: { dayOfWeek },
           select: {
-            startMinutes: true,
-            endMinutes: true,
+            opensAt: true,
+            closesAt: true,
           },
         },
 
@@ -62,8 +62,8 @@ export class AvailabilityQuery extends BaseRepository {
             isClosed: true,
             blocks: {
               select: {
-                startMinutes: true,
-                endMinutes: true,
+                opensAt: true,
+                closesAt: true,
               },
             },
           },
@@ -78,7 +78,7 @@ export class AvailabilityQuery extends BaseRepository {
           select: {
             blocks: {
               select: {
-                staffId: true,
+                employeeId: true,
                 startTime: true,
                 endTime: true,
               },
@@ -89,21 +89,18 @@ export class AvailabilityQuery extends BaseRepository {
     });
   }
 
-  getAvailabilityConfig(staffId: string, tx?: TransactionClient) {
-    return this.db(tx).staff.findUnique({
-      where: { id: staffId },
+  getAvailabilityConfig(employeeId: string, tx?: TransactionClient) {
+    return this.db(tx).employee.findUnique({
+      where: { id: employeeId },
       select: {
         slotIntervalMinutes: true,
         minAdvancedMinutes: true,
         tenant: {
           select: {
             tenantWorkingHours: {
-              where: {
-                isActive: true,
-              },
               select: {
-                startMinutes: true,
-                endMinutes: true,
+                opensAt: true,
+                closesAt: true,
                 dayOfWeek: true,
               },
             },
@@ -119,12 +116,9 @@ export class AvailabilityQuery extends BaseRepository {
         },
 
         workingHours: {
-          where: {
-            isActive: true,
-          },
           select: {
-            startMinutes: true,
-            endMinutes: true,
+            opensAt: true,
+            closesAt: true,
             dayOfWeek: true,
           },
         },
@@ -132,13 +126,13 @@ export class AvailabilityQuery extends BaseRepository {
     });
   }
 
-  async getAppointmentsAndExceptions(staffId: string, startDate: Date, maxDays: number, tx?: TransactionClient) {
+  async getAppointmentsAndExceptions(employeeId: string, startDate: Date, maxDays: number, tx?: TransactionClient) {
     const start = startOfDay(startDate);
     const end = endOfDay(addDays(startDate, maxDays));
 
     const appointmentsPromise = this.db(tx).appointment.findMany({
       where: {
-        staffId,
+        employeeId,
         status: { not: AppointmentStatus.CANCELLED },
         startTime: { lt: end },
         endTime: { gt: start },
@@ -146,7 +140,7 @@ export class AvailabilityQuery extends BaseRepository {
       select: {
         blocks: {
           select: {
-            staffId: true,
+            employeeId: true,
             startTime: true,
             endTime: true,
           },
@@ -156,7 +150,7 @@ export class AvailabilityQuery extends BaseRepository {
 
     const exceptionsPromise = this.db(tx).scheduleException.findMany({
       where: {
-        staffId,
+        employeeId,
         startDate: { lte: end },
         endDate: { gte: start },
       },
@@ -165,8 +159,8 @@ export class AvailabilityQuery extends BaseRepository {
         daysOfWeek: true,
         blocks: {
           select: {
-            startMinutes: true,
-            endMinutes: true,
+            opensAt: true,
+            closesAt: true,
           },
         },
         startDate: true,
@@ -182,24 +176,21 @@ export class AvailabilityQuery extends BaseRepository {
     };
   }
 
-  async getNextAvailableDay(staffId: string, startDate: Date, maxDays: number, tx?: TransactionClient) {
+  async getNextAvailableDay(employeeId: string, startDate: Date, maxDays: number, tx?: TransactionClient) {
     const start = startOfDay(startDate);
     const end = endOfDay(addDays(startDate, maxDays));
 
-    return this.db(tx).staff.findUnique({
-      where: { id: staffId },
+    return this.db(tx).employee.findUnique({
+      where: { id: employeeId },
       select: {
         slotIntervalMinutes: true,
         minAdvancedMinutes: true,
         tenant: {
           select: {
             tenantWorkingHours: {
-              where: {
-                isActive: true,
-              },
               select: {
-                startMinutes: true,
-                endMinutes: true,
+                opensAt: true,
+                closesAt: true,
                 dayOfWeek: true,
               },
             },
@@ -207,12 +198,9 @@ export class AvailabilityQuery extends BaseRepository {
         },
 
         workingHours: {
-          where: {
-            isActive: true,
-          },
           select: {
-            startMinutes: true,
-            endMinutes: true,
+            opensAt: true,
+            closesAt: true,
             dayOfWeek: true,
           },
         },
@@ -226,8 +214,8 @@ export class AvailabilityQuery extends BaseRepository {
             isClosed: true,
             blocks: {
               select: {
-                startMinutes: true,
-                endMinutes: true,
+                opensAt: true,
+                closesAt: true,
               },
             },
           },
@@ -252,11 +240,11 @@ export class AvailabilityQuery extends BaseRepository {
     });
   }
 
-  async findServiceAssignment(staffId: string, serviceId: string, tx?: TransactionClient) {
+  async findServiceAssignment(employeeId: string, serviceId: string, tx?: TransactionClient) {
     return this.db(tx).serviceAssignment.findUnique({
       where: {
-        staffId_serviceId: {
-          staffId,
+        employeeId_serviceId: {
+          employeeId,
           serviceId,
         },
       },
@@ -264,9 +252,6 @@ export class AvailabilityQuery extends BaseRepository {
         service: {
           select: {
             durationMinutes: true,
-            initialActiveMinutes: true,
-            passiveTimeMinutes: true,
-            finalActiveMinutes: true,
           },
         },
       },

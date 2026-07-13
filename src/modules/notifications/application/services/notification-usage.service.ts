@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { NotificationChannel } from 'src/generated/prisma/enums';
-import { TenantQuotaService } from 'src/modules/tenants/features/quota/tenant-quota.service';
+import { TenantUsageService } from 'src/modules/tenants/features/usage/tenant-usage.service';
 
 @Injectable()
 export class NotificationUsageService {
-  constructor(private readonly quotaService: TenantQuotaService) {}
+  constructor(private readonly tenantUsageService: TenantUsageService) {}
 
   async canSend(tenantId: string | null, channel: NotificationChannel) {
     if (!tenantId) {
       return true && channel !== NotificationChannel.WHATSAPP;
     }
-    const quota = await this.quotaService.findByTenantId(tenantId);
+    const quota = await this.tenantUsageService.findByTenantId(tenantId);
     if (!quota) {
       return false;
     }
-   
+
     switch (channel) {
       case NotificationChannel.EMAIL:
         return quota.emailCount < quota.emailLimit;
@@ -29,15 +29,15 @@ export class NotificationUsageService {
     if (!tenantId) {
       return;
     }
-    const quota = await this.quotaService.findByTenantId(tenantId);
+    const quota = await this.tenantUsageService.findByTenantId(tenantId);
     if (!quota) {
       return;
     }
     switch (channel) {
       case NotificationChannel.EMAIL:
-        return await this.quotaService.incrementEmailCount(tenantId);
+        return await this.tenantUsageService.incrementEmailCount(tenantId);
       case NotificationChannel.WHATSAPP:
-        return await this.quotaService.incrementWhatsappCount(tenantId);
+        return await this.tenantUsageService.incrementWhatsappCount(tenantId);
       default:
         return;
     }

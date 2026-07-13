@@ -6,10 +6,28 @@ import { Plan, PlanType, Prisma } from 'src/generated/prisma/client';
 export class PlansRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAllActives() {
+  findAll() {
     return this.prisma.plan.findMany({
       where: {
-        isActive: true,
+        isPublic: true,
+      },
+      select: {
+        id: true,
+        name: true,
+        tagline: true,
+        billingCycle: true,
+        trialDays: true,
+        price: true,
+        compareAtPrice: true,
+        currency: true,
+        isPublic: true,
+        isFeatured: true,
+        sortOrder: true,
+        description: true,
+        features: true,
+      },
+      orderBy: {
+        sortOrder: 'asc',
       },
     });
   }
@@ -17,41 +35,6 @@ export class PlansRepository {
   findById(id: string) {
     return this.prisma.plan.findUnique({
       where: { id },
-    });
-  }
-
-  findFreePlan() {
-    return this.prisma.plan.findFirst({
-      where: { planType: PlanType.FREE },
-    });
-  }
-
-  findByType(planType: PlanType) {
-    return this.prisma.plan.findFirst({
-      where: { planType },
-      include: {
-        limits: true,
-      },
-    });
-  }
-
-  // ---------- Commands ----------
-
-  createWithLimits(data: Prisma.PlanCreateInput) {
-    return this.prisma.plan.create({
-      data: {
-        ...data,
-      },
-    });
-  }
-
-  activatePlan(planId: string, externalReference: string): Promise<Plan> {
-    return this.prisma.plan.update({
-      where: { id: planId },
-      data: {
-        externalReference,
-        isActive: true,
-      },
     });
   }
 }

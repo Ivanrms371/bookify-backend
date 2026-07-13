@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from 'src/common/database/base.repository';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
-import { TenantWorkingHoursCreateInput, TenantWorkingHoursUpdateInput } from 'src/generated/prisma/models';
+import {
+  TenantWorkingHoursCreateInput,
+  TenantWorkingHoursCreateManyArgs,
+  TenantWorkingHoursUpdateInput,
+} from 'src/generated/prisma/models';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 
 @Injectable()
@@ -33,10 +37,12 @@ export class TenantWorkingHoursRepository extends BaseRepository {
     });
   }
 
-  create(data: TenantWorkingHoursCreateInput, tx?: TransactionClient) {
-    return this.db(tx).tenantWorkingHours.create({
-      data,
-    });
+  createMany(data: TenantWorkingHoursCreateManyArgs, tx?: TransactionClient) {
+    return this.db(tx).tenantWorkingHours.createMany(data);
+  }
+
+  deleteMany(tenantId: string, tx?: TransactionClient) {
+    return this.db(tx).tenantWorkingHours.deleteMany({ where: { tenantId } });
   }
 
   update(id: string, data: TenantWorkingHoursUpdateInput, tx?: TransactionClient) {

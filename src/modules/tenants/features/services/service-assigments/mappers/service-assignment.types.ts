@@ -1,7 +1,7 @@
 import { Decimal } from '@prisma/client/runtime/client';
 
 export type ServiceAssignmentWithService = {
-  staffId: string;
+  employeeId: string;
   serviceId: string;
   customPrice: Decimal | null;
   customDiscountPercentage: Decimal | null;
@@ -17,9 +17,7 @@ export type ServiceAssignmentWithService = {
     price: Decimal;
     discountPercentage: Decimal | null;
     discountFixed: Decimal | null;
-    initialActiveMinutes: number | null;
-    passiveTimeMinutes: number | null;
-    finalActiveMinutes: number | null;
+
     durationMinutes: number | null;
     isActive: boolean;
     displayOrder: number;

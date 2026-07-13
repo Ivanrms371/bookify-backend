@@ -13,8 +13,8 @@ describe('SlotsGenerator', () => {
   }
 
   // Helper: creates a FetchedAppointmentBlock
-  function block(startH: number, startM: number, endH: number, endM: number, staffId = 'staff-1'): FetchedAppointmentBlock {
-    return { staffId, startTime: at(startH, startM), endTime: at(endH, endM) };
+  function block(startH: number, startM: number, endH: number, endM: number, employeeId = 'employee-1'): FetchedAppointmentBlock {
+    return { employeeId, startTime: at(startH, startM), endTime: at(endH, endM) };
   }
 
   beforeEach(() => {
@@ -29,7 +29,7 @@ describe('SlotsGenerator', () => {
     it('should generate slots based on service duration', () => {
       const slots = generator.generate({
         strategy: 'dynamic',
-        blocks: [{ startMinutes: 540, endMinutes: 720 }], // 9:00-12:00 (180 min)
+        blocks: [{ opensAt: 540, closesAt: 720 }], // 9:00-12:00 (180 min)
         interval: 30,
         serviceDuration: 60, // 1 hour
         appointmentBlocks: [],
@@ -44,7 +44,7 @@ describe('SlotsGenerator', () => {
     it('should not generate slot if remaining time is less than service duration', () => {
       const slots = generator.generate({
         strategy: 'dynamic',
-        blocks: [{ startMinutes: 540, endMinutes: 610 }], // 9:00-10:10 (70 min)
+        blocks: [{ opensAt: 540, closesAt: 610 }], // 9:00-10:10 (70 min)
         interval: 30,
         serviceDuration: 60,
         appointmentBlocks: [],
@@ -60,8 +60,8 @@ describe('SlotsGenerator', () => {
       const slots = generator.generate({
         strategy: 'dynamic',
         blocks: [
-          { startMinutes: 540, endMinutes: 600 }, // 9:00-10:00
-          { startMinutes: 660, endMinutes: 720 }, // 11:00-12:00
+          { opensAt: 540, closesAt: 600 }, // 9:00-10:00
+          { opensAt: 660, closesAt: 720 }, // 11:00-12:00
         ],
         interval: 30,
         serviceDuration: 30,
@@ -96,7 +96,7 @@ describe('SlotsGenerator', () => {
     it('should generate slots at fixed intervals', () => {
       const slots = generator.generate({
         strategy: 'slot',
-        blocks: [{ startMinutes: 540, endMinutes: 660 }], // 9:00-11:00
+        blocks: [{ opensAt: 540, closesAt: 660 }], // 9:00-11:00
         interval: 30,
         serviceDuration: 30,
         appointmentBlocks: [],
@@ -110,7 +110,7 @@ describe('SlotsGenerator', () => {
     it('should generate with 15 min interval', () => {
       const slots = generator.generate({
         strategy: 'slot',
-        blocks: [{ startMinutes: 600, endMinutes: 660 }], // 10:00-11:00
+        blocks: [{ opensAt: 600, closesAt: 660 }], // 10:00-11:00
         interval: 15,
         serviceDuration: 15,
         appointmentBlocks: [],
@@ -130,7 +130,7 @@ describe('SlotsGenerator', () => {
     it('should remove slots that overlap with a single appointment block', () => {
       const slots = generator.generate({
         strategy: 'dynamic',
-        blocks: [{ startMinutes: 540, endMinutes: 720 }], // 9:00-12:00
+        blocks: [{ opensAt: 540, closesAt: 720 }], // 9:00-12:00
         interval: 30,
         serviceDuration: 30,
         appointmentBlocks: [block(9, 30, 10, 0)], // Cita 9:30-10:00
@@ -147,7 +147,7 @@ describe('SlotsGenerator', () => {
     it('should remove slots that partially overlap with appointment blocks', () => {
       const slots = generator.generate({
         strategy: 'dynamic',
-        blocks: [{ startMinutes: 540, endMinutes: 720 }], // 9:00-12:00
+        blocks: [{ opensAt: 540, closesAt: 720 }], // 9:00-12:00
         interval: 30,
         serviceDuration: 60, // 1 hour service
         appointmentBlocks: [block(10, 0, 11, 0)], // Cita 10:00-11:00
@@ -168,10 +168,10 @@ describe('SlotsGenerator', () => {
       // Simulates a service with passive time:
       // Block 1: 9:00-9:20 (initial active)
       // Block 2: 9:50-10:10 (final active)
-      // Gap: 9:20-9:50 is FREE (passive time, staff not needed)
+      // Gap: 9:20-9:50 is FREE (passive time, employee not needed)
       const slots = generator.generate({
         strategy: 'dynamic',
-        blocks: [{ startMinutes: 540, endMinutes: 720 }], // 9:00-12:00
+        blocks: [{ opensAt: 540, closesAt: 720 }], // 9:00-12:00
         interval: 30,
         serviceDuration: 30,
         appointmentBlocks: [
@@ -195,7 +195,7 @@ describe('SlotsGenerator', () => {
     it('should allow slot exactly after appointment block ends', () => {
       const slots = generator.generate({
         strategy: 'dynamic',
-        blocks: [{ startMinutes: 540, endMinutes: 720 }], // 9:00-12:00
+        blocks: [{ opensAt: 540, closesAt: 720 }], // 9:00-12:00
         interval: 30,
         serviceDuration: 30,
         appointmentBlocks: [block(9, 0, 9, 30)], // Cita 9:00-9:30
@@ -211,7 +211,7 @@ describe('SlotsGenerator', () => {
     it('should allow slot exactly before appointment block starts', () => {
       const slots = generator.generate({
         strategy: 'dynamic',
-        blocks: [{ startMinutes: 540, endMinutes: 720 }], // 9:00-12:00
+        blocks: [{ opensAt: 540, closesAt: 720 }], // 9:00-12:00
         interval: 30,
         serviceDuration: 30,
         appointmentBlocks: [block(10, 0, 10, 30)], // Cita 10:00-10:30
@@ -227,7 +227,7 @@ describe('SlotsGenerator', () => {
     it('should handle no appointment blocks', () => {
       const slots = generator.generate({
         strategy: 'dynamic',
-        blocks: [{ startMinutes: 540, endMinutes: 660 }], // 9:00-11:00
+        blocks: [{ opensAt: 540, closesAt: 660 }], // 9:00-11:00
         interval: 30,
         serviceDuration: 30,
         appointmentBlocks: [],
@@ -241,7 +241,7 @@ describe('SlotsGenerator', () => {
     it('should block all slots when full day is booked', () => {
       const slots = generator.generate({
         strategy: 'dynamic',
-        blocks: [{ startMinutes: 540, endMinutes: 660 }], // 9:00-11:00
+        blocks: [{ opensAt: 540, closesAt: 660 }], // 9:00-11:00
         interval: 30,
         serviceDuration: 30,
         appointmentBlocks: [block(9, 0, 11, 0)], // Single block entire day
@@ -255,7 +255,7 @@ describe('SlotsGenerator', () => {
     it('should handle multiple separate appointments throughout the day', () => {
       const slots = generator.generate({
         strategy: 'dynamic',
-        blocks: [{ startMinutes: 540, endMinutes: 720 }], // 9:00-12:00
+        blocks: [{ opensAt: 540, closesAt: 720 }], // 9:00-12:00
         interval: 30,
         serviceDuration: 30,
         appointmentBlocks: [
@@ -279,7 +279,7 @@ describe('SlotsGenerator', () => {
     it('barbershop: 30 min cortes with 3 citas', () => {
       const slots = generator.generate({
         strategy: 'dynamic',
-        blocks: [{ startMinutes: 540, endMinutes: 1080 }], // 9:00-18:00
+        blocks: [{ opensAt: 540, closesAt: 1080 }], // 9:00-18:00
         interval: 30,
         serviceDuration: 30,
         appointmentBlocks: [
@@ -303,10 +303,10 @@ describe('SlotsGenerator', () => {
 
     it('spa: 90 min service with passive time blocks', () => {
       // Masaje con piedras: 10 min active → 30 min passive → 50 min active
-      // Only the active blocks occupy the staff
+      // Only the active blocks occupy the employee
       const slots = generator.generate({
         strategy: 'dynamic',
-        blocks: [{ startMinutes: 540, endMinutes: 1200 }], // 9:00-20:00
+        blocks: [{ opensAt: 540, closesAt: 1200 }], // 9:00-20:00
         interval: 30,
         serviceDuration: 60, // Next service is 60 min
         appointmentBlocks: [
@@ -327,10 +327,10 @@ describe('SlotsGenerator', () => {
     });
 
     it('schedule exception: reduced hours', () => {
-      // Staff only works 9:00-13:00 due to medical appointment
+      // Employee only works 9:00-13:00 due to medical appointment
       const slots = generator.generate({
         strategy: 'dynamic',
-        blocks: [{ startMinutes: 540, endMinutes: 780 }], // 9:00-13:00
+        blocks: [{ opensAt: 540, closesAt: 780 }], // 9:00-13:00
         interval: 30,
         serviceDuration: 30,
         appointmentBlocks: [],

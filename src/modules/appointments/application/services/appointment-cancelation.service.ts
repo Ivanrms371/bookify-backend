@@ -22,9 +22,9 @@ export class AppointmentCancelationService {
     this.eventEmitter.emit('appointment.cancelled', {
       tenantId: appointment.tenantId,
       appointmentId: appointment.id,
-      staffId: appointment.staffId,
-      staffName: appointment.staff.user.name,
-      userId: appointment.staff.userId,
+      employeeId: appointment.employeeId,
+      employeeName: appointment.employee.user.name,
+      userId: appointment.employee.userId,
       customerId: appointment.customerId,
       customerName: appointment.customer.name,
       serviceId: appointment.serviceId,

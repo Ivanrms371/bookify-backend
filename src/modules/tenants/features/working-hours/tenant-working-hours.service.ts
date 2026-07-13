@@ -1,124 +1,117 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { TenantWorkingHoursRepository } from './tenant-working-hours.repository';
 import { timeToMinutes } from 'src/common/utils/time/time.util';
 import { UpdateWorkingHoursBulkDto } from './dto/update-working-hours-bulk.dto';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { CreateWorkingHourDto } from './dto/create-working-hour.dto';
-import { UpdateWorkingHourDto } from './dto/update-working-hours-bulk.dto';
+import { CreateWorkingHoursBulkDto } from './dto/create-working-hour.dto';
+import { TenantWorkingHoursRepository } from './tenant-working-hours.repository';
+import { dayOfWeekToInt } from 'src/common/utils/day-of-week.util';
+import { ValidateOverlapWorkingHoursInput } from './types/tenant-working-hours.type';
+import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 
 interface ValidateOverlapParams {
   tenantId: string;
   dayOfWeek: number;
-  startMinutes: number;
-  endMinutes: number;
+  opensAt: number;
+  closesAt: number;
   excludeWorkingHourId?: string;
 }
 
 @Injectable()
 export class TenantWorkingHoursService {
   constructor(
-    private readonly repository: TenantWorkingHoursRepository,
+    private readonly workingHoursRepository: TenantWorkingHoursRepository,
     private readonly prisma: PrismaService,
   ) {}
 
-  private async validateOverlap({ dayOfWeek, endMinutes, tenantId, startMinutes, excludeWorkingHourId }: ValidateOverlapParams) {
-    const existing = await this.repository.findByTenantAndDay(tenantId, dayOfWeek);
+  private validateOverlaps(workingHours: ValidateOverlapWorkingHoursInput[]) {
+    const grouped = new Map<number, ValidateOverlapWorkingHoursInput[]>();
 
-    const overlap = existing
-      .filter((b) => !excludeWorkingHourId || b.id !== excludeWorkingHourId)
-      .some((b) => startMinutes < b.endMinutes && endMinutes > b.startMinutes);
+    for (const wh of workingHours) {
+      const list = grouped.get(wh.dayOfWeek) ?? [];
 
-    if (overlap) {
-      throw new BadRequestException('Ya existe un horario en el mismo rango de tiempo para el negocio');
+      list.push(wh);
+
+      grouped.set(wh.dayOfWeek, list);
+    }
+
+    for (const [_, intervals] of grouped) {
+      intervals.sort((a, b) => a.opensAt - b.opensAt);
+
+      for (let i = 0; i < intervals.length - 1; i++) {
+        const current = intervals[i];
+        const next = intervals[i + 1];
+
+        const overlap = current.closesAt > next.opensAt;
+
+        if (overlap) {
+          throw new BadRequestException('Algunos horarios están superpuestos, por favor verifique.');
+        }
+      }
     }
   }
 
   async findAllByTenant(tenantId: string) {
-    return this.repository.findManyByTenant(tenantId);
+    return this.workingHoursRepository.findManyByTenant(tenantId);
   }
 
-  async create(tenantId: string, dto: CreateWorkingHourDto) {
-    const startMinutes = timeToMinutes(dto.startTime);
-    const endMinutes = timeToMinutes(dto.endTime);
+  async create(tenantId: string, dto: CreateWorkingHoursBulkDto) {
+    const workingHours = dto.workingHours.flatMap((wh) => {
+      return wh.intervals.map((i) => {
+        const dayOfWeek = dayOfWeekToInt(wh.dayOfWeek);
+        const opensAt = timeToMinutes(i.opensAt);
+        const closesAt = timeToMinutes(i.closesAt);
 
-    await this.validateOverlap({
-      tenantId,
-      dayOfWeek: dto.dayOfWeek,
-      startMinutes,
-      endMinutes,
+        return {
+          tenantId,
+          dayOfWeek,
+          opensAt,
+          closesAt,
+        };
+      });
     });
 
-    const workingHour = await this.repository.create({
-      tenant: { connect: { id: tenantId } },
-      dayOfWeek: dto.dayOfWeek,
-      startMinutes,
-      endMinutes,
-    });
-    return workingHour;
-  }
+    this.validateOverlaps(workingHours);
 
-  async update(tenantId: string, workingHourId: string, dto: UpdateWorkingHourDto) {
-    const workingHour = await this.repository.findById(workingHourId);
-    if (!workingHour || workingHour.tenantId !== tenantId) {
-      throw new NotFoundException('Horario no encontrado o no pertenece al negocio');
-    }
-
-    const startMinutes = dto.startTime ? timeToMinutes(dto.startTime) : workingHour.startMinutes;
-    const endMinutes = dto.endTime ? timeToMinutes(dto.endTime) : workingHour.endMinutes;
-    const dayOfWeek = dto.dayOfWeek ?? workingHour.dayOfWeek;
-
-    await this.validateOverlap({
-      tenantId,
-      dayOfWeek,
-      startMinutes,
-      endMinutes,
-      excludeWorkingHourId: workingHourId,
-    });
-
-    return await this.repository.update(workingHourId, {
-      dayOfWeek,
-      startMinutes,
-      endMinutes,
+    this.prisma.$transaction(async (tx) => {
+      await this.workingHoursRepository.deleteMany(tenantId, tx);
+      await this.workingHoursRepository.createMany({ data: workingHours }, tx);
     });
   }
 
   async delete(tenantId: string, workingHourId: string) {
-    const workingHour = await this.repository.findById(workingHourId);
+    const workingHour = await this.workingHoursRepository.findById(workingHourId);
     if (!workingHour || workingHour.tenantId !== tenantId) {
       throw new NotFoundException('Horario no encontrado o no pertenece al negocio');
     }
 
-    return await this.repository.delete(workingHourId);
+    return await this.workingHoursRepository.delete(workingHourId);
   }
 
-  async bulkUpdate(tenantId: string, dto: UpdateWorkingHoursBulkDto) {
-    return await this.prisma.$transaction(async (tx) => {
-      // Borramos los actuales
-      await tx.tenantWorkingHours.deleteMany({
-        where: { tenantId },
-      });
-
-      // Insertamos los nuevos
+  async bulkUpdate(tenantId: string, dto: UpdateWorkingHoursBulkDto, tx?: TransactionClient) {
+    const executeOperation = async (prismaClient: TransactionClient | PrismaService) => {
       if (dto.workingHours && dto.workingHours.length > 0) {
-        await tx.tenantWorkingHours.createMany({
-          data: dto.workingHours.map((wh) => ({
-            tenantId,
-            dayOfWeek: wh.dayOfWeek,
-            startMinutes: timeToMinutes(wh.startTime),
-            endMinutes: timeToMinutes(wh.endTime),
-            name: wh.name,
-            isActive: true,
-          })),
+        const data = dto.workingHours.flatMap((wh) => {
+          return wh.intervals.map((i) => {
+            return {
+              tenantId,
+              dayOfWeek: dayOfWeekToInt(wh.dayOfWeek),
+              opensAt: timeToMinutes(i.opensAt),
+              closesAt: timeToMinutes(i.closesAt),
+            };
+          });
         });
+        await this.workingHoursRepository.deleteMany(tenantId, prismaClient);
+        await this.workingHoursRepository.createMany({ data }, prismaClient);
       }
-
-      // Aprovechamos y marcamos la bandera de onboarding si existe
-      await tx.tenantOnboarding.updateMany({
-        where: { tenantId },
-        data: { hasSchedule: true },
-      });
-
       return { success: true };
+    };
+
+    if (tx) {
+      return await executeOperation(tx);
+    }
+
+    return await this.prisma.$transaction(async (newTx) => {
+      return await executeOperation(newTx);
     });
   }
 }

@@ -1,10 +1,9 @@
 import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
 import { DashboardTenantService } from './dashboard-tenant.service';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { DashboardAccessGuard } from './dashboard-access.guard';
 import { AuthenticatedRequest } from 'src/auth/types/express-request.type';
 
-@UseGuards(JwtAuthGuard, DashboardAccessGuard)
+@UseGuards(DashboardAccessGuard)
 @Controller('tenant/:tenantId/dashboard')
 export class DashboardTenantController {
   constructor(private readonly dashboardService: DashboardTenantService) {}

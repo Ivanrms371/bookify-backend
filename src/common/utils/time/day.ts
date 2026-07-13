@@ -1,3 +1,5 @@
+import { BadRequestException } from '@nestjs/common';
+
 export function toIsoDay(dateFnsDay: number): number {
   return dateFnsDay === 0 ? 6 : dateFnsDay - 1;
 }

@@ -1,66 +1,104 @@
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from 'src/common/database/base.repository';
-import {
-  TenantCreateInput,
-  TenantOnboardingUpdateInput,
-  TenantUpdateInput,
-  TransactionClient,
-} from 'src/generated/prisma/internal/prismaNamespace';
+import { Tenant } from 'src/generated/prisma/client';
+import { MembershipRole, MembershipStatus, OnboardingStatus, WorkspaceType } from 'src/generated/prisma/enums';
+import { ServiceCreateManyArgs, ServiceCreateManyInput, TenantUpdateInput } from 'src/generated/prisma/models';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
+import { TenantOnboardingRaw } from './types/onboarding-raw.types';
+import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 
 @Injectable()
-export class OnboardingRepository extends BaseRepository {
+export class TenantOnboardingRepository extends BaseRepository {
   constructor(prisma: PrismaService) {
     super(prisma);
   }
 
-  findById(tenantId: string, tx?: TransactionClient) {
-    return this.db(tx).tenant.findUnique({
-      where: { id: tenantId },
-    });
-  }
-
-  findByIdAndOwnerId(id: string, ownerId: string, tx?: TransactionClient) {
-    return this.db(tx).tenant.findUnique({
-      where: { id, ownerId },
-    });
-  }
-
-  findBySlug(slug: string, tx?: TransactionClient) {
-    return this.db(tx).tenant.findUnique({
-      where: { slug },
-    });
-  }
-
-  findByTenantId(tenantId: string, tx?: TransactionClient) {
-    return this.db(tx).tenantOnboarding.findUnique({
-      where: { tenantId },
-    });
-  }
-
-  getOnboardingStatus(userId: string) {
-    return this.db().tenant.findFirst({
-      where: {
-        ownerId: userId,
-        onboardingCompleted: false,
-      },
-      include: {
-        subscription: {
-          include: {
-            plan: true,
+  getOnboardingStatus(ownerId: string): Promise<TenantOnboardingRaw> {
+    return this.db().tenant.findUniqueOrThrow({
+      where: { ownerId },
+      select: {
+        id: true,
+        onboardingStatus: true,
+        workspaceType: true,
+        name: true,
+        slug: true,
+        type: true,
+        logoUrl: true,
+        coverUrl: true,
+        colorTheme: true,
+        tenantWorkingHours: {
+          select: {
+            dayOfWeek: true,
+            opensAt: true,
+            closesAt: true,
+          },
+        },
+        services: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            durationMinutes: true,
           },
         },
       },
     });
   }
 
-  setup(data: TenantCreateInput, tx?: TransactionClient) {
-    return this.db(tx).tenant.create({
+  async findTenantByOwnerId(ownerId: string): Promise<Tenant | null> {
+    return this.prisma.tenant.findFirst({
+      where: {
+        ownerId,
+        deletedAt: null,
+      },
+    });
+  }
+
+  async createInitialTenant(ownerId: string): Promise<Tenant> {
+    return this.prisma.tenant.create({
       data: {
-        ...data,
-        onboarding: {
-          create: {},
+        ownerId,
+        onboardingStatus: OnboardingStatus.WORKSPACE_TYPE,
+
+        memberships: {
+          create: {
+            userId: ownerId,
+            role: MembershipRole.OWNER,
+            status: MembershipStatus.ACTIVE,
+          },
         },
+      },
+    });
+  }
+
+  async findBySlug(slug: string): Promise<Tenant | null> {
+    return this.prisma.tenant.findUnique({
+      where: { slug },
+    });
+  }
+
+  async update(tenantId: string, data: TenantUpdateInput, tx?: TransactionClient): Promise<Tenant> {
+    return this.db(tx).tenant.update({
+      where: { id: tenantId },
+      data,
+    });
+  }
+
+  async updateStatus(tenantId: string, status: OnboardingStatus, tx?: TransactionClient): Promise<Tenant> {
+    return this.db(tx).tenant.update({
+      where: { id: tenantId },
+      data: { onboardingStatus: status },
+    });
+  }
+
+  async finalizeAndActivateTenant(tenantId: string): Promise<Tenant> {
+    return this.prisma.tenant.update({
+      where: { id: tenantId },
+      data: {
+        isActive: true,
+        isPublic: true,
+        onboardingStatus: OnboardingStatus.COMPLETED,
+
         settings: {
           create: {},
         },
@@ -71,53 +109,8 @@ export class OnboardingRepository extends BaseRepository {
     });
   }
 
-  update(id: string, data: TenantUpdateInput, tx?: TransactionClient) {
-    return this.db(tx).tenant.update({
-      where: { id },
-      data,
-    });
-  }
-
-  updateOnboarding(id: string, data: TenantOnboardingUpdateInput, tx?: TransactionClient) {
-    return this.db(tx).tenantOnboarding.update({
-      where: { tenantId: id },
-      data,
-    });
-  }
-
-  markOnboardingAsCompleted(id: string, tx?: TransactionClient) {
-    return this.db(tx).tenant.update({
-      where: { id },
-      data: {
-        isActive: true,
-        isPublic: true,
-        onboardingCompleted: true,
-      },
-    });
-  }
-
-  updateOnboardingCompleted(tenantId: string, completed: boolean, tx?: TransactionClient) {
-    return this.db(tx).tenantOnboarding.update({
-      where: { tenantId },
-      data: {
-        onboardingCompleted: completed,
-      },
-    });
-  }
-
-  updateTenantAssets(
-    tenantId: string,
-    assets: {
-      logoUrl?: string | null;
-      logoPublicId?: string | null;
-      coverUrl?: string | null;
-      coverPublicId?: string | null;
-    },
-    tx?: TransactionClient,
-  ) {
-    return this.db(tx).tenant.update({
-      where: { id: tenantId },
-      data: assets,
-    });
+  async replaceServices(tenantId: string, data: ServiceCreateManyInput[], tx?: TransactionClient): Promise<void> {
+    await this.db(tx).service.deleteMany({ where: { tenantId } });
+    await this.db(tx).service.createMany({ data });
   }
 }

@@ -83,15 +83,15 @@ export type Service = Prisma.ServiceModel
  */
 export type ServiceAssignment = Prisma.ServiceAssignmentModel
 /**
- * Model Staff
+ * Model Employee
  * 
  */
-export type Staff = Prisma.StaffModel
+export type Employee = Prisma.EmployeeModel
 /**
- * Model WorkingHours
+ * Model EmployeeWorkingHours
  * 
  */
-export type WorkingHours = Prisma.WorkingHoursModel
+export type EmployeeWorkingHours = Prisma.EmployeeWorkingHoursModel
 /**
  * Model TenantWorkingHours
  * 
@@ -133,15 +133,15 @@ export type TenantDailyStats = Prisma.TenantDailyStatsModel
  */
 export type TenantLifetimeStats = Prisma.TenantLifetimeStatsModel
 /**
- * Model StaffDailyStats
+ * Model EmployeeDailyStats
  * 
  */
-export type StaffDailyStats = Prisma.StaffDailyStatsModel
+export type EmployeeDailyStats = Prisma.EmployeeDailyStatsModel
 /**
- * Model StaffLifetimeStats
+ * Model EmployeeLifetimeStats
  * 
  */
-export type StaffLifetimeStats = Prisma.StaffLifetimeStatsModel
+export type EmployeeLifetimeStats = Prisma.EmployeeLifetimeStatsModel
 /**
  * Model Notification
  * 
@@ -163,10 +163,10 @@ export type InAppNotification = Prisma.InAppNotificationModel
  */
 export type NotificationLog = Prisma.NotificationLogModel
 /**
- * Model TenantQuota
+ * Model TenantUsage
  * 
  */
-export type TenantQuota = Prisma.TenantQuotaModel
+export type TenantUsage = Prisma.TenantUsageModel
 /**
  * Model Subscription
  * 
@@ -177,11 +177,6 @@ export type Subscription = Prisma.SubscriptionModel
  * 
  */
 export type Plan = Prisma.PlanModel
-/**
- * Model PlanLimits
- * 
- */
-export type PlanLimits = Prisma.PlanLimitsModel
 /**
  * Model PlanStats
  * 
@@ -207,8 +202,3 @@ export type PlatformAdmin = Prisma.PlatformAdminModel
  * 
  */
 export type WebhookLog = Prisma.WebhookLogModel
-/**
- * Model TenantOnboarding
- * 
- */
-export type TenantOnboarding = Prisma.TenantOnboardingModel

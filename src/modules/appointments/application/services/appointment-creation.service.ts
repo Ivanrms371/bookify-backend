@@ -32,11 +32,11 @@ export class AppointmentCreationService {
 
   async createAppointment(dto: CreateAppointmentDto) {
     const startTime = new Date(dto.appointment.date);
-    const service = await this.servicesService.findServiceById(dto.appointment.serviceId, dto.appointment.staffId);
+    const service = await this.servicesService.findServiceById(dto.appointment.serviceId, dto.appointment.employeeId);
     const endTime = new Date(startTime.getTime() + service.durationMinutes * 60 * 1000);
 
     await this.policy.validate({
-      staffId: dto.appointment.staffId,
+      employeeId: dto.appointment.employeeId,
       serviceId: dto.appointment.serviceId,
       startTime,
     });
@@ -50,7 +50,7 @@ export class AppointmentCreationService {
       const appointment = await this.appointmentsRepository.create(
         {
           tenant: { connect: { id: dto.appointment.tenantId } },
-          staff: { connect: { id: dto.appointment.staffId } },
+          employee: { connect: { id: dto.appointment.employeeId } },
           service: { connect: { id: dto.appointment.serviceId } },
           customer: { connect: { id: customer.id } },
           customerName: customer.name,
@@ -61,9 +61,6 @@ export class AppointmentCreationService {
           discountPercentage: service.discountPercentage,
           confirmationCode: this.generateConfirmationCode(),
           durationMinutes: service.durationMinutes,
-          initialActiveMinutes: service.initialActiveMinutes,
-          passiveMinutes: service.passiveTimeMinutes,
-          finalActiveMinutes: service.finalActiveMinutes,
           rescheduleToken,
           cancelToken,
           startTime,
@@ -74,14 +71,12 @@ export class AppointmentCreationService {
 
       const timeBlocks = buildTimeBlocks({
         startTime,
-        initialActiveMinutes: service.initialActiveMinutes,
-        passiveTimeMinutes: service.passiveTimeMinutes,
-        finalActiveMinutes: service.finalActiveMinutes,
+        durationMinutes: service.durationMinutes,
       });
 
       const appointmentBlocks = timeBlocks.map((block) => ({
         appointmentId: appointment.id,
-        staffId: dto.appointment.staffId,
+        employeeId: dto.appointment.employeeId,
         startTime: block.startTime,
         endTime: block.endTime,
       }));
@@ -93,7 +88,7 @@ export class AppointmentCreationService {
       await this.appointmentStatsService.onCreated(
         {
           customerId: appointment.customerId,
-          staffId: appointment.staffId,
+          employeeId: appointment.employeeId,
           tenantId: appointment.tenantId,
           isNewCustomer,
           startTime,
@@ -111,17 +106,17 @@ export class AppointmentCreationService {
 
     this.eventEmitter.emit('appointment.created', {
       tenantId: result.appointment.tenantId,
-      staffId: result.appointment.staffId,
+      employeeId: result.appointment.employeeId,
       serviceId: result.appointment.serviceId,
       customerId: result.customer.id,
       startAppointmentDate: result.appointment.startTime,
       endAppointmentDate: result.appointment.endTime,
       appointmentId: result.appointment.id,
       customerName: result.customer.name,
-      staffName: result.appointment.staff.user.name,
-      staffPhone: result.appointment.staff.user.phone,
+      employeeName: result.appointment.employee.user.name,
+      employeePhone: result.appointment.employee.user.phone,
       serviceName: result.appointment.service.name,
-      userId: result.appointment.staff.userId,
+      userId: result.appointment.employee.userId,
       cancelUrl: result.cancelUrl,
       rescheduleUrl: result.rescheduleUrl,
       createdBy: 'CUSTOMER',

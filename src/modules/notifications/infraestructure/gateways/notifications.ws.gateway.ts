@@ -4,13 +4,11 @@ import * as cookie from 'cookie'; // Importante para leer las cookies
 import { JwtService } from 'src/auth/infrastructure/jwt/jwt.service';
 import { OnEvent } from '@nestjs/event-emitter';
 import { InAppNotificationCreatedEvent } from '../../domain/events/in-app-notification.event';
+import { corsOptions } from 'src/config/cors.config';
 
 @WebSocketGateway({
   namespace: 'notifications',
-  cors: {
-    origin: 'http://localhost:3000', // Tu frontend
-    credentials: true, // PERMITE el paso de cookies
-  },
+  cors: corsOptions,
 })
 export class NotificationsWsGateway implements OnGatewayConnection {
   @WebSocketServer() server: Server;

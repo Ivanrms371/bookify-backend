@@ -23,11 +23,28 @@ export class AppointmentsService {
     });
   }
 
-  getDashboardUpcoming(tenantId: string, staffId?: string) {
-    return this.appointmentsRepository.findUpcomingDashboard(tenantId, staffId);
+  getDashboardUpcoming(tenantId: string, employeeId?: string) {
+    return this.appointmentsRepository.findUpcomingDashboard(tenantId, employeeId);
   }
 
-  countDashboardTodayAppointments(tenantId: string, startDate: Date, endDate: Date, staffId?: string) {
-    return this.appointmentsRepository.countAppointmentsInRange(tenantId, startDate, endDate, staffId);
+  countDashboardUpcomingAppointments(tenantId: string, employeeId?: string) {
+    return this.appointmentsRepository.countUpcomingDashboard(tenantId, employeeId);
+  }
+
+  getUpcoming(tenantId: string, employeeId?: string, take: number = 10) {
+    const today = new Date();
+    const startDate = today;
+    const endDate = endOfDay(today);
+    return this.appointmentsRepository.findManyByTenant({
+      tenantId,
+      employeeId,
+      startDate,
+      endDate,
+      status: AppointmentStatus.CONFIRMED,
+      orderBy: 'startTime',
+      order: 'asc',
+      skip: 0,
+      take,
+    });
   }
 }

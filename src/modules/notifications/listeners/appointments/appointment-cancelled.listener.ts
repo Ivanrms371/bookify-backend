@@ -15,7 +15,7 @@ export class AppointmentCancelledListener {
   async handle(event: AppointmentCancelledEvent) {
     const payload = {
       appointmentId: event.appointmentId,
-      staffName: event.staffName,
+      employeeName: event.employeeName,
       customerName: event.customerName,
       date: format(event.startTime, "dd 'de' MMMM 'de' yyyy", { locale: es }),
       time: format(event.startTime, 'HH:mm'),

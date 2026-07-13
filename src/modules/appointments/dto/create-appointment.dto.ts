@@ -18,7 +18,7 @@ class Appointment {
 
   @IsString()
   @IsUUID()
-  staffId: string;
+  employeeId: string;
 
   @IsString()
   @IsUUID()

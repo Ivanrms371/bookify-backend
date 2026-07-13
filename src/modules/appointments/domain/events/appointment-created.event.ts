@@ -1,8 +1,8 @@
 export interface AppointmentCreatedEvent {
   tenantId: string;
   userId: string;
-  staffId: string;
-  staffName: string;
+  employeeId: string;
+  employeeName: string;
   serviceId: string;
   serviceName: string;
   customerId: string;
@@ -12,5 +12,5 @@ export interface AppointmentCreatedEvent {
   startAppointmentDate: Date;
   endAppointmentDate: Date;
   appointmentId: string;
-  createdBy: 'STAFF' | 'CUSTOMER';
+  createdBy: 'EMPLOYEE' | 'CUSTOMER';
 }

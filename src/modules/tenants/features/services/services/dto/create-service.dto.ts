@@ -1,8 +1,9 @@
+import { Decimal } from '@prisma/client/runtime/client';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsNumber, IsOptional, IsString, IsArray } from 'class-validator';
+import { IsArray, IsBoolean, IsDefined, IsInt, IsNumber, IsOptional, IsString } from 'class-validator';
+import { coerceToDecimal, coerceToInt, coerceToNumber } from 'src/common/utils/to-decimal.util';
 
-const toNumber = (v: unknown) => (v === '' || v === undefined ? undefined : Number(v));
-const toBool = (v: unknown) => v === 'true' || v === true;
+export const toBool = (v: unknown) => v === 'true' || v === true;
 
 export class CreateServiceDto {
   @IsString()
@@ -12,33 +13,22 @@ export class CreateServiceDto {
   @IsOptional()
   description?: string;
 
-  @Transform(({ value }) => toNumber(value))
-  @IsNumber()
-  price: number;
+  @Transform(({ value }) => coerceToDecimal(value))
+  @IsDefined()
+  price: Decimal;
 
-  @Transform(({ value }) => toNumber(value))
-  @IsNumber()
+  @Transform(({ value }) => coerceToInt(value))
+  @IsInt()
   @IsOptional()
   discountPercentage?: number;
 
-  @Transform(({ value }) => toNumber(value))
-  @IsNumber()
+  @Transform(({ value }) => coerceToDecimal(value))
   @IsOptional()
-  discountFixed?: number;
+  discountFixed?: Decimal;
 
-  @Transform(({ value }) => toNumber(value))
+  @Transform(({ value }) => coerceToNumber(value))
   @IsNumber()
-  initialActiveMinutes: number;
-
-  @Transform(({ value }) => toNumber(value))
-  @IsNumber()
-  @IsOptional()
-  passiveTimeMinutes?: number;
-
-  @Transform(({ value }) => toNumber(value))
-  @IsNumber()
-  @IsOptional()
-  finalActiveMinutes?: number;
+  durationMinutes: number;
 
   @Transform(({ value }) => toBool(value))
   @IsBoolean()
@@ -48,5 +38,5 @@ export class CreateServiceDto {
   @Transform(({ value }) => (Array.isArray(value) ? value : value ? [value] : []))
   @IsArray()
   @IsString({ each: true })
-  staffIds?: string[];
+  employeeIds?: string[];
 }

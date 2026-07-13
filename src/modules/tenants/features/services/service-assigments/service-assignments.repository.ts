@@ -10,51 +10,63 @@ export class ServiceAssignmentsRepository extends BaseRepository {
     super(prisma);
   }
 
-  findManyByStaff(staffId: string, client?: PrismaClient) {
+  findManyByEmployee(employeeId: string, client?: PrismaClient) {
     return this.db(client).serviceAssignment.findMany({
-      where: { staffId },
+      where: { employeeId },
       include: { service: true },
       orderBy: { service: { displayOrder: 'asc' } },
     });
   }
 
-  findPublicByStaff(staffId: string, client?: PrismaClient) {
+  findPublicByEmployee(employeeId: string, client?: PrismaClient) {
     return this.db(client).serviceAssignment.findMany({
-      where: { staffId, isActive: true, service: { isActive: true, deletedAt: null } },
+      where: { employeeId, isActive: true, service: { isActive: true, deletedAt: null } },
       include: { service: true },
       orderBy: { service: { displayOrder: 'asc' } },
     });
   }
 
-  assignTo(serviceId: string, staffId: string, client?: PrismaClient) {
+  assignTo(serviceId: string, employeeId: string, client?: PrismaClient) {
     return this.db(client).serviceAssignment.create({
-      data: { serviceId, staffId },
+      data: { serviceId, employeeId },
     });
   }
 
-  unassignFrom(serviceId: string, staffId: string, client?: PrismaClient) {
+  unassignFrom(serviceId: string, employeeId: string, client?: PrismaClient) {
     return this.db(client).serviceAssignment.delete({
-      where: { staffId_serviceId: { serviceId, staffId } },
+      where: { employeeId_serviceId: { serviceId, employeeId } },
     });
   }
 
-  activate(serviceId: string, staffId: string, client?: PrismaClient) {
+  activate(serviceId: string, employeeId: string, client?: PrismaClient) {
     return this.db(client).serviceAssignment.update({
-      where: { staffId_serviceId: { serviceId, staffId } },
+      where: { employeeId_serviceId: { serviceId, employeeId } },
       data: { isActive: true },
     });
   }
 
-  deactivate(serviceId: string, staffId: string, client?: PrismaClient) {
+  deactivate(serviceId: string, employeeId: string, client?: PrismaClient) {
     return this.db(client).serviceAssignment.update({
-      where: { staffId_serviceId: { serviceId, staffId } },
+      where: { employeeId_serviceId: { serviceId, employeeId } },
       data: { isActive: false },
     });
   }
 
-  update(serviceId: string, staffId: string, data: ServiceAssignmentUpdateInput, client?: PrismaClient) {
+  update(serviceId: string, employeeId: string, data: ServiceAssignmentUpdateInput, client?: PrismaClient) {
     return this.db(client).serviceAssignment.update({
-      where: { staffId_serviceId: { serviceId, staffId } },
+      where: { employeeId_serviceId: { serviceId, employeeId } },
+      data,
+    });
+  }
+
+  deleteByEmployeeId(employeeId: string, client?: PrismaClient) {
+    return this.db(client).serviceAssignment.deleteMany({
+      where: { employeeId },
+    });
+  }
+
+  createMany(data: Array<{ employeeId: string; serviceId: string; isActive: boolean }>, client?: PrismaClient) {
+    return this.db(client).serviceAssignment.createMany({
       data,
     });
   }

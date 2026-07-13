@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Patch, Param } from '@nestjs/common';
+import { Controller, Get, Post, Req, Patch, Param, Put } from '@nestjs/common';
 import EventEmitter2 from 'eventemitter2';
 import { AuthenticatedRequest } from 'src/auth/types/express-request.type';
 import { InAppNotificationsService } from './application/services/in-app-notifications.service';
@@ -10,14 +10,14 @@ export class NotificationsController {
   @Get()
   async getNotificationsData(@Req() req: AuthenticatedRequest) {
     const userId = req.user.userId;
-    const [count, notifications] = await Promise.all([
-      this.inAppNotificationsService.count(userId),
-      this.inAppNotificationsService.getLatest(userId),
+    const [unreadCount, notifications] = await Promise.all([
+      this.inAppNotificationsService.countUnread(userId),
+      this.inAppNotificationsService.findLatest(userId),
     ]);
-    return { count, notifications };
+    return { unreadCount, notifications };
   }
 
-  @Patch('read-all')
+  @Put('read-all')
   async markAllAsRead(@Req() req: AuthenticatedRequest) {
     return this.inAppNotificationsService.markAllAsRead(req.user.userId);
   }

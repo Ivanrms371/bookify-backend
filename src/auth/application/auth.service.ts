@@ -9,6 +9,7 @@ import { JwtService } from '../infrastructure/jwt/jwt.service';
 import { GoogleUserInfo } from '../types/google-domain';
 import { EmailVerificationStrategy } from 'src/modules/verifications/strategies/email-verification.strategy';
 import { PasswordService } from './password.service';
+import { GenerateSessionPayload } from '../types/auth-session.type';
 
 @Injectable()
 export class AuthService {
@@ -25,64 +26,53 @@ export class AuthService {
   async login(dto: LoginDto, deviceId?: string) {
     const user = await this.usersService.findUserByEmailOrFail(dto.email);
 
-    if (!user.emailVerifiedAt) {
-      throw new ForbiddenException('Debes verificar tu correo electrónico antes de iniciar sesión.');
-    }
-    if (!user.password) {
-      throw new ForbiddenException('Prueba otra forma de iniciar sesión.');
-    }
+     if (!user.emailVerifiedAt) 
+      throw new ForbiddenException('Debés verificar tu correo antes de iniciar sesión.')
+  
+    if (!user.password) 
+      throw new ForbiddenException('Esta cuenta usa otro método de inicio de sesión.')
 
     const isMatch = await this.passwordService.compare(dto.password, user.password);
-    if (!isMatch) {
-      throw new UnauthorizedException('La contraseña es incorrecta.');
-    }
+     if (!isMatch) throw new UnauthorizedException('La contraseña es incorrecta.')
 
-    await this.usersService.updateUser(user.id, { lastLoginAt: new Date() });
+    await this.usersService.updateLastLogin(user.id);
 
     return await this.generateNewSession({
       deviceId,
       userId: user.id,
       tokenVersion: user.tokenVersion,
     });
+
   }
 
   async signup(dto: SignupDto) {
     const user = await this.usersService.findUserByEmail(dto.email);
     if (user) {
-      throw new ConflictException('Usuario ya registrado.');
+      throw new ConflictException('El correo electrónico ya está registrado.');
     }
     const hash = await this.passwordService.hash(dto.password);
     const newUser = await this.usersService.createUser({
       ...dto,
       password: hash,
     });
-    const { id: userId, email } = newUser;
+    const { id, email, name } = newUser;
 
     this.eventEmitter.emit('user.created', {
-      userId,
-      name: dto.name,
+      userId: id,
+      name,
       email,
     });
 
-    return newUser;
+
+    return {
+      name,
+      email,
+      success: true,
+    }
   }
 
   async getMe(userId: string) {
-    const user = await this.usersService.findUserById(userId);
-    const tenants = await this.prisma.tenant.findMany({
-      where: {
-        members: {
-          some: { userId },
-        },
-      },
-    });
-    return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      avatarUrl: user.avatarUrl,
-      tenants,
-    };
+    return this.usersService.findMeById(userId);
   }
 
   async loginOrCreateFromGoogle(userInfo: GoogleUserInfo, deviceId?: string) {
@@ -90,12 +80,12 @@ export class AuthService {
     if (!user) {
       user = await this.usersService.findUserByEmail(userInfo.email);
       if (user) {
-        user = await this.usersService.updateUser(user.id, { googleId: userInfo.googleId });
+        user = await this.usersService.update(user.id, { googleId: userInfo.googleId });
       } else {
         user = await this.usersService.createUser(userInfo);
       }
     }
-    await this.usersService.updateUser(user.id, { lastLoginAt: new Date() });
+    await this.usersService.updateLastLogin(user.id);
 
     return await this.generateNewSession({
       deviceId,
@@ -158,25 +148,22 @@ export class AuthService {
     return { user, accessToken, refreshToken, newDeviceId };
   }
 
-  private async generateNewSession({ userId, tokenVersion, deviceId }: { userId: string; tokenVersion: number; deviceId?: string }) {
-    try {
+  private async generateNewSession({ userId, deviceId, tokenVersion }: GenerateSessionPayload) {
       const session = await this.sessionsService.upsertSession({
         userId,
         deviceId,
       });
-      const accessToken = this.jwtService.signAccessToken({
+
+      const payload = {
+        tokenVersion,
         sub: userId,
         jti: session.jti,
-        tokenVersion,
-      });
-      const refreshToken = this.jwtService.signRefreshToken({
-        sub: userId,
-        jti: session.jti,
-        tokenVersion,
-      });
+      };
+
+      const accessToken = this.jwtService.signAccessToken(payload);
+      const refreshToken = this.jwtService.signRefreshToken(payload);
+
       return { accessToken, refreshToken, deviceId: session.deviceId, userId };
-    } catch (error) {
-      throw error;
-    }
+   
   }
 }

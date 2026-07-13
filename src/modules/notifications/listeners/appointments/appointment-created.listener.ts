@@ -6,7 +6,7 @@ import { RecipientType } from 'src/generated/prisma/enums';
 import { NotificationsService } from '../../application/services/notifications.service';
 import { AppointmentCreatedVariables } from '../../application/templates/appointment-created/appointment-created.type';
 import { AppointmentCreatedEvent } from 'src/modules/appointments/domain/events/appointment-created.event';
-import { AppointmentBookedByStaffVariables } from '../../application/templates/appointment-booked-by-staff/appointment-booked-by-staff.type';
+import { AppointmentBookedByEmployeeVariables } from '../../application/templates/appointment-booked-by-employee/appointment-booked-by-employee.type';
 
 @Injectable()
 export class AppointmentCreatedListener {
@@ -20,7 +20,7 @@ export class AppointmentCreatedListener {
       userId,
       customerId,
       appointmentId,
-      staffName,
+      employeeName,
       serviceName,
       customerName,
       cancelUrl,
@@ -30,7 +30,7 @@ export class AppointmentCreatedListener {
 
     const payload = {
       appointmentId,
-      staffName,
+      employeeName,
       customerName,
       serviceName,
       cancelUrl,
@@ -39,25 +39,25 @@ export class AppointmentCreatedListener {
       time: format(startAppointmentDate, 'HH:mm'),
     } as AppointmentCreatedVariables;
 
-    if (createdBy === 'STAFF') {
-      // Instant email for the Customer: "Staff booked you"
+    if (createdBy === 'EMPLOYEE') {
+      // Instant email for the Customer: "Employee booked you"
       await this.notificationsService.create({
         tenantId,
         payload: {
           customerName,
-          staffName,
+          employeeName,
           date: format(startAppointmentDate, "dd 'de' MMMM 'de' yyyy", { locale: es }),
           time: format(startAppointmentDate, 'HH:mm'),
           appointmentId,
           serviceName,
-        } as AppointmentBookedByStaffVariables,
+        } as AppointmentBookedByEmployeeVariables,
         recipientId: customerId,
         recipientType: RecipientType.CUSTOMER,
-        type: 'appointment.booked.by_staff',
+        type: 'appointment.booked.by_employee',
       });
     } else {
       // Default behavior for CUSTOMER creation
-      // 1. "New booking" notification for the Staff member
+      // 1. "New booking" notification for the Employee member
       await this.notificationsService.create({
         tenantId,
         payload,

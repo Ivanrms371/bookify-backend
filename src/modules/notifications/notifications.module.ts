@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from 'src/modules/users/users.module';
-import { TenantQuotaModule } from 'src/modules/tenants/features/quota/tenant-quota.module';
+import { TenantUsageModule } from 'src/modules/tenants/features/usage/tenant-usage.module';
 import { NotificationsService } from './application/services/notifications.service';
 import { NotificationDeliveryRepository } from './infraestructure/repositories/notification-delivery.repository';
 import { NotificationLogsRepository } from './infraestructure/repositories/notification-logs.repository';
@@ -30,12 +30,14 @@ import { NotificationsWsGateway } from './infraestructure/gateways/notifications
 import { TenantCreatedTemplate } from './application/templates/tenant-created/tenant-created.template';
 import { TenantCreatedListener } from './listeners/tenants/tenant-created.listener';
 import { CustomersModule } from '../tenants/features/customers/customers.module';
-import { AppointmentBookedByStaffTemplate } from './application/templates/appointment-booked-by-staff/appointment-booked-by-staff.template';
-import { AppointmentCancelledByStaffTemplate } from './application/templates/appointment-cancelled-by-staff/appointment-cancelled-by-staff.template';
-import { AppointmentCancelledByStaffListener } from './listeners/appointments/appointment-cancelled-by-staff.listener';
+import { AppointmentBookedByEmployeeTemplate } from './application/templates/appointment-booked-by-employee/appointment-booked-by-employee.template';
+import { AppointmentCancelledByEmployeeTemplate } from './application/templates/appointment-cancelled-by-employee/appointment-cancelled-by-employee.template';
+import { AppointmentCancelledByEmployeeListener } from './listeners/appointments/appointment-cancelled-by-employee.listener';
+import { MembershipInvitedListener } from './listeners/memberships/membership-invited.listener';
+import { MembershipInvitedTemplate } from './application/templates/membership-invited/membership-invited.template';
 
 @Module({
-  imports: [TenantQuotaModule, UsersModule, CustomersModule],
+  imports: [TenantUsageModule, UsersModule, CustomersModule],
   controllers: [NotificationsController],
   providers: [
     // Services
@@ -71,18 +73,20 @@ import { AppointmentCancelledByStaffListener } from './listeners/appointments/ap
     AppointmentCancelledTemplate,
     AppointmentRescheduledTemplate,
     AppointmentReminderTemplate,
-    AppointmentBookedByStaffTemplate,
-    AppointmentCancelledByStaffTemplate,
+    AppointmentBookedByEmployeeTemplate,
+    AppointmentCancelledByEmployeeTemplate,
     VerificationEmailTemplate,
     TenantCreatedTemplate,
+    MembershipInvitedTemplate,
 
     // Listeners
     AppointmentCreatedListener,
     AppointmentCancelledListener,
-    AppointmentCancelledByStaffListener,
+    AppointmentCancelledByEmployeeListener,
     AppointmentRescheduledListener,
     VerificationCreatedListener,
     TenantCreatedListener,
+    MembershipInvitedListener,
   ],
 })
 export class NotificationsModule {}

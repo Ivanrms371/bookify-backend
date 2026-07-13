@@ -30,7 +30,7 @@ export class AppointmentCompletationScheduler {
           {
             customerId: appointment.customerId,
             revenue: appointment.price,
-            staffId: appointment.staffId,
+            employeeId: appointment.employeeId,
             startTime: appointment.startTime,
             tenantId: appointment.tenantId,
             previousStatus: appointment.status,

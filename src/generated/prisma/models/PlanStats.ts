@@ -256,7 +256,7 @@ export type PlanStatsWhereInput = {
   OR?: Prisma.PlanStatsWhereInput[]
   NOT?: Prisma.PlanStatsWhereInput | Prisma.PlanStatsWhereInput[]
   id?: Prisma.UuidFilter<"PlanStats"> | string
-  planId?: Prisma.UuidFilter<"PlanStats"> | string
+  planId?: Prisma.StringFilter<"PlanStats"> | string
   date?: Prisma.DateTimeFilter<"PlanStats"> | Date | string
   newSubscribers?: Prisma.IntFilter<"PlanStats"> | number
   canceledToday?: Prisma.IntFilter<"PlanStats"> | number
@@ -286,7 +286,7 @@ export type PlanStatsWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PlanStatsWhereInput | Prisma.PlanStatsWhereInput[]
   OR?: Prisma.PlanStatsWhereInput[]
   NOT?: Prisma.PlanStatsWhereInput | Prisma.PlanStatsWhereInput[]
-  planId?: Prisma.UuidFilter<"PlanStats"> | string
+  planId?: Prisma.StringFilter<"PlanStats"> | string
   date?: Prisma.DateTimeFilter<"PlanStats"> | Date | string
   newSubscribers?: Prisma.IntFilter<"PlanStats"> | number
   canceledToday?: Prisma.IntFilter<"PlanStats"> | number
@@ -319,7 +319,7 @@ export type PlanStatsScalarWhereWithAggregatesInput = {
   OR?: Prisma.PlanStatsScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PlanStatsScalarWhereWithAggregatesInput | Prisma.PlanStatsScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"PlanStats"> | string
-  planId?: Prisma.UuidWithAggregatesFilter<"PlanStats"> | string
+  planId?: Prisma.StringWithAggregatesFilter<"PlanStats"> | string
   date?: Prisma.DateTimeWithAggregatesFilter<"PlanStats"> | Date | string
   newSubscribers?: Prisma.IntWithAggregatesFilter<"PlanStats"> | number
   canceledToday?: Prisma.IntWithAggregatesFilter<"PlanStats"> | number
@@ -574,7 +574,7 @@ export type PlanStatsScalarWhereInput = {
   OR?: Prisma.PlanStatsScalarWhereInput[]
   NOT?: Prisma.PlanStatsScalarWhereInput | Prisma.PlanStatsScalarWhereInput[]
   id?: Prisma.UuidFilter<"PlanStats"> | string
-  planId?: Prisma.UuidFilter<"PlanStats"> | string
+  planId?: Prisma.StringFilter<"PlanStats"> | string
   date?: Prisma.DateTimeFilter<"PlanStats"> | Date | string
   newSubscribers?: Prisma.IntFilter<"PlanStats"> | number
   canceledToday?: Prisma.IntFilter<"PlanStats"> | number

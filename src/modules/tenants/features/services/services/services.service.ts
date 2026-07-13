@@ -1,18 +1,20 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { ServicesRepository } from './services.repository';
 import { CreateServiceDto } from './dto/create-service.dto';
+import { CreateServiceBulkItemDto, CreateServicesBulkDto } from './dto/create-services-bulk.dto';
 import { ReorderServiceDto } from './dto/reoder-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
-import { SubscriptionService } from 'src/modules/subscriptions/services/subscription.service';
+import { BadRequestException } from '@nestjs/common';
 import { MediaService } from 'src/shared/media/media.service';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { PlanType } from 'src/generated/prisma/enums';
+import { Prisma } from 'src/generated/prisma/client';
+import { ServiceCreateInput } from 'src/generated/prisma/models';
+import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 
 @Injectable()
 export class ServicesService {
   constructor(
     private readonly servicesRepository: ServicesRepository,
-    private readonly subscriptionService: SubscriptionService,
     private readonly mediaService: MediaService,
     private readonly prisma: PrismaService,
   ) {}
@@ -21,7 +23,7 @@ export class ServicesService {
     const services = await this.servicesRepository.findManyByTenant(tenantId);
     return services.map((service) => ({
       ...service,
-      assignments: service.assignments.map((assignment) => assignment.staffId),
+      assignments: service.assignments.map((assignment) => assignment.employeeId),
     }));
   }
 
@@ -37,8 +39,8 @@ export class ServicesService {
     return service;
   }
 
-  async findServiceByIdAndStaff(id: string, staffId: string) {
-    const service = await this.servicesRepository.findByIdAndStaff(id, staffId);
+  async findServiceByIdAndEmployee(id: string, employeeId: string) {
+    const service = await this.servicesRepository.findByIdAndEmployee(id, employeeId);
     if (!service) {
       throw new NotFoundException('Servicio no encontrado');
     }
@@ -53,6 +55,43 @@ export class ServicesService {
     return service;
   }
 
+  private buildServiceCreateInput(
+    tenantId: string,
+    data: CreateServiceDto,
+    options?: { imageUrl?: string; displayOrder?: number },
+  ): ServiceCreateInput {
+    const { durationMinutes, employeeIds, ...rest } = data;
+
+    return {
+      ...rest,
+      durationMinutes,
+      image: options?.imageUrl,
+      displayOrder: options?.displayOrder ?? 0,
+      tenant: { connect: { id: tenantId } },
+      ...(employeeIds && employeeIds.length > 0
+        ? {
+            assignments: {
+              create: employeeIds.map((employeeId) => ({ employeeId })),
+            },
+          }
+        : {}),
+    };
+  }
+
+  private handleBulkCreateError(error: unknown): never {
+    if (error instanceof BadRequestException || error instanceof NotFoundException) {
+      throw error;
+    }
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2003') {
+        throw new BadRequestException('Referencia inválida en los datos del servicio');
+      }
+    }
+
+    throw new BadRequestException('No se pudieron crear los servicios. Verificá los datos e intentá de nuevo.');
+  }
+
   async createService(tenantId: string, data: CreateServiceDto, files?: { image?: Express.Multer.File[] }) {
     let imageUrl: string | undefined;
     if (files?.image?.[0]) {
@@ -60,33 +99,12 @@ export class ServicesService {
       imageUrl = result.url;
     }
 
-    const { initialActiveMinutes, passiveTimeMinutes = 0, finalActiveMinutes = 0, staffIds, ...rest } = data;
-
-    const durationMinutes = initialActiveMinutes + (passiveTimeMinutes ?? 0) + (finalActiveMinutes ?? 0);
-
-    const service = await this.servicesRepository.create({
-      ...rest,
-      initialActiveMinutes,
-      passiveTimeMinutes,
-      finalActiveMinutes,
-      image: imageUrl,
-      tenant: { connect: { id: tenantId } },
-      durationMinutes,
-      ...(staffIds && staffIds.length > 0
-        ? {
-            assignments: {
-              create: staffIds.map((staffId) => ({ staffId })),
-            },
-          }
-        : {}),
-    });
-
-    await this.prisma.tenantOnboarding.update({
-      where: { tenantId },
-      data: { hasService: true },
-    });
-
-    return service;
+    try {
+      const baseOrder = await this.servicesRepository.countByTenant(tenantId);
+      return await this.servicesRepository.create(this.buildServiceCreateInput(tenantId, data, { imageUrl, displayOrder: baseOrder }));
+    } catch (error) {
+      this.handleBulkCreateError(error);
+    }
   }
 
   async updateService(id: string, tenantId: string, data: UpdateServiceDto) {
@@ -95,20 +113,16 @@ export class ServicesService {
       throw new NotFoundException('Servicio no encontrado');
     }
 
-    const { initialActiveMinutes, passiveTimeMinutes = 0, finalActiveMinutes = 0, staffIds, ...rest } = data;
-    const durationMinutes = initialActiveMinutes + passiveTimeMinutes + finalActiveMinutes;
+    const { durationMinutes, employeeIds, ...rest } = data;
 
     return await this.servicesRepository.update(id, {
       ...rest,
-      initialActiveMinutes,
-      passiveTimeMinutes,
-      finalActiveMinutes,
       durationMinutes,
-      ...(staffIds !== undefined
+      ...(employeeIds !== undefined
         ? {
             assignments: {
               deleteMany: {},
-              create: staffIds.map((staffId) => ({ staffId })),
+              create: employeeIds.map((employeeId) => ({ employeeId })),
             },
           }
         : {}),
@@ -139,5 +153,46 @@ export class ServicesService {
       throw new NotFoundException('Servicio no encontrado');
     }
     return await this.servicesRepository.update(id, { deletedAt: new Date() });
+  }
+
+  async toggleSelfAssignment(serviceId: string, tenantId: string, userId: string) {
+    const service = await this.servicesRepository.findByIdAndTenant(serviceId, tenantId);
+    if (!service) throw new NotFoundException('Servicio no encontrado');
+
+    const employee = await this.prisma.employee.findFirst({
+      where: { tenantId, userId, deletedAt: null },
+    });
+    if (!employee) throw new BadRequestException('Perfil de employee no encontrado');
+
+    const assignment = await this.prisma.serviceAssignment.findFirst({
+      where: { employeeId: employee.id, serviceId },
+    });
+
+    if (assignment) {
+      await this.prisma.serviceAssignment.delete({
+        where: { employeeId_serviceId: { employeeId: employee.id, serviceId } },
+      });
+      return { assigned: false };
+    } else {
+      await this.prisma.serviceAssignment.create({
+        data: { employeeId: employee.id, serviceId },
+      });
+      return { assigned: true };
+    }
+  }
+
+  async updateAssignments(serviceId: string, tenantId: string, employeeIds: string[]) {
+    const service = await this.servicesRepository.findByIdAndTenant(serviceId, tenantId);
+    if (!service) throw new NotFoundException('Servicio no encontrado');
+
+    return this.prisma.service.update({
+      where: { id: serviceId },
+      data: {
+        assignments: {
+          deleteMany: {},
+          create: employeeIds.map((employeeId) => ({ employeeId })),
+        },
+      },
+    });
   }
 }

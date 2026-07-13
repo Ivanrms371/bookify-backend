@@ -22,7 +22,7 @@ export class GetAppointmentsQueryDto {
 
   @IsOptional()
   @IsString()
-  staffId?: string;
+  employeeId?: string;
 
   @IsOptional()
   @IsString()

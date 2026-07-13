@@ -3,7 +3,7 @@ import { IsOptional, IsString, IsUUID } from 'class-validator';
 export class RescheduleAppointmentDto {
   @IsString()
   @IsUUID()
-  staffId: string;
+  employeeId: string;
 
   @IsString()
   @IsUUID()

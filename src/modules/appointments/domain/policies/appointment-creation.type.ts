@@ -1,5 +1,5 @@
 export interface AppointmentCreationParams {
-  staffId: string;
+  employeeId: string;
   serviceId: string;
   date: Date;
 }
@@ -37,13 +37,10 @@ export interface Exception {
 }
 
 export interface Service {
-  initialActiveMinutes: number;
-  passiveTimeMinutes: number;
-  finalActiveMinutes: number;
   durationMinutes: number;
 }
 
 export interface Block {
-  startMinutes: number;
-  endMinutes: number;
+  opensAt: number;
+  closesAt: number;
 }

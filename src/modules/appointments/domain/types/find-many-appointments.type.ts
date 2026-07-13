@@ -2,7 +2,7 @@ import { AppointmentStatus } from 'src/generated/prisma/enums';
 
 export type FindManyAppointmentsParams = {
   tenantId: string;
-  staffId?: string;
+  employeeId?: string;
   customerId?: string;
   query?: string;
   status?: AppointmentStatus;

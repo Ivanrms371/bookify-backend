@@ -27,72 +27,72 @@ export type AggregateScheduleExceptionBlock = {
 }
 
 export type ScheduleExceptionBlockAvgAggregateOutputType = {
-  startMinutes: number | null
-  endMinutes: number | null
+  opensAt: number | null
+  closesAt: number | null
 }
 
 export type ScheduleExceptionBlockSumAggregateOutputType = {
-  startMinutes: number | null
-  endMinutes: number | null
+  opensAt: number | null
+  closesAt: number | null
 }
 
 export type ScheduleExceptionBlockMinAggregateOutputType = {
   id: string | null
   scheduleExceptionId: string | null
-  startMinutes: number | null
-  endMinutes: number | null
+  opensAt: number | null
+  closesAt: number | null
   createdAt: Date | null
 }
 
 export type ScheduleExceptionBlockMaxAggregateOutputType = {
   id: string | null
   scheduleExceptionId: string | null
-  startMinutes: number | null
-  endMinutes: number | null
+  opensAt: number | null
+  closesAt: number | null
   createdAt: Date | null
 }
 
 export type ScheduleExceptionBlockCountAggregateOutputType = {
   id: number
   scheduleExceptionId: number
-  startMinutes: number
-  endMinutes: number
+  opensAt: number
+  closesAt: number
   createdAt: number
   _all: number
 }
 
 
 export type ScheduleExceptionBlockAvgAggregateInputType = {
-  startMinutes?: true
-  endMinutes?: true
+  opensAt?: true
+  closesAt?: true
 }
 
 export type ScheduleExceptionBlockSumAggregateInputType = {
-  startMinutes?: true
-  endMinutes?: true
+  opensAt?: true
+  closesAt?: true
 }
 
 export type ScheduleExceptionBlockMinAggregateInputType = {
   id?: true
   scheduleExceptionId?: true
-  startMinutes?: true
-  endMinutes?: true
+  opensAt?: true
+  closesAt?: true
   createdAt?: true
 }
 
 export type ScheduleExceptionBlockMaxAggregateInputType = {
   id?: true
   scheduleExceptionId?: true
-  startMinutes?: true
-  endMinutes?: true
+  opensAt?: true
+  closesAt?: true
   createdAt?: true
 }
 
 export type ScheduleExceptionBlockCountAggregateInputType = {
   id?: true
   scheduleExceptionId?: true
-  startMinutes?: true
-  endMinutes?: true
+  opensAt?: true
+  closesAt?: true
   createdAt?: true
   _all?: true
 }
@@ -186,8 +186,8 @@ export type ScheduleExceptionBlockGroupByArgs<ExtArgs extends runtime.Types.Exte
 export type ScheduleExceptionBlockGroupByOutputType = {
   id: string
   scheduleExceptionId: string
-  startMinutes: number
-  endMinutes: number
+  opensAt: number
+  closesAt: number
   createdAt: Date
   _count: ScheduleExceptionBlockCountAggregateOutputType | null
   _avg: ScheduleExceptionBlockAvgAggregateOutputType | null
@@ -217,8 +217,8 @@ export type ScheduleExceptionBlockWhereInput = {
   NOT?: Prisma.ScheduleExceptionBlockWhereInput | Prisma.ScheduleExceptionBlockWhereInput[]
   id?: Prisma.UuidFilter<"ScheduleExceptionBlock"> | string
   scheduleExceptionId?: Prisma.UuidFilter<"ScheduleExceptionBlock"> | string
-  startMinutes?: Prisma.IntFilter<"ScheduleExceptionBlock"> | number
-  endMinutes?: Prisma.IntFilter<"ScheduleExceptionBlock"> | number
+  opensAt?: Prisma.IntFilter<"ScheduleExceptionBlock"> | number
+  closesAt?: Prisma.IntFilter<"ScheduleExceptionBlock"> | number
   createdAt?: Prisma.DateTimeFilter<"ScheduleExceptionBlock"> | Date | string
   scheduleException?: Prisma.XOR<Prisma.ScheduleExceptionScalarRelationFilter, Prisma.ScheduleExceptionWhereInput>
 }
@@ -226,8 +226,8 @@ export type ScheduleExceptionBlockWhereInput = {
 export type ScheduleExceptionBlockOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   scheduleExceptionId?: Prisma.SortOrder
-  startMinutes?: Prisma.SortOrder
-  endMinutes?: Prisma.SortOrder
+  opensAt?: Prisma.SortOrder
+  closesAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   scheduleException?: Prisma.ScheduleExceptionOrderByWithRelationInput
 }
@@ -238,8 +238,8 @@ export type ScheduleExceptionBlockWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ScheduleExceptionBlockWhereInput[]
   NOT?: Prisma.ScheduleExceptionBlockWhereInput | Prisma.ScheduleExceptionBlockWhereInput[]
   scheduleExceptionId?: Prisma.UuidFilter<"ScheduleExceptionBlock"> | string
-  startMinutes?: Prisma.IntFilter<"ScheduleExceptionBlock"> | number
-  endMinutes?: Prisma.IntFilter<"ScheduleExceptionBlock"> | number
+  opensAt?: Prisma.IntFilter<"ScheduleExceptionBlock"> | number
+  closesAt?: Prisma.IntFilter<"ScheduleExceptionBlock"> | number
   createdAt?: Prisma.DateTimeFilter<"ScheduleExceptionBlock"> | Date | string
   scheduleException?: Prisma.XOR<Prisma.ScheduleExceptionScalarRelationFilter, Prisma.ScheduleExceptionWhereInput>
 }, "id">
@@ -247,8 +247,8 @@ export type ScheduleExceptionBlockWhereUniqueInput = Prisma.AtLeast<{
 export type ScheduleExceptionBlockOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   scheduleExceptionId?: Prisma.SortOrder
-  startMinutes?: Prisma.SortOrder
-  endMinutes?: Prisma.SortOrder
+  opensAt?: Prisma.SortOrder
+  closesAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.ScheduleExceptionBlockCountOrderByAggregateInput
   _avg?: Prisma.ScheduleExceptionBlockAvgOrderByAggregateInput
@@ -263,15 +263,15 @@ export type ScheduleExceptionBlockScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ScheduleExceptionBlockScalarWhereWithAggregatesInput | Prisma.ScheduleExceptionBlockScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"ScheduleExceptionBlock"> | string
   scheduleExceptionId?: Prisma.UuidWithAggregatesFilter<"ScheduleExceptionBlock"> | string
-  startMinutes?: Prisma.IntWithAggregatesFilter<"ScheduleExceptionBlock"> | number
-  endMinutes?: Prisma.IntWithAggregatesFilter<"ScheduleExceptionBlock"> | number
+  opensAt?: Prisma.IntWithAggregatesFilter<"ScheduleExceptionBlock"> | number
+  closesAt?: Prisma.IntWithAggregatesFilter<"ScheduleExceptionBlock"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ScheduleExceptionBlock"> | Date | string
 }
 
 export type ScheduleExceptionBlockCreateInput = {
   id?: string
-  startMinutes: number
-  endMinutes: number
+  opensAt: number
+  closesAt: number
   createdAt?: Date | string
   scheduleException: Prisma.ScheduleExceptionCreateNestedOneWithoutBlocksInput
 }
@@ -279,15 +279,15 @@ export type ScheduleExceptionBlockCreateInput = {
 export type ScheduleExceptionBlockUncheckedCreateInput = {
   id?: string
   scheduleExceptionId: string
-  startMinutes: number
-  endMinutes: number
+  opensAt: number
+  closesAt: number
   createdAt?: Date | string
 }
 
 export type ScheduleExceptionBlockUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  opensAt?: Prisma.IntFieldUpdateOperationsInput | number
+  closesAt?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   scheduleException?: Prisma.ScheduleExceptionUpdateOneRequiredWithoutBlocksNestedInput
 }
@@ -295,31 +295,31 @@ export type ScheduleExceptionBlockUpdateInput = {
 export type ScheduleExceptionBlockUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   scheduleExceptionId?: Prisma.StringFieldUpdateOperationsInput | string
-  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  opensAt?: Prisma.IntFieldUpdateOperationsInput | number
+  closesAt?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ScheduleExceptionBlockCreateManyInput = {
   id?: string
   scheduleExceptionId: string
-  startMinutes: number
-  endMinutes: number
+  opensAt: number
+  closesAt: number
   createdAt?: Date | string
 }
 
 export type ScheduleExceptionBlockUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  opensAt?: Prisma.IntFieldUpdateOperationsInput | number
+  closesAt?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ScheduleExceptionBlockUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   scheduleExceptionId?: Prisma.StringFieldUpdateOperationsInput | string
-  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  opensAt?: Prisma.IntFieldUpdateOperationsInput | number
+  closesAt?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -336,35 +336,35 @@ export type ScheduleExceptionBlockOrderByRelationAggregateInput = {
 export type ScheduleExceptionBlockCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   scheduleExceptionId?: Prisma.SortOrder
-  startMinutes?: Prisma.SortOrder
-  endMinutes?: Prisma.SortOrder
+  opensAt?: Prisma.SortOrder
+  closesAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type ScheduleExceptionBlockAvgOrderByAggregateInput = {
-  startMinutes?: Prisma.SortOrder
-  endMinutes?: Prisma.SortOrder
+  opensAt?: Prisma.SortOrder
+  closesAt?: Prisma.SortOrder
 }
 
 export type ScheduleExceptionBlockMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   scheduleExceptionId?: Prisma.SortOrder
-  startMinutes?: Prisma.SortOrder
-  endMinutes?: Prisma.SortOrder
+  opensAt?: Prisma.SortOrder
+  closesAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type ScheduleExceptionBlockMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   scheduleExceptionId?: Prisma.SortOrder
-  startMinutes?: Prisma.SortOrder
-  endMinutes?: Prisma.SortOrder
+  opensAt?: Prisma.SortOrder
+  closesAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type ScheduleExceptionBlockSumOrderByAggregateInput = {
-  startMinutes?: Prisma.SortOrder
-  endMinutes?: Prisma.SortOrder
+  opensAt?: Prisma.SortOrder
+  closesAt?: Prisma.SortOrder
 }
 
 export type ScheduleExceptionBlockCreateNestedManyWithoutScheduleExceptionInput = {
@@ -411,15 +411,15 @@ export type ScheduleExceptionBlockUncheckedUpdateManyWithoutScheduleExceptionNes
 
 export type ScheduleExceptionBlockCreateWithoutScheduleExceptionInput = {
   id?: string
-  startMinutes: number
-  endMinutes: number
+  opensAt: number
+  closesAt: number
   createdAt?: Date | string
 }
 
 export type ScheduleExceptionBlockUncheckedCreateWithoutScheduleExceptionInput = {
   id?: string
-  startMinutes: number
-  endMinutes: number
+  opensAt: number
+  closesAt: number
   createdAt?: Date | string
 }
 
@@ -455,36 +455,36 @@ export type ScheduleExceptionBlockScalarWhereInput = {
   NOT?: Prisma.ScheduleExceptionBlockScalarWhereInput | Prisma.ScheduleExceptionBlockScalarWhereInput[]
   id?: Prisma.UuidFilter<"ScheduleExceptionBlock"> | string
   scheduleExceptionId?: Prisma.UuidFilter<"ScheduleExceptionBlock"> | string
-  startMinutes?: Prisma.IntFilter<"ScheduleExceptionBlock"> | number
-  endMinutes?: Prisma.IntFilter<"ScheduleExceptionBlock"> | number
+  opensAt?: Prisma.IntFilter<"ScheduleExceptionBlock"> | number
+  closesAt?: Prisma.IntFilter<"ScheduleExceptionBlock"> | number
   createdAt?: Prisma.DateTimeFilter<"ScheduleExceptionBlock"> | Date | string
 }
 
 export type ScheduleExceptionBlockCreateManyScheduleExceptionInput = {
   id?: string
-  startMinutes: number
-  endMinutes: number
+  opensAt: number
+  closesAt: number
   createdAt?: Date | string
 }
 
 export type ScheduleExceptionBlockUpdateWithoutScheduleExceptionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  opensAt?: Prisma.IntFieldUpdateOperationsInput | number
+  closesAt?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ScheduleExceptionBlockUncheckedUpdateWithoutScheduleExceptionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  opensAt?: Prisma.IntFieldUpdateOperationsInput | number
+  closesAt?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ScheduleExceptionBlockUncheckedUpdateManyWithoutScheduleExceptionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  opensAt?: Prisma.IntFieldUpdateOperationsInput | number
+  closesAt?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -493,8 +493,8 @@ export type ScheduleExceptionBlockUncheckedUpdateManyWithoutScheduleExceptionInp
 export type ScheduleExceptionBlockSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   scheduleExceptionId?: boolean
-  startMinutes?: boolean
-  endMinutes?: boolean
+  opensAt?: boolean
+  closesAt?: boolean
   createdAt?: boolean
   scheduleException?: boolean | Prisma.ScheduleExceptionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scheduleExceptionBlock"]>
@@ -502,8 +502,8 @@ export type ScheduleExceptionBlockSelect<ExtArgs extends runtime.Types.Extension
 export type ScheduleExceptionBlockSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   scheduleExceptionId?: boolean
-  startMinutes?: boolean
-  endMinutes?: boolean
+  opensAt?: boolean
+  closesAt?: boolean
   createdAt?: boolean
   scheduleException?: boolean | Prisma.ScheduleExceptionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scheduleExceptionBlock"]>
@@ -511,8 +511,8 @@ export type ScheduleExceptionBlockSelectCreateManyAndReturn<ExtArgs extends runt
 export type ScheduleExceptionBlockSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   scheduleExceptionId?: boolean
-  startMinutes?: boolean
-  endMinutes?: boolean
+  opensAt?: boolean
+  closesAt?: boolean
   createdAt?: boolean
   scheduleException?: boolean | Prisma.ScheduleExceptionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scheduleExceptionBlock"]>
@@ -520,12 +520,12 @@ export type ScheduleExceptionBlockSelectUpdateManyAndReturn<ExtArgs extends runt
 export type ScheduleExceptionBlockSelectScalar = {
   id?: boolean
   scheduleExceptionId?: boolean
-  startMinutes?: boolean
-  endMinutes?: boolean
+  opensAt?: boolean
+  closesAt?: boolean
   createdAt?: boolean
 }
 
-export type ScheduleExceptionBlockOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "scheduleExceptionId" | "startMinutes" | "endMinutes" | "createdAt", ExtArgs["result"]["scheduleExceptionBlock"]>
+export type ScheduleExceptionBlockOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "scheduleExceptionId" | "opensAt" | "closesAt" | "createdAt", ExtArgs["result"]["scheduleExceptionBlock"]>
 export type ScheduleExceptionBlockInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   scheduleException?: boolean | Prisma.ScheduleExceptionDefaultArgs<ExtArgs>
 }
@@ -544,8 +544,8 @@ export type $ScheduleExceptionBlockPayload<ExtArgs extends runtime.Types.Extensi
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     scheduleExceptionId: string
-    startMinutes: number
-    endMinutes: number
+    opensAt: number
+    closesAt: number
     createdAt: Date
   }, ExtArgs["result"]["scheduleExceptionBlock"]>
   composites: {}
@@ -973,8 +973,8 @@ export interface Prisma__ScheduleExceptionBlockClient<T, Null = never, ExtArgs e
 export interface ScheduleExceptionBlockFieldRefs {
   readonly id: Prisma.FieldRef<"ScheduleExceptionBlock", 'String'>
   readonly scheduleExceptionId: Prisma.FieldRef<"ScheduleExceptionBlock", 'String'>
-  readonly startMinutes: Prisma.FieldRef<"ScheduleExceptionBlock", 'Int'>
-  readonly endMinutes: Prisma.FieldRef<"ScheduleExceptionBlock", 'Int'>
+  readonly opensAt: Prisma.FieldRef<"ScheduleExceptionBlock", 'Int'>
+  readonly closesAt: Prisma.FieldRef<"ScheduleExceptionBlock", 'Int'>
   readonly createdAt: Prisma.FieldRef<"ScheduleExceptionBlock", 'DateTime'>
 }
     

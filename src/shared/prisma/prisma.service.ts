@@ -6,7 +6,9 @@ import { PrismaClient } from 'src/generated/prisma/client';
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   constructor() {
     const pool = new PrismaPg({ connectionString: process.env.DATABASE_URL });
-    super({ adapter: pool });
+    super({
+      adapter: pool,
+    });
   }
 
   async onModuleInit() {

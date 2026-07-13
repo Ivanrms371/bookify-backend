@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CookieOptions, Request, Response } from 'express';
 
@@ -25,7 +25,7 @@ export class CookieService {
   getOrFail(req: Request, key: string): string {
     const value = this.get(req, key);
     if (!value) {
-      throw new Error(`Cookie ${key} not found`);
+      throw new NotFoundException(`Cookie ${key} ${req.baseUrl} not found`);
     }
     return value;
   }

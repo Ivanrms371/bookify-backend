@@ -12,10 +12,10 @@ export class AppointmentsRepository extends BaseRepository {
     super(prisma);
   }
 
-  async getAppointmentsByStaffAndDate(staffId: string, startOfDay: Date, endOfDay: Date) {
+  async getAppointmentsByEmployeeAndDate(employeeId: string, startOfDay: Date, endOfDay: Date) {
     return await this.db().appointment.findMany({
       where: {
-        staffId: staffId,
+        employeeId: employeeId,
         status: { not: 'CANCELLED' },
         OR: [
           { startTime: { gte: startOfDay, lt: endOfDay } },
@@ -41,7 +41,7 @@ export class AppointmentsRepository extends BaseRepository {
     return this.db(tx).appointment.create({
       data: appointment,
       include: {
-        staff: {
+        employee: {
           include: {
             user: true,
           },
@@ -58,11 +58,11 @@ export class AppointmentsRepository extends BaseRepository {
       select: {
         id: true,
         tenantId: true,
-        staffId: true,
+        employeeId: true,
         status: true,
         customerId: true,
         serviceId: true,
-        staff: {
+        employee: {
           select: {
             userId: true,
             user: {
@@ -101,7 +101,7 @@ export class AppointmentsRepository extends BaseRepository {
         confirmationCode: true,
         notes: true,
         price: true,
-        staff: {
+        employee: {
           select: {
             id: true,
             displayName: true,
@@ -129,13 +129,13 @@ export class AppointmentsRepository extends BaseRepository {
   }
 
   findManyByTenant(params: FindManyAppointmentsParams) {
-    const { tenantId, status, staffId, startDate, endDate, customerId, orderBy, order, skip = 0, take = 100 } = params;
+    const { tenantId, status, employeeId, startDate, endDate, customerId, orderBy, order, skip = 0, take = 100 } = params;
     return this.db().appointment.findMany({
       where: {
         tenantId,
         ...(status && { status }),
         ...(customerId && { customerId }),
-        ...(staffId && { staffId }),
+        ...(employeeId && { employeeId }),
         ...(startDate || endDate
           ? {
               startTime: {
@@ -153,7 +153,7 @@ export class AppointmentsRepository extends BaseRepository {
         durationMinutes: true,
         customerName: true,
         confirmationCode: true,
-        staff: {
+        employee: {
           select: {
             id: true,
             displayName: true,
@@ -168,31 +168,44 @@ export class AppointmentsRepository extends BaseRepository {
     });
   }
 
-  findUpcomingDashboard(tenantId: string, staffId?: string) {
+  findUpcomingDashboard(tenantId: string, employeeId?: string) {
     const now = new Date();
     return this.db().appointment.findMany({
       where: {
         tenantId,
-        ...(staffId && { staffId }),
-        status: { not: 'CANCELLED' },
-        startTime: { gte: now },
-        endTime: { lte: endOfDay(now) },
+        ...(employeeId && { employeeId }),
+        status: { notIn: ['CANCELLED', 'COMPLETED', 'NO_SHOW'] },
+        startTime: { lte: endOfDay(now) },
+        endTime: { gt: now },
       },
       orderBy: { startTime: 'asc' },
       take: 10,
       include: {
-        staff: {
+        employee: {
           select: { displayName: true },
         },
       },
     });
   }
 
-  countAppointmentsInRange(tenantId: string, startDate: Date, endDate: Date, staffId?: string) {
+  countUpcomingDashboard(tenantId: string, employeeId?: string) {
+    const now = new Date();
     return this.db().appointment.count({
       where: {
         tenantId,
-        ...(staffId && { staffId }),
+        ...(employeeId && { employeeId }),
+        status: { notIn: ['CANCELLED', 'COMPLETED', 'NO_SHOW'] },
+        startTime: { lte: endOfDay(now) },
+        endTime: { gt: now },
+      },
+    });
+  }
+
+  countAppointmentsInRange(tenantId: string, startDate: Date, endDate: Date, employeeId?: string) {
+    return this.db().appointment.count({
+      where: {
+        tenantId,
+        ...(employeeId && { employeeId }),
         status: { not: 'CANCELLED' },
         startTime: { gte: startDate, lte: endDate },
       },
@@ -213,11 +226,11 @@ export class AppointmentsRepository extends BaseRepository {
       where: { cancelToken },
       select: {
         id: true,
-        staffId: true,
+        employeeId: true,
         status: true,
         customerId: true,
         serviceId: true,
-        staff: {
+        employee: {
           select: {
             user: {
               select: {
@@ -263,20 +276,17 @@ export class AppointmentsRepository extends BaseRepository {
   async reschedule(
     id: string,
     data: {
-      staffId: string;
+      employeeId: string;
       serviceId: string;
       startTime: Date;
       endTime: Date;
       durationMinutes: number;
-      initialActiveMinutes: number;
-      passiveMinutes: number;
-      finalActiveMinutes: number;
       price: any;
       discountFixed: any;
       discountPercentage: any;
       rescheduleReason?: string;
     },
-    blocks: { staffId: string; startTime: Date; endTime: Date }[],
+    blocks: { employeeId: string; startTime: Date; endTime: Date }[],
     tx?: TransactionClient,
   ) {
     const db = this.db(tx);
@@ -284,14 +294,11 @@ export class AppointmentsRepository extends BaseRepository {
     const updated = await db.appointment.update({
       where: { id },
       data: {
-        staffId: data.staffId,
+        employeeId: data.employeeId,
         serviceId: data.serviceId,
         startTime: data.startTime,
         endTime: data.endTime,
         durationMinutes: data.durationMinutes,
-        initialActiveMinutes: data.initialActiveMinutes,
-        passiveMinutes: data.passiveMinutes,
-        finalActiveMinutes: data.finalActiveMinutes,
         price: data.price,
         discountFixed: data.discountFixed,
         discountPercentage: data.discountPercentage,
@@ -310,7 +317,7 @@ export class AppointmentsRepository extends BaseRepository {
       await db.appointmentBlock.createMany({
         data: blocks.map((b) => ({
           appointmentId: id,
-          staffId: b.staffId,
+          employeeId: b.employeeId,
           startTime: b.startTime,
           endTime: b.endTime,
         })),

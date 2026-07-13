@@ -3,13 +3,13 @@ import { WidgetAppointmentsController } from './controllers/widget-appointments.
 import { TenantAppointmentsController } from './controllers/tenant-appointments.controller';
 import { CoreAppointmentCreator } from './application/services/core-appointment-creator.service';
 import { WidgetAppointmentUseCase } from './application/usecases/widget-appointment.usecase';
-import { StaffAppointmentUseCase } from './application/usecases/staff-appointment.usecase';
+import { EmployeeAppointmentUseCase } from './application/usecases/employee-appointment.usecase';
 import { AppointmentCancelationService } from './application/services/appointment-cancelation.service';
 import { AppointmentReschedulingService } from './application/services/appointment-rescheduling.service';
 import { AppointmentsRepository } from './infrastructure/appointments.repository';
 import { CustomersModule } from '../tenants/features/customers/customers.module';
 import { ServicesModule } from '../tenants/features/services/services/services.module';
-import { StaffsModule } from '../tenants/features/staffs/staffs.module';
+import { EmployeesModule } from '../tenants/features/employees/employees.module';
 import { InfrastructureModule } from 'src/shared/infrastructure/infrastructure.module';
 import { AvailabilityPolicy } from './domain/policies/appointment-creation.policy';
 import { AppointmentsService } from './application/services/appointments.service';
@@ -19,7 +19,7 @@ import { AppointmentStatsService } from './application/services/appointment-stat
 import { AppointmentCompletationScheduler } from './application/schedulers/appointment-completion.scheduler';
 
 @Module({
-  imports: [CustomersModule, ServicesModule, StaffsModule, InfrastructureModule, StatsModule],
+  imports: [CustomersModule, ServicesModule, EmployeesModule, InfrastructureModule, StatsModule],
   controllers: [WidgetAppointmentsController, TenantAppointmentsController],
   providers: [
     AppointmentsService,
@@ -27,7 +27,7 @@ import { AppointmentCompletationScheduler } from './application/schedulers/appoi
     AppointmentStatsService,
     CoreAppointmentCreator,
     WidgetAppointmentUseCase,
-    StaffAppointmentUseCase,
+    EmployeeAppointmentUseCase,
     AppointmentCancelationService,
     AppointmentReschedulingService,
     AppointmentCompletationScheduler,

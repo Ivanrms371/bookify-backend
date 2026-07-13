@@ -26,15 +26,7 @@ export class UpdateServiceDto {
   discountFixed?: Decimal;
 
   @IsNumber()
-  initialActiveMinutes: number;
-
-  @IsNumber()
-  @IsOptional()
-  passiveTimeMinutes?: number;
-
-  @IsNumber()
-  @IsOptional()
-  finalActiveMinutes?: number;
+  durationMinutes: number;
 
   @IsBoolean()
   isActive: boolean;
@@ -43,5 +35,5 @@ export class UpdateServiceDto {
   @Transform(({ value }) => (Array.isArray(value) ? value : value ? [value] : []))
   @IsArray()
   @IsString({ each: true })
-  staffIds?: string[];
+  employeeIds?: string[];
 }

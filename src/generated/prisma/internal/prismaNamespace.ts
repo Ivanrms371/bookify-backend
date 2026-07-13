@@ -393,8 +393,8 @@ export const ModelName = {
   TenantSettings: 'TenantSettings',
   Service: 'Service',
   ServiceAssignment: 'ServiceAssignment',
-  Staff: 'Staff',
-  WorkingHours: 'WorkingHours',
+  Employee: 'Employee',
+  EmployeeWorkingHours: 'EmployeeWorkingHours',
   TenantWorkingHours: 'TenantWorkingHours',
   ScheduleException: 'ScheduleException',
   ScheduleExceptionBlock: 'ScheduleExceptionBlock',
@@ -403,22 +403,20 @@ export const ModelName = {
   AppointmentBlock: 'AppointmentBlock',
   TenantDailyStats: 'TenantDailyStats',
   TenantLifetimeStats: 'TenantLifetimeStats',
-  StaffDailyStats: 'StaffDailyStats',
-  StaffLifetimeStats: 'StaffLifetimeStats',
+  EmployeeDailyStats: 'EmployeeDailyStats',
+  EmployeeLifetimeStats: 'EmployeeLifetimeStats',
   Notification: 'Notification',
   NotificationDelivery: 'NotificationDelivery',
   InAppNotification: 'InAppNotification',
   NotificationLog: 'NotificationLog',
-  TenantQuota: 'TenantQuota',
+  TenantUsage: 'TenantUsage',
   Subscription: 'Subscription',
   Plan: 'Plan',
-  PlanLimits: 'PlanLimits',
   PlanStats: 'PlanStats',
   Payment: 'Payment',
   PlatformStats: 'PlatformStats',
   PlatformAdmin: 'PlatformAdmin',
-  WebhookLog: 'WebhookLog',
-  TenantOnboarding: 'TenantOnboarding'
+  WebhookLog: 'WebhookLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -434,7 +432,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "membership" | "session" | "verification" | "verificationLock" | "tenant" | "tenantSettings" | "service" | "serviceAssignment" | "staff" | "workingHours" | "tenantWorkingHours" | "scheduleException" | "scheduleExceptionBlock" | "customer" | "appointment" | "appointmentBlock" | "tenantDailyStats" | "tenantLifetimeStats" | "staffDailyStats" | "staffLifetimeStats" | "notification" | "notificationDelivery" | "inAppNotification" | "notificationLog" | "tenantQuota" | "subscription" | "plan" | "planLimits" | "planStats" | "payment" | "platformStats" | "platformAdmin" | "webhookLog" | "tenantOnboarding"
+    modelProps: "user" | "membership" | "session" | "verification" | "verificationLock" | "tenant" | "tenantSettings" | "service" | "serviceAssignment" | "employee" | "employeeWorkingHours" | "tenantWorkingHours" | "scheduleException" | "scheduleExceptionBlock" | "customer" | "appointment" | "appointmentBlock" | "tenantDailyStats" | "tenantLifetimeStats" | "employeeDailyStats" | "employeeLifetimeStats" | "notification" | "notificationDelivery" | "inAppNotification" | "notificationLog" | "tenantUsage" | "subscription" | "plan" | "planStats" | "payment" | "platformStats" | "platformAdmin" | "webhookLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1104,151 +1102,151 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Staff: {
-      payload: Prisma.$StaffPayload<ExtArgs>
-      fields: Prisma.StaffFieldRefs
+    Employee: {
+      payload: Prisma.$EmployeePayload<ExtArgs>
+      fields: Prisma.EmployeeFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.StaffFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPayload> | null
+          args: Prisma.EmployeeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.StaffFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPayload>
+          args: Prisma.EmployeeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>
         }
         findFirst: {
-          args: Prisma.StaffFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPayload> | null
+          args: Prisma.EmployeeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.StaffFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPayload>
+          args: Prisma.EmployeeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>
         }
         findMany: {
-          args: Prisma.StaffFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPayload>[]
+          args: Prisma.EmployeeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>[]
         }
         create: {
-          args: Prisma.StaffCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPayload>
+          args: Prisma.EmployeeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>
         }
         createMany: {
-          args: Prisma.StaffCreateManyArgs<ExtArgs>
+          args: Prisma.EmployeeCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.StaffCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPayload>[]
+          args: Prisma.EmployeeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>[]
         }
         delete: {
-          args: Prisma.StaffDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPayload>
+          args: Prisma.EmployeeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>
         }
         update: {
-          args: Prisma.StaffUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPayload>
+          args: Prisma.EmployeeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>
         }
         deleteMany: {
-          args: Prisma.StaffDeleteManyArgs<ExtArgs>
+          args: Prisma.EmployeeDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.StaffUpdateManyArgs<ExtArgs>
+          args: Prisma.EmployeeUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.StaffUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPayload>[]
+          args: Prisma.EmployeeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>[]
         }
         upsert: {
-          args: Prisma.StaffUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffPayload>
+          args: Prisma.EmployeeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>
         }
         aggregate: {
-          args: Prisma.StaffAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateStaff>
+          args: Prisma.EmployeeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEmployee>
         }
         groupBy: {
-          args: Prisma.StaffGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.StaffGroupByOutputType>[]
+          args: Prisma.EmployeeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmployeeGroupByOutputType>[]
         }
         count: {
-          args: Prisma.StaffCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.StaffCountAggregateOutputType> | number
+          args: Prisma.EmployeeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmployeeCountAggregateOutputType> | number
         }
       }
     }
-    WorkingHours: {
-      payload: Prisma.$WorkingHoursPayload<ExtArgs>
-      fields: Prisma.WorkingHoursFieldRefs
+    EmployeeWorkingHours: {
+      payload: Prisma.$EmployeeWorkingHoursPayload<ExtArgs>
+      fields: Prisma.EmployeeWorkingHoursFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.WorkingHoursFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkingHoursPayload> | null
+          args: Prisma.EmployeeWorkingHoursFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeWorkingHoursPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.WorkingHoursFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkingHoursPayload>
+          args: Prisma.EmployeeWorkingHoursFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeWorkingHoursPayload>
         }
         findFirst: {
-          args: Prisma.WorkingHoursFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkingHoursPayload> | null
+          args: Prisma.EmployeeWorkingHoursFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeWorkingHoursPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.WorkingHoursFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkingHoursPayload>
+          args: Prisma.EmployeeWorkingHoursFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeWorkingHoursPayload>
         }
         findMany: {
-          args: Prisma.WorkingHoursFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkingHoursPayload>[]
+          args: Prisma.EmployeeWorkingHoursFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeWorkingHoursPayload>[]
         }
         create: {
-          args: Prisma.WorkingHoursCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkingHoursPayload>
+          args: Prisma.EmployeeWorkingHoursCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeWorkingHoursPayload>
         }
         createMany: {
-          args: Prisma.WorkingHoursCreateManyArgs<ExtArgs>
+          args: Prisma.EmployeeWorkingHoursCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.WorkingHoursCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkingHoursPayload>[]
+          args: Prisma.EmployeeWorkingHoursCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeWorkingHoursPayload>[]
         }
         delete: {
-          args: Prisma.WorkingHoursDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkingHoursPayload>
+          args: Prisma.EmployeeWorkingHoursDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeWorkingHoursPayload>
         }
         update: {
-          args: Prisma.WorkingHoursUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkingHoursPayload>
+          args: Prisma.EmployeeWorkingHoursUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeWorkingHoursPayload>
         }
         deleteMany: {
-          args: Prisma.WorkingHoursDeleteManyArgs<ExtArgs>
+          args: Prisma.EmployeeWorkingHoursDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.WorkingHoursUpdateManyArgs<ExtArgs>
+          args: Prisma.EmployeeWorkingHoursUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.WorkingHoursUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkingHoursPayload>[]
+          args: Prisma.EmployeeWorkingHoursUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeWorkingHoursPayload>[]
         }
         upsert: {
-          args: Prisma.WorkingHoursUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkingHoursPayload>
+          args: Prisma.EmployeeWorkingHoursUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeWorkingHoursPayload>
         }
         aggregate: {
-          args: Prisma.WorkingHoursAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateWorkingHours>
+          args: Prisma.EmployeeWorkingHoursAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEmployeeWorkingHours>
         }
         groupBy: {
-          args: Prisma.WorkingHoursGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.WorkingHoursGroupByOutputType>[]
+          args: Prisma.EmployeeWorkingHoursGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmployeeWorkingHoursGroupByOutputType>[]
         }
         count: {
-          args: Prisma.WorkingHoursCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.WorkingHoursCountAggregateOutputType> | number
+          args: Prisma.EmployeeWorkingHoursCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmployeeWorkingHoursCountAggregateOutputType> | number
         }
       }
     }
@@ -1844,151 +1842,151 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    StaffDailyStats: {
-      payload: Prisma.$StaffDailyStatsPayload<ExtArgs>
-      fields: Prisma.StaffDailyStatsFieldRefs
+    EmployeeDailyStats: {
+      payload: Prisma.$EmployeeDailyStatsPayload<ExtArgs>
+      fields: Prisma.EmployeeDailyStatsFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.StaffDailyStatsFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffDailyStatsPayload> | null
+          args: Prisma.EmployeeDailyStatsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeDailyStatsPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.StaffDailyStatsFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffDailyStatsPayload>
+          args: Prisma.EmployeeDailyStatsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeDailyStatsPayload>
         }
         findFirst: {
-          args: Prisma.StaffDailyStatsFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffDailyStatsPayload> | null
+          args: Prisma.EmployeeDailyStatsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeDailyStatsPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.StaffDailyStatsFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffDailyStatsPayload>
+          args: Prisma.EmployeeDailyStatsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeDailyStatsPayload>
         }
         findMany: {
-          args: Prisma.StaffDailyStatsFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffDailyStatsPayload>[]
+          args: Prisma.EmployeeDailyStatsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeDailyStatsPayload>[]
         }
         create: {
-          args: Prisma.StaffDailyStatsCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffDailyStatsPayload>
+          args: Prisma.EmployeeDailyStatsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeDailyStatsPayload>
         }
         createMany: {
-          args: Prisma.StaffDailyStatsCreateManyArgs<ExtArgs>
+          args: Prisma.EmployeeDailyStatsCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.StaffDailyStatsCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffDailyStatsPayload>[]
+          args: Prisma.EmployeeDailyStatsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeDailyStatsPayload>[]
         }
         delete: {
-          args: Prisma.StaffDailyStatsDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffDailyStatsPayload>
+          args: Prisma.EmployeeDailyStatsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeDailyStatsPayload>
         }
         update: {
-          args: Prisma.StaffDailyStatsUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffDailyStatsPayload>
+          args: Prisma.EmployeeDailyStatsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeDailyStatsPayload>
         }
         deleteMany: {
-          args: Prisma.StaffDailyStatsDeleteManyArgs<ExtArgs>
+          args: Prisma.EmployeeDailyStatsDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.StaffDailyStatsUpdateManyArgs<ExtArgs>
+          args: Prisma.EmployeeDailyStatsUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.StaffDailyStatsUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffDailyStatsPayload>[]
+          args: Prisma.EmployeeDailyStatsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeDailyStatsPayload>[]
         }
         upsert: {
-          args: Prisma.StaffDailyStatsUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffDailyStatsPayload>
+          args: Prisma.EmployeeDailyStatsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeDailyStatsPayload>
         }
         aggregate: {
-          args: Prisma.StaffDailyStatsAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateStaffDailyStats>
+          args: Prisma.EmployeeDailyStatsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEmployeeDailyStats>
         }
         groupBy: {
-          args: Prisma.StaffDailyStatsGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.StaffDailyStatsGroupByOutputType>[]
+          args: Prisma.EmployeeDailyStatsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmployeeDailyStatsGroupByOutputType>[]
         }
         count: {
-          args: Prisma.StaffDailyStatsCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.StaffDailyStatsCountAggregateOutputType> | number
+          args: Prisma.EmployeeDailyStatsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmployeeDailyStatsCountAggregateOutputType> | number
         }
       }
     }
-    StaffLifetimeStats: {
-      payload: Prisma.$StaffLifetimeStatsPayload<ExtArgs>
-      fields: Prisma.StaffLifetimeStatsFieldRefs
+    EmployeeLifetimeStats: {
+      payload: Prisma.$EmployeeLifetimeStatsPayload<ExtArgs>
+      fields: Prisma.EmployeeLifetimeStatsFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.StaffLifetimeStatsFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffLifetimeStatsPayload> | null
+          args: Prisma.EmployeeLifetimeStatsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeLifetimeStatsPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.StaffLifetimeStatsFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffLifetimeStatsPayload>
+          args: Prisma.EmployeeLifetimeStatsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeLifetimeStatsPayload>
         }
         findFirst: {
-          args: Prisma.StaffLifetimeStatsFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffLifetimeStatsPayload> | null
+          args: Prisma.EmployeeLifetimeStatsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeLifetimeStatsPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.StaffLifetimeStatsFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffLifetimeStatsPayload>
+          args: Prisma.EmployeeLifetimeStatsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeLifetimeStatsPayload>
         }
         findMany: {
-          args: Prisma.StaffLifetimeStatsFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffLifetimeStatsPayload>[]
+          args: Prisma.EmployeeLifetimeStatsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeLifetimeStatsPayload>[]
         }
         create: {
-          args: Prisma.StaffLifetimeStatsCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffLifetimeStatsPayload>
+          args: Prisma.EmployeeLifetimeStatsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeLifetimeStatsPayload>
         }
         createMany: {
-          args: Prisma.StaffLifetimeStatsCreateManyArgs<ExtArgs>
+          args: Prisma.EmployeeLifetimeStatsCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.StaffLifetimeStatsCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffLifetimeStatsPayload>[]
+          args: Prisma.EmployeeLifetimeStatsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeLifetimeStatsPayload>[]
         }
         delete: {
-          args: Prisma.StaffLifetimeStatsDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffLifetimeStatsPayload>
+          args: Prisma.EmployeeLifetimeStatsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeLifetimeStatsPayload>
         }
         update: {
-          args: Prisma.StaffLifetimeStatsUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffLifetimeStatsPayload>
+          args: Prisma.EmployeeLifetimeStatsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeLifetimeStatsPayload>
         }
         deleteMany: {
-          args: Prisma.StaffLifetimeStatsDeleteManyArgs<ExtArgs>
+          args: Prisma.EmployeeLifetimeStatsDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.StaffLifetimeStatsUpdateManyArgs<ExtArgs>
+          args: Prisma.EmployeeLifetimeStatsUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.StaffLifetimeStatsUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffLifetimeStatsPayload>[]
+          args: Prisma.EmployeeLifetimeStatsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeLifetimeStatsPayload>[]
         }
         upsert: {
-          args: Prisma.StaffLifetimeStatsUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StaffLifetimeStatsPayload>
+          args: Prisma.EmployeeLifetimeStatsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeeLifetimeStatsPayload>
         }
         aggregate: {
-          args: Prisma.StaffLifetimeStatsAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateStaffLifetimeStats>
+          args: Prisma.EmployeeLifetimeStatsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEmployeeLifetimeStats>
         }
         groupBy: {
-          args: Prisma.StaffLifetimeStatsGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.StaffLifetimeStatsGroupByOutputType>[]
+          args: Prisma.EmployeeLifetimeStatsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmployeeLifetimeStatsGroupByOutputType>[]
         }
         count: {
-          args: Prisma.StaffLifetimeStatsCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.StaffLifetimeStatsCountAggregateOutputType> | number
+          args: Prisma.EmployeeLifetimeStatsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmployeeLifetimeStatsCountAggregateOutputType> | number
         }
       }
     }
@@ -2288,77 +2286,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    TenantQuota: {
-      payload: Prisma.$TenantQuotaPayload<ExtArgs>
-      fields: Prisma.TenantQuotaFieldRefs
+    TenantUsage: {
+      payload: Prisma.$TenantUsagePayload<ExtArgs>
+      fields: Prisma.TenantUsageFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.TenantQuotaFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantQuotaPayload> | null
+          args: Prisma.TenantUsageFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantUsagePayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.TenantQuotaFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantQuotaPayload>
+          args: Prisma.TenantUsageFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantUsagePayload>
         }
         findFirst: {
-          args: Prisma.TenantQuotaFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantQuotaPayload> | null
+          args: Prisma.TenantUsageFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantUsagePayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.TenantQuotaFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantQuotaPayload>
+          args: Prisma.TenantUsageFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantUsagePayload>
         }
         findMany: {
-          args: Prisma.TenantQuotaFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantQuotaPayload>[]
+          args: Prisma.TenantUsageFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantUsagePayload>[]
         }
         create: {
-          args: Prisma.TenantQuotaCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantQuotaPayload>
+          args: Prisma.TenantUsageCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantUsagePayload>
         }
         createMany: {
-          args: Prisma.TenantQuotaCreateManyArgs<ExtArgs>
+          args: Prisma.TenantUsageCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.TenantQuotaCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantQuotaPayload>[]
+          args: Prisma.TenantUsageCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantUsagePayload>[]
         }
         delete: {
-          args: Prisma.TenantQuotaDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantQuotaPayload>
+          args: Prisma.TenantUsageDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantUsagePayload>
         }
         update: {
-          args: Prisma.TenantQuotaUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantQuotaPayload>
+          args: Prisma.TenantUsageUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantUsagePayload>
         }
         deleteMany: {
-          args: Prisma.TenantQuotaDeleteManyArgs<ExtArgs>
+          args: Prisma.TenantUsageDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.TenantQuotaUpdateManyArgs<ExtArgs>
+          args: Prisma.TenantUsageUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.TenantQuotaUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantQuotaPayload>[]
+          args: Prisma.TenantUsageUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantUsagePayload>[]
         }
         upsert: {
-          args: Prisma.TenantQuotaUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantQuotaPayload>
+          args: Prisma.TenantUsageUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantUsagePayload>
         }
         aggregate: {
-          args: Prisma.TenantQuotaAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateTenantQuota>
+          args: Prisma.TenantUsageAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTenantUsage>
         }
         groupBy: {
-          args: Prisma.TenantQuotaGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TenantQuotaGroupByOutputType>[]
+          args: Prisma.TenantUsageGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TenantUsageGroupByOutputType>[]
         }
         count: {
-          args: Prisma.TenantQuotaCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TenantQuotaCountAggregateOutputType> | number
+          args: Prisma.TenantUsageCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TenantUsageCountAggregateOutputType> | number
         }
       }
     }
@@ -2507,80 +2505,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.PlanCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.PlanCountAggregateOutputType> | number
-        }
-      }
-    }
-    PlanLimits: {
-      payload: Prisma.$PlanLimitsPayload<ExtArgs>
-      fields: Prisma.PlanLimitsFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.PlanLimitsFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanLimitsPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.PlanLimitsFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanLimitsPayload>
-        }
-        findFirst: {
-          args: Prisma.PlanLimitsFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanLimitsPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.PlanLimitsFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanLimitsPayload>
-        }
-        findMany: {
-          args: Prisma.PlanLimitsFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanLimitsPayload>[]
-        }
-        create: {
-          args: Prisma.PlanLimitsCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanLimitsPayload>
-        }
-        createMany: {
-          args: Prisma.PlanLimitsCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.PlanLimitsCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanLimitsPayload>[]
-        }
-        delete: {
-          args: Prisma.PlanLimitsDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanLimitsPayload>
-        }
-        update: {
-          args: Prisma.PlanLimitsUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanLimitsPayload>
-        }
-        deleteMany: {
-          args: Prisma.PlanLimitsDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.PlanLimitsUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.PlanLimitsUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanLimitsPayload>[]
-        }
-        upsert: {
-          args: Prisma.PlanLimitsUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanLimitsPayload>
-        }
-        aggregate: {
-          args: Prisma.PlanLimitsAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePlanLimits>
-        }
-        groupBy: {
-          args: Prisma.PlanLimitsGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PlanLimitsGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.PlanLimitsCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PlanLimitsCountAggregateOutputType> | number
         }
       }
     }
@@ -2954,80 +2878,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    TenantOnboarding: {
-      payload: Prisma.$TenantOnboardingPayload<ExtArgs>
-      fields: Prisma.TenantOnboardingFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.TenantOnboardingFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantOnboardingPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.TenantOnboardingFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantOnboardingPayload>
-        }
-        findFirst: {
-          args: Prisma.TenantOnboardingFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantOnboardingPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.TenantOnboardingFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantOnboardingPayload>
-        }
-        findMany: {
-          args: Prisma.TenantOnboardingFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantOnboardingPayload>[]
-        }
-        create: {
-          args: Prisma.TenantOnboardingCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantOnboardingPayload>
-        }
-        createMany: {
-          args: Prisma.TenantOnboardingCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.TenantOnboardingCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantOnboardingPayload>[]
-        }
-        delete: {
-          args: Prisma.TenantOnboardingDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantOnboardingPayload>
-        }
-        update: {
-          args: Prisma.TenantOnboardingUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantOnboardingPayload>
-        }
-        deleteMany: {
-          args: Prisma.TenantOnboardingDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.TenantOnboardingUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.TenantOnboardingUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantOnboardingPayload>[]
-        }
-        upsert: {
-          args: Prisma.TenantOnboardingUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantOnboardingPayload>
-        }
-        aggregate: {
-          args: Prisma.TenantOnboardingAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateTenantOnboarding>
-        }
-        groupBy: {
-          args: Prisma.TenantOnboardingGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TenantOnboardingGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.TenantOnboardingCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.TenantOnboardingCountAggregateOutputType> | number
-        }
-      }
-    }
   }
 } & {
   other: {
@@ -3150,23 +3000,28 @@ export type VerificationLockScalarFieldEnum = (typeof VerificationLockScalarFiel
 export const TenantScalarFieldEnum = {
   id: 'id',
   ownerId: 'ownerId',
-  name: 'name',
   slug: 'slug',
+  name: 'name',
   type: 'type',
   description: 'description',
+  workspaceType: 'workspaceType',
+  colorTheme: 'colorTheme',
+  isPublic: 'isPublic',
+  isActive: 'isActive',
+  onboardingStatus: 'onboardingStatus',
+  phone: 'phone',
   addressLine1: 'addressLine1',
   addressLine2: 'addressLine2',
-  phone: 'phone',
+  city: 'city',
+  province: 'province',
+  country: 'country',
   logoUrl: 'logoUrl',
   logoPublicId: 'logoPublicId',
   coverUrl: 'coverUrl',
   coverPublicId: 'coverPublicId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt',
-  isActive: 'isActive',
-  onboardingCompleted: 'onboardingCompleted',
-  isPublic: 'isPublic'
+  deletedAt: 'deletedAt'
 } as const
 
 export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
@@ -3200,9 +3055,6 @@ export const ServiceScalarFieldEnum = {
   price: 'price',
   discountPercentage: 'discountPercentage',
   discountFixed: 'discountFixed',
-  initialActiveMinutes: 'initialActiveMinutes',
-  passiveTimeMinutes: 'passiveTimeMinutes',
-  finalActiveMinutes: 'finalActiveMinutes',
   durationMinutes: 'durationMinutes',
   isActive: 'isActive',
   displayOrder: 'displayOrder',
@@ -3215,7 +3067,7 @@ export type ServiceScalarFieldEnum = (typeof ServiceScalarFieldEnum)[keyof typeo
 
 
 export const ServiceAssignmentScalarFieldEnum = {
-  staffId: 'staffId',
+  employeeId: 'employeeId',
   serviceId: 'serviceId',
   isActive: 'isActive'
 } as const
@@ -3223,7 +3075,7 @@ export const ServiceAssignmentScalarFieldEnum = {
 export type ServiceAssignmentScalarFieldEnum = (typeof ServiceAssignmentScalarFieldEnum)[keyof typeof ServiceAssignmentScalarFieldEnum]
 
 
-export const StaffScalarFieldEnum = {
+export const EmployeeScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   tenantId: 'tenantId',
@@ -3241,36 +3093,32 @@ export const StaffScalarFieldEnum = {
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
   colorTheme: 'colorTheme',
-  commissionPercent: 'commissionPercent'
+  commissionType: 'commissionType',
+  commissionPercent: 'commissionPercent',
+  commissionFixed: 'commissionFixed'
 } as const
 
-export type StaffScalarFieldEnum = (typeof StaffScalarFieldEnum)[keyof typeof StaffScalarFieldEnum]
+export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
 
 
-export const WorkingHoursScalarFieldEnum = {
+export const EmployeeWorkingHoursScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
+  employeeId: 'employeeId',
   dayOfWeek: 'dayOfWeek',
-  isActive: 'isActive',
-  name: 'name',
-  createdAt: 'createdAt',
-  staffId: 'staffId',
-  endMinutes: 'endMinutes',
-  startMinutes: 'startMinutes'
+  opensAt: 'opensAt',
+  closesAt: 'closesAt'
 } as const
 
-export type WorkingHoursScalarFieldEnum = (typeof WorkingHoursScalarFieldEnum)[keyof typeof WorkingHoursScalarFieldEnum]
+export type EmployeeWorkingHoursScalarFieldEnum = (typeof EmployeeWorkingHoursScalarFieldEnum)[keyof typeof EmployeeWorkingHoursScalarFieldEnum]
 
 
 export const TenantWorkingHoursScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   dayOfWeek: 'dayOfWeek',
-  isActive: 'isActive',
-  name: 'name',
-  createdAt: 'createdAt',
-  endMinutes: 'endMinutes',
-  startMinutes: 'startMinutes'
+  opensAt: 'opensAt',
+  closesAt: 'closesAt'
 } as const
 
 export type TenantWorkingHoursScalarFieldEnum = (typeof TenantWorkingHoursScalarFieldEnum)[keyof typeof TenantWorkingHoursScalarFieldEnum]
@@ -3281,11 +3129,11 @@ export const ScheduleExceptionScalarFieldEnum = {
   tenantId: 'tenantId',
   isClosed: 'isClosed',
   reason: 'reason',
-  createdAt: 'createdAt',
   daysOfWeek: 'daysOfWeek',
+  employeeId: 'employeeId',
+  startDate: 'startDate',
   endDate: 'endDate',
-  staffId: 'staffId',
-  startDate: 'startDate'
+  createdAt: 'createdAt'
 } as const
 
 export type ScheduleExceptionScalarFieldEnum = (typeof ScheduleExceptionScalarFieldEnum)[keyof typeof ScheduleExceptionScalarFieldEnum]
@@ -3294,8 +3142,8 @@ export type ScheduleExceptionScalarFieldEnum = (typeof ScheduleExceptionScalarFi
 export const ScheduleExceptionBlockScalarFieldEnum = {
   id: 'id',
   scheduleExceptionId: 'scheduleExceptionId',
-  startMinutes: 'startMinutes',
-  endMinutes: 'endMinutes',
+  opensAt: 'opensAt',
+  closesAt: 'closesAt',
   createdAt: 'createdAt'
 } as const
 
@@ -3338,7 +3186,7 @@ export const AppointmentScalarFieldEnum = {
   tenantId: 'tenantId',
   serviceId: 'serviceId',
   customerId: 'customerId',
-  staffId: 'staffId',
+  employeeId: 'employeeId',
   status: 'status',
   startTime: 'startTime',
   endTime: 'endTime',
@@ -3353,9 +3201,6 @@ export const AppointmentScalarFieldEnum = {
   discountFixed: 'discountFixed',
   discountPercentage: 'discountPercentage',
   durationMinutes: 'durationMinutes',
-  finalActiveMinutes: 'finalActiveMinutes',
-  initialActiveMinutes: 'initialActiveMinutes',
-  passiveMinutes: 'passiveMinutes',
   cancelledAt: 'cancelledAt',
   cancelToken: 'cancelToken',
   cancellationReason: 'cancellationReason',
@@ -3373,7 +3218,7 @@ export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[key
 export const AppointmentBlockScalarFieldEnum = {
   id: 'id',
   appointmentId: 'appointmentId',
-  staffId: 'staffId',
+  employeeId: 'employeeId',
   startTime: 'startTime',
   endTime: 'endTime'
 } as const
@@ -3411,9 +3256,9 @@ export const TenantLifetimeStatsScalarFieldEnum = {
 export type TenantLifetimeStatsScalarFieldEnum = (typeof TenantLifetimeStatsScalarFieldEnum)[keyof typeof TenantLifetimeStatsScalarFieldEnum]
 
 
-export const StaffDailyStatsScalarFieldEnum = {
+export const EmployeeDailyStatsScalarFieldEnum = {
   id: 'id',
-  staffId: 'staffId',
+  employeeId: 'employeeId',
   date: 'date',
   revenue: 'revenue',
   appointments: 'appointments',
@@ -3424,12 +3269,12 @@ export const StaffDailyStatsScalarFieldEnum = {
   tenantId: 'tenantId'
 } as const
 
-export type StaffDailyStatsScalarFieldEnum = (typeof StaffDailyStatsScalarFieldEnum)[keyof typeof StaffDailyStatsScalarFieldEnum]
+export type EmployeeDailyStatsScalarFieldEnum = (typeof EmployeeDailyStatsScalarFieldEnum)[keyof typeof EmployeeDailyStatsScalarFieldEnum]
 
 
-export const StaffLifetimeStatsScalarFieldEnum = {
+export const EmployeeLifetimeStatsScalarFieldEnum = {
   id: 'id',
-  staffId: 'staffId',
+  employeeId: 'employeeId',
   totalRevenue: 'totalRevenue',
   totalAppointments: 'totalAppointments',
   totalCancelled: 'totalCancelled',
@@ -3439,7 +3284,7 @@ export const StaffLifetimeStatsScalarFieldEnum = {
   tenantId: 'tenantId'
 } as const
 
-export type StaffLifetimeStatsScalarFieldEnum = (typeof StaffLifetimeStatsScalarFieldEnum)[keyof typeof StaffLifetimeStatsScalarFieldEnum]
+export type EmployeeLifetimeStatsScalarFieldEnum = (typeof EmployeeLifetimeStatsScalarFieldEnum)[keyof typeof EmployeeLifetimeStatsScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {
@@ -3498,26 +3343,24 @@ export const NotificationLogScalarFieldEnum = {
 export type NotificationLogScalarFieldEnum = (typeof NotificationLogScalarFieldEnum)[keyof typeof NotificationLogScalarFieldEnum]
 
 
-export const TenantQuotaScalarFieldEnum = {
+export const TenantUsageScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  whatsappLimit: 'whatsappLimit',
-  professionalLimit: 'professionalLimit',
-  whatsappCount: 'whatsappCount',
-  emailCount: 'emailCount',
-  whatsappCost: 'whatsappCost',
   periodMonth: 'periodMonth',
   periodYear: 'periodYear',
   lastResetAt: 'lastResetAt',
   updatedAt: 'updatedAt',
   appointmentCount: 'appointmentCount',
   appointmentLimit: 'appointmentLimit',
-  emailCost: 'emailCost',
+  whatsappCount: 'whatsappCount',
+  whatsappLimit: 'whatsappLimit',
+  whatsappCost: 'whatsappCost',
+  emailCount: 'emailCount',
   emailLimit: 'emailLimit',
-  professionalCount: 'professionalCount'
+  emailCost: 'emailCost'
 } as const
 
-export type TenantQuotaScalarFieldEnum = (typeof TenantQuotaScalarFieldEnum)[keyof typeof TenantQuotaScalarFieldEnum]
+export type TenantUsageScalarFieldEnum = (typeof TenantUsageScalarFieldEnum)[keyof typeof TenantUsageScalarFieldEnum]
 
 
 export const SubscriptionScalarFieldEnum = {
@@ -3532,7 +3375,7 @@ export const SubscriptionScalarFieldEnum = {
   currentPeriodEnd: 'currentPeriodEnd',
   nextPaymentDate: 'nextPaymentDate',
   trialEndsAt: 'trialEndsAt',
-  trialUsedAt: 'trialUsedAt',
+  trialStartedAt: 'trialStartedAt',
   discountPercent: 'discountPercent',
   discountAmount: 'discountAmount',
   discountExpiresAt: 'discountExpiresAt',
@@ -3552,34 +3395,27 @@ export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[k
 export const PlanScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  planType: 'planType',
+  tagline: 'tagline',
   billingCycle: 'billingCycle',
   trialDays: 'trialDays',
-  isActive: 'isActive',
-  isPublic: 'isPublic',
-  description: 'description',
   price: 'price',
+  compareAtPrice: 'compareAtPrice',
   currency: 'currency',
-  duration: 'duration',
+  isPublic: 'isPublic',
+  isFeatured: 'isFeatured',
+  sortOrder: 'sortOrder',
+  description: 'description',
   features: 'features',
+  externalReference: 'externalReference',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  externalReference: 'externalReference'
-} as const
-
-export type PlanScalarFieldEnum = (typeof PlanScalarFieldEnum)[keyof typeof PlanScalarFieldEnum]
-
-
-export const PlanLimitsScalarFieldEnum = {
-  id: 'id',
-  planId: 'planId',
+  employeeLimit: 'employeeLimit',
   appointmentLimit: 'appointmentLimit',
   emailLimit: 'emailLimit',
-  professionalLimit: 'professionalLimit',
   whatsappLimit: 'whatsappLimit'
 } as const
 
-export type PlanLimitsScalarFieldEnum = (typeof PlanLimitsScalarFieldEnum)[keyof typeof PlanLimitsScalarFieldEnum]
+export type PlanScalarFieldEnum = (typeof PlanScalarFieldEnum)[keyof typeof PlanScalarFieldEnum]
 
 
 export const PlanStatsScalarFieldEnum = {
@@ -3666,20 +3502,6 @@ export const WebhookLogScalarFieldEnum = {
 } as const
 
 export type WebhookLogScalarFieldEnum = (typeof WebhookLogScalarFieldEnum)[keyof typeof WebhookLogScalarFieldEnum]
-
-
-export const TenantOnboardingScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  onboardingCompleted: 'onboardingCompleted',
-  hasService: 'hasService',
-  hasSchedule: 'hasSchedule',
-  hasStaff: 'hasStaff',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type TenantOnboardingScalarFieldEnum = (typeof TenantOnboardingScalarFieldEnum)[keyof typeof TenantOnboardingScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3835,9 +3657,37 @@ export type ListEnumTenantTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 
 
 /**
+ * Reference to a field of type 'WorkspaceType'
+ */
+export type EnumWorkspaceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkspaceType'>
+    
+
+
+/**
+ * Reference to a field of type 'WorkspaceType[]'
+ */
+export type ListEnumWorkspaceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WorkspaceType[]'>
+    
+
+
+/**
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'OnboardingStatus'
+ */
+export type EnumOnboardingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OnboardingStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'OnboardingStatus[]'
+ */
+export type ListEnumOnboardingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OnboardingStatus[]'>
     
 
 
@@ -3852,6 +3702,20 @@ export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'Decimal[]'
  */
 export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CommissionType'
+ */
+export type EnumCommissionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommissionType'>
+    
+
+
+/**
+ * Reference to a field of type 'CommissionType[]'
+ */
+export type ListEnumCommissionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommissionType[]'>
     
 
 
@@ -3954,16 +3818,16 @@ export type ListEnumBillingCycleFieldRefInput<$PrismaModel> = FieldRefInputType<
 
 
 /**
- * Reference to a field of type 'PlanType'
+ * Reference to a field of type 'Currency'
  */
-export type EnumPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanType'>
+export type EnumCurrencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Currency'>
     
 
 
 /**
- * Reference to a field of type 'PlanType[]'
+ * Reference to a field of type 'Currency[]'
  */
-export type ListEnumPlanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlanType[]'>
+export type ListEnumCurrencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Currency[]'>
     
 
 
@@ -4126,8 +3990,8 @@ export type GlobalOmitConfig = {
   tenantSettings?: Prisma.TenantSettingsOmit
   service?: Prisma.ServiceOmit
   serviceAssignment?: Prisma.ServiceAssignmentOmit
-  staff?: Prisma.StaffOmit
-  workingHours?: Prisma.WorkingHoursOmit
+  employee?: Prisma.EmployeeOmit
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursOmit
   tenantWorkingHours?: Prisma.TenantWorkingHoursOmit
   scheduleException?: Prisma.ScheduleExceptionOmit
   scheduleExceptionBlock?: Prisma.ScheduleExceptionBlockOmit
@@ -4136,22 +4000,20 @@ export type GlobalOmitConfig = {
   appointmentBlock?: Prisma.AppointmentBlockOmit
   tenantDailyStats?: Prisma.TenantDailyStatsOmit
   tenantLifetimeStats?: Prisma.TenantLifetimeStatsOmit
-  staffDailyStats?: Prisma.StaffDailyStatsOmit
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsOmit
+  employeeDailyStats?: Prisma.EmployeeDailyStatsOmit
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsOmit
   notification?: Prisma.NotificationOmit
   notificationDelivery?: Prisma.NotificationDeliveryOmit
   inAppNotification?: Prisma.InAppNotificationOmit
   notificationLog?: Prisma.NotificationLogOmit
-  tenantQuota?: Prisma.TenantQuotaOmit
+  tenantUsage?: Prisma.TenantUsageOmit
   subscription?: Prisma.SubscriptionOmit
   plan?: Prisma.PlanOmit
-  planLimits?: Prisma.PlanLimitsOmit
   planStats?: Prisma.PlanStatsOmit
   payment?: Prisma.PaymentOmit
   platformStats?: Prisma.PlatformStatsOmit
   platformAdmin?: Prisma.PlatformAdminOmit
   webhookLog?: Prisma.WebhookLogOmit
-  tenantOnboarding?: Prisma.TenantOnboardingOmit
 }
 
 /* Types for Logging */

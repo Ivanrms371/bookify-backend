@@ -24,11 +24,11 @@ export type Membership = {
   role: MembershipRole;
 };
 
-export type Staff = {
+export type Employee = {
   id: string;
   name: string;
   commissionPercent: Decimal | null;
-}
+};
 
 export type Tenant = {
   id: string;
@@ -36,24 +36,24 @@ export type Tenant = {
   slug: string;
   subscription: Subscription;
   membership: Membership;
-  staff: Staff;
-}
+  employee: Employee;
+};
 
 export type Subscription = {
   id: string;
   plan: Plan;
-}
+};
 
 export type Plan = {
   id: string;
   planType: PlanType;
   isActive: boolean;
-  limits: Limits
-}
+  limits: Limits;
+};
 
 export type Limits = {
   professionalLimit: number;
   appointmentLimit: number;
   emailLimit: number;
   whatsappLimit: number;
-}
+};

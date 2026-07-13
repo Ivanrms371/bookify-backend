@@ -1,91 +1,60 @@
-import { Body, Controller, Get, Post, Req, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { Body, Controller, Get, Patch, Post, Req } from '@nestjs/common';
+import { TenantOnboardingService } from './onboarding.service';
 import { AuthenticatedRequest } from 'src/auth/types/express-request.type';
-import { OnboardingService } from './onboarding.service';
-import { SelectPlanDto } from './dto/select-plan.dto';
-import { UpdateTenantAddressDto } from './dto/update-tenant-address.dto';
-import { UpdateAvailabilityDto } from './dto/update-availability.dto';
-import { TenantGuard } from 'src/common/guards/tenant.guard';
-import { MembershipRole } from 'src/generated/prisma/enums';
-import { MembershipRoles } from 'src/common/decorators/tenant-roles.decorator';
-import { SetupOnboardingDto } from './dto/setup-onboarding.dto';
+import { WorkspaceStepDto } from './dto/workspace-step.dto';
+import { BusinessStepDto } from './dto/business-step.dto';
+import { ScheduleStepDto } from './dto/schedule-step.dto';
+import { ServicesStepDto } from './dto/services-step.dto';
+import { TeamStepDto } from './dto/team-step.dto';
+import { CustomizeStepDto } from './dto/customize-step.dto';
+import { ConfirmStepDto } from './dto/confirm-step.dto';
 
 @Controller('onboarding')
-export class OnboardingController {
-  constructor(private readonly onboardingService: OnboardingService) {}
+export class TenantOnboardingController {
+  constructor(private readonly tenantOnboardingService: TenantOnboardingService) {}
 
   @Get('status')
-  async getOnboardingStatus(@Req() req: AuthenticatedRequest) {
-    const { userId } = req.user;
-    return this.onboardingService.getOnboardingStatus(userId);
+  async getStatus(@Req() req: AuthenticatedRequest) {
+    return this.tenantOnboardingService.getOnboardingStatus(req.user.userId);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Post('setup')
-  async setupOnboarding(@Req() req: AuthenticatedRequest, @Body() dto: SetupOnboardingDto) {
-    try {
-      const { userId, name } = req.user;
-    return this.onboardingService.setupOnboarding(userId, name, dto);
-    } catch (error) {
-      console.log(error.stack)
-      throw error;
-    }
+  @Post('init')
+  async init(@Req() req: AuthenticatedRequest) {
+    return this.tenantOnboardingService.initializeOnboarding(req.user.userId);
   }
 
-  @UseGuards(JwtAuthGuard, TenantGuard)
-  @MembershipRoles(MembershipRole.OWNER)
-  @Post('/tenants/:tenantId/select-plan')
-  async selectPlan(@Req() req: AuthenticatedRequest, @Body() dto: SelectPlanDto) {
-    const { tenantId } = req.params;
-    const { userId } = req.user;
-    return this.onboardingService.selectPlan(tenantId, userId, dto);
+  @Patch('workspace')
+  async updateWorkspace(@Req() req: AuthenticatedRequest, @Body() body: WorkspaceStepDto) {
+    return this.tenantOnboardingService.updateWorkspace(req.user.userId, body);
   }
 
-  @Get('/tenants/:tenantId/checklist')
-  async getChecklist(@Req() req: AuthenticatedRequest) {
-    const { tenantId } = req.params;
-    const { userId } = req.user;
-    return this.onboardingService.getChecklist(tenantId, userId);
+  @Patch('business')
+  async updateBusiness(@Req() req: AuthenticatedRequest, @Body() body: BusinessStepDto) {
+    return this.tenantOnboardingService.updateBusiness(req.user.userId, body);
   }
 
-  @Post('/tenants/:tenantId/complete')
-  async completeOnboarding(@Req() req: AuthenticatedRequest) {
-    const { tenantId } = req.params;
-    const { userId } = req.user;
-    return this.onboardingService.completeOnboarding(tenantId, userId);
+  @Patch('schedule')
+  async updateSchedule(@Req() req: AuthenticatedRequest, @Body() body: ScheduleStepDto) {
+    return this.tenantOnboardingService.updateSchedule(req.user.userId, body);
   }
 
-  @UseGuards(JwtAuthGuard, TenantGuard)
-  @MembershipRoles(MembershipRole.OWNER)
-  @Post('/tenants/:tenantId/address')
-  async updateAddress(@Req() req: AuthenticatedRequest, @Body() dto: UpdateTenantAddressDto) {
-    const { tenantId } = req.params;
-    const { userId } = req.user;
-    return this.onboardingService.updateAddress(tenantId, userId, dto);
+  @Patch('services')
+  async updateServices(@Req() req: AuthenticatedRequest, @Body() body: ServicesStepDto) {
+    return this.tenantOnboardingService.updateServices(req.user.userId, body);
   }
 
-  @Post('/tenants/:tenantId/availability')
-  async updateAvailability(@Req() req: AuthenticatedRequest, @Body() dto: UpdateAvailabilityDto) {
-    const { tenantId } = req.params;
-    const { userId } = req.user;
-    return this.onboardingService.updateAvailability(tenantId, userId, dto);
+  @Patch('team')
+  async updateTeam(@Req() req: AuthenticatedRequest, @Body() body: TeamStepDto) {
+    return this.tenantOnboardingService.updateTeam(req.user.userId, body);
   }
 
-  @Post('/tenants/:tenantId/assets')
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'logo', maxCount: 1 },
-      { name: 'banner', maxCount: 1 },
-    ]),
-  )
-  async updateAssets(
-    @Req() req: AuthenticatedRequest,
-    @UploadedFiles()
-    files: { logo?: Express.Multer.File[]; banner?: Express.Multer.File[] },
-  ) {
-    const tenantId = req.params.tenantId;
-    const { userId } = req.user;
-    return this.onboardingService.updateAssets(tenantId, userId, files);
+  @Patch('customize')
+  async updateCustomize(@Req() req: AuthenticatedRequest, @Body() body: CustomizeStepDto) {
+    return this.tenantOnboardingService.updateCustomize(req.user.userId, body);
+  }
+
+  @Patch('confirm')
+  async confirm(@Req() req: AuthenticatedRequest, @Body() body: ConfirmStepDto) {
+    return this.tenantOnboardingService.confirm(req.user.userId, body);
   }
 }

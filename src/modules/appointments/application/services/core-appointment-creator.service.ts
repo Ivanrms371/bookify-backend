@@ -28,7 +28,7 @@ export class CoreAppointmentCreator {
 
   async create(dto: CreateAppointmentDto & { status?: string }) {
     const startTime = new Date(dto.appointment.date);
-    const service = await this.servicesService.findServiceByIdAndStaff(dto.appointment.serviceId, dto.appointment.staffId);
+    const service = await this.servicesService.findServiceByIdAndEmployee(dto.appointment.serviceId, dto.appointment.employeeId);
     const endTime = new Date(startTime.getTime() + service.durationMinutes * 60 * 1000);
 
     const result = await this.prisma.$transaction(async (tx) => {
@@ -40,7 +40,7 @@ export class CoreAppointmentCreator {
       const appointment = await this.appointmentsRepository.create(
         {
           tenant: { connect: { id: dto.appointment.tenantId } },
-          staff: { connect: { id: dto.appointment.staffId } },
+          employee: { connect: { id: dto.appointment.employeeId } },
           service: { connect: { id: dto.appointment.serviceId } },
           customer: { connect: { id: customer.id } },
           customerName: customer.name,
@@ -51,9 +51,6 @@ export class CoreAppointmentCreator {
           discountPercentage: service.discountPercentage,
           confirmationCode: this.generateConfirmationCode(),
           durationMinutes: service.durationMinutes,
-          initialActiveMinutes: service.initialActiveMinutes,
-          passiveMinutes: service.passiveTimeMinutes,
-          finalActiveMinutes: service.finalActiveMinutes,
           rescheduleToken,
           cancelToken,
           startTime,
@@ -64,14 +61,12 @@ export class CoreAppointmentCreator {
 
       const timeBlocks = buildTimeBlocks({
         startTime,
-        initialActiveMinutes: service.initialActiveMinutes,
-        passiveTimeMinutes: service.passiveTimeMinutes,
-        finalActiveMinutes: service.finalActiveMinutes,
+        durationMinutes: service.durationMinutes,
       });
 
       const appointmentBlocks = timeBlocks.map((block) => ({
         appointmentId: appointment.id,
-        staffId: dto.appointment.staffId,
+        employeeId: dto.appointment.employeeId,
         startTime: block.startTime,
         endTime: block.endTime,
       }));
@@ -83,7 +78,7 @@ export class CoreAppointmentCreator {
       await this.appointmentStatsService.onCreated(
         {
           customerId: appointment.customerId,
-          staffId: appointment.staffId,
+          employeeId: appointment.employeeId,
           tenantId: appointment.tenantId,
           isNewCustomer,
           startTime,

@@ -14,5 +14,5 @@ export class GetAppointmentsQueryDto {
 
   @IsOptional()
   @IsUUID()
-  staffId?: string;
+  employeeId?: string;
 }

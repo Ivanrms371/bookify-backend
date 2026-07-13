@@ -3,14 +3,14 @@
 import { AvailabilityConfig } from './availability-config.type';
 
 export type Block = {
-  startMinutes: number;
-  endMinutes: number;
+  opensAt: number;
+  closesAt: number;
 };
 
 // AppointmentBlock fetched from DB
 
 export type FetchedAppointmentBlock = {
-  staffId: string;
+  employeeId: string;
   startTime: Date;
   endTime: Date;
 };

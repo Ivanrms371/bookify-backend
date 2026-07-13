@@ -50,7 +50,7 @@ export type SubscriptionMinAggregateOutputType = {
   currentPeriodEnd: Date | null
   nextPaymentDate: Date | null
   trialEndsAt: Date | null
-  trialUsedAt: Date | null
+  trialStartedAt: Date | null
   discountPercent: number | null
   discountAmount: runtime.Decimal | null
   discountExpiresAt: Date | null
@@ -76,7 +76,7 @@ export type SubscriptionMaxAggregateOutputType = {
   currentPeriodEnd: Date | null
   nextPaymentDate: Date | null
   trialEndsAt: Date | null
-  trialUsedAt: Date | null
+  trialStartedAt: Date | null
   discountPercent: number | null
   discountAmount: runtime.Decimal | null
   discountExpiresAt: Date | null
@@ -102,7 +102,7 @@ export type SubscriptionCountAggregateOutputType = {
   currentPeriodEnd: number
   nextPaymentDate: number
   trialEndsAt: number
-  trialUsedAt: number
+  trialStartedAt: number
   discountPercent: number
   discountAmount: number
   discountExpiresAt: number
@@ -142,7 +142,7 @@ export type SubscriptionMinAggregateInputType = {
   currentPeriodEnd?: true
   nextPaymentDate?: true
   trialEndsAt?: true
-  trialUsedAt?: true
+  trialStartedAt?: true
   discountPercent?: true
   discountAmount?: true
   discountExpiresAt?: true
@@ -168,7 +168,7 @@ export type SubscriptionMaxAggregateInputType = {
   currentPeriodEnd?: true
   nextPaymentDate?: true
   trialEndsAt?: true
-  trialUsedAt?: true
+  trialStartedAt?: true
   discountPercent?: true
   discountAmount?: true
   discountExpiresAt?: true
@@ -194,7 +194,7 @@ export type SubscriptionCountAggregateInputType = {
   currentPeriodEnd?: true
   nextPaymentDate?: true
   trialEndsAt?: true
-  trialUsedAt?: true
+  trialStartedAt?: true
   discountPercent?: true
   discountAmount?: true
   discountExpiresAt?: true
@@ -307,7 +307,7 @@ export type SubscriptionGroupByOutputType = {
   currentPeriodEnd: Date | null
   nextPaymentDate: Date | null
   trialEndsAt: Date | null
-  trialUsedAt: Date | null
+  trialStartedAt: Date | null
   discountPercent: number
   discountAmount: runtime.Decimal
   discountExpiresAt: Date | null
@@ -347,7 +347,7 @@ export type SubscriptionWhereInput = {
   NOT?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
   id?: Prisma.UuidFilter<"Subscription"> | string
   tenantId?: Prisma.UuidFilter<"Subscription"> | string
-  planId?: Prisma.UuidFilter<"Subscription"> | string
+  planId?: Prisma.StringFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Subscription"> | string
@@ -356,7 +356,7 @@ export type SubscriptionWhereInput = {
   currentPeriodEnd?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   nextPaymentDate?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   trialEndsAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
-  trialUsedAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
+  trialStartedAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   discountPercent?: Prisma.IntFilter<"Subscription"> | number
   discountAmount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
@@ -385,7 +385,7 @@ export type SubscriptionOrderByWithRelationInput = {
   currentPeriodEnd?: Prisma.SortOrderInput | Prisma.SortOrder
   nextPaymentDate?: Prisma.SortOrderInput | Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  trialUsedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  trialStartedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   discountPercent?: Prisma.SortOrder
   discountAmount?: Prisma.SortOrder
   discountExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -408,7 +408,7 @@ export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
   OR?: Prisma.SubscriptionWhereInput[]
   NOT?: Prisma.SubscriptionWhereInput | Prisma.SubscriptionWhereInput[]
-  planId?: Prisma.UuidFilter<"Subscription"> | string
+  planId?: Prisma.StringFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Subscription"> | string
@@ -417,7 +417,7 @@ export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
   currentPeriodEnd?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   nextPaymentDate?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   trialEndsAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
-  trialUsedAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
+  trialStartedAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   discountPercent?: Prisma.IntFilter<"Subscription"> | number
   discountAmount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
@@ -446,7 +446,7 @@ export type SubscriptionOrderByWithAggregationInput = {
   currentPeriodEnd?: Prisma.SortOrderInput | Prisma.SortOrder
   nextPaymentDate?: Prisma.SortOrderInput | Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  trialUsedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  trialStartedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   discountPercent?: Prisma.SortOrder
   discountAmount?: Prisma.SortOrder
   discountExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -471,7 +471,7 @@ export type SubscriptionScalarWhereWithAggregatesInput = {
   NOT?: Prisma.SubscriptionScalarWhereWithAggregatesInput | Prisma.SubscriptionScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"Subscription"> | string
   tenantId?: Prisma.UuidWithAggregatesFilter<"Subscription"> | string
-  planId?: Prisma.UuidWithAggregatesFilter<"Subscription"> | string
+  planId?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusWithAggregatesFilter<"Subscription"> | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalWithAggregatesFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringWithAggregatesFilter<"Subscription"> | string
@@ -480,7 +480,7 @@ export type SubscriptionScalarWhereWithAggregatesInput = {
   currentPeriodEnd?: Prisma.DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
   nextPaymentDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
   trialEndsAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
-  trialUsedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
+  trialStartedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
   discountPercent?: Prisma.IntWithAggregatesFilter<"Subscription"> | number
   discountAmount?: Prisma.DecimalWithAggregatesFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
@@ -504,7 +504,7 @@ export type SubscriptionCreateInput = {
   currentPeriodEnd?: Date | string | null
   nextPaymentDate?: Date | string | null
   trialEndsAt?: Date | string | null
-  trialUsedAt?: Date | string | null
+  trialStartedAt?: Date | string | null
   discountPercent?: number
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Date | string | null
@@ -533,7 +533,7 @@ export type SubscriptionUncheckedCreateInput = {
   currentPeriodEnd?: Date | string | null
   nextPaymentDate?: Date | string | null
   trialEndsAt?: Date | string | null
-  trialUsedAt?: Date | string | null
+  trialStartedAt?: Date | string | null
   discountPercent?: number
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Date | string | null
@@ -558,7 +558,7 @@ export type SubscriptionUpdateInput = {
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   nextPaymentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  trialUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trialStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discountPercent?: Prisma.IntFieldUpdateOperationsInput | number
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -587,7 +587,7 @@ export type SubscriptionUncheckedUpdateInput = {
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   nextPaymentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  trialUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trialStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discountPercent?: Prisma.IntFieldUpdateOperationsInput | number
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -614,7 +614,7 @@ export type SubscriptionCreateManyInput = {
   currentPeriodEnd?: Date | string | null
   nextPaymentDate?: Date | string | null
   trialEndsAt?: Date | string | null
-  trialUsedAt?: Date | string | null
+  trialStartedAt?: Date | string | null
   discountPercent?: number
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Date | string | null
@@ -638,7 +638,7 @@ export type SubscriptionUpdateManyMutationInput = {
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   nextPaymentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  trialUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trialStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discountPercent?: Prisma.IntFieldUpdateOperationsInput | number
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -664,7 +664,7 @@ export type SubscriptionUncheckedUpdateManyInput = {
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   nextPaymentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  trialUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trialStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discountPercent?: Prisma.IntFieldUpdateOperationsInput | number
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -695,7 +695,7 @@ export type SubscriptionCountOrderByAggregateInput = {
   currentPeriodEnd?: Prisma.SortOrder
   nextPaymentDate?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrder
-  trialUsedAt?: Prisma.SortOrder
+  trialStartedAt?: Prisma.SortOrder
   discountPercent?: Prisma.SortOrder
   discountAmount?: Prisma.SortOrder
   discountExpiresAt?: Prisma.SortOrder
@@ -727,7 +727,7 @@ export type SubscriptionMaxOrderByAggregateInput = {
   currentPeriodEnd?: Prisma.SortOrder
   nextPaymentDate?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrder
-  trialUsedAt?: Prisma.SortOrder
+  trialStartedAt?: Prisma.SortOrder
   discountPercent?: Prisma.SortOrder
   discountAmount?: Prisma.SortOrder
   discountExpiresAt?: Prisma.SortOrder
@@ -753,7 +753,7 @@ export type SubscriptionMinOrderByAggregateInput = {
   currentPeriodEnd?: Prisma.SortOrder
   nextPaymentDate?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrder
-  trialUsedAt?: Prisma.SortOrder
+  trialStartedAt?: Prisma.SortOrder
   discountPercent?: Prisma.SortOrder
   discountAmount?: Prisma.SortOrder
   discountExpiresAt?: Prisma.SortOrder
@@ -891,7 +891,7 @@ export type SubscriptionCreateWithoutTenantInput = {
   currentPeriodEnd?: Date | string | null
   nextPaymentDate?: Date | string | null
   trialEndsAt?: Date | string | null
-  trialUsedAt?: Date | string | null
+  trialStartedAt?: Date | string | null
   discountPercent?: number
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Date | string | null
@@ -918,7 +918,7 @@ export type SubscriptionUncheckedCreateWithoutTenantInput = {
   currentPeriodEnd?: Date | string | null
   nextPaymentDate?: Date | string | null
   trialEndsAt?: Date | string | null
-  trialUsedAt?: Date | string | null
+  trialStartedAt?: Date | string | null
   discountPercent?: number
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Date | string | null
@@ -959,7 +959,7 @@ export type SubscriptionUpdateWithoutTenantInput = {
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   nextPaymentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  trialUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trialStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discountPercent?: Prisma.IntFieldUpdateOperationsInput | number
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -986,7 +986,7 @@ export type SubscriptionUncheckedUpdateWithoutTenantInput = {
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   nextPaymentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  trialUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trialStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discountPercent?: Prisma.IntFieldUpdateOperationsInput | number
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1011,7 +1011,7 @@ export type SubscriptionCreateWithoutPlanInput = {
   currentPeriodEnd?: Date | string | null
   nextPaymentDate?: Date | string | null
   trialEndsAt?: Date | string | null
-  trialUsedAt?: Date | string | null
+  trialStartedAt?: Date | string | null
   discountPercent?: number
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Date | string | null
@@ -1038,7 +1038,7 @@ export type SubscriptionUncheckedCreateWithoutPlanInput = {
   currentPeriodEnd?: Date | string | null
   nextPaymentDate?: Date | string | null
   trialEndsAt?: Date | string | null
-  trialUsedAt?: Date | string | null
+  trialStartedAt?: Date | string | null
   discountPercent?: number
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Date | string | null
@@ -1085,7 +1085,7 @@ export type SubscriptionScalarWhereInput = {
   NOT?: Prisma.SubscriptionScalarWhereInput | Prisma.SubscriptionScalarWhereInput[]
   id?: Prisma.UuidFilter<"Subscription"> | string
   tenantId?: Prisma.UuidFilter<"Subscription"> | string
-  planId?: Prisma.UuidFilter<"Subscription"> | string
+  planId?: Prisma.StringFilter<"Subscription"> | string
   status?: Prisma.EnumSubscriptionStatusFilter<"Subscription"> | $Enums.SubscriptionStatus
   amount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Subscription"> | string
@@ -1094,7 +1094,7 @@ export type SubscriptionScalarWhereInput = {
   currentPeriodEnd?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   nextPaymentDate?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   trialEndsAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
-  trialUsedAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
+  trialStartedAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
   discountPercent?: Prisma.IntFilter<"Subscription"> | number
   discountAmount?: Prisma.DecimalFilter<"Subscription"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.DateTimeNullableFilter<"Subscription"> | Date | string | null
@@ -1118,7 +1118,7 @@ export type SubscriptionCreateWithoutPaymentsInput = {
   currentPeriodEnd?: Date | string | null
   nextPaymentDate?: Date | string | null
   trialEndsAt?: Date | string | null
-  trialUsedAt?: Date | string | null
+  trialStartedAt?: Date | string | null
   discountPercent?: number
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Date | string | null
@@ -1146,7 +1146,7 @@ export type SubscriptionUncheckedCreateWithoutPaymentsInput = {
   currentPeriodEnd?: Date | string | null
   nextPaymentDate?: Date | string | null
   trialEndsAt?: Date | string | null
-  trialUsedAt?: Date | string | null
+  trialStartedAt?: Date | string | null
   discountPercent?: number
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Date | string | null
@@ -1186,7 +1186,7 @@ export type SubscriptionUpdateWithoutPaymentsInput = {
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   nextPaymentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  trialUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trialStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discountPercent?: Prisma.IntFieldUpdateOperationsInput | number
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1214,7 +1214,7 @@ export type SubscriptionUncheckedUpdateWithoutPaymentsInput = {
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   nextPaymentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  trialUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trialStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discountPercent?: Prisma.IntFieldUpdateOperationsInput | number
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1239,7 +1239,7 @@ export type SubscriptionCreateManyPlanInput = {
   currentPeriodEnd?: Date | string | null
   nextPaymentDate?: Date | string | null
   trialEndsAt?: Date | string | null
-  trialUsedAt?: Date | string | null
+  trialStartedAt?: Date | string | null
   discountPercent?: number
   discountAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Date | string | null
@@ -1263,7 +1263,7 @@ export type SubscriptionUpdateWithoutPlanInput = {
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   nextPaymentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  trialUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trialStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discountPercent?: Prisma.IntFieldUpdateOperationsInput | number
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1290,7 +1290,7 @@ export type SubscriptionUncheckedUpdateWithoutPlanInput = {
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   nextPaymentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  trialUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trialStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discountPercent?: Prisma.IntFieldUpdateOperationsInput | number
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1316,7 +1316,7 @@ export type SubscriptionUncheckedUpdateManyWithoutPlanInput = {
   currentPeriodEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   nextPaymentDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  trialUsedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trialStartedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   discountPercent?: Prisma.IntFieldUpdateOperationsInput | number
   discountAmount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1373,7 +1373,7 @@ export type SubscriptionSelect<ExtArgs extends runtime.Types.Extensions.Internal
   currentPeriodEnd?: boolean
   nextPaymentDate?: boolean
   trialEndsAt?: boolean
-  trialUsedAt?: boolean
+  trialStartedAt?: boolean
   discountPercent?: boolean
   discountAmount?: boolean
   discountExpiresAt?: boolean
@@ -1403,7 +1403,7 @@ export type SubscriptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   currentPeriodEnd?: boolean
   nextPaymentDate?: boolean
   trialEndsAt?: boolean
-  trialUsedAt?: boolean
+  trialStartedAt?: boolean
   discountPercent?: boolean
   discountAmount?: boolean
   discountExpiresAt?: boolean
@@ -1431,7 +1431,7 @@ export type SubscriptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   currentPeriodEnd?: boolean
   nextPaymentDate?: boolean
   trialEndsAt?: boolean
-  trialUsedAt?: boolean
+  trialStartedAt?: boolean
   discountPercent?: boolean
   discountAmount?: boolean
   discountExpiresAt?: boolean
@@ -1459,7 +1459,7 @@ export type SubscriptionSelectScalar = {
   currentPeriodEnd?: boolean
   nextPaymentDate?: boolean
   trialEndsAt?: boolean
-  trialUsedAt?: boolean
+  trialStartedAt?: boolean
   discountPercent?: boolean
   discountAmount?: boolean
   discountExpiresAt?: boolean
@@ -1473,7 +1473,7 @@ export type SubscriptionSelectScalar = {
   deletedAt?: boolean
 }
 
-export type SubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "planId" | "status" | "amount" | "currency" | "billingCycle" | "currentPeriodStart" | "currentPeriodEnd" | "nextPaymentDate" | "trialEndsAt" | "trialUsedAt" | "discountPercent" | "discountAmount" | "discountExpiresAt" | "cancelledAt" | "cancelReason" | "paymentMethod" | "paymentProvider" | "externalId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["subscription"]>
+export type SubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "planId" | "status" | "amount" | "currency" | "billingCycle" | "currentPeriodStart" | "currentPeriodEnd" | "nextPaymentDate" | "trialEndsAt" | "trialStartedAt" | "discountPercent" | "discountAmount" | "discountExpiresAt" | "cancelledAt" | "cancelReason" | "paymentMethod" | "paymentProvider" | "externalId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["subscription"]>
 export type SubscriptionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   payments?: boolean | Prisma.Subscription$paymentsArgs<ExtArgs>
   plan?: boolean | Prisma.PlanDefaultArgs<ExtArgs>
@@ -1508,7 +1508,7 @@ export type $SubscriptionPayload<ExtArgs extends runtime.Types.Extensions.Intern
     currentPeriodEnd: Date | null
     nextPaymentDate: Date | null
     trialEndsAt: Date | null
-    trialUsedAt: Date | null
+    trialStartedAt: Date | null
     discountPercent: number
     discountAmount: runtime.Decimal
     discountExpiresAt: Date | null
@@ -1957,7 +1957,7 @@ export interface SubscriptionFieldRefs {
   readonly currentPeriodEnd: Prisma.FieldRef<"Subscription", 'DateTime'>
   readonly nextPaymentDate: Prisma.FieldRef<"Subscription", 'DateTime'>
   readonly trialEndsAt: Prisma.FieldRef<"Subscription", 'DateTime'>
-  readonly trialUsedAt: Prisma.FieldRef<"Subscription", 'DateTime'>
+  readonly trialStartedAt: Prisma.FieldRef<"Subscription", 'DateTime'>
   readonly discountPercent: Prisma.FieldRef<"Subscription", 'Int'>
   readonly discountAmount: Prisma.FieldRef<"Subscription", 'Decimal'>
   readonly discountExpiresAt: Prisma.FieldRef<"Subscription", 'DateTime'>

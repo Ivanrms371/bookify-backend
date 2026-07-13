@@ -7,14 +7,12 @@ import { GoogleService } from './infrastructure/google/google.service';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
 import { AuthCallbackHandler } from './application/auth-callback.handler';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { AuthenticatedRequest } from 'src/auth/types/express-request.type';
 import { PasswordService } from './application/password.service';
 import { ForgotPasswordDto, ResetPasswordDto } from './dto/forgot-password.dto';
 import { CookieService } from 'src/shared/cookies/cookie.service';
 import { COOKIE_KEYS } from 'src/shared/cookies/cookie.key';
 
-@Public()
 @Controller('auth')
 export class AuthController {
   private readonly appUrl: string;
@@ -29,31 +27,31 @@ export class AuthController {
     this.appUrl = this.configService.get<string>('APP_URL') || 'http://localhost:5173';
   }
 
+  @Get('me')
+  me(@Req() req: AuthenticatedRequest) {
+    return this.authService.getMe(req.user.userId);
+  }
+
+  @Public()
   @Post('login')
   async login(@Req() req: Request, @Res() res: Response, @Body() dto: LoginDto) {
     const deviceId = this.cookieService.get(req, COOKIE_KEYS.DEVICE_ID);
-    const { accessToken, refreshToken, deviceId: newDeviceId } = await this.authService.login(dto, deviceId);
+    const { accessToken, refreshToken, deviceId: newDeviceId, userId } = await this.authService.login(dto, deviceId);
     this.cookieService.set(res, COOKIE_KEYS.ACCESS_TOKEN, accessToken);
     this.cookieService.set(res, COOKIE_KEYS.REFRESH_TOKEN, refreshToken);
     this.cookieService.set(res, COOKIE_KEYS.DEVICE_ID, newDeviceId);
-    res.send({
-      success: true,
-    });
+
+    const { user, tenant } = await this.authService.getMe(userId);
+    res.send({ user, tenant });
   }
 
+  @Public()
   @Post('signup')
   async signup(@Req() req: Request, @Body() dto: SignupDto) {
-    try {
-      await this.authService.signup(dto);
-      return {
-        success: true,
-        message: 'Usuario registrado exitosamente',
-      };
-    } catch (error) {
-      throw error;
-    }
+    return await this.authService.signup(dto);
   }
 
+  @Public()
   @Get('google')
   google(@Req() req: Request, @Res() res: Response) {
     const deviceId = this.cookieService.get(req, COOKIE_KEYS.DEVICE_ID);
@@ -61,6 +59,7 @@ export class AuthController {
     res.redirect(url);
   }
 
+  @Public()
   @Get('google/callback')
   async googleCallback(@Req() req: Request, @Res() res: Response, @Query() query: { code: string; state: string }) {
     try {
@@ -79,30 +78,30 @@ export class AuthController {
     }
   }
 
+  @Public()
   @Post('refresh')
   async refresh(@Req() req: Request, @Res() res: Response) {
-    console.log('Refresh');
     const refreshToken = this.cookieService.getOrFail(req, COOKIE_KEYS.REFRESH_TOKEN);
     if (!refreshToken) {
       throw new UnauthorizedException('Inicia sesión para continuar');
     }
     const { accessToken, refreshToken: newRefreshToken } = await this.authService.refresh(refreshToken);
     this.cookieService.set(res, COOKIE_KEYS.ACCESS_TOKEN, accessToken);
-    this.cookieService.set(res, COOKIE_KEYS.REFRESH_TOKEN, refreshToken);
+    this.cookieService.set(res, COOKIE_KEYS.REFRESH_TOKEN, newRefreshToken);
     res.json({ success: true });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logout(@Req() req: AuthenticatedRequest, @Res() res: Response) {
-    const jti = req.user.jti;
+    const jti = req.user?.jti;
+    console.log('Logout', jti);
+    if (!jti) res.json({ success: false });
     await this.authService.logout(jti);
     this.cookieService.clear(res, COOKIE_KEYS.ACCESS_TOKEN);
     this.cookieService.clear(res, COOKIE_KEYS.REFRESH_TOKEN);
     res.json({ success: true });
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('logout-all')
   async logoutAll(@Req() req: AuthenticatedRequest, @Res() res: Response) {
     const userId = req.user.userId;
@@ -112,6 +111,7 @@ export class AuthController {
     res.json({ success: true });
   }
 
+  @Public()
   @Get('email/confirm')
   async confirmEmail(@Res() res: Response, @Query() query: { token: string }) {
     try {
@@ -125,11 +125,13 @@ export class AuthController {
     }
   }
 
+  @Public()
   @Post('password/forgot')
   async forgotPassword(@Body() dto: ForgotPasswordDto) {
     return this.passwordService.forgotPassword(dto);
   }
 
+  @Public()
   @Post('password/reset')
   async resetPassword(@Body() dto: ResetPasswordDto) {
     return this.passwordService.resetPassword(dto);

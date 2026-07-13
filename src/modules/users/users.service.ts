@@ -1,20 +1,16 @@
 import bcrypt from 'bcryptjs';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { Prisma } from 'src/generated/prisma/client';
-import { UserUpdateInput } from 'src/generated/prisma/models';
 import { CreateFromInvitationDto } from './dto/create-from-invitation.dto';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { UserMapper } from './mappers/user.mapper';
+import { UpdateUserInput } from './types/update-user.type';
+import { mapMeResponse } from './mappers/me.mapper';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private readonly usersRepository: UsersRepository,
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly usersRepository: UsersRepository) {}
 
   async createUser(data: CreateUserDto, tx?: Prisma.TransactionClient) {
     return await this.usersRepository.create({ ...data }, tx);
@@ -36,17 +32,14 @@ export class UsersService {
     );
   }
 
-  async getMe(userId: string) {
-    const user = await this.usersRepository.getMeWithTenant(userId);
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    return UserMapper.toMeResponse(user);
+  async findMeById(userId: string) {
+    const data = await this.usersRepository.getMe(userId);
+    console.log('data', data);
+    const map = mapMeResponse(data);
+    return map;
   }
 
-  async updateUser(id: string, data: UserUpdateInput, tx?: Prisma.TransactionClient) {
+  async update(id: string, data: UpdateUserInput, tx?: Prisma.TransactionClient) {
     const user = await this.usersRepository.findById(id, tx);
     if (!user) {
       throw new NotFoundException('User not found');

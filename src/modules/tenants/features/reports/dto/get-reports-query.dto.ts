@@ -9,12 +9,12 @@ export class GetReportsQueryDto {
   endDate: string;
 
   @IsOptional()
-  @Type(() => Number) 
+  @Type(() => Number)
   @IsInt()
   @Min(1)
   limit?: number;
 
   @IsOptional()
-  @IsUUID('7', { message: 'staffId must be a valid UUIDv7' }) 
-  staffId?: string;
+  @IsUUID('7', { message: 'employeeId must be a valid UUIDv7' })
+  employeeId?: string;
 }

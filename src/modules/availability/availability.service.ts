@@ -22,8 +22,8 @@ export class AvailabilityService {
     return slots.length > 0;
   }
 
-  async getBaseConfig(staffId: string) {
-    const config = await this.availability.getAvailabilityConfig(staffId);
+  async getBaseConfig(employeeId: string) {
+    const config = await this.availability.getAvailabilityConfig(employeeId);
 
     if (!config || !config?.tenant?.settings) {
       throw new BadRequestException('No se encontro disponibilidad para la configuracion base');
@@ -40,10 +40,10 @@ export class AvailabilityService {
     const nowUtc = new Date();
     const localDate = toZonedTime(nowUtc, availabilityConfig.timeZone);
 
-    const { exceptions } = await this.availability.getAppointmentsAndExceptions(staffId, localDate, availabilityConfig.maxAdvancedDays);
+    const { exceptions } = await this.availability.getAppointmentsAndExceptions(employeeId, localDate, availabilityConfig.maxAdvancedDays);
 
     const nextResponse = await this.findNextAvailableDate({
-      staffId,
+      employeeId,
       date: localDate,
       strategy: 'dynamic',
       serviceDuration: 45,
@@ -59,8 +59,8 @@ export class AvailabilityService {
     };
   }
 
-  async getSlots(staffId: string, dateParam?: string) {
-    const config = await this.availability.getAvailabilityConfig(staffId);
+  async getSlots(employeeId: string, dateParam?: string) {
+    const config = await this.availability.getAvailabilityConfig(employeeId);
 
     if (!config || !config?.tenant?.settings) {
       throw new BadRequestException('No se encontro disponibilidad para la fecha');
@@ -78,8 +78,8 @@ export class AvailabilityService {
       const parsedDate = new Date(`${dateParam}T00:00:00`);
       const targetDate = toZonedTime(parsedDate, availabilityConfig.timeZone);
       const day = getDay(targetDate);
-      
-      const dayData = await this.availability.getAppointmentsAndExceptions(staffId, targetDate, 0);
+
+      const dayData = await this.availability.getAppointmentsAndExceptions(employeeId, targetDate, 0);
       const activeException = this.findExceptionForDate(targetDate, day, dayData.exceptions);
       const busyBlocks = this.resolveBusyBlocks(dayData.appointments, availabilityConfig.timeZone);
       const workBlocks = this.resolveWorkingHours(availabilityConfig.workingHours, day, activeException);
@@ -101,7 +101,7 @@ export class AvailabilityService {
     const day = getDay(localDate);
 
     // Get Appointments and Exceptions (only today)
-    const todayData = await this.availability.getAppointmentsAndExceptions(staffId, localDate, 0);
+    const todayData = await this.availability.getAppointmentsAndExceptions(employeeId, localDate, 0);
 
     // Find exception for today
     const todayException = this.findExceptionForDate(localDate, day, todayData.exceptions);
@@ -132,7 +132,7 @@ export class AvailabilityService {
 
     // Find next available date
     const nextResponse = await this.findNextAvailableDate({
-      staffId,
+      employeeId,
       date: localDate,
       strategy: 'dynamic',
       serviceDuration: 45,
@@ -145,8 +145,8 @@ export class AvailabilityService {
     };
   }
 
-  private async findNextAvailableDate({ staffId, date, config, serviceDuration }: FindNextAvailableDateParams) {
-    const { appointments, exceptions } = await this.availability.getAppointmentsAndExceptions(staffId, date, this.MAX_DAYS);
+  private async findNextAvailableDate({ employeeId, date, config, serviceDuration }: FindNextAvailableDateParams) {
+    const { appointments, exceptions } = await this.availability.getAppointmentsAndExceptions(employeeId, date, this.MAX_DAYS);
 
     const busyBlockGroups = this.groupBusyBlocksByDay(appointments, config.timeZone);
     const exceptionMap = this.groupExceptionsByDay(exceptions);
@@ -227,8 +227,8 @@ export class AvailabilityService {
         const key = getKey(localStartTime);
         if (!map.has(key)) map.set(key, []);
         map.get(key)!.push({
-          startMinutes: dateToMinutes(localStartTime, timeZone),
-          endMinutes: dateToMinutes(localEndTime, timeZone),
+          opensAt: dateToMinutes(localStartTime, timeZone),
+          closesAt: dateToMinutes(localEndTime, timeZone),
         });
       }
     }
@@ -243,8 +243,8 @@ export class AvailabilityService {
         const localEndTime = toZonedTime(block.endTime, timeZone);
 
         blocks.push({
-          startMinutes: dateToMinutes(localStartTime, timeZone),
-          endMinutes: dateToMinutes(localEndTime, timeZone),
+          opensAt: dateToMinutes(localStartTime, timeZone),
+          closesAt: dateToMinutes(localEndTime, timeZone),
         });
       }
     }
@@ -262,8 +262,8 @@ export class AvailabilityService {
     for (const wh of workingHours) {
       if (wh.dayOfWeek === day) {
         blocks.push({
-          startMinutes: wh.startMinutes,
-          endMinutes: wh.endMinutes,
+          opensAt: wh.opensAt,
+          closesAt: wh.closesAt,
         });
       }
     }

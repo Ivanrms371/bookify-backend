@@ -2,8 +2,8 @@ export interface AppointmentCancelledEvent {
   appointmentId: string;
   tenantId: string;
   userId: string;
-  staffId: string;
-  staffName: string;
+  employeeId: string;
+  employeeName: string;
   customerId: string;
   customerName: string;
   serviceId: string;
@@ -14,11 +14,11 @@ export interface AppointmentCancelledEvent {
   cancelledAt: Date;
 }
 
-export interface AppointmentCancelledByStaffEvent {
+export interface AppointmentCancelledByEmployeeEvent {
   appointmentId: string;
   tenantId: string;
   userId: string;
-  staffName: string;
+  employeeName: string;
   customerName: string;
   startTime: Date;
   reason?: string;

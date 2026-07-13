@@ -4,7 +4,7 @@ export type FindTenantAppointmentsFilters = {
   startDate?: Date;
   endDate?: Date;
   status?: AppointmentStatus;
-  staffId?: string;
+  employeeId?: string;
   customerId?: string;
   upcoming?: boolean;
   limit?: number;

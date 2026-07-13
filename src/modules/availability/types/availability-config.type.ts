@@ -1,7 +1,7 @@
 type WorkingHour = {
   dayOfWeek: number;
-  startMinutes: number;
-  endMinutes: number;
+  opensAt: number;
+  closesAt: number;
 };
 
 type Settings = {

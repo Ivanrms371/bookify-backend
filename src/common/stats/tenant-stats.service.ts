@@ -4,7 +4,7 @@ import {
   TenantLifetimeStatsUpsertArgs,
   TransactionClient,
 } from 'src/generated/prisma/internal/prismaNamespace';
-import { eachDayOfInterval, startOfDay } from 'date-fns';
+import { eachDayOfInterval, getMonth, getYear, startOfDay } from 'date-fns';
 import { OnAppointmentCompletedData } from 'src/modules/appointments/domain/types/on-appointment-completed.type';
 import { OnAppointmentCreatedData } from 'src/modules/appointments/domain/types/on-appointment-created.type';
 import { OnAppointmentCancelledData } from 'src/modules/appointments/domain/types/on-appointment-cancelled.type';
@@ -15,13 +15,13 @@ import { PrismaService } from 'src/shared/prisma/prisma.service';
 
 /**
  * Service responsible for managing tenant-wide cumulative statistics.
- * 
+ *
  * It monitors appointment lifecycle events to update:
  * - Lifetime metrics (total appointments, revenue, completions, etc.) for the tenant.
  * - Daily granularity stats for reporting and dashboard visualization.
  * - Quota management (limiting the number of appointments per billing cycle).
- * 
- * Like other stats services, it handles state transitions atomically to prevent 
+ *
+ * Like other stats services, it handles state transitions atomically to prevent
  * double-counting or orphaned metrics.
  */
 @Injectable()
@@ -31,7 +31,7 @@ export class TenantStatsService {
   /**
    * Updates global and daily stats when a new appointment is created.
    * Also increments the tenant's usage quota for the current period.
-   * 
+   *
    * @param data Details of the new appointment
    * @param tx Transaction client
    */
@@ -72,14 +72,16 @@ export class TenantStatsService {
       },
     });
 
-    await tx.tenantQuota.update({
+    await tx.tenantUsage.update({
       where: {
-        tenantId: data.tenantId,
+        tenantId_periodMonth_periodYear: {
+          tenantId: data.tenantId,
+          periodMonth: getMonth(date),
+          periodYear: getYear(date),
+        },
       },
       data: {
-        appointmentCount: {
-          increment: 1,
-        },
+        appointmentCount: { increment: 1 },
       },
     });
   }
@@ -87,7 +89,7 @@ export class TenantStatsService {
   /**
    * Updates stats when an appointment is completed.
    * Handles transitions from NO_SHOW or CANCELLED to COMPLETED by adjusting counters.
-   * 
+   *
    * @param data Details including current revenue and previous status
    * @param tx Transaction client
    */
@@ -158,7 +160,7 @@ export class TenantStatsService {
   /**
    * Updates stats when an appointment is cancelled.
    * Decrements completion/no-show counters if an existing status is overridden.
-   * 
+   *
    * @param data Details including previous status and revenue to adjust
    * @param tx Transaction client
    */
@@ -223,7 +225,7 @@ export class TenantStatsService {
   /**
    * Updates stats when an appointment is marked as no-show.
    * If the appointment was previously completed, revenue and completion counts are rolled back.
-   * 
+   *
    * @param data Details including previous status and revenue to adjust
    * @param tx Transaction client
    */
@@ -302,7 +304,6 @@ export class TenantStatsService {
         newCustomers: true,
       },
     });
-
   }
 
   async getStatsForToday(tenantId: string) {
@@ -352,4 +353,3 @@ export class TenantStatsService {
     });
   }
 }
-

@@ -65,7 +65,7 @@ export class SessionsRepository extends BaseRepository {
    * Marcar sesión como revocada
    */
   async revoke(jti: string, tx?: TransactionClient) {
-    return this.db(tx).session.update({
+    return this.db(tx).session.updateMany({
       where: { jti },
       data: { revokedAt: new Date() },
     });

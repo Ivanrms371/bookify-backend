@@ -2,7 +2,7 @@ export type AppointmentRescheduledVariables = {
   customerName: string;
   appointmentId: string;
   serviceName: string;
-  staffName: string;
+  employeeName: string;
   date: string;
   time: string;
 };

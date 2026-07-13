@@ -32,10 +32,18 @@ export type VerificationType = (typeof VerificationType)[keyof typeof Verificati
 export const MembershipRole = {
   OWNER: 'OWNER',
   ADMIN: 'ADMIN',
-  STAFF: 'STAFF'
+  EMPLOYEE: 'EMPLOYEE'
 } as const
 
 export type MembershipRole = (typeof MembershipRole)[keyof typeof MembershipRole]
+
+
+export const CommissionType = {
+  PERCENTAGE: 'PERCENTAGE',
+  FIXED: 'FIXED'
+} as const
+
+export type CommissionType = (typeof CommissionType)[keyof typeof CommissionType]
 
 
 export const MembershipStatus = {
@@ -57,6 +65,14 @@ export const PlatformAdminLevel = {
 export type PlatformAdminLevel = (typeof PlatformAdminLevel)[keyof typeof PlatformAdminLevel]
 
 
+export const WorkspaceType = {
+  INDEPENDENT: 'INDEPENDENT',
+  MULTI_STAFF: 'MULTI_STAFF'
+} as const
+
+export type WorkspaceType = (typeof WorkspaceType)[keyof typeof WorkspaceType]
+
+
 export const TenantType = {
   BARBERSHOP: 'BARBERSHOP',
   HAIRDRESSING_SALON: 'HAIRDRESSING_SALON',
@@ -71,6 +87,20 @@ export const TenantType = {
 export type TenantType = (typeof TenantType)[keyof typeof TenantType]
 
 
+export const OnboardingStatus = {
+  WORKSPACE_TYPE: 'WORKSPACE_TYPE',
+  BUSINESS_DETAILS: 'BUSINESS_DETAILS',
+  SCHEDULE: 'SCHEDULE',
+  SERVICES: 'SERVICES',
+  TEAM_INVITE: 'TEAM_INVITE',
+  CUSTOMIZE: 'CUSTOMIZE',
+  CONFIRM: 'CONFIRM',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type OnboardingStatus = (typeof OnboardingStatus)[keyof typeof OnboardingStatus]
+
+
 export const PlanType = {
   FREE: 'FREE',
   PRO: 'PRO',
@@ -80,9 +110,18 @@ export const PlanType = {
 export type PlanType = (typeof PlanType)[keyof typeof PlanType]
 
 
+export const Currency = {
+  UYU: 'UYU',
+  USD: 'USD',
+  BRL: 'BRL'
+} as const
+
+export type Currency = (typeof Currency)[keyof typeof Currency]
+
+
 export const BillingCycle = {
   MONTHLY: 'MONTHLY',
-  YEARLY: 'YEARLY'
+  ANNUAL: 'ANNUAL'
 } as const
 
 export type BillingCycle = (typeof BillingCycle)[keyof typeof BillingCycle]

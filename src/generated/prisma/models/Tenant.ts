@@ -27,13 +27,21 @@ export type AggregateTenant = {
 export type TenantMinAggregateOutputType = {
   id: string | null
   ownerId: string | null
-  name: string | null
   slug: string | null
+  name: string | null
   type: $Enums.TenantType | null
   description: string | null
+  workspaceType: $Enums.WorkspaceType | null
+  colorTheme: string | null
+  isPublic: boolean | null
+  isActive: boolean | null
+  onboardingStatus: $Enums.OnboardingStatus | null
+  phone: string | null
   addressLine1: string | null
   addressLine2: string | null
-  phone: string | null
+  city: string | null
+  province: string | null
+  country: string | null
   logoUrl: string | null
   logoPublicId: string | null
   coverUrl: string | null
@@ -41,21 +49,26 @@ export type TenantMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
-  isActive: boolean | null
-  onboardingCompleted: boolean | null
-  isPublic: boolean | null
 }
 
 export type TenantMaxAggregateOutputType = {
   id: string | null
   ownerId: string | null
-  name: string | null
   slug: string | null
+  name: string | null
   type: $Enums.TenantType | null
   description: string | null
+  workspaceType: $Enums.WorkspaceType | null
+  colorTheme: string | null
+  isPublic: boolean | null
+  isActive: boolean | null
+  onboardingStatus: $Enums.OnboardingStatus | null
+  phone: string | null
   addressLine1: string | null
   addressLine2: string | null
-  phone: string | null
+  city: string | null
+  province: string | null
+  country: string | null
   logoUrl: string | null
   logoPublicId: string | null
   coverUrl: string | null
@@ -63,21 +76,26 @@ export type TenantMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
-  isActive: boolean | null
-  onboardingCompleted: boolean | null
-  isPublic: boolean | null
 }
 
 export type TenantCountAggregateOutputType = {
   id: number
   ownerId: number
-  name: number
   slug: number
+  name: number
   type: number
   description: number
+  workspaceType: number
+  colorTheme: number
+  isPublic: number
+  isActive: number
+  onboardingStatus: number
+  phone: number
   addressLine1: number
   addressLine2: number
-  phone: number
+  city: number
+  province: number
+  country: number
   logoUrl: number
   logoPublicId: number
   coverUrl: number
@@ -85,9 +103,6 @@ export type TenantCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   deletedAt: number
-  isActive: number
-  onboardingCompleted: number
-  isPublic: number
   _all: number
 }
 
@@ -95,13 +110,21 @@ export type TenantCountAggregateOutputType = {
 export type TenantMinAggregateInputType = {
   id?: true
   ownerId?: true
-  name?: true
   slug?: true
+  name?: true
   type?: true
   description?: true
+  workspaceType?: true
+  colorTheme?: true
+  isPublic?: true
+  isActive?: true
+  onboardingStatus?: true
+  phone?: true
   addressLine1?: true
   addressLine2?: true
-  phone?: true
+  city?: true
+  province?: true
+  country?: true
   logoUrl?: true
   logoPublicId?: true
   coverUrl?: true
@@ -109,21 +132,26 @@ export type TenantMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
-  isActive?: true
-  onboardingCompleted?: true
-  isPublic?: true
 }
 
 export type TenantMaxAggregateInputType = {
   id?: true
   ownerId?: true
-  name?: true
   slug?: true
+  name?: true
   type?: true
   description?: true
+  workspaceType?: true
+  colorTheme?: true
+  isPublic?: true
+  isActive?: true
+  onboardingStatus?: true
+  phone?: true
   addressLine1?: true
   addressLine2?: true
-  phone?: true
+  city?: true
+  province?: true
+  country?: true
   logoUrl?: true
   logoPublicId?: true
   coverUrl?: true
@@ -131,21 +159,26 @@ export type TenantMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
-  isActive?: true
-  onboardingCompleted?: true
-  isPublic?: true
 }
 
 export type TenantCountAggregateInputType = {
   id?: true
   ownerId?: true
-  name?: true
   slug?: true
+  name?: true
   type?: true
   description?: true
+  workspaceType?: true
+  colorTheme?: true
+  isPublic?: true
+  isActive?: true
+  onboardingStatus?: true
+  phone?: true
   addressLine1?: true
   addressLine2?: true
-  phone?: true
+  city?: true
+  province?: true
+  country?: true
   logoUrl?: true
   logoPublicId?: true
   coverUrl?: true
@@ -153,9 +186,6 @@ export type TenantCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
-  isActive?: true
-  onboardingCompleted?: true
-  isPublic?: true
   _all?: true
 }
 
@@ -234,13 +264,21 @@ export type TenantGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type TenantGroupByOutputType = {
   id: string
   ownerId: string
-  name: string | null
   slug: string | null
+  name: string | null
   type: $Enums.TenantType | null
   description: string | null
+  workspaceType: $Enums.WorkspaceType | null
+  colorTheme: string | null
+  isPublic: boolean
+  isActive: boolean
+  onboardingStatus: $Enums.OnboardingStatus
+  phone: string | null
   addressLine1: string | null
   addressLine2: string | null
-  phone: string | null
+  city: string | null
+  province: string | null
+  country: string | null
   logoUrl: string | null
   logoPublicId: string | null
   coverUrl: string | null
@@ -248,9 +286,6 @@ export type TenantGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
-  isActive: boolean
-  onboardingCompleted: boolean
-  isPublic: boolean
   _count: TenantCountAggregateOutputType | null
   _min: TenantMinAggregateOutputType | null
   _max: TenantMaxAggregateOutputType | null
@@ -277,13 +312,21 @@ export type TenantWhereInput = {
   NOT?: Prisma.TenantWhereInput | Prisma.TenantWhereInput[]
   id?: Prisma.UuidFilter<"Tenant"> | string
   ownerId?: Prisma.UuidFilter<"Tenant"> | string
-  name?: Prisma.StringNullableFilter<"Tenant"> | string | null
   slug?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  name?: Prisma.StringNullableFilter<"Tenant"> | string | null
   type?: Prisma.EnumTenantTypeNullableFilter<"Tenant"> | $Enums.TenantType | null
   description?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  workspaceType?: Prisma.EnumWorkspaceTypeNullableFilter<"Tenant"> | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  isPublic?: Prisma.BoolFilter<"Tenant"> | boolean
+  isActive?: Prisma.BoolFilter<"Tenant"> | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFilter<"Tenant"> | $Enums.OnboardingStatus
+  phone?: Prisma.StringNullableFilter<"Tenant"> | string | null
   addressLine1?: Prisma.StringNullableFilter<"Tenant"> | string | null
   addressLine2?: Prisma.StringNullableFilter<"Tenant"> | string | null
-  phone?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  city?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  province?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  country?: Prisma.StringNullableFilter<"Tenant"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Tenant"> | string | null
   logoPublicId?: Prisma.StringNullableFilter<"Tenant"> | string | null
   coverUrl?: Prisma.StringNullableFilter<"Tenant"> | string | null
@@ -291,39 +334,43 @@ export type TenantWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Tenant"> | Date | string | null
-  isActive?: Prisma.BoolFilter<"Tenant"> | boolean
-  onboardingCompleted?: Prisma.BoolFilter<"Tenant"> | boolean
-  isPublic?: Prisma.BoolFilter<"Tenant"> | boolean
+  settings?: Prisma.XOR<Prisma.TenantSettingsNullableScalarRelationFilter, Prisma.TenantSettingsWhereInput> | null
+  subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
+  lifetimeStats?: Prisma.XOR<Prisma.TenantLifetimeStatsNullableScalarRelationFilter, Prisma.TenantLifetimeStatsWhereInput> | null
+  employees?: Prisma.EmployeeListRelationFilter
+  memberships?: Prisma.MembershipListRelationFilter
+  services?: Prisma.ServiceListRelationFilter
   appointments?: Prisma.AppointmentListRelationFilter
   customers?: Prisma.CustomerListRelationFilter
-  inAppNotifications?: Prisma.InAppNotificationListRelationFilter
-  members?: Prisma.MembershipListRelationFilter
-  payments?: Prisma.PaymentListRelationFilter
-  scheduleExceptions?: Prisma.ScheduleExceptionListRelationFilter
-  services?: Prisma.ServiceListRelationFilter
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsListRelationFilter
-  staffDailyStats?: Prisma.StaffDailyStatsListRelationFilter
-  staffs?: Prisma.StaffListRelationFilter
-  subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
-  dailyStats?: Prisma.TenantDailyStatsListRelationFilter
-  lifetimeStats?: Prisma.XOR<Prisma.TenantLifetimeStatsNullableScalarRelationFilter, Prisma.TenantLifetimeStatsWhereInput> | null
-  onboarding?: Prisma.XOR<Prisma.TenantOnboardingNullableScalarRelationFilter, Prisma.TenantOnboardingWhereInput> | null
-  quota?: Prisma.XOR<Prisma.TenantQuotaNullableScalarRelationFilter, Prisma.TenantQuotaWhereInput> | null
-  settings?: Prisma.XOR<Prisma.TenantSettingsNullableScalarRelationFilter, Prisma.TenantSettingsWhereInput> | null
   tenantWorkingHours?: Prisma.TenantWorkingHoursListRelationFilter
-  workingHours?: Prisma.WorkingHoursListRelationFilter
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursListRelationFilter
+  scheduleExceptions?: Prisma.ScheduleExceptionListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
+  usage?: Prisma.TenantUsageListRelationFilter
+  dailyStats?: Prisma.TenantDailyStatsListRelationFilter
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsListRelationFilter
+  employeeDailyStats?: Prisma.EmployeeDailyStatsListRelationFilter
+  inAppNotifications?: Prisma.InAppNotificationListRelationFilter
 }
 
 export type TenantOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  name?: Prisma.SortOrderInput | Prisma.SortOrder
   slug?: Prisma.SortOrderInput | Prisma.SortOrder
+  name?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  workspaceType?: Prisma.SortOrderInput | Prisma.SortOrder
+  colorTheme?: Prisma.SortOrderInput | Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  onboardingStatus?: Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   addressLine1?: Prisma.SortOrderInput | Prisma.SortOrder
   addressLine2?: Prisma.SortOrderInput | Prisma.SortOrder
-  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
+  province?: Prisma.SortOrderInput | Prisma.SortOrder
+  country?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   logoPublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   coverUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -331,42 +378,46 @@ export type TenantOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  onboardingCompleted?: Prisma.SortOrder
-  isPublic?: Prisma.SortOrder
+  settings?: Prisma.TenantSettingsOrderByWithRelationInput
+  subscription?: Prisma.SubscriptionOrderByWithRelationInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsOrderByWithRelationInput
+  employees?: Prisma.EmployeeOrderByRelationAggregateInput
+  memberships?: Prisma.MembershipOrderByRelationAggregateInput
+  services?: Prisma.ServiceOrderByRelationAggregateInput
   appointments?: Prisma.AppointmentOrderByRelationAggregateInput
   customers?: Prisma.CustomerOrderByRelationAggregateInput
-  inAppNotifications?: Prisma.InAppNotificationOrderByRelationAggregateInput
-  members?: Prisma.MembershipOrderByRelationAggregateInput
-  payments?: Prisma.PaymentOrderByRelationAggregateInput
-  scheduleExceptions?: Prisma.ScheduleExceptionOrderByRelationAggregateInput
-  services?: Prisma.ServiceOrderByRelationAggregateInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsOrderByRelationAggregateInput
-  staffDailyStats?: Prisma.StaffDailyStatsOrderByRelationAggregateInput
-  staffs?: Prisma.StaffOrderByRelationAggregateInput
-  subscription?: Prisma.SubscriptionOrderByWithRelationInput
-  dailyStats?: Prisma.TenantDailyStatsOrderByRelationAggregateInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsOrderByWithRelationInput
-  onboarding?: Prisma.TenantOnboardingOrderByWithRelationInput
-  quota?: Prisma.TenantQuotaOrderByWithRelationInput
-  settings?: Prisma.TenantSettingsOrderByWithRelationInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursOrderByRelationAggregateInput
-  workingHours?: Prisma.WorkingHoursOrderByRelationAggregateInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursOrderByRelationAggregateInput
+  scheduleExceptions?: Prisma.ScheduleExceptionOrderByRelationAggregateInput
+  payments?: Prisma.PaymentOrderByRelationAggregateInput
+  usage?: Prisma.TenantUsageOrderByRelationAggregateInput
+  dailyStats?: Prisma.TenantDailyStatsOrderByRelationAggregateInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsOrderByRelationAggregateInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsOrderByRelationAggregateInput
+  inAppNotifications?: Prisma.InAppNotificationOrderByRelationAggregateInput
 }
 
 export type TenantWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  ownerId?: string
   slug?: string
   AND?: Prisma.TenantWhereInput | Prisma.TenantWhereInput[]
   OR?: Prisma.TenantWhereInput[]
   NOT?: Prisma.TenantWhereInput | Prisma.TenantWhereInput[]
-  ownerId?: Prisma.UuidFilter<"Tenant"> | string
   name?: Prisma.StringNullableFilter<"Tenant"> | string | null
   type?: Prisma.EnumTenantTypeNullableFilter<"Tenant"> | $Enums.TenantType | null
   description?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  workspaceType?: Prisma.EnumWorkspaceTypeNullableFilter<"Tenant"> | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  isPublic?: Prisma.BoolFilter<"Tenant"> | boolean
+  isActive?: Prisma.BoolFilter<"Tenant"> | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFilter<"Tenant"> | $Enums.OnboardingStatus
+  phone?: Prisma.StringNullableFilter<"Tenant"> | string | null
   addressLine1?: Prisma.StringNullableFilter<"Tenant"> | string | null
   addressLine2?: Prisma.StringNullableFilter<"Tenant"> | string | null
-  phone?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  city?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  province?: Prisma.StringNullableFilter<"Tenant"> | string | null
+  country?: Prisma.StringNullableFilter<"Tenant"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Tenant"> | string | null
   logoPublicId?: Prisma.StringNullableFilter<"Tenant"> | string | null
   coverUrl?: Prisma.StringNullableFilter<"Tenant"> | string | null
@@ -374,39 +425,43 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Tenant"> | Date | string | null
-  isActive?: Prisma.BoolFilter<"Tenant"> | boolean
-  onboardingCompleted?: Prisma.BoolFilter<"Tenant"> | boolean
-  isPublic?: Prisma.BoolFilter<"Tenant"> | boolean
+  settings?: Prisma.XOR<Prisma.TenantSettingsNullableScalarRelationFilter, Prisma.TenantSettingsWhereInput> | null
+  subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
+  lifetimeStats?: Prisma.XOR<Prisma.TenantLifetimeStatsNullableScalarRelationFilter, Prisma.TenantLifetimeStatsWhereInput> | null
+  employees?: Prisma.EmployeeListRelationFilter
+  memberships?: Prisma.MembershipListRelationFilter
+  services?: Prisma.ServiceListRelationFilter
   appointments?: Prisma.AppointmentListRelationFilter
   customers?: Prisma.CustomerListRelationFilter
-  inAppNotifications?: Prisma.InAppNotificationListRelationFilter
-  members?: Prisma.MembershipListRelationFilter
-  payments?: Prisma.PaymentListRelationFilter
-  scheduleExceptions?: Prisma.ScheduleExceptionListRelationFilter
-  services?: Prisma.ServiceListRelationFilter
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsListRelationFilter
-  staffDailyStats?: Prisma.StaffDailyStatsListRelationFilter
-  staffs?: Prisma.StaffListRelationFilter
-  subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
-  dailyStats?: Prisma.TenantDailyStatsListRelationFilter
-  lifetimeStats?: Prisma.XOR<Prisma.TenantLifetimeStatsNullableScalarRelationFilter, Prisma.TenantLifetimeStatsWhereInput> | null
-  onboarding?: Prisma.XOR<Prisma.TenantOnboardingNullableScalarRelationFilter, Prisma.TenantOnboardingWhereInput> | null
-  quota?: Prisma.XOR<Prisma.TenantQuotaNullableScalarRelationFilter, Prisma.TenantQuotaWhereInput> | null
-  settings?: Prisma.XOR<Prisma.TenantSettingsNullableScalarRelationFilter, Prisma.TenantSettingsWhereInput> | null
   tenantWorkingHours?: Prisma.TenantWorkingHoursListRelationFilter
-  workingHours?: Prisma.WorkingHoursListRelationFilter
-}, "id" | "slug">
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursListRelationFilter
+  scheduleExceptions?: Prisma.ScheduleExceptionListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
+  usage?: Prisma.TenantUsageListRelationFilter
+  dailyStats?: Prisma.TenantDailyStatsListRelationFilter
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsListRelationFilter
+  employeeDailyStats?: Prisma.EmployeeDailyStatsListRelationFilter
+  inAppNotifications?: Prisma.InAppNotificationListRelationFilter
+}, "id" | "ownerId" | "slug">
 
 export type TenantOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  name?: Prisma.SortOrderInput | Prisma.SortOrder
   slug?: Prisma.SortOrderInput | Prisma.SortOrder
+  name?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  workspaceType?: Prisma.SortOrderInput | Prisma.SortOrder
+  colorTheme?: Prisma.SortOrderInput | Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  onboardingStatus?: Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   addressLine1?: Prisma.SortOrderInput | Prisma.SortOrder
   addressLine2?: Prisma.SortOrderInput | Prisma.SortOrder
-  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
+  province?: Prisma.SortOrderInput | Prisma.SortOrder
+  country?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   logoPublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   coverUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -414,9 +469,6 @@ export type TenantOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  onboardingCompleted?: Prisma.SortOrder
-  isPublic?: Prisma.SortOrder
   _count?: Prisma.TenantCountOrderByAggregateInput
   _max?: Prisma.TenantMaxOrderByAggregateInput
   _min?: Prisma.TenantMinOrderByAggregateInput
@@ -428,13 +480,21 @@ export type TenantScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TenantScalarWhereWithAggregatesInput | Prisma.TenantScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"Tenant"> | string
   ownerId?: Prisma.UuidWithAggregatesFilter<"Tenant"> | string
-  name?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   slug?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
+  name?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   type?: Prisma.EnumTenantTypeNullableWithAggregatesFilter<"Tenant"> | $Enums.TenantType | null
   description?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
+  workspaceType?: Prisma.EnumWorkspaceTypeNullableWithAggregatesFilter<"Tenant"> | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
+  isPublic?: Prisma.BoolWithAggregatesFilter<"Tenant"> | boolean
+  isActive?: Prisma.BoolWithAggregatesFilter<"Tenant"> | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusWithAggregatesFilter<"Tenant"> | $Enums.OnboardingStatus
+  phone?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   addressLine1?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   addressLine2?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
-  phone?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
+  city?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
+  province?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
+  country?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   logoUrl?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   logoPublicId?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
   coverUrl?: Prisma.StringNullableWithAggregatesFilter<"Tenant"> | string | null
@@ -442,21 +502,26 @@ export type TenantScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Tenant"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Tenant"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Tenant"> | Date | string | null
-  isActive?: Prisma.BoolWithAggregatesFilter<"Tenant"> | boolean
-  onboardingCompleted?: Prisma.BoolWithAggregatesFilter<"Tenant"> | boolean
-  isPublic?: Prisma.BoolWithAggregatesFilter<"Tenant"> | boolean
 }
 
 export type TenantCreateInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -464,39 +529,43 @@ export type TenantCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -504,39 +573,43 @@ export type TenantUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -544,39 +617,43 @@ export type TenantUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -584,39 +661,43 @@ export type TenantUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateManyInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -624,21 +705,26 @@ export type TenantCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
 }
 
 export type TenantUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -646,21 +732,26 @@ export type TenantUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TenantUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -668,9 +759,6 @@ export type TenantUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type TenantScalarRelationFilter = {
@@ -681,13 +769,21 @@ export type TenantScalarRelationFilter = {
 export type TenantCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  workspaceType?: Prisma.SortOrder
+  colorTheme?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  onboardingStatus?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   addressLine1?: Prisma.SortOrder
   addressLine2?: Prisma.SortOrder
-  phone?: Prisma.SortOrder
+  city?: Prisma.SortOrder
+  province?: Prisma.SortOrder
+  country?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
   logoPublicId?: Prisma.SortOrder
   coverUrl?: Prisma.SortOrder
@@ -695,21 +791,26 @@ export type TenantCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  onboardingCompleted?: Prisma.SortOrder
-  isPublic?: Prisma.SortOrder
 }
 
 export type TenantMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  workspaceType?: Prisma.SortOrder
+  colorTheme?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  onboardingStatus?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   addressLine1?: Prisma.SortOrder
   addressLine2?: Prisma.SortOrder
-  phone?: Prisma.SortOrder
+  city?: Prisma.SortOrder
+  province?: Prisma.SortOrder
+  country?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
   logoPublicId?: Prisma.SortOrder
   coverUrl?: Prisma.SortOrder
@@ -717,21 +818,26 @@ export type TenantMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  onboardingCompleted?: Prisma.SortOrder
-  isPublic?: Prisma.SortOrder
 }
 
 export type TenantMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   ownerId?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   type?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  workspaceType?: Prisma.SortOrder
+  colorTheme?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
+  onboardingStatus?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   addressLine1?: Prisma.SortOrder
   addressLine2?: Prisma.SortOrder
-  phone?: Prisma.SortOrder
+  city?: Prisma.SortOrder
+  province?: Prisma.SortOrder
+  country?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
   logoPublicId?: Prisma.SortOrder
   coverUrl?: Prisma.SortOrder
@@ -739,31 +845,36 @@ export type TenantMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  onboardingCompleted?: Prisma.SortOrder
-  isPublic?: Prisma.SortOrder
 }
 
-export type TenantCreateNestedOneWithoutMembersInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutMembersInput, Prisma.TenantUncheckedCreateWithoutMembersInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutMembersInput
+export type TenantCreateNestedOneWithoutMembershipsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutMembershipsInput, Prisma.TenantUncheckedCreateWithoutMembershipsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutMembershipsInput
   connect?: Prisma.TenantWhereUniqueInput
 }
 
-export type TenantUpdateOneRequiredWithoutMembersNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutMembersInput, Prisma.TenantUncheckedCreateWithoutMembersInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutMembersInput
-  upsert?: Prisma.TenantUpsertWithoutMembersInput
+export type TenantUpdateOneRequiredWithoutMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutMembershipsInput, Prisma.TenantUncheckedCreateWithoutMembershipsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutMembershipsInput
+  upsert?: Prisma.TenantUpsertWithoutMembershipsInput
   connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutMembersInput, Prisma.TenantUpdateWithoutMembersInput>, Prisma.TenantUncheckedUpdateWithoutMembersInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutMembershipsInput, Prisma.TenantUpdateWithoutMembershipsInput>, Prisma.TenantUncheckedUpdateWithoutMembershipsInput>
 }
 
 export type NullableEnumTenantTypeFieldUpdateOperationsInput = {
   set?: $Enums.TenantType | null
 }
 
+export type NullableEnumWorkspaceTypeFieldUpdateOperationsInput = {
+  set?: $Enums.WorkspaceType | null
+}
+
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
+}
+
+export type EnumOnboardingStatusFieldUpdateOperationsInput = {
+  set?: $Enums.OnboardingStatus
 }
 
 export type TenantCreateNestedOneWithoutSettingsInput = {
@@ -794,32 +905,32 @@ export type TenantUpdateOneRequiredWithoutServicesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutServicesInput, Prisma.TenantUpdateWithoutServicesInput>, Prisma.TenantUncheckedUpdateWithoutServicesInput>
 }
 
-export type TenantCreateNestedOneWithoutStaffsInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutStaffsInput, Prisma.TenantUncheckedCreateWithoutStaffsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStaffsInput
+export type TenantCreateNestedOneWithoutEmployeesInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutEmployeesInput, Prisma.TenantUncheckedCreateWithoutEmployeesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutEmployeesInput
   connect?: Prisma.TenantWhereUniqueInput
 }
 
-export type TenantUpdateOneRequiredWithoutStaffsNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutStaffsInput, Prisma.TenantUncheckedCreateWithoutStaffsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStaffsInput
-  upsert?: Prisma.TenantUpsertWithoutStaffsInput
+export type TenantUpdateOneRequiredWithoutEmployeesNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutEmployeesInput, Prisma.TenantUncheckedCreateWithoutEmployeesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutEmployeesInput
+  upsert?: Prisma.TenantUpsertWithoutEmployeesInput
   connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutStaffsInput, Prisma.TenantUpdateWithoutStaffsInput>, Prisma.TenantUncheckedUpdateWithoutStaffsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutEmployeesInput, Prisma.TenantUpdateWithoutEmployeesInput>, Prisma.TenantUncheckedUpdateWithoutEmployeesInput>
 }
 
-export type TenantCreateNestedOneWithoutWorkingHoursInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutWorkingHoursInput, Prisma.TenantUncheckedCreateWithoutWorkingHoursInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutWorkingHoursInput
+export type TenantCreateNestedOneWithoutEmployeeWorkingHoursInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutEmployeeWorkingHoursInput, Prisma.TenantUncheckedCreateWithoutEmployeeWorkingHoursInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutEmployeeWorkingHoursInput
   connect?: Prisma.TenantWhereUniqueInput
 }
 
-export type TenantUpdateOneRequiredWithoutWorkingHoursNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutWorkingHoursInput, Prisma.TenantUncheckedCreateWithoutWorkingHoursInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutWorkingHoursInput
-  upsert?: Prisma.TenantUpsertWithoutWorkingHoursInput
+export type TenantUpdateOneRequiredWithoutEmployeeWorkingHoursNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutEmployeeWorkingHoursInput, Prisma.TenantUncheckedCreateWithoutEmployeeWorkingHoursInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutEmployeeWorkingHoursInput
+  upsert?: Prisma.TenantUpsertWithoutEmployeeWorkingHoursInput
   connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutWorkingHoursInput, Prisma.TenantUpdateWithoutWorkingHoursInput>, Prisma.TenantUncheckedUpdateWithoutWorkingHoursInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutEmployeeWorkingHoursInput, Prisma.TenantUpdateWithoutEmployeeWorkingHoursInput>, Prisma.TenantUncheckedUpdateWithoutEmployeeWorkingHoursInput>
 }
 
 export type TenantCreateNestedOneWithoutTenantWorkingHoursInput = {
@@ -906,32 +1017,32 @@ export type TenantUpdateOneRequiredWithoutLifetimeStatsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutLifetimeStatsInput, Prisma.TenantUpdateWithoutLifetimeStatsInput>, Prisma.TenantUncheckedUpdateWithoutLifetimeStatsInput>
 }
 
-export type TenantCreateNestedOneWithoutStaffDailyStatsInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutStaffDailyStatsInput, Prisma.TenantUncheckedCreateWithoutStaffDailyStatsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStaffDailyStatsInput
+export type TenantCreateNestedOneWithoutEmployeeDailyStatsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutEmployeeDailyStatsInput, Prisma.TenantUncheckedCreateWithoutEmployeeDailyStatsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutEmployeeDailyStatsInput
   connect?: Prisma.TenantWhereUniqueInput
 }
 
-export type TenantUpdateOneRequiredWithoutStaffDailyStatsNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutStaffDailyStatsInput, Prisma.TenantUncheckedCreateWithoutStaffDailyStatsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStaffDailyStatsInput
-  upsert?: Prisma.TenantUpsertWithoutStaffDailyStatsInput
+export type TenantUpdateOneRequiredWithoutEmployeeDailyStatsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutEmployeeDailyStatsInput, Prisma.TenantUncheckedCreateWithoutEmployeeDailyStatsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutEmployeeDailyStatsInput
+  upsert?: Prisma.TenantUpsertWithoutEmployeeDailyStatsInput
   connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutStaffDailyStatsInput, Prisma.TenantUpdateWithoutStaffDailyStatsInput>, Prisma.TenantUncheckedUpdateWithoutStaffDailyStatsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutEmployeeDailyStatsInput, Prisma.TenantUpdateWithoutEmployeeDailyStatsInput>, Prisma.TenantUncheckedUpdateWithoutEmployeeDailyStatsInput>
 }
 
-export type TenantCreateNestedOneWithoutStaffLifetimeStatsInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutStaffLifetimeStatsInput, Prisma.TenantUncheckedCreateWithoutStaffLifetimeStatsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStaffLifetimeStatsInput
+export type TenantCreateNestedOneWithoutEmployeeLifetimeStatsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutEmployeeLifetimeStatsInput, Prisma.TenantUncheckedCreateWithoutEmployeeLifetimeStatsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutEmployeeLifetimeStatsInput
   connect?: Prisma.TenantWhereUniqueInput
 }
 
-export type TenantUpdateOneRequiredWithoutStaffLifetimeStatsNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutStaffLifetimeStatsInput, Prisma.TenantUncheckedCreateWithoutStaffLifetimeStatsInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutStaffLifetimeStatsInput
-  upsert?: Prisma.TenantUpsertWithoutStaffLifetimeStatsInput
+export type TenantUpdateOneRequiredWithoutEmployeeLifetimeStatsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutEmployeeLifetimeStatsInput, Prisma.TenantUncheckedCreateWithoutEmployeeLifetimeStatsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutEmployeeLifetimeStatsInput
+  upsert?: Prisma.TenantUpsertWithoutEmployeeLifetimeStatsInput
   connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutStaffLifetimeStatsInput, Prisma.TenantUpdateWithoutStaffLifetimeStatsInput>, Prisma.TenantUncheckedUpdateWithoutStaffLifetimeStatsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutEmployeeLifetimeStatsInput, Prisma.TenantUpdateWithoutEmployeeLifetimeStatsInput>, Prisma.TenantUncheckedUpdateWithoutEmployeeLifetimeStatsInput>
 }
 
 export type TenantCreateNestedOneWithoutInAppNotificationsInput = {
@@ -948,18 +1059,18 @@ export type TenantUpdateOneRequiredWithoutInAppNotificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutInAppNotificationsInput, Prisma.TenantUpdateWithoutInAppNotificationsInput>, Prisma.TenantUncheckedUpdateWithoutInAppNotificationsInput>
 }
 
-export type TenantCreateNestedOneWithoutQuotaInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutQuotaInput, Prisma.TenantUncheckedCreateWithoutQuotaInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutQuotaInput
+export type TenantCreateNestedOneWithoutUsageInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutUsageInput, Prisma.TenantUncheckedCreateWithoutUsageInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUsageInput
   connect?: Prisma.TenantWhereUniqueInput
 }
 
-export type TenantUpdateOneRequiredWithoutQuotaNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutQuotaInput, Prisma.TenantUncheckedCreateWithoutQuotaInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutQuotaInput
-  upsert?: Prisma.TenantUpsertWithoutQuotaInput
+export type TenantUpdateOneRequiredWithoutUsageNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutUsageInput, Prisma.TenantUncheckedCreateWithoutUsageInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUsageInput
+  upsert?: Prisma.TenantUpsertWithoutUsageInput
   connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutQuotaInput, Prisma.TenantUpdateWithoutQuotaInput>, Prisma.TenantUncheckedUpdateWithoutQuotaInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutUsageInput, Prisma.TenantUpdateWithoutUsageInput>, Prisma.TenantUncheckedUpdateWithoutUsageInput>
 }
 
 export type TenantCreateNestedOneWithoutSubscriptionInput = {
@@ -990,30 +1101,24 @@ export type TenantUpdateOneRequiredWithoutPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutPaymentsInput, Prisma.TenantUpdateWithoutPaymentsInput>, Prisma.TenantUncheckedUpdateWithoutPaymentsInput>
 }
 
-export type TenantCreateNestedOneWithoutOnboardingInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingInput, Prisma.TenantUncheckedCreateWithoutOnboardingInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOnboardingInput
-  connect?: Prisma.TenantWhereUniqueInput
-}
-
-export type TenantUpdateOneRequiredWithoutOnboardingNestedInput = {
-  create?: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingInput, Prisma.TenantUncheckedCreateWithoutOnboardingInput>
-  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutOnboardingInput
-  upsert?: Prisma.TenantUpsertWithoutOnboardingInput
-  connect?: Prisma.TenantWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutOnboardingInput, Prisma.TenantUpdateWithoutOnboardingInput>, Prisma.TenantUncheckedUpdateWithoutOnboardingInput>
-}
-
-export type TenantCreateWithoutMembersInput = {
+export type TenantCreateWithoutMembershipsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -1021,38 +1126,42 @@ export type TenantCreateWithoutMembersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
-export type TenantUncheckedCreateWithoutMembersInput = {
+export type TenantUncheckedCreateWithoutMembershipsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -1060,54 +1169,58 @@ export type TenantUncheckedCreateWithoutMembersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
-export type TenantCreateOrConnectWithoutMembersInput = {
+export type TenantCreateOrConnectWithoutMembershipsInput = {
   where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutMembersInput, Prisma.TenantUncheckedCreateWithoutMembersInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutMembershipsInput, Prisma.TenantUncheckedCreateWithoutMembershipsInput>
 }
 
-export type TenantUpsertWithoutMembersInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutMembersInput, Prisma.TenantUncheckedUpdateWithoutMembersInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutMembersInput, Prisma.TenantUncheckedCreateWithoutMembersInput>
+export type TenantUpsertWithoutMembershipsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutMembershipsInput, Prisma.TenantUncheckedUpdateWithoutMembershipsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutMembershipsInput, Prisma.TenantUncheckedCreateWithoutMembershipsInput>
   where?: Prisma.TenantWhereInput
 }
 
-export type TenantUpdateToOneWithWhereWithoutMembersInput = {
+export type TenantUpdateToOneWithWhereWithoutMembershipsInput = {
   where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutMembersInput, Prisma.TenantUncheckedUpdateWithoutMembersInput>
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutMembershipsInput, Prisma.TenantUncheckedUpdateWithoutMembershipsInput>
 }
 
-export type TenantUpdateWithoutMembersInput = {
+export type TenantUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1115,38 +1228,42 @@ export type TenantUpdateWithoutMembersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantUncheckedUpdateWithoutMembersInput = {
+export type TenantUncheckedUpdateWithoutMembershipsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1154,38 +1271,42 @@ export type TenantUncheckedUpdateWithoutMembersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSettingsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -1193,38 +1314,42 @@ export type TenantCreateWithoutSettingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSettingsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -1232,26 +1357,22 @@ export type TenantUncheckedCreateWithoutSettingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSettingsInput = {
@@ -1273,13 +1394,21 @@ export type TenantUpdateToOneWithWhereWithoutSettingsInput = {
 export type TenantUpdateWithoutSettingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1287,38 +1416,42 @@ export type TenantUpdateWithoutSettingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSettingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1326,38 +1459,42 @@ export type TenantUncheckedUpdateWithoutSettingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutServicesInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -1365,38 +1502,42 @@ export type TenantCreateWithoutServicesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutServicesInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -1404,26 +1545,22 @@ export type TenantUncheckedCreateWithoutServicesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutServicesInput = {
@@ -1445,13 +1582,21 @@ export type TenantUpdateToOneWithWhereWithoutServicesInput = {
 export type TenantUpdateWithoutServicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1459,38 +1604,42 @@ export type TenantUpdateWithoutServicesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutServicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1498,38 +1647,42 @@ export type TenantUncheckedUpdateWithoutServicesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantCreateWithoutStaffsInput = {
+export type TenantCreateWithoutEmployeesInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -1537,38 +1690,42 @@ export type TenantCreateWithoutStaffsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
-export type TenantUncheckedCreateWithoutStaffsInput = {
+export type TenantUncheckedCreateWithoutEmployeesInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -1576,54 +1733,58 @@ export type TenantUncheckedCreateWithoutStaffsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
-export type TenantCreateOrConnectWithoutStaffsInput = {
+export type TenantCreateOrConnectWithoutEmployeesInput = {
   where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutStaffsInput, Prisma.TenantUncheckedCreateWithoutStaffsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutEmployeesInput, Prisma.TenantUncheckedCreateWithoutEmployeesInput>
 }
 
-export type TenantUpsertWithoutStaffsInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutStaffsInput, Prisma.TenantUncheckedUpdateWithoutStaffsInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutStaffsInput, Prisma.TenantUncheckedCreateWithoutStaffsInput>
+export type TenantUpsertWithoutEmployeesInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutEmployeesInput, Prisma.TenantUncheckedUpdateWithoutEmployeesInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutEmployeesInput, Prisma.TenantUncheckedCreateWithoutEmployeesInput>
   where?: Prisma.TenantWhereInput
 }
 
-export type TenantUpdateToOneWithWhereWithoutStaffsInput = {
+export type TenantUpdateToOneWithWhereWithoutEmployeesInput = {
   where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutStaffsInput, Prisma.TenantUncheckedUpdateWithoutStaffsInput>
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutEmployeesInput, Prisma.TenantUncheckedUpdateWithoutEmployeesInput>
 }
 
-export type TenantUpdateWithoutStaffsInput = {
+export type TenantUpdateWithoutEmployeesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1631,38 +1792,42 @@ export type TenantUpdateWithoutStaffsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantUncheckedUpdateWithoutStaffsInput = {
+export type TenantUncheckedUpdateWithoutEmployeesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1670,38 +1835,42 @@ export type TenantUncheckedUpdateWithoutStaffsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantCreateWithoutWorkingHoursInput = {
+export type TenantCreateWithoutEmployeeWorkingHoursInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -1709,38 +1878,42 @@ export type TenantCreateWithoutWorkingHoursInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
-export type TenantUncheckedCreateWithoutWorkingHoursInput = {
+export type TenantUncheckedCreateWithoutEmployeeWorkingHoursInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -1748,54 +1921,58 @@ export type TenantUncheckedCreateWithoutWorkingHoursInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
-export type TenantCreateOrConnectWithoutWorkingHoursInput = {
+export type TenantCreateOrConnectWithoutEmployeeWorkingHoursInput = {
   where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutWorkingHoursInput, Prisma.TenantUncheckedCreateWithoutWorkingHoursInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutEmployeeWorkingHoursInput, Prisma.TenantUncheckedCreateWithoutEmployeeWorkingHoursInput>
 }
 
-export type TenantUpsertWithoutWorkingHoursInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutWorkingHoursInput, Prisma.TenantUncheckedUpdateWithoutWorkingHoursInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutWorkingHoursInput, Prisma.TenantUncheckedCreateWithoutWorkingHoursInput>
+export type TenantUpsertWithoutEmployeeWorkingHoursInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutEmployeeWorkingHoursInput, Prisma.TenantUncheckedUpdateWithoutEmployeeWorkingHoursInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutEmployeeWorkingHoursInput, Prisma.TenantUncheckedCreateWithoutEmployeeWorkingHoursInput>
   where?: Prisma.TenantWhereInput
 }
 
-export type TenantUpdateToOneWithWhereWithoutWorkingHoursInput = {
+export type TenantUpdateToOneWithWhereWithoutEmployeeWorkingHoursInput = {
   where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutWorkingHoursInput, Prisma.TenantUncheckedUpdateWithoutWorkingHoursInput>
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutEmployeeWorkingHoursInput, Prisma.TenantUncheckedUpdateWithoutEmployeeWorkingHoursInput>
 }
 
-export type TenantUpdateWithoutWorkingHoursInput = {
+export type TenantUpdateWithoutEmployeeWorkingHoursInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1803,38 +1980,42 @@ export type TenantUpdateWithoutWorkingHoursInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantUncheckedUpdateWithoutWorkingHoursInput = {
+export type TenantUncheckedUpdateWithoutEmployeeWorkingHoursInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1842,38 +2023,42 @@ export type TenantUncheckedUpdateWithoutWorkingHoursInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutTenantWorkingHoursInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -1881,38 +2066,42 @@ export type TenantCreateWithoutTenantWorkingHoursInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
   scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
   dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutTenantWorkingHoursInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -1920,26 +2109,22 @@ export type TenantUncheckedCreateWithoutTenantWorkingHoursInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
   scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
   dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutTenantWorkingHoursInput = {
@@ -1961,13 +2146,21 @@ export type TenantUpdateToOneWithWhereWithoutTenantWorkingHoursInput = {
 export type TenantUpdateWithoutTenantWorkingHoursInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1975,38 +2168,42 @@ export type TenantUpdateWithoutTenantWorkingHoursInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
   scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
   dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutTenantWorkingHoursInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2014,38 +2211,42 @@ export type TenantUncheckedUpdateWithoutTenantWorkingHoursInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
   scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
   dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutScheduleExceptionsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -2053,38 +2254,42 @@ export type TenantCreateWithoutScheduleExceptionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutScheduleExceptionsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -2092,26 +2297,22 @@ export type TenantUncheckedCreateWithoutScheduleExceptionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutScheduleExceptionsInput = {
@@ -2133,13 +2334,21 @@ export type TenantUpdateToOneWithWhereWithoutScheduleExceptionsInput = {
 export type TenantUpdateWithoutScheduleExceptionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2147,38 +2356,42 @@ export type TenantUpdateWithoutScheduleExceptionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutScheduleExceptionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2186,38 +2399,42 @@ export type TenantUncheckedUpdateWithoutScheduleExceptionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutCustomersInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -2225,38 +2442,42 @@ export type TenantCreateWithoutCustomersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
-  appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
   settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutCustomersInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -2264,26 +2485,22 @@ export type TenantUncheckedCreateWithoutCustomersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
-  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
   settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutCustomersInput = {
@@ -2305,13 +2522,21 @@ export type TenantUpdateToOneWithWhereWithoutCustomersInput = {
 export type TenantUpdateWithoutCustomersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2319,38 +2544,42 @@ export type TenantUpdateWithoutCustomersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
   settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutCustomersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2358,38 +2587,42 @@ export type TenantUncheckedUpdateWithoutCustomersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
   settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutAppointmentsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -2397,38 +2630,42 @@ export type TenantCreateWithoutAppointmentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
-  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
   settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutAppointmentsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -2436,26 +2673,22 @@ export type TenantUncheckedCreateWithoutAppointmentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
   settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutAppointmentsInput = {
@@ -2477,13 +2710,21 @@ export type TenantUpdateToOneWithWhereWithoutAppointmentsInput = {
 export type TenantUpdateWithoutAppointmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2491,38 +2732,42 @@ export type TenantUpdateWithoutAppointmentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
   settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutAppointmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2530,38 +2775,42 @@ export type TenantUncheckedUpdateWithoutAppointmentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
   settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutDailyStatsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -2569,38 +2818,42 @@ export type TenantCreateWithoutDailyStatsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
-  appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
   lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutDailyStatsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -2608,26 +2861,22 @@ export type TenantUncheckedCreateWithoutDailyStatsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
-  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
   lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
+  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutDailyStatsInput = {
@@ -2649,13 +2898,21 @@ export type TenantUpdateToOneWithWhereWithoutDailyStatsInput = {
 export type TenantUpdateWithoutDailyStatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2663,38 +2920,42 @@ export type TenantUpdateWithoutDailyStatsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
   lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutDailyStatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2702,38 +2963,42 @@ export type TenantUncheckedUpdateWithoutDailyStatsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
   lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
+  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutLifetimeStatsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -2741,38 +3006,42 @@ export type TenantCreateWithoutLifetimeStatsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutLifetimeStatsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -2780,26 +3049,22 @@ export type TenantUncheckedCreateWithoutLifetimeStatsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutLifetimeStatsInput = {
@@ -2821,13 +3086,21 @@ export type TenantUpdateToOneWithWhereWithoutLifetimeStatsInput = {
 export type TenantUpdateWithoutLifetimeStatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2835,38 +3108,42 @@ export type TenantUpdateWithoutLifetimeStatsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutLifetimeStatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2874,38 +3151,42 @@ export type TenantUncheckedUpdateWithoutLifetimeStatsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantCreateWithoutStaffDailyStatsInput = {
+export type TenantCreateWithoutEmployeeDailyStatsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -2913,38 +3194,42 @@ export type TenantCreateWithoutStaffDailyStatsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
-export type TenantUncheckedCreateWithoutStaffDailyStatsInput = {
+export type TenantUncheckedCreateWithoutEmployeeDailyStatsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -2952,54 +3237,58 @@ export type TenantUncheckedCreateWithoutStaffDailyStatsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
-export type TenantCreateOrConnectWithoutStaffDailyStatsInput = {
+export type TenantCreateOrConnectWithoutEmployeeDailyStatsInput = {
   where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutStaffDailyStatsInput, Prisma.TenantUncheckedCreateWithoutStaffDailyStatsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutEmployeeDailyStatsInput, Prisma.TenantUncheckedCreateWithoutEmployeeDailyStatsInput>
 }
 
-export type TenantUpsertWithoutStaffDailyStatsInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutStaffDailyStatsInput, Prisma.TenantUncheckedUpdateWithoutStaffDailyStatsInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutStaffDailyStatsInput, Prisma.TenantUncheckedCreateWithoutStaffDailyStatsInput>
+export type TenantUpsertWithoutEmployeeDailyStatsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutEmployeeDailyStatsInput, Prisma.TenantUncheckedUpdateWithoutEmployeeDailyStatsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutEmployeeDailyStatsInput, Prisma.TenantUncheckedCreateWithoutEmployeeDailyStatsInput>
   where?: Prisma.TenantWhereInput
 }
 
-export type TenantUpdateToOneWithWhereWithoutStaffDailyStatsInput = {
+export type TenantUpdateToOneWithWhereWithoutEmployeeDailyStatsInput = {
   where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutStaffDailyStatsInput, Prisma.TenantUncheckedUpdateWithoutStaffDailyStatsInput>
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutEmployeeDailyStatsInput, Prisma.TenantUncheckedUpdateWithoutEmployeeDailyStatsInput>
 }
 
-export type TenantUpdateWithoutStaffDailyStatsInput = {
+export type TenantUpdateWithoutEmployeeDailyStatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3007,38 +3296,42 @@ export type TenantUpdateWithoutStaffDailyStatsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantUncheckedUpdateWithoutStaffDailyStatsInput = {
+export type TenantUncheckedUpdateWithoutEmployeeDailyStatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3046,38 +3339,42 @@ export type TenantUncheckedUpdateWithoutStaffDailyStatsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantCreateWithoutStaffLifetimeStatsInput = {
+export type TenantCreateWithoutEmployeeLifetimeStatsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -3085,38 +3382,42 @@ export type TenantCreateWithoutStaffLifetimeStatsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
-export type TenantUncheckedCreateWithoutStaffLifetimeStatsInput = {
+export type TenantUncheckedCreateWithoutEmployeeLifetimeStatsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -3124,54 +3425,58 @@ export type TenantUncheckedCreateWithoutStaffLifetimeStatsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
-export type TenantCreateOrConnectWithoutStaffLifetimeStatsInput = {
+export type TenantCreateOrConnectWithoutEmployeeLifetimeStatsInput = {
   where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutStaffLifetimeStatsInput, Prisma.TenantUncheckedCreateWithoutStaffLifetimeStatsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutEmployeeLifetimeStatsInput, Prisma.TenantUncheckedCreateWithoutEmployeeLifetimeStatsInput>
 }
 
-export type TenantUpsertWithoutStaffLifetimeStatsInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutStaffLifetimeStatsInput, Prisma.TenantUncheckedUpdateWithoutStaffLifetimeStatsInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutStaffLifetimeStatsInput, Prisma.TenantUncheckedCreateWithoutStaffLifetimeStatsInput>
+export type TenantUpsertWithoutEmployeeLifetimeStatsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutEmployeeLifetimeStatsInput, Prisma.TenantUncheckedUpdateWithoutEmployeeLifetimeStatsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutEmployeeLifetimeStatsInput, Prisma.TenantUncheckedCreateWithoutEmployeeLifetimeStatsInput>
   where?: Prisma.TenantWhereInput
 }
 
-export type TenantUpdateToOneWithWhereWithoutStaffLifetimeStatsInput = {
+export type TenantUpdateToOneWithWhereWithoutEmployeeLifetimeStatsInput = {
   where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutStaffLifetimeStatsInput, Prisma.TenantUncheckedUpdateWithoutStaffLifetimeStatsInput>
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutEmployeeLifetimeStatsInput, Prisma.TenantUncheckedUpdateWithoutEmployeeLifetimeStatsInput>
 }
 
-export type TenantUpdateWithoutStaffLifetimeStatsInput = {
+export type TenantUpdateWithoutEmployeeLifetimeStatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3179,38 +3484,42 @@ export type TenantUpdateWithoutStaffLifetimeStatsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantUncheckedUpdateWithoutStaffLifetimeStatsInput = {
+export type TenantUncheckedUpdateWithoutEmployeeLifetimeStatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3218,38 +3527,42 @@ export type TenantUncheckedUpdateWithoutStaffLifetimeStatsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutInAppNotificationsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -3257,38 +3570,42 @@ export type TenantCreateWithoutInAppNotificationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutInAppNotificationsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -3296,26 +3613,22 @@ export type TenantUncheckedCreateWithoutInAppNotificationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutInAppNotificationsInput = {
@@ -3337,13 +3650,21 @@ export type TenantUpdateToOneWithWhereWithoutInAppNotificationsInput = {
 export type TenantUpdateWithoutInAppNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3351,38 +3672,42 @@ export type TenantUpdateWithoutInAppNotificationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutInAppNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3390,38 +3715,42 @@ export type TenantUncheckedUpdateWithoutInAppNotificationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantCreateWithoutQuotaInput = {
+export type TenantCreateWithoutUsageInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -3429,38 +3758,42 @@ export type TenantCreateWithoutQuotaInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
-export type TenantUncheckedCreateWithoutQuotaInput = {
+export type TenantUncheckedCreateWithoutUsageInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -3468,54 +3801,58 @@ export type TenantUncheckedCreateWithoutQuotaInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
-export type TenantCreateOrConnectWithoutQuotaInput = {
+export type TenantCreateOrConnectWithoutUsageInput = {
   where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutQuotaInput, Prisma.TenantUncheckedCreateWithoutQuotaInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutUsageInput, Prisma.TenantUncheckedCreateWithoutUsageInput>
 }
 
-export type TenantUpsertWithoutQuotaInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutQuotaInput, Prisma.TenantUncheckedUpdateWithoutQuotaInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutQuotaInput, Prisma.TenantUncheckedCreateWithoutQuotaInput>
+export type TenantUpsertWithoutUsageInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutUsageInput, Prisma.TenantUncheckedUpdateWithoutUsageInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutUsageInput, Prisma.TenantUncheckedCreateWithoutUsageInput>
   where?: Prisma.TenantWhereInput
 }
 
-export type TenantUpdateToOneWithWhereWithoutQuotaInput = {
+export type TenantUpdateToOneWithWhereWithoutUsageInput = {
   where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutQuotaInput, Prisma.TenantUncheckedUpdateWithoutQuotaInput>
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutUsageInput, Prisma.TenantUncheckedUpdateWithoutUsageInput>
 }
 
-export type TenantUpdateWithoutQuotaInput = {
+export type TenantUpdateWithoutUsageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3523,38 +3860,42 @@ export type TenantUpdateWithoutQuotaInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
-export type TenantUncheckedUpdateWithoutQuotaInput = {
+export type TenantUncheckedUpdateWithoutUsageInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3562,38 +3903,42 @@ export type TenantUncheckedUpdateWithoutQuotaInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutSubscriptionInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -3601,38 +3946,42 @@ export type TenantCreateWithoutSubscriptionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutSubscriptionInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -3640,26 +3989,22 @@ export type TenantUncheckedCreateWithoutSubscriptionInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutSubscriptionInput = {
@@ -3681,13 +4026,21 @@ export type TenantUpdateToOneWithWhereWithoutSubscriptionInput = {
 export type TenantUpdateWithoutSubscriptionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3695,38 +4048,42 @@ export type TenantUpdateWithoutSubscriptionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutSubscriptionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3734,38 +4091,42 @@ export type TenantUncheckedUpdateWithoutSubscriptionInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateWithoutPaymentsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -3773,38 +4134,42 @@ export type TenantCreateWithoutPaymentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutPaymentsInput = {
   id?: string
   ownerId: string
-  name?: string | null
   slug?: string | null
+  name?: string | null
   type?: $Enums.TenantType | null
   description?: string | null
+  workspaceType?: $Enums.WorkspaceType | null
+  colorTheme?: string | null
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: $Enums.OnboardingStatus
+  phone?: string | null
   addressLine1?: string | null
   addressLine2?: string | null
-  phone?: string | null
+  city?: string | null
+  province?: string | null
+  country?: string | null
   logoUrl?: string | null
   logoPublicId?: string | null
   coverUrl?: string | null
@@ -3812,26 +4177,22 @@ export type TenantUncheckedCreateWithoutPaymentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
+  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutTenantInput
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
   customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  onboarding?: Prisma.TenantOnboardingUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
+  usage?: Prisma.TenantUsageUncheckedCreateNestedManyWithoutTenantInput
+  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedCreateNestedManyWithoutTenantInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutPaymentsInput = {
@@ -3853,13 +4214,21 @@ export type TenantUpdateToOneWithWhereWithoutPaymentsInput = {
 export type TenantUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3867,38 +4236,42 @@ export type TenantUpdateWithoutPaymentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUpdateManyWithoutTenantNestedInput
+  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUpdateManyWithoutTenantNestedInput
+  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workspaceType?: Prisma.NullableEnumWorkspaceTypeFieldUpdateOperationsInput | $Enums.WorkspaceType | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  province?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3906,198 +4279,22 @@ export type TenantUncheckedUpdateWithoutPaymentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
+  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutTenantNestedInput
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
   customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  onboarding?: Prisma.TenantOnboardingUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
   tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantCreateWithoutOnboardingInput = {
-  id?: string
-  ownerId: string
-  name?: string | null
-  slug?: string | null
-  type?: $Enums.TenantType | null
-  description?: string | null
-  addressLine1?: string | null
-  addressLine2?: string | null
-  phone?: string | null
-  logoUrl?: string | null
-  logoPublicId?: string | null
-  coverUrl?: string | null
-  coverPublicId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
-  appointments?: Prisma.AppointmentCreateNestedManyWithoutTenantInput
-  customers?: Prisma.CustomerCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsCreateNestedOneWithoutTenantInput
-  tenantWorkingHours?: Prisma.TenantWorkingHoursCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursCreateNestedManyWithoutTenantInput
-}
-
-export type TenantUncheckedCreateWithoutOnboardingInput = {
-  id?: string
-  ownerId: string
-  name?: string | null
-  slug?: string | null
-  type?: $Enums.TenantType | null
-  description?: string | null
-  addressLine1?: string | null
-  addressLine2?: string | null
-  phone?: string | null
-  logoUrl?: string | null
-  logoPublicId?: string | null
-  coverUrl?: string | null
-  coverPublicId?: string | null
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  deletedAt?: Date | string | null
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
-  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutTenantInput
-  customers?: Prisma.CustomerUncheckedCreateNestedManyWithoutTenantInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutTenantInput
-  members?: Prisma.MembershipUncheckedCreateNestedManyWithoutTenantInput
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTenantInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutTenantInput
-  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutTenantInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  staffs?: Prisma.StaffUncheckedCreateNestedManyWithoutTenantInput
-  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutTenantInput
-  dailyStats?: Prisma.TenantDailyStatsUncheckedCreateNestedManyWithoutTenantInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedCreateNestedOneWithoutTenantInput
-  quota?: Prisma.TenantQuotaUncheckedCreateNestedOneWithoutTenantInput
-  settings?: Prisma.TenantSettingsUncheckedCreateNestedOneWithoutTenantInput
-  tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-  workingHours?: Prisma.WorkingHoursUncheckedCreateNestedManyWithoutTenantInput
-}
-
-export type TenantCreateOrConnectWithoutOnboardingInput = {
-  where: Prisma.TenantWhereUniqueInput
-  create: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingInput, Prisma.TenantUncheckedCreateWithoutOnboardingInput>
-}
-
-export type TenantUpsertWithoutOnboardingInput = {
-  update: Prisma.XOR<Prisma.TenantUpdateWithoutOnboardingInput, Prisma.TenantUncheckedUpdateWithoutOnboardingInput>
-  create: Prisma.XOR<Prisma.TenantCreateWithoutOnboardingInput, Prisma.TenantUncheckedCreateWithoutOnboardingInput>
-  where?: Prisma.TenantWhereInput
-}
-
-export type TenantUpdateToOneWithWhereWithoutOnboardingInput = {
-  where?: Prisma.TenantWhereInput
-  data: Prisma.XOR<Prisma.TenantUpdateWithoutOnboardingInput, Prisma.TenantUncheckedUpdateWithoutOnboardingInput>
-}
-
-export type TenantUpdateWithoutOnboardingInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  appointments?: Prisma.AppointmentUpdateManyWithoutTenantNestedInput
-  customers?: Prisma.CustomerUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutTenantNestedInput
-  scheduleExceptions?: Prisma.ScheduleExceptionUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUpdateOneWithoutTenantNestedInput
-  dailyStats?: Prisma.TenantDailyStatsUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUpdateOneWithoutTenantNestedInput
-  tenantWorkingHours?: Prisma.TenantWorkingHoursUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUpdateManyWithoutTenantNestedInput
-}
-
-export type TenantUncheckedUpdateWithoutOnboardingInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  type?: Prisma.NullableEnumTenantTypeFieldUpdateOperationsInput | $Enums.TenantType | null
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  addressLine1?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  addressLine2?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  logoPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  coverPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  onboardingCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutTenantNestedInput
-  customers?: Prisma.CustomerUncheckedUpdateManyWithoutTenantNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
-  members?: Prisma.MembershipUncheckedUpdateManyWithoutTenantNestedInput
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutTenantNestedInput
+  employeeWorkingHours?: Prisma.EmployeeWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
   scheduleExceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutTenantNestedInput
-  services?: Prisma.ServiceUncheckedUpdateManyWithoutTenantNestedInput
-  staffLifetimeStats?: Prisma.StaffLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffDailyStats?: Prisma.StaffDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  staffs?: Prisma.StaffUncheckedUpdateManyWithoutTenantNestedInput
-  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutTenantNestedInput
+  usage?: Prisma.TenantUsageUncheckedUpdateManyWithoutTenantNestedInput
   dailyStats?: Prisma.TenantDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
-  lifetimeStats?: Prisma.TenantLifetimeStatsUncheckedUpdateOneWithoutTenantNestedInput
-  quota?: Prisma.TenantQuotaUncheckedUpdateOneWithoutTenantNestedInput
-  settings?: Prisma.TenantSettingsUncheckedUpdateOneWithoutTenantNestedInput
-  tenantWorkingHours?: Prisma.TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
-  workingHours?: Prisma.WorkingHoursUncheckedUpdateManyWithoutTenantNestedInput
+  employeeLifetimeStats?: Prisma.EmployeeLifetimeStatsUncheckedUpdateManyWithoutTenantNestedInput
+  employeeDailyStats?: Prisma.EmployeeDailyStatsUncheckedUpdateManyWithoutTenantNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 
@@ -4106,35 +4303,37 @@ export type TenantUncheckedUpdateWithoutOnboardingInput = {
  */
 
 export type TenantCountOutputType = {
+  employees: number
+  memberships: number
+  services: number
   appointments: number
   customers: number
-  inAppNotifications: number
-  members: number
-  payments: number
-  scheduleExceptions: number
-  services: number
-  staffLifetimeStats: number
-  staffDailyStats: number
-  staffs: number
-  dailyStats: number
   tenantWorkingHours: number
-  workingHours: number
+  employeeWorkingHours: number
+  scheduleExceptions: number
+  payments: number
+  usage: number
+  dailyStats: number
+  employeeLifetimeStats: number
+  employeeDailyStats: number
+  inAppNotifications: number
 }
 
 export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  employees?: boolean | TenantCountOutputTypeCountEmployeesArgs
+  memberships?: boolean | TenantCountOutputTypeCountMembershipsArgs
+  services?: boolean | TenantCountOutputTypeCountServicesArgs
   appointments?: boolean | TenantCountOutputTypeCountAppointmentsArgs
   customers?: boolean | TenantCountOutputTypeCountCustomersArgs
-  inAppNotifications?: boolean | TenantCountOutputTypeCountInAppNotificationsArgs
-  members?: boolean | TenantCountOutputTypeCountMembersArgs
-  payments?: boolean | TenantCountOutputTypeCountPaymentsArgs
-  scheduleExceptions?: boolean | TenantCountOutputTypeCountScheduleExceptionsArgs
-  services?: boolean | TenantCountOutputTypeCountServicesArgs
-  staffLifetimeStats?: boolean | TenantCountOutputTypeCountStaffLifetimeStatsArgs
-  staffDailyStats?: boolean | TenantCountOutputTypeCountStaffDailyStatsArgs
-  staffs?: boolean | TenantCountOutputTypeCountStaffsArgs
-  dailyStats?: boolean | TenantCountOutputTypeCountDailyStatsArgs
   tenantWorkingHours?: boolean | TenantCountOutputTypeCountTenantWorkingHoursArgs
-  workingHours?: boolean | TenantCountOutputTypeCountWorkingHoursArgs
+  employeeWorkingHours?: boolean | TenantCountOutputTypeCountEmployeeWorkingHoursArgs
+  scheduleExceptions?: boolean | TenantCountOutputTypeCountScheduleExceptionsArgs
+  payments?: boolean | TenantCountOutputTypeCountPaymentsArgs
+  usage?: boolean | TenantCountOutputTypeCountUsageArgs
+  dailyStats?: boolean | TenantCountOutputTypeCountDailyStatsArgs
+  employeeLifetimeStats?: boolean | TenantCountOutputTypeCountEmployeeLifetimeStatsArgs
+  employeeDailyStats?: boolean | TenantCountOutputTypeCountEmployeeDailyStatsArgs
+  inAppNotifications?: boolean | TenantCountOutputTypeCountInAppNotificationsArgs
 }
 
 /**
@@ -4145,6 +4344,27 @@ export type TenantCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
    * Select specific fields to fetch from the TenantCountOutputType
    */
   select?: Prisma.TenantCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountEmployeesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EmployeeWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MembershipWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountServicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ServiceWhereInput
 }
 
 /**
@@ -4164,22 +4384,15 @@ export type TenantCountOutputTypeCountCustomersArgs<ExtArgs extends runtime.Type
 /**
  * TenantCountOutputType without action
  */
-export type TenantCountOutputTypeCountInAppNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.InAppNotificationWhereInput
+export type TenantCountOutputTypeCountTenantWorkingHoursArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TenantWorkingHoursWhereInput
 }
 
 /**
  * TenantCountOutputType without action
  */
-export type TenantCountOutputTypeCountMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.MembershipWhereInput
-}
-
-/**
- * TenantCountOutputType without action
- */
-export type TenantCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PaymentWhereInput
+export type TenantCountOutputTypeCountEmployeeWorkingHoursArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EmployeeWorkingHoursWhereInput
 }
 
 /**
@@ -4192,29 +4405,15 @@ export type TenantCountOutputTypeCountScheduleExceptionsArgs<ExtArgs extends run
 /**
  * TenantCountOutputType without action
  */
-export type TenantCountOutputTypeCountServicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ServiceWhereInput
+export type TenantCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentWhereInput
 }
 
 /**
  * TenantCountOutputType without action
  */
-export type TenantCountOutputTypeCountStaffLifetimeStatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.StaffLifetimeStatsWhereInput
-}
-
-/**
- * TenantCountOutputType without action
- */
-export type TenantCountOutputTypeCountStaffDailyStatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.StaffDailyStatsWhereInput
-}
-
-/**
- * TenantCountOutputType without action
- */
-export type TenantCountOutputTypeCountStaffsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.StaffWhereInput
+export type TenantCountOutputTypeCountUsageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TenantUsageWhereInput
 }
 
 /**
@@ -4227,28 +4426,43 @@ export type TenantCountOutputTypeCountDailyStatsArgs<ExtArgs extends runtime.Typ
 /**
  * TenantCountOutputType without action
  */
-export type TenantCountOutputTypeCountTenantWorkingHoursArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.TenantWorkingHoursWhereInput
+export type TenantCountOutputTypeCountEmployeeLifetimeStatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EmployeeLifetimeStatsWhereInput
 }
 
 /**
  * TenantCountOutputType without action
  */
-export type TenantCountOutputTypeCountWorkingHoursArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.WorkingHoursWhereInput
+export type TenantCountOutputTypeCountEmployeeDailyStatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EmployeeDailyStatsWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountInAppNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InAppNotificationWhereInput
 }
 
 
 export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   ownerId?: boolean
-  name?: boolean
   slug?: boolean
+  name?: boolean
   type?: boolean
   description?: boolean
+  workspaceType?: boolean
+  colorTheme?: boolean
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: boolean
+  phone?: boolean
   addressLine1?: boolean
   addressLine2?: boolean
-  phone?: boolean
+  city?: boolean
+  province?: boolean
+  country?: boolean
   logoUrl?: boolean
   logoPublicId?: boolean
   coverUrl?: boolean
@@ -4256,40 +4470,44 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
+  settings?: boolean | Prisma.Tenant$settingsArgs<ExtArgs>
+  subscription?: boolean | Prisma.Tenant$subscriptionArgs<ExtArgs>
+  lifetimeStats?: boolean | Prisma.Tenant$lifetimeStatsArgs<ExtArgs>
+  employees?: boolean | Prisma.Tenant$employeesArgs<ExtArgs>
+  memberships?: boolean | Prisma.Tenant$membershipsArgs<ExtArgs>
+  services?: boolean | Prisma.Tenant$servicesArgs<ExtArgs>
   appointments?: boolean | Prisma.Tenant$appointmentsArgs<ExtArgs>
   customers?: boolean | Prisma.Tenant$customersArgs<ExtArgs>
-  inAppNotifications?: boolean | Prisma.Tenant$inAppNotificationsArgs<ExtArgs>
-  members?: boolean | Prisma.Tenant$membersArgs<ExtArgs>
-  payments?: boolean | Prisma.Tenant$paymentsArgs<ExtArgs>
-  scheduleExceptions?: boolean | Prisma.Tenant$scheduleExceptionsArgs<ExtArgs>
-  services?: boolean | Prisma.Tenant$servicesArgs<ExtArgs>
-  staffLifetimeStats?: boolean | Prisma.Tenant$staffLifetimeStatsArgs<ExtArgs>
-  staffDailyStats?: boolean | Prisma.Tenant$staffDailyStatsArgs<ExtArgs>
-  staffs?: boolean | Prisma.Tenant$staffsArgs<ExtArgs>
-  subscription?: boolean | Prisma.Tenant$subscriptionArgs<ExtArgs>
-  dailyStats?: boolean | Prisma.Tenant$dailyStatsArgs<ExtArgs>
-  lifetimeStats?: boolean | Prisma.Tenant$lifetimeStatsArgs<ExtArgs>
-  onboarding?: boolean | Prisma.Tenant$onboardingArgs<ExtArgs>
-  quota?: boolean | Prisma.Tenant$quotaArgs<ExtArgs>
-  settings?: boolean | Prisma.Tenant$settingsArgs<ExtArgs>
   tenantWorkingHours?: boolean | Prisma.Tenant$tenantWorkingHoursArgs<ExtArgs>
-  workingHours?: boolean | Prisma.Tenant$workingHoursArgs<ExtArgs>
+  employeeWorkingHours?: boolean | Prisma.Tenant$employeeWorkingHoursArgs<ExtArgs>
+  scheduleExceptions?: boolean | Prisma.Tenant$scheduleExceptionsArgs<ExtArgs>
+  payments?: boolean | Prisma.Tenant$paymentsArgs<ExtArgs>
+  usage?: boolean | Prisma.Tenant$usageArgs<ExtArgs>
+  dailyStats?: boolean | Prisma.Tenant$dailyStatsArgs<ExtArgs>
+  employeeLifetimeStats?: boolean | Prisma.Tenant$employeeLifetimeStatsArgs<ExtArgs>
+  employeeDailyStats?: boolean | Prisma.Tenant$employeeDailyStatsArgs<ExtArgs>
+  inAppNotifications?: boolean | Prisma.Tenant$inAppNotificationsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
 export type TenantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   ownerId?: boolean
-  name?: boolean
   slug?: boolean
+  name?: boolean
   type?: boolean
   description?: boolean
+  workspaceType?: boolean
+  colorTheme?: boolean
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: boolean
+  phone?: boolean
   addressLine1?: boolean
   addressLine2?: boolean
-  phone?: boolean
+  city?: boolean
+  province?: boolean
+  country?: boolean
   logoUrl?: boolean
   logoPublicId?: boolean
   coverUrl?: boolean
@@ -4297,21 +4515,26 @@ export type TenantSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
 }, ExtArgs["result"]["tenant"]>
 
 export type TenantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   ownerId?: boolean
-  name?: boolean
   slug?: boolean
+  name?: boolean
   type?: boolean
   description?: boolean
+  workspaceType?: boolean
+  colorTheme?: boolean
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: boolean
+  phone?: boolean
   addressLine1?: boolean
   addressLine2?: boolean
-  phone?: boolean
+  city?: boolean
+  province?: boolean
+  country?: boolean
   logoUrl?: boolean
   logoPublicId?: boolean
   coverUrl?: boolean
@@ -4319,21 +4542,26 @@ export type TenantSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
 }, ExtArgs["result"]["tenant"]>
 
 export type TenantSelectScalar = {
   id?: boolean
   ownerId?: boolean
-  name?: boolean
   slug?: boolean
+  name?: boolean
   type?: boolean
   description?: boolean
+  workspaceType?: boolean
+  colorTheme?: boolean
+  isPublic?: boolean
+  isActive?: boolean
+  onboardingStatus?: boolean
+  phone?: boolean
   addressLine1?: boolean
   addressLine2?: boolean
-  phone?: boolean
+  city?: boolean
+  province?: boolean
+  country?: boolean
   logoUrl?: boolean
   logoPublicId?: boolean
   coverUrl?: boolean
@@ -4341,31 +4569,27 @@ export type TenantSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  isActive?: boolean
-  onboardingCompleted?: boolean
-  isPublic?: boolean
 }
 
-export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "name" | "slug" | "type" | "description" | "addressLine1" | "addressLine2" | "phone" | "logoUrl" | "logoPublicId" | "coverUrl" | "coverPublicId" | "createdAt" | "updatedAt" | "deletedAt" | "isActive" | "onboardingCompleted" | "isPublic", ExtArgs["result"]["tenant"]>
+export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ownerId" | "slug" | "name" | "type" | "description" | "workspaceType" | "colorTheme" | "isPublic" | "isActive" | "onboardingStatus" | "phone" | "addressLine1" | "addressLine2" | "city" | "province" | "country" | "logoUrl" | "logoPublicId" | "coverUrl" | "coverPublicId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["tenant"]>
 export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  settings?: boolean | Prisma.Tenant$settingsArgs<ExtArgs>
+  subscription?: boolean | Prisma.Tenant$subscriptionArgs<ExtArgs>
+  lifetimeStats?: boolean | Prisma.Tenant$lifetimeStatsArgs<ExtArgs>
+  employees?: boolean | Prisma.Tenant$employeesArgs<ExtArgs>
+  memberships?: boolean | Prisma.Tenant$membershipsArgs<ExtArgs>
+  services?: boolean | Prisma.Tenant$servicesArgs<ExtArgs>
   appointments?: boolean | Prisma.Tenant$appointmentsArgs<ExtArgs>
   customers?: boolean | Prisma.Tenant$customersArgs<ExtArgs>
-  inAppNotifications?: boolean | Prisma.Tenant$inAppNotificationsArgs<ExtArgs>
-  members?: boolean | Prisma.Tenant$membersArgs<ExtArgs>
-  payments?: boolean | Prisma.Tenant$paymentsArgs<ExtArgs>
-  scheduleExceptions?: boolean | Prisma.Tenant$scheduleExceptionsArgs<ExtArgs>
-  services?: boolean | Prisma.Tenant$servicesArgs<ExtArgs>
-  staffLifetimeStats?: boolean | Prisma.Tenant$staffLifetimeStatsArgs<ExtArgs>
-  staffDailyStats?: boolean | Prisma.Tenant$staffDailyStatsArgs<ExtArgs>
-  staffs?: boolean | Prisma.Tenant$staffsArgs<ExtArgs>
-  subscription?: boolean | Prisma.Tenant$subscriptionArgs<ExtArgs>
-  dailyStats?: boolean | Prisma.Tenant$dailyStatsArgs<ExtArgs>
-  lifetimeStats?: boolean | Prisma.Tenant$lifetimeStatsArgs<ExtArgs>
-  onboarding?: boolean | Prisma.Tenant$onboardingArgs<ExtArgs>
-  quota?: boolean | Prisma.Tenant$quotaArgs<ExtArgs>
-  settings?: boolean | Prisma.Tenant$settingsArgs<ExtArgs>
   tenantWorkingHours?: boolean | Prisma.Tenant$tenantWorkingHoursArgs<ExtArgs>
-  workingHours?: boolean | Prisma.Tenant$workingHoursArgs<ExtArgs>
+  employeeWorkingHours?: boolean | Prisma.Tenant$employeeWorkingHoursArgs<ExtArgs>
+  scheduleExceptions?: boolean | Prisma.Tenant$scheduleExceptionsArgs<ExtArgs>
+  payments?: boolean | Prisma.Tenant$paymentsArgs<ExtArgs>
+  usage?: boolean | Prisma.Tenant$usageArgs<ExtArgs>
+  dailyStats?: boolean | Prisma.Tenant$dailyStatsArgs<ExtArgs>
+  employeeLifetimeStats?: boolean | Prisma.Tenant$employeeLifetimeStatsArgs<ExtArgs>
+  employeeDailyStats?: boolean | Prisma.Tenant$employeeDailyStatsArgs<ExtArgs>
+  inAppNotifications?: boolean | Prisma.Tenant$inAppNotificationsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TenantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -4374,35 +4598,42 @@ export type TenantIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Tenant"
   objects: {
+    settings: Prisma.$TenantSettingsPayload<ExtArgs> | null
+    subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
+    lifetimeStats: Prisma.$TenantLifetimeStatsPayload<ExtArgs> | null
+    employees: Prisma.$EmployeePayload<ExtArgs>[]
+    memberships: Prisma.$MembershipPayload<ExtArgs>[]
+    services: Prisma.$ServicePayload<ExtArgs>[]
     appointments: Prisma.$AppointmentPayload<ExtArgs>[]
     customers: Prisma.$CustomerPayload<ExtArgs>[]
-    inAppNotifications: Prisma.$InAppNotificationPayload<ExtArgs>[]
-    members: Prisma.$MembershipPayload<ExtArgs>[]
-    payments: Prisma.$PaymentPayload<ExtArgs>[]
-    scheduleExceptions: Prisma.$ScheduleExceptionPayload<ExtArgs>[]
-    services: Prisma.$ServicePayload<ExtArgs>[]
-    staffLifetimeStats: Prisma.$StaffLifetimeStatsPayload<ExtArgs>[]
-    staffDailyStats: Prisma.$StaffDailyStatsPayload<ExtArgs>[]
-    staffs: Prisma.$StaffPayload<ExtArgs>[]
-    subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
-    dailyStats: Prisma.$TenantDailyStatsPayload<ExtArgs>[]
-    lifetimeStats: Prisma.$TenantLifetimeStatsPayload<ExtArgs> | null
-    onboarding: Prisma.$TenantOnboardingPayload<ExtArgs> | null
-    quota: Prisma.$TenantQuotaPayload<ExtArgs> | null
-    settings: Prisma.$TenantSettingsPayload<ExtArgs> | null
     tenantWorkingHours: Prisma.$TenantWorkingHoursPayload<ExtArgs>[]
-    workingHours: Prisma.$WorkingHoursPayload<ExtArgs>[]
+    employeeWorkingHours: Prisma.$EmployeeWorkingHoursPayload<ExtArgs>[]
+    scheduleExceptions: Prisma.$ScheduleExceptionPayload<ExtArgs>[]
+    payments: Prisma.$PaymentPayload<ExtArgs>[]
+    usage: Prisma.$TenantUsagePayload<ExtArgs>[]
+    dailyStats: Prisma.$TenantDailyStatsPayload<ExtArgs>[]
+    employeeLifetimeStats: Prisma.$EmployeeLifetimeStatsPayload<ExtArgs>[]
+    employeeDailyStats: Prisma.$EmployeeDailyStatsPayload<ExtArgs>[]
+    inAppNotifications: Prisma.$InAppNotificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     ownerId: string
-    name: string | null
     slug: string | null
+    name: string | null
     type: $Enums.TenantType | null
     description: string | null
+    workspaceType: $Enums.WorkspaceType | null
+    colorTheme: string | null
+    isPublic: boolean
+    isActive: boolean
+    onboardingStatus: $Enums.OnboardingStatus
+    phone: string | null
     addressLine1: string | null
     addressLine2: string | null
-    phone: string | null
+    city: string | null
+    province: string | null
+    country: string | null
     logoUrl: string | null
     logoPublicId: string | null
     coverUrl: string | null
@@ -4410,9 +4641,6 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
-    isActive: boolean
-    onboardingCompleted: boolean
-    isPublic: boolean
   }, ExtArgs["result"]["tenant"]>
   composites: {}
 }
@@ -4807,24 +5035,23 @@ readonly fields: TenantFieldRefs;
  */
 export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  settings<T extends Prisma.Tenant$settingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$settingsArgs<ExtArgs>>): Prisma.Prisma__TenantSettingsClient<runtime.Types.Result.GetResult<Prisma.$TenantSettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  subscription<T extends Prisma.Tenant$subscriptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$subscriptionArgs<ExtArgs>>): Prisma.Prisma__SubscriptionClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  lifetimeStats<T extends Prisma.Tenant$lifetimeStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$lifetimeStatsArgs<ExtArgs>>): Prisma.Prisma__TenantLifetimeStatsClient<runtime.Types.Result.GetResult<Prisma.$TenantLifetimeStatsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  employees<T extends Prisma.Tenant$employeesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$employeesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  memberships<T extends Prisma.Tenant$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  services<T extends Prisma.Tenant$servicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$servicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   appointments<T extends Prisma.Tenant$appointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   customers<T extends Prisma.Tenant$customersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$customersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  inAppNotifications<T extends Prisma.Tenant$inAppNotificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$inAppNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  members<T extends Prisma.Tenant$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  payments<T extends Prisma.Tenant$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  scheduleExceptions<T extends Prisma.Tenant$scheduleExceptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$scheduleExceptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduleExceptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  services<T extends Prisma.Tenant$servicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$servicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  staffLifetimeStats<T extends Prisma.Tenant$staffLifetimeStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$staffLifetimeStatsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StaffLifetimeStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  staffDailyStats<T extends Prisma.Tenant$staffDailyStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$staffDailyStatsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StaffDailyStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  staffs<T extends Prisma.Tenant$staffsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$staffsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StaffPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  subscription<T extends Prisma.Tenant$subscriptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$subscriptionArgs<ExtArgs>>): Prisma.Prisma__SubscriptionClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  dailyStats<T extends Prisma.Tenant$dailyStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$dailyStatsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantDailyStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  lifetimeStats<T extends Prisma.Tenant$lifetimeStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$lifetimeStatsArgs<ExtArgs>>): Prisma.Prisma__TenantLifetimeStatsClient<runtime.Types.Result.GetResult<Prisma.$TenantLifetimeStatsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  onboarding<T extends Prisma.Tenant$onboardingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$onboardingArgs<ExtArgs>>): Prisma.Prisma__TenantOnboardingClient<runtime.Types.Result.GetResult<Prisma.$TenantOnboardingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  quota<T extends Prisma.Tenant$quotaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$quotaArgs<ExtArgs>>): Prisma.Prisma__TenantQuotaClient<runtime.Types.Result.GetResult<Prisma.$TenantQuotaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  settings<T extends Prisma.Tenant$settingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$settingsArgs<ExtArgs>>): Prisma.Prisma__TenantSettingsClient<runtime.Types.Result.GetResult<Prisma.$TenantSettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   tenantWorkingHours<T extends Prisma.Tenant$tenantWorkingHoursArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$tenantWorkingHoursArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantWorkingHoursPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  workingHours<T extends Prisma.Tenant$workingHoursArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$workingHoursArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WorkingHoursPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  employeeWorkingHours<T extends Prisma.Tenant$employeeWorkingHoursArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$employeeWorkingHoursArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmployeeWorkingHoursPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  scheduleExceptions<T extends Prisma.Tenant$scheduleExceptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$scheduleExceptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduleExceptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payments<T extends Prisma.Tenant$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  usage<T extends Prisma.Tenant$usageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$usageArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantUsagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  dailyStats<T extends Prisma.Tenant$dailyStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$dailyStatsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantDailyStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  employeeLifetimeStats<T extends Prisma.Tenant$employeeLifetimeStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$employeeLifetimeStatsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmployeeLifetimeStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  employeeDailyStats<T extends Prisma.Tenant$employeeDailyStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$employeeDailyStatsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmployeeDailyStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  inAppNotifications<T extends Prisma.Tenant$inAppNotificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$inAppNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4856,13 +5083,21 @@ export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.T
 export interface TenantFieldRefs {
   readonly id: Prisma.FieldRef<"Tenant", 'String'>
   readonly ownerId: Prisma.FieldRef<"Tenant", 'String'>
-  readonly name: Prisma.FieldRef<"Tenant", 'String'>
   readonly slug: Prisma.FieldRef<"Tenant", 'String'>
+  readonly name: Prisma.FieldRef<"Tenant", 'String'>
   readonly type: Prisma.FieldRef<"Tenant", 'TenantType'>
   readonly description: Prisma.FieldRef<"Tenant", 'String'>
+  readonly workspaceType: Prisma.FieldRef<"Tenant", 'WorkspaceType'>
+  readonly colorTheme: Prisma.FieldRef<"Tenant", 'String'>
+  readonly isPublic: Prisma.FieldRef<"Tenant", 'Boolean'>
+  readonly isActive: Prisma.FieldRef<"Tenant", 'Boolean'>
+  readonly onboardingStatus: Prisma.FieldRef<"Tenant", 'OnboardingStatus'>
+  readonly phone: Prisma.FieldRef<"Tenant", 'String'>
   readonly addressLine1: Prisma.FieldRef<"Tenant", 'String'>
   readonly addressLine2: Prisma.FieldRef<"Tenant", 'String'>
-  readonly phone: Prisma.FieldRef<"Tenant", 'String'>
+  readonly city: Prisma.FieldRef<"Tenant", 'String'>
+  readonly province: Prisma.FieldRef<"Tenant", 'String'>
+  readonly country: Prisma.FieldRef<"Tenant", 'String'>
   readonly logoUrl: Prisma.FieldRef<"Tenant", 'String'>
   readonly logoPublicId: Prisma.FieldRef<"Tenant", 'String'>
   readonly coverUrl: Prisma.FieldRef<"Tenant", 'String'>
@@ -4870,9 +5105,6 @@ export interface TenantFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Tenant", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Tenant", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"Tenant", 'DateTime'>
-  readonly isActive: Prisma.FieldRef<"Tenant", 'Boolean'>
-  readonly onboardingCompleted: Prisma.FieldRef<"Tenant", 'Boolean'>
-  readonly isPublic: Prisma.FieldRef<"Tenant", 'Boolean'>
 }
     
 
@@ -5261,6 +5493,135 @@ export type TenantDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
+ * Tenant.settings
+ */
+export type Tenant$settingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TenantSettings
+   */
+  select?: Prisma.TenantSettingsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TenantSettings
+   */
+  omit?: Prisma.TenantSettingsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenantSettingsInclude<ExtArgs> | null
+  where?: Prisma.TenantSettingsWhereInput
+}
+
+/**
+ * Tenant.subscription
+ */
+export type Tenant$subscriptionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Subscription
+   */
+  select?: Prisma.SubscriptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Subscription
+   */
+  omit?: Prisma.SubscriptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubscriptionInclude<ExtArgs> | null
+  where?: Prisma.SubscriptionWhereInput
+}
+
+/**
+ * Tenant.lifetimeStats
+ */
+export type Tenant$lifetimeStatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TenantLifetimeStats
+   */
+  select?: Prisma.TenantLifetimeStatsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TenantLifetimeStats
+   */
+  omit?: Prisma.TenantLifetimeStatsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenantLifetimeStatsInclude<ExtArgs> | null
+  where?: Prisma.TenantLifetimeStatsWhereInput
+}
+
+/**
+ * Tenant.employees
+ */
+export type Tenant$employeesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Employee
+   */
+  select?: Prisma.EmployeeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Employee
+   */
+  omit?: Prisma.EmployeeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmployeeInclude<ExtArgs> | null
+  where?: Prisma.EmployeeWhereInput
+  orderBy?: Prisma.EmployeeOrderByWithRelationInput | Prisma.EmployeeOrderByWithRelationInput[]
+  cursor?: Prisma.EmployeeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EmployeeScalarFieldEnum | Prisma.EmployeeScalarFieldEnum[]
+}
+
+/**
+ * Tenant.memberships
+ */
+export type Tenant$membershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Membership
+   */
+  select?: Prisma.MembershipSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Membership
+   */
+  omit?: Prisma.MembershipOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MembershipInclude<ExtArgs> | null
+  where?: Prisma.MembershipWhereInput
+  orderBy?: Prisma.MembershipOrderByWithRelationInput | Prisma.MembershipOrderByWithRelationInput[]
+  cursor?: Prisma.MembershipWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MembershipScalarFieldEnum | Prisma.MembershipScalarFieldEnum[]
+}
+
+/**
+ * Tenant.services
+ */
+export type Tenant$servicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Service
+   */
+  select?: Prisma.ServiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Service
+   */
+  omit?: Prisma.ServiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ServiceInclude<ExtArgs> | null
+  where?: Prisma.ServiceWhereInput
+  orderBy?: Prisma.ServiceOrderByWithRelationInput | Prisma.ServiceOrderByWithRelationInput[]
+  cursor?: Prisma.ServiceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ServiceScalarFieldEnum | Prisma.ServiceScalarFieldEnum[]
+}
+
+/**
  * Tenant.appointments
  */
 export type Tenant$appointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -5309,75 +5670,51 @@ export type Tenant$customersArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Tenant.inAppNotifications
+ * Tenant.tenantWorkingHours
  */
-export type Tenant$inAppNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Tenant$tenantWorkingHoursArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the InAppNotification
+   * Select specific fields to fetch from the TenantWorkingHours
    */
-  select?: Prisma.InAppNotificationSelect<ExtArgs> | null
+  select?: Prisma.TenantWorkingHoursSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the InAppNotification
+   * Omit specific fields from the TenantWorkingHours
    */
-  omit?: Prisma.InAppNotificationOmit<ExtArgs> | null
+  omit?: Prisma.TenantWorkingHoursOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.InAppNotificationInclude<ExtArgs> | null
-  where?: Prisma.InAppNotificationWhereInput
-  orderBy?: Prisma.InAppNotificationOrderByWithRelationInput | Prisma.InAppNotificationOrderByWithRelationInput[]
-  cursor?: Prisma.InAppNotificationWhereUniqueInput
+  include?: Prisma.TenantWorkingHoursInclude<ExtArgs> | null
+  where?: Prisma.TenantWorkingHoursWhereInput
+  orderBy?: Prisma.TenantWorkingHoursOrderByWithRelationInput | Prisma.TenantWorkingHoursOrderByWithRelationInput[]
+  cursor?: Prisma.TenantWorkingHoursWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.InAppNotificationScalarFieldEnum | Prisma.InAppNotificationScalarFieldEnum[]
+  distinct?: Prisma.TenantWorkingHoursScalarFieldEnum | Prisma.TenantWorkingHoursScalarFieldEnum[]
 }
 
 /**
- * Tenant.members
+ * Tenant.employeeWorkingHours
  */
-export type Tenant$membersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Tenant$employeeWorkingHoursArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Membership
+   * Select specific fields to fetch from the EmployeeWorkingHours
    */
-  select?: Prisma.MembershipSelect<ExtArgs> | null
+  select?: Prisma.EmployeeWorkingHoursSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Membership
+   * Omit specific fields from the EmployeeWorkingHours
    */
-  omit?: Prisma.MembershipOmit<ExtArgs> | null
+  omit?: Prisma.EmployeeWorkingHoursOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.MembershipInclude<ExtArgs> | null
-  where?: Prisma.MembershipWhereInput
-  orderBy?: Prisma.MembershipOrderByWithRelationInput | Prisma.MembershipOrderByWithRelationInput[]
-  cursor?: Prisma.MembershipWhereUniqueInput
+  include?: Prisma.EmployeeWorkingHoursInclude<ExtArgs> | null
+  where?: Prisma.EmployeeWorkingHoursWhereInput
+  orderBy?: Prisma.EmployeeWorkingHoursOrderByWithRelationInput | Prisma.EmployeeWorkingHoursOrderByWithRelationInput[]
+  cursor?: Prisma.EmployeeWorkingHoursWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.MembershipScalarFieldEnum | Prisma.MembershipScalarFieldEnum[]
-}
-
-/**
- * Tenant.payments
- */
-export type Tenant$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Payment
-   */
-  select?: Prisma.PaymentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Payment
-   */
-  omit?: Prisma.PaymentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PaymentInclude<ExtArgs> | null
-  where?: Prisma.PaymentWhereInput
-  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
-  cursor?: Prisma.PaymentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
+  distinct?: Prisma.EmployeeWorkingHoursScalarFieldEnum | Prisma.EmployeeWorkingHoursScalarFieldEnum[]
 }
 
 /**
@@ -5405,118 +5742,51 @@ export type Tenant$scheduleExceptionsArgs<ExtArgs extends runtime.Types.Extensio
 }
 
 /**
- * Tenant.services
+ * Tenant.payments
  */
-export type Tenant$servicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Tenant$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Service
+   * Select specific fields to fetch from the Payment
    */
-  select?: Prisma.ServiceSelect<ExtArgs> | null
+  select?: Prisma.PaymentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Service
+   * Omit specific fields from the Payment
    */
-  omit?: Prisma.ServiceOmit<ExtArgs> | null
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ServiceInclude<ExtArgs> | null
-  where?: Prisma.ServiceWhereInput
-  orderBy?: Prisma.ServiceOrderByWithRelationInput | Prisma.ServiceOrderByWithRelationInput[]
-  cursor?: Prisma.ServiceWhereUniqueInput
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
+  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.ServiceScalarFieldEnum | Prisma.ServiceScalarFieldEnum[]
+  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
 }
 
 /**
- * Tenant.staffLifetimeStats
+ * Tenant.usage
  */
-export type Tenant$staffLifetimeStatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Tenant$usageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the StaffLifetimeStats
+   * Select specific fields to fetch from the TenantUsage
    */
-  select?: Prisma.StaffLifetimeStatsSelect<ExtArgs> | null
+  select?: Prisma.TenantUsageSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the StaffLifetimeStats
+   * Omit specific fields from the TenantUsage
    */
-  omit?: Prisma.StaffLifetimeStatsOmit<ExtArgs> | null
+  omit?: Prisma.TenantUsageOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.StaffLifetimeStatsInclude<ExtArgs> | null
-  where?: Prisma.StaffLifetimeStatsWhereInput
-  orderBy?: Prisma.StaffLifetimeStatsOrderByWithRelationInput | Prisma.StaffLifetimeStatsOrderByWithRelationInput[]
-  cursor?: Prisma.StaffLifetimeStatsWhereUniqueInput
+  include?: Prisma.TenantUsageInclude<ExtArgs> | null
+  where?: Prisma.TenantUsageWhereInput
+  orderBy?: Prisma.TenantUsageOrderByWithRelationInput | Prisma.TenantUsageOrderByWithRelationInput[]
+  cursor?: Prisma.TenantUsageWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.StaffLifetimeStatsScalarFieldEnum | Prisma.StaffLifetimeStatsScalarFieldEnum[]
-}
-
-/**
- * Tenant.staffDailyStats
- */
-export type Tenant$staffDailyStatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the StaffDailyStats
-   */
-  select?: Prisma.StaffDailyStatsSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the StaffDailyStats
-   */
-  omit?: Prisma.StaffDailyStatsOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.StaffDailyStatsInclude<ExtArgs> | null
-  where?: Prisma.StaffDailyStatsWhereInput
-  orderBy?: Prisma.StaffDailyStatsOrderByWithRelationInput | Prisma.StaffDailyStatsOrderByWithRelationInput[]
-  cursor?: Prisma.StaffDailyStatsWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.StaffDailyStatsScalarFieldEnum | Prisma.StaffDailyStatsScalarFieldEnum[]
-}
-
-/**
- * Tenant.staffs
- */
-export type Tenant$staffsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Staff
-   */
-  select?: Prisma.StaffSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Staff
-   */
-  omit?: Prisma.StaffOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.StaffInclude<ExtArgs> | null
-  where?: Prisma.StaffWhereInput
-  orderBy?: Prisma.StaffOrderByWithRelationInput | Prisma.StaffOrderByWithRelationInput[]
-  cursor?: Prisma.StaffWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.StaffScalarFieldEnum | Prisma.StaffScalarFieldEnum[]
-}
-
-/**
- * Tenant.subscription
- */
-export type Tenant$subscriptionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Subscription
-   */
-  select?: Prisma.SubscriptionSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Subscription
-   */
-  omit?: Prisma.SubscriptionOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.SubscriptionInclude<ExtArgs> | null
-  where?: Prisma.SubscriptionWhereInput
+  distinct?: Prisma.TenantUsageScalarFieldEnum | Prisma.TenantUsageScalarFieldEnum[]
 }
 
 /**
@@ -5544,127 +5814,75 @@ export type Tenant$dailyStatsArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * Tenant.lifetimeStats
+ * Tenant.employeeLifetimeStats
  */
-export type Tenant$lifetimeStatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Tenant$employeeLifetimeStatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the TenantLifetimeStats
+   * Select specific fields to fetch from the EmployeeLifetimeStats
    */
-  select?: Prisma.TenantLifetimeStatsSelect<ExtArgs> | null
+  select?: Prisma.EmployeeLifetimeStatsSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the TenantLifetimeStats
+   * Omit specific fields from the EmployeeLifetimeStats
    */
-  omit?: Prisma.TenantLifetimeStatsOmit<ExtArgs> | null
+  omit?: Prisma.EmployeeLifetimeStatsOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.TenantLifetimeStatsInclude<ExtArgs> | null
-  where?: Prisma.TenantLifetimeStatsWhereInput
-}
-
-/**
- * Tenant.onboarding
- */
-export type Tenant$onboardingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the TenantOnboarding
-   */
-  select?: Prisma.TenantOnboardingSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the TenantOnboarding
-   */
-  omit?: Prisma.TenantOnboardingOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TenantOnboardingInclude<ExtArgs> | null
-  where?: Prisma.TenantOnboardingWhereInput
-}
-
-/**
- * Tenant.quota
- */
-export type Tenant$quotaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the TenantQuota
-   */
-  select?: Prisma.TenantQuotaSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the TenantQuota
-   */
-  omit?: Prisma.TenantQuotaOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TenantQuotaInclude<ExtArgs> | null
-  where?: Prisma.TenantQuotaWhereInput
-}
-
-/**
- * Tenant.settings
- */
-export type Tenant$settingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the TenantSettings
-   */
-  select?: Prisma.TenantSettingsSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the TenantSettings
-   */
-  omit?: Prisma.TenantSettingsOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TenantSettingsInclude<ExtArgs> | null
-  where?: Prisma.TenantSettingsWhereInput
-}
-
-/**
- * Tenant.tenantWorkingHours
- */
-export type Tenant$tenantWorkingHoursArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the TenantWorkingHours
-   */
-  select?: Prisma.TenantWorkingHoursSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the TenantWorkingHours
-   */
-  omit?: Prisma.TenantWorkingHoursOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TenantWorkingHoursInclude<ExtArgs> | null
-  where?: Prisma.TenantWorkingHoursWhereInput
-  orderBy?: Prisma.TenantWorkingHoursOrderByWithRelationInput | Prisma.TenantWorkingHoursOrderByWithRelationInput[]
-  cursor?: Prisma.TenantWorkingHoursWhereUniqueInput
+  include?: Prisma.EmployeeLifetimeStatsInclude<ExtArgs> | null
+  where?: Prisma.EmployeeLifetimeStatsWhereInput
+  orderBy?: Prisma.EmployeeLifetimeStatsOrderByWithRelationInput | Prisma.EmployeeLifetimeStatsOrderByWithRelationInput[]
+  cursor?: Prisma.EmployeeLifetimeStatsWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.TenantWorkingHoursScalarFieldEnum | Prisma.TenantWorkingHoursScalarFieldEnum[]
+  distinct?: Prisma.EmployeeLifetimeStatsScalarFieldEnum | Prisma.EmployeeLifetimeStatsScalarFieldEnum[]
 }
 
 /**
- * Tenant.workingHours
+ * Tenant.employeeDailyStats
  */
-export type Tenant$workingHoursArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Tenant$employeeDailyStatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the WorkingHours
+   * Select specific fields to fetch from the EmployeeDailyStats
    */
-  select?: Prisma.WorkingHoursSelect<ExtArgs> | null
+  select?: Prisma.EmployeeDailyStatsSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the WorkingHours
+   * Omit specific fields from the EmployeeDailyStats
    */
-  omit?: Prisma.WorkingHoursOmit<ExtArgs> | null
+  omit?: Prisma.EmployeeDailyStatsOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.WorkingHoursInclude<ExtArgs> | null
-  where?: Prisma.WorkingHoursWhereInput
-  orderBy?: Prisma.WorkingHoursOrderByWithRelationInput | Prisma.WorkingHoursOrderByWithRelationInput[]
-  cursor?: Prisma.WorkingHoursWhereUniqueInput
+  include?: Prisma.EmployeeDailyStatsInclude<ExtArgs> | null
+  where?: Prisma.EmployeeDailyStatsWhereInput
+  orderBy?: Prisma.EmployeeDailyStatsOrderByWithRelationInput | Prisma.EmployeeDailyStatsOrderByWithRelationInput[]
+  cursor?: Prisma.EmployeeDailyStatsWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.WorkingHoursScalarFieldEnum | Prisma.WorkingHoursScalarFieldEnum[]
+  distinct?: Prisma.EmployeeDailyStatsScalarFieldEnum | Prisma.EmployeeDailyStatsScalarFieldEnum[]
+}
+
+/**
+ * Tenant.inAppNotifications
+ */
+export type Tenant$inAppNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InAppNotification
+   */
+  select?: Prisma.InAppNotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InAppNotification
+   */
+  omit?: Prisma.InAppNotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InAppNotificationInclude<ExtArgs> | null
+  where?: Prisma.InAppNotificationWhereInput
+  orderBy?: Prisma.InAppNotificationOrderByWithRelationInput | Prisma.InAppNotificationOrderByWithRelationInput[]
+  cursor?: Prisma.InAppNotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InAppNotificationScalarFieldEnum | Prisma.InAppNotificationScalarFieldEnum[]
 }
 
 /**

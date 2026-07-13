@@ -1,20 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from 'src/generated/prisma/client';
+import { MembershipRole, MembershipStatus, OnboardingStatus, Prisma } from 'src/generated/prisma/client';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { BaseRepository } from 'src/common/database/base.repository';
-import { TenantUpdateInput } from 'src/generated/prisma/models';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
+import { CreateTenantInput } from '../types/create-tenant.input';
+import { UpdateTenantAddressInput } from '../types/update-tenant-address-input.type';
+import { TenantOnboardingRaw } from '../features/onboarding/types/onboarding-raw.types';
 
 @Injectable()
 export class TenantsRepository extends BaseRepository {
   constructor(prisma: PrismaService) {
     super(prisma);
-  }
-
-  findByOwnerId(ownerId: string) {
-    return this.prisma.tenant.findFirst({
-      where: { ownerId },
-    });
   }
 
   findBySlug(slug: string) {
@@ -23,69 +19,83 @@ export class TenantsRepository extends BaseRepository {
     });
   }
 
-  updateByOwnerId(id: string, data: TenantUpdateInput) {
-    return this.prisma.tenant.update({
-      where: { id },
-      data,
+  findByUserId(userId: string) {
+    return this.prisma.tenant.findFirst({
+      where: { ownerId: userId },
     });
   }
 
   markOnboardingAsCompleted(id: string, tx?: TransactionClient) {
     return this.db(tx).tenant.update({
       where: { id },
-      data: { onboardingCompleted: true },
+      data: { onboardingStatus: OnboardingStatus.COMPLETED },
     });
   }
 
-  updateTenantStatus(id: string, isPublic: boolean, tx?: TransactionClient) {
+  updateAddress(id: string, data: UpdateTenantAddressInput, tx?: TransactionClient) {
     return this.db(tx).tenant.update({
       where: { id },
-      data: { isPublic },
+      data: {
+        phone: data.phone,
+        addressLine1: data.addressLine1,
+        addressLine2: data.addressLine2,
+        province: data.province,
+        city: data.city,
+      },
     });
   }
 
   findById(id: string, tx?: TransactionClient) {
     return this.db(tx).tenant.findUnique({
       where: { id },
-      include: { onboarding: true },
+    });
+  }
+  create(userId: string, input: CreateTenantInput, tx?: Prisma.TransactionClient) {
+    return this.db(tx).tenant.create({
+      data: {
+        name: input.name,
+        slug: input.slug,
+        type: input.tenantType,
+        ownerId: userId,
+        memberships: {
+          create: {
+            userId,
+            role: MembershipRole.OWNER,
+            status: MembershipStatus.ACTIVE,
+          },
+        },
+      },
     });
   }
 
-  findUnique(args: Prisma.TenantFindUniqueArgs) {
-    return this.prisma.tenant.findUnique(args);
-  }
-
-  findFirst(args: Prisma.TenantFindFirstArgs) {
-    return this.prisma.tenant.findFirst(args);
-  }
-
-  findAllTenantesByUser(userId: string) {
-    return this.prisma.tenant.findMany({
-      where: { members: { some: { userId } } },
-    });
-  }
-
-  update(args: Prisma.TenantUpdateArgs, tx?: Prisma.TransactionClient) {
-    const db = tx ?? this.prisma;
-    return db.tenant.update(args);
-  }
-
-  upsert(args: Prisma.TenantUpsertArgs, tx?: Prisma.TransactionClient) {
-    const db = tx ?? this.prisma;
-    return db.tenant.upsert({
-      ...args,
+  getOnboardingStatus(id: string): Promise<TenantOnboardingRaw> {
+    return this.db().tenant.findUniqueOrThrow({
+      where: { id },
       select: {
+        onboardingStatus: true,
         id: true,
-        slug: true,
+        workspaceType: true,
         name: true,
-        description: true,
+        slug: true,
         type: true,
-        addressLine1: true,
-        addressLine2: true,
-        phone: true,
         logoUrl: true,
         coverUrl: true,
-        onboardingCompleted: true,
+        colorTheme: true,
+        tenantWorkingHours: {
+          select: {
+            dayOfWeek: true,
+            opensAt: true,
+            closesAt: true,
+          },
+        },
+        services: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            durationMinutes: true,
+          },
+        },
       },
     });
   }

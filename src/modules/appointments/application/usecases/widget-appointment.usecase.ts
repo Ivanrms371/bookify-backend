@@ -15,10 +15,10 @@ export class WidgetAppointmentUseCase {
 
   async execute(dto: CreateAppointmentDto) {
     const startTime = new Date(dto.appointment.date);
-    
+
     // Strict validations for customer booking
     await this.policy.validate({
-      staffId: dto.appointment.staffId,
+      employeeId: dto.appointment.employeeId,
       serviceId: dto.appointment.serviceId,
       startTime,
     });
@@ -27,17 +27,17 @@ export class WidgetAppointmentUseCase {
 
     this.eventEmitter.emit('appointment.created', {
       tenantId: result.appointment.tenantId,
-      staffId: result.appointment.staffId,
+      employeeId: result.appointment.employeeId,
       serviceId: result.appointment.serviceId,
       customerId: result.customer.id,
       startAppointmentDate: result.appointment.startTime,
       endAppointmentDate: result.appointment.endTime,
       appointmentId: result.appointment.id,
       customerName: result.customer.name,
-      staffName: result.appointment.staff.user.name,
-      staffPhone: result.appointment.staff.user.phone,
+      employeeName: result.appointment.employee.user.name,
+      employeePhone: result.appointment.employee.user.phone,
       serviceName: result.appointment.service.name,
-      userId: result.appointment.staff.userId,
+      userId: result.appointment.employee.userId,
       cancelUrl: result.cancelUrl,
       rescheduleUrl: result.rescheduleUrl,
       createdBy: 'CUSTOMER',

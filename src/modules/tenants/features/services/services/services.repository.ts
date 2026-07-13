@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from 'src/common/database/base.repository';
+import { BaseRepository, DbClient } from 'src/common/database/base.repository';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { ServiceCreateInput, ServiceUpdateInput } from 'src/generated/prisma/models';
 import { PrismaClient } from 'src/generated/prisma/client';
 import { ReorderServiceDto } from './dto/reoder-service.dto';
+import { ServiceCreateManyArgs } from 'src/generated/prisma/models';
+import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 
 @Injectable()
 export class ServicesRepository extends BaseRepository {
@@ -11,11 +13,11 @@ export class ServicesRepository extends BaseRepository {
     super(prisma);
   }
 
-  findManyByTenant(tenantId: string, client?: PrismaClient) {
+  findManyByTenant(tenantId: string, client?: TransactionClient) {
     return this.db(client).service.findMany({
       where: { tenantId, deletedAt: null },
       orderBy: { displayOrder: 'asc' },
-      include: { assignments: { select: { staffId: true } } },
+      include: { assignments: { select: { employeeId: true } } },
     });
   }
 
@@ -24,12 +26,12 @@ export class ServicesRepository extends BaseRepository {
       where: { id: { in: ids }, deletedAt: null },
     });
   }
-w
+
   findPublicByTenant(tenantId: string, client?: PrismaClient) {
     return this.db(client).service.findMany({
       where: { tenantId, isActive: true, deletedAt: null },
       orderBy: { displayOrder: 'asc' },
-      include: { assignments: { select: { staffId: true } } },
+      include: { assignments: { select: { employeeId: true } } },
     });
   }
 
@@ -54,15 +56,23 @@ w
     return this.db(client).service.findUnique({ where: { id, tenantId, deletedAt: null } });
   }
 
-  findByIdAndStaff(id: string, staffId: string, client?: PrismaClient) {
-    return this.db(client).service.findUnique({ 
-      where: { id, deletedAt: null, assignments: { some: { staffId}} },
-      include: { assignments: true }
+  findByIdAndEmployee(id: string, employeeId: string, client?: PrismaClient) {
+    return this.db(client).service.findUnique({
+      where: { id, deletedAt: null, assignments: { some: { employeeId } } },
+      include: { assignments: true },
     });
   }
 
   create(data: ServiceCreateInput, client?: PrismaClient) {
     return this.db(client).service.create({ data });
+  }
+
+  createMany(data: ServiceCreateManyArgs, client?: DbClient) {
+    return this.db(client).service.createMany(data);
+  }
+
+  deleteMany(tenantId: string, client?: DbClient) {
+    return this.db(client).service.deleteMany({ where: { tenantId } });
   }
 
   update(id: string, data: ServiceUpdateInput, client?: PrismaClient) {

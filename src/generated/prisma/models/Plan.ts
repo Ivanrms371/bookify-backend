@@ -29,65 +29,90 @@ export type AggregatePlan = {
 export type PlanAvgAggregateOutputType = {
   trialDays: number | null
   price: runtime.Decimal | null
-  duration: number | null
+  compareAtPrice: runtime.Decimal | null
+  sortOrder: number | null
+  employeeLimit: number | null
+  appointmentLimit: number | null
+  emailLimit: number | null
+  whatsappLimit: number | null
 }
 
 export type PlanSumAggregateOutputType = {
   trialDays: number | null
   price: runtime.Decimal | null
-  duration: number | null
+  compareAtPrice: runtime.Decimal | null
+  sortOrder: number | null
+  employeeLimit: number | null
+  appointmentLimit: number | null
+  emailLimit: number | null
+  whatsappLimit: number | null
 }
 
 export type PlanMinAggregateOutputType = {
   id: string | null
   name: string | null
-  planType: $Enums.PlanType | null
+  tagline: string | null
   billingCycle: $Enums.BillingCycle | null
   trialDays: number | null
-  isActive: boolean | null
-  isPublic: boolean | null
-  description: string | null
   price: runtime.Decimal | null
-  currency: string | null
-  duration: number | null
+  compareAtPrice: runtime.Decimal | null
+  currency: $Enums.Currency | null
+  isPublic: boolean | null
+  isFeatured: boolean | null
+  sortOrder: number | null
+  description: string | null
+  externalReference: string | null
   createdAt: Date | null
   updatedAt: Date | null
-  externalReference: string | null
+  employeeLimit: number | null
+  appointmentLimit: number | null
+  emailLimit: number | null
+  whatsappLimit: number | null
 }
 
 export type PlanMaxAggregateOutputType = {
   id: string | null
   name: string | null
-  planType: $Enums.PlanType | null
+  tagline: string | null
   billingCycle: $Enums.BillingCycle | null
   trialDays: number | null
-  isActive: boolean | null
-  isPublic: boolean | null
-  description: string | null
   price: runtime.Decimal | null
-  currency: string | null
-  duration: number | null
+  compareAtPrice: runtime.Decimal | null
+  currency: $Enums.Currency | null
+  isPublic: boolean | null
+  isFeatured: boolean | null
+  sortOrder: number | null
+  description: string | null
+  externalReference: string | null
   createdAt: Date | null
   updatedAt: Date | null
-  externalReference: string | null
+  employeeLimit: number | null
+  appointmentLimit: number | null
+  emailLimit: number | null
+  whatsappLimit: number | null
 }
 
 export type PlanCountAggregateOutputType = {
   id: number
   name: number
-  planType: number
+  tagline: number
   billingCycle: number
   trialDays: number
-  isActive: number
-  isPublic: number
-  description: number
   price: number
+  compareAtPrice: number
   currency: number
-  duration: number
+  isPublic: number
+  isFeatured: number
+  sortOrder: number
+  description: number
   features: number
+  externalReference: number
   createdAt: number
   updatedAt: number
-  externalReference: number
+  employeeLimit: number
+  appointmentLimit: number
+  emailLimit: number
+  whatsappLimit: number
   _all: number
 }
 
@@ -95,65 +120,90 @@ export type PlanCountAggregateOutputType = {
 export type PlanAvgAggregateInputType = {
   trialDays?: true
   price?: true
-  duration?: true
+  compareAtPrice?: true
+  sortOrder?: true
+  employeeLimit?: true
+  appointmentLimit?: true
+  emailLimit?: true
+  whatsappLimit?: true
 }
 
 export type PlanSumAggregateInputType = {
   trialDays?: true
   price?: true
-  duration?: true
+  compareAtPrice?: true
+  sortOrder?: true
+  employeeLimit?: true
+  appointmentLimit?: true
+  emailLimit?: true
+  whatsappLimit?: true
 }
 
 export type PlanMinAggregateInputType = {
   id?: true
   name?: true
-  planType?: true
+  tagline?: true
   billingCycle?: true
   trialDays?: true
-  isActive?: true
-  isPublic?: true
-  description?: true
   price?: true
+  compareAtPrice?: true
   currency?: true
-  duration?: true
+  isPublic?: true
+  isFeatured?: true
+  sortOrder?: true
+  description?: true
+  externalReference?: true
   createdAt?: true
   updatedAt?: true
-  externalReference?: true
+  employeeLimit?: true
+  appointmentLimit?: true
+  emailLimit?: true
+  whatsappLimit?: true
 }
 
 export type PlanMaxAggregateInputType = {
   id?: true
   name?: true
-  planType?: true
+  tagline?: true
   billingCycle?: true
   trialDays?: true
-  isActive?: true
-  isPublic?: true
-  description?: true
   price?: true
+  compareAtPrice?: true
   currency?: true
-  duration?: true
+  isPublic?: true
+  isFeatured?: true
+  sortOrder?: true
+  description?: true
+  externalReference?: true
   createdAt?: true
   updatedAt?: true
-  externalReference?: true
+  employeeLimit?: true
+  appointmentLimit?: true
+  emailLimit?: true
+  whatsappLimit?: true
 }
 
 export type PlanCountAggregateInputType = {
   id?: true
   name?: true
-  planType?: true
+  tagline?: true
   billingCycle?: true
   trialDays?: true
-  isActive?: true
-  isPublic?: true
-  description?: true
   price?: true
+  compareAtPrice?: true
   currency?: true
-  duration?: true
+  isPublic?: true
+  isFeatured?: true
+  sortOrder?: true
+  description?: true
   features?: true
+  externalReference?: true
   createdAt?: true
   updatedAt?: true
-  externalReference?: true
+  employeeLimit?: true
+  appointmentLimit?: true
+  emailLimit?: true
+  whatsappLimit?: true
   _all?: true
 }
 
@@ -246,19 +296,24 @@ export type PlanGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type PlanGroupByOutputType = {
   id: string
   name: string
-  planType: $Enums.PlanType
+  tagline: string | null
   billingCycle: $Enums.BillingCycle | null
   trialDays: number
-  isActive: boolean
-  isPublic: boolean
-  description: string | null
   price: runtime.Decimal
-  currency: string
-  duration: number
+  compareAtPrice: runtime.Decimal | null
+  currency: $Enums.Currency
+  isPublic: boolean
+  isFeatured: boolean
+  sortOrder: number
+  description: string | null
   features: runtime.JsonValue | null
+  externalReference: string | null
   createdAt: Date
   updatedAt: Date
-  externalReference: string | null
+  employeeLimit: number
+  appointmentLimit: number
+  emailLimit: number
+  whatsappLimit: number
   _count: PlanCountAggregateOutputType | null
   _avg: PlanAvgAggregateOutputType | null
   _sum: PlanSumAggregateOutputType | null
@@ -285,22 +340,26 @@ export type PlanWhereInput = {
   AND?: Prisma.PlanWhereInput | Prisma.PlanWhereInput[]
   OR?: Prisma.PlanWhereInput[]
   NOT?: Prisma.PlanWhereInput | Prisma.PlanWhereInput[]
-  id?: Prisma.UuidFilter<"Plan"> | string
+  id?: Prisma.StringFilter<"Plan"> | string
   name?: Prisma.StringFilter<"Plan"> | string
-  planType?: Prisma.EnumPlanTypeFilter<"Plan"> | $Enums.PlanType
+  tagline?: Prisma.StringNullableFilter<"Plan"> | string | null
   billingCycle?: Prisma.EnumBillingCycleNullableFilter<"Plan"> | $Enums.BillingCycle | null
   trialDays?: Prisma.IntFilter<"Plan"> | number
-  isActive?: Prisma.BoolFilter<"Plan"> | boolean
-  isPublic?: Prisma.BoolFilter<"Plan"> | boolean
-  description?: Prisma.StringNullableFilter<"Plan"> | string | null
   price?: Prisma.DecimalFilter<"Plan"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFilter<"Plan"> | string
-  duration?: Prisma.IntFilter<"Plan"> | number
+  compareAtPrice?: Prisma.DecimalNullableFilter<"Plan"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.EnumCurrencyFilter<"Plan"> | $Enums.Currency
+  isPublic?: Prisma.BoolFilter<"Plan"> | boolean
+  isFeatured?: Prisma.BoolFilter<"Plan"> | boolean
+  sortOrder?: Prisma.IntFilter<"Plan"> | number
+  description?: Prisma.StringNullableFilter<"Plan"> | string | null
   features?: Prisma.JsonNullableFilter<"Plan">
+  externalReference?: Prisma.StringNullableFilter<"Plan"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
-  externalReference?: Prisma.StringNullableFilter<"Plan"> | string | null
-  limits?: Prisma.XOR<Prisma.PlanLimitsNullableScalarRelationFilter, Prisma.PlanLimitsWhereInput> | null
+  employeeLimit?: Prisma.IntFilter<"Plan"> | number
+  appointmentLimit?: Prisma.IntFilter<"Plan"> | number
+  emailLimit?: Prisma.IntFilter<"Plan"> | number
+  whatsappLimit?: Prisma.IntFilter<"Plan"> | number
   stats?: Prisma.PlanStatsListRelationFilter
   subscriptions?: Prisma.SubscriptionListRelationFilter
 }
@@ -308,20 +367,24 @@ export type PlanWhereInput = {
 export type PlanOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  planType?: Prisma.SortOrder
+  tagline?: Prisma.SortOrderInput | Prisma.SortOrder
   billingCycle?: Prisma.SortOrderInput | Prisma.SortOrder
   trialDays?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  isPublic?: Prisma.SortOrder
-  description?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrder
+  compareAtPrice?: Prisma.SortOrderInput | Prisma.SortOrder
   currency?: Prisma.SortOrder
-  duration?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   features?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalReference?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  externalReference?: Prisma.SortOrderInput | Prisma.SortOrder
-  limits?: Prisma.PlanLimitsOrderByWithRelationInput
+  employeeLimit?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  whatsappLimit?: Prisma.SortOrder
   stats?: Prisma.PlanStatsOrderByRelationAggregateInput
   subscriptions?: Prisma.SubscriptionOrderByRelationAggregateInput
 }
@@ -333,19 +396,23 @@ export type PlanWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.PlanWhereInput[]
   NOT?: Prisma.PlanWhereInput | Prisma.PlanWhereInput[]
   name?: Prisma.StringFilter<"Plan"> | string
-  planType?: Prisma.EnumPlanTypeFilter<"Plan"> | $Enums.PlanType
+  tagline?: Prisma.StringNullableFilter<"Plan"> | string | null
   billingCycle?: Prisma.EnumBillingCycleNullableFilter<"Plan"> | $Enums.BillingCycle | null
   trialDays?: Prisma.IntFilter<"Plan"> | number
-  isActive?: Prisma.BoolFilter<"Plan"> | boolean
-  isPublic?: Prisma.BoolFilter<"Plan"> | boolean
-  description?: Prisma.StringNullableFilter<"Plan"> | string | null
   price?: Prisma.DecimalFilter<"Plan"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFilter<"Plan"> | string
-  duration?: Prisma.IntFilter<"Plan"> | number
+  compareAtPrice?: Prisma.DecimalNullableFilter<"Plan"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.EnumCurrencyFilter<"Plan"> | $Enums.Currency
+  isPublic?: Prisma.BoolFilter<"Plan"> | boolean
+  isFeatured?: Prisma.BoolFilter<"Plan"> | boolean
+  sortOrder?: Prisma.IntFilter<"Plan"> | number
+  description?: Prisma.StringNullableFilter<"Plan"> | string | null
   features?: Prisma.JsonNullableFilter<"Plan">
   createdAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
-  limits?: Prisma.XOR<Prisma.PlanLimitsNullableScalarRelationFilter, Prisma.PlanLimitsWhereInput> | null
+  employeeLimit?: Prisma.IntFilter<"Plan"> | number
+  appointmentLimit?: Prisma.IntFilter<"Plan"> | number
+  emailLimit?: Prisma.IntFilter<"Plan"> | number
+  whatsappLimit?: Prisma.IntFilter<"Plan"> | number
   stats?: Prisma.PlanStatsListRelationFilter
   subscriptions?: Prisma.SubscriptionListRelationFilter
 }, "id" | "externalReference">
@@ -353,19 +420,24 @@ export type PlanWhereUniqueInput = Prisma.AtLeast<{
 export type PlanOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  planType?: Prisma.SortOrder
+  tagline?: Prisma.SortOrderInput | Prisma.SortOrder
   billingCycle?: Prisma.SortOrderInput | Prisma.SortOrder
   trialDays?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  isPublic?: Prisma.SortOrder
-  description?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrder
+  compareAtPrice?: Prisma.SortOrderInput | Prisma.SortOrder
   currency?: Prisma.SortOrder
-  duration?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   features?: Prisma.SortOrderInput | Prisma.SortOrder
+  externalReference?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  externalReference?: Prisma.SortOrderInput | Prisma.SortOrder
+  employeeLimit?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  whatsappLimit?: Prisma.SortOrder
   _count?: Prisma.PlanCountOrderByAggregateInput
   _avg?: Prisma.PlanAvgOrderByAggregateInput
   _max?: Prisma.PlanMaxOrderByAggregateInput
@@ -377,61 +449,74 @@ export type PlanScalarWhereWithAggregatesInput = {
   AND?: Prisma.PlanScalarWhereWithAggregatesInput | Prisma.PlanScalarWhereWithAggregatesInput[]
   OR?: Prisma.PlanScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PlanScalarWhereWithAggregatesInput | Prisma.PlanScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"Plan"> | string
+  id?: Prisma.StringWithAggregatesFilter<"Plan"> | string
   name?: Prisma.StringWithAggregatesFilter<"Plan"> | string
-  planType?: Prisma.EnumPlanTypeWithAggregatesFilter<"Plan"> | $Enums.PlanType
+  tagline?: Prisma.StringNullableWithAggregatesFilter<"Plan"> | string | null
   billingCycle?: Prisma.EnumBillingCycleNullableWithAggregatesFilter<"Plan"> | $Enums.BillingCycle | null
   trialDays?: Prisma.IntWithAggregatesFilter<"Plan"> | number
-  isActive?: Prisma.BoolWithAggregatesFilter<"Plan"> | boolean
-  isPublic?: Prisma.BoolWithAggregatesFilter<"Plan"> | boolean
-  description?: Prisma.StringNullableWithAggregatesFilter<"Plan"> | string | null
   price?: Prisma.DecimalWithAggregatesFilter<"Plan"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringWithAggregatesFilter<"Plan"> | string
-  duration?: Prisma.IntWithAggregatesFilter<"Plan"> | number
+  compareAtPrice?: Prisma.DecimalNullableWithAggregatesFilter<"Plan"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.EnumCurrencyWithAggregatesFilter<"Plan"> | $Enums.Currency
+  isPublic?: Prisma.BoolWithAggregatesFilter<"Plan"> | boolean
+  isFeatured?: Prisma.BoolWithAggregatesFilter<"Plan"> | boolean
+  sortOrder?: Prisma.IntWithAggregatesFilter<"Plan"> | number
+  description?: Prisma.StringNullableWithAggregatesFilter<"Plan"> | string | null
   features?: Prisma.JsonNullableWithAggregatesFilter<"Plan">
+  externalReference?: Prisma.StringNullableWithAggregatesFilter<"Plan"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Plan"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Plan"> | Date | string
-  externalReference?: Prisma.StringNullableWithAggregatesFilter<"Plan"> | string | null
+  employeeLimit?: Prisma.IntWithAggregatesFilter<"Plan"> | number
+  appointmentLimit?: Prisma.IntWithAggregatesFilter<"Plan"> | number
+  emailLimit?: Prisma.IntWithAggregatesFilter<"Plan"> | number
+  whatsappLimit?: Prisma.IntWithAggregatesFilter<"Plan"> | number
 }
 
 export type PlanCreateInput = {
-  id?: string
+  id: string
   name: string
-  planType?: $Enums.PlanType
+  tagline?: string | null
   billingCycle?: $Enums.BillingCycle | null
   trialDays?: number
-  isActive?: boolean
-  isPublic?: boolean
-  description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: string
-  duration: number
+  compareAtPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: $Enums.Currency
+  isPublic?: boolean
+  isFeatured?: boolean
+  sortOrder?: number
+  description?: string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  externalReference?: string | null
-  limits?: Prisma.PlanLimitsCreateNestedOneWithoutPlanInput
+  employeeLimit?: number
+  appointmentLimit?: number
+  emailLimit?: number
+  whatsappLimit?: number
   stats?: Prisma.PlanStatsCreateNestedManyWithoutPlanInput
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutPlanInput
 }
 
 export type PlanUncheckedCreateInput = {
-  id?: string
+  id: string
   name: string
-  planType?: $Enums.PlanType
+  tagline?: string | null
   billingCycle?: $Enums.BillingCycle | null
   trialDays?: number
-  isActive?: boolean
-  isPublic?: boolean
-  description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: string
-  duration: number
+  compareAtPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: $Enums.Currency
+  isPublic?: boolean
+  isFeatured?: boolean
+  sortOrder?: number
+  description?: string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  externalReference?: string | null
-  limits?: Prisma.PlanLimitsUncheckedCreateNestedOneWithoutPlanInput
+  employeeLimit?: number
+  appointmentLimit?: number
+  emailLimit?: number
+  whatsappLimit?: number
   stats?: Prisma.PlanStatsUncheckedCreateNestedManyWithoutPlanInput
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutPlanInput
 }
@@ -439,20 +524,24 @@ export type PlanUncheckedCreateInput = {
 export type PlanUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  planType?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   billingCycle?: Prisma.NullableEnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle | null
   trialDays?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  duration?: Prisma.IntFieldUpdateOperationsInput | number
+  compareAtPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  limits?: Prisma.PlanLimitsUpdateOneWithoutPlanNestedInput
+  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.PlanStatsUpdateManyWithoutPlanNestedInput
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutPlanNestedInput
 }
@@ -460,76 +549,95 @@ export type PlanUpdateInput = {
 export type PlanUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  planType?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   billingCycle?: Prisma.NullableEnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle | null
   trialDays?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  duration?: Prisma.IntFieldUpdateOperationsInput | number
+  compareAtPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  limits?: Prisma.PlanLimitsUncheckedUpdateOneWithoutPlanNestedInput
+  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.PlanStatsUncheckedUpdateManyWithoutPlanNestedInput
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutPlanNestedInput
 }
 
 export type PlanCreateManyInput = {
-  id?: string
+  id: string
   name: string
-  planType?: $Enums.PlanType
+  tagline?: string | null
   billingCycle?: $Enums.BillingCycle | null
   trialDays?: number
-  isActive?: boolean
-  isPublic?: boolean
-  description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: string
-  duration: number
+  compareAtPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: $Enums.Currency
+  isPublic?: boolean
+  isFeatured?: boolean
+  sortOrder?: number
+  description?: string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  externalReference?: string | null
+  employeeLimit?: number
+  appointmentLimit?: number
+  emailLimit?: number
+  whatsappLimit?: number
 }
 
 export type PlanUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  planType?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   billingCycle?: Prisma.NullableEnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle | null
   trialDays?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  duration?: Prisma.IntFieldUpdateOperationsInput | number
+  compareAtPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type PlanUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  planType?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   billingCycle?: Prisma.NullableEnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle | null
   trialDays?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  duration?: Prisma.IntFieldUpdateOperationsInput | number
+  compareAtPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type PlanScalarRelationFilter = {
@@ -540,65 +648,90 @@ export type PlanScalarRelationFilter = {
 export type PlanCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  planType?: Prisma.SortOrder
+  tagline?: Prisma.SortOrder
   billingCycle?: Prisma.SortOrder
   trialDays?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  isPublic?: Prisma.SortOrder
-  description?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  compareAtPrice?: Prisma.SortOrder
   currency?: Prisma.SortOrder
-  duration?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
+  description?: Prisma.SortOrder
   features?: Prisma.SortOrder
+  externalReference?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  externalReference?: Prisma.SortOrder
+  employeeLimit?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  whatsappLimit?: Prisma.SortOrder
 }
 
 export type PlanAvgOrderByAggregateInput = {
   trialDays?: Prisma.SortOrder
   price?: Prisma.SortOrder
-  duration?: Prisma.SortOrder
+  compareAtPrice?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
+  employeeLimit?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  whatsappLimit?: Prisma.SortOrder
 }
 
 export type PlanMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  planType?: Prisma.SortOrder
+  tagline?: Prisma.SortOrder
   billingCycle?: Prisma.SortOrder
   trialDays?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  isPublic?: Prisma.SortOrder
-  description?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  compareAtPrice?: Prisma.SortOrder
   currency?: Prisma.SortOrder
-  duration?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  externalReference?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  externalReference?: Prisma.SortOrder
+  employeeLimit?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  whatsappLimit?: Prisma.SortOrder
 }
 
 export type PlanMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  planType?: Prisma.SortOrder
+  tagline?: Prisma.SortOrder
   billingCycle?: Prisma.SortOrder
   trialDays?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  isPublic?: Prisma.SortOrder
-  description?: Prisma.SortOrder
   price?: Prisma.SortOrder
+  compareAtPrice?: Prisma.SortOrder
   currency?: Prisma.SortOrder
-  duration?: Prisma.SortOrder
+  isPublic?: Prisma.SortOrder
+  isFeatured?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
+  description?: Prisma.SortOrder
+  externalReference?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  externalReference?: Prisma.SortOrder
+  employeeLimit?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  whatsappLimit?: Prisma.SortOrder
 }
 
 export type PlanSumOrderByAggregateInput = {
   trialDays?: Prisma.SortOrder
   price?: Prisma.SortOrder
-  duration?: Prisma.SortOrder
+  compareAtPrice?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
+  employeeLimit?: Prisma.SortOrder
+  appointmentLimit?: Prisma.SortOrder
+  emailLimit?: Prisma.SortOrder
+  whatsappLimit?: Prisma.SortOrder
 }
 
 export type PlanCreateNestedOneWithoutSubscriptionsInput = {
@@ -615,22 +748,8 @@ export type PlanUpdateOneRequiredWithoutSubscriptionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PlanUpdateToOneWithWhereWithoutSubscriptionsInput, Prisma.PlanUpdateWithoutSubscriptionsInput>, Prisma.PlanUncheckedUpdateWithoutSubscriptionsInput>
 }
 
-export type EnumPlanTypeFieldUpdateOperationsInput = {
-  set?: $Enums.PlanType
-}
-
-export type PlanCreateNestedOneWithoutLimitsInput = {
-  create?: Prisma.XOR<Prisma.PlanCreateWithoutLimitsInput, Prisma.PlanUncheckedCreateWithoutLimitsInput>
-  connectOrCreate?: Prisma.PlanCreateOrConnectWithoutLimitsInput
-  connect?: Prisma.PlanWhereUniqueInput
-}
-
-export type PlanUpdateOneRequiredWithoutLimitsNestedInput = {
-  create?: Prisma.XOR<Prisma.PlanCreateWithoutLimitsInput, Prisma.PlanUncheckedCreateWithoutLimitsInput>
-  connectOrCreate?: Prisma.PlanCreateOrConnectWithoutLimitsInput
-  upsert?: Prisma.PlanUpsertWithoutLimitsInput
-  connect?: Prisma.PlanWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.PlanUpdateToOneWithWhereWithoutLimitsInput, Prisma.PlanUpdateWithoutLimitsInput>, Prisma.PlanUncheckedUpdateWithoutLimitsInput>
+export type EnumCurrencyFieldUpdateOperationsInput = {
+  set?: $Enums.Currency
 }
 
 export type PlanCreateNestedOneWithoutStatsInput = {
@@ -648,42 +767,50 @@ export type PlanUpdateOneRequiredWithoutStatsNestedInput = {
 }
 
 export type PlanCreateWithoutSubscriptionsInput = {
-  id?: string
+  id: string
   name: string
-  planType?: $Enums.PlanType
+  tagline?: string | null
   billingCycle?: $Enums.BillingCycle | null
   trialDays?: number
-  isActive?: boolean
-  isPublic?: boolean
-  description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: string
-  duration: number
+  compareAtPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: $Enums.Currency
+  isPublic?: boolean
+  isFeatured?: boolean
+  sortOrder?: number
+  description?: string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  externalReference?: string | null
-  limits?: Prisma.PlanLimitsCreateNestedOneWithoutPlanInput
+  employeeLimit?: number
+  appointmentLimit?: number
+  emailLimit?: number
+  whatsappLimit?: number
   stats?: Prisma.PlanStatsCreateNestedManyWithoutPlanInput
 }
 
 export type PlanUncheckedCreateWithoutSubscriptionsInput = {
-  id?: string
+  id: string
   name: string
-  planType?: $Enums.PlanType
+  tagline?: string | null
   billingCycle?: $Enums.BillingCycle | null
   trialDays?: number
-  isActive?: boolean
-  isPublic?: boolean
-  description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: string
-  duration: number
+  compareAtPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: $Enums.Currency
+  isPublic?: boolean
+  isFeatured?: boolean
+  sortOrder?: number
+  description?: string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  externalReference?: string | null
-  limits?: Prisma.PlanLimitsUncheckedCreateNestedOneWithoutPlanInput
+  employeeLimit?: number
+  appointmentLimit?: number
+  emailLimit?: number
+  whatsappLimit?: number
   stats?: Prisma.PlanStatsUncheckedCreateNestedManyWithoutPlanInput
 }
 
@@ -706,176 +833,96 @@ export type PlanUpdateToOneWithWhereWithoutSubscriptionsInput = {
 export type PlanUpdateWithoutSubscriptionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  planType?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   billingCycle?: Prisma.NullableEnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle | null
   trialDays?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  duration?: Prisma.IntFieldUpdateOperationsInput | number
+  compareAtPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  limits?: Prisma.PlanLimitsUpdateOneWithoutPlanNestedInput
+  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.PlanStatsUpdateManyWithoutPlanNestedInput
 }
 
 export type PlanUncheckedUpdateWithoutSubscriptionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  planType?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   billingCycle?: Prisma.NullableEnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle | null
   trialDays?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  duration?: Prisma.IntFieldUpdateOperationsInput | number
+  compareAtPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  limits?: Prisma.PlanLimitsUncheckedUpdateOneWithoutPlanNestedInput
+  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
   stats?: Prisma.PlanStatsUncheckedUpdateManyWithoutPlanNestedInput
-}
-
-export type PlanCreateWithoutLimitsInput = {
-  id?: string
-  name: string
-  planType?: $Enums.PlanType
-  billingCycle?: $Enums.BillingCycle | null
-  trialDays?: number
-  isActive?: boolean
-  isPublic?: boolean
-  description?: string | null
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: string
-  duration: number
-  features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  externalReference?: string | null
-  stats?: Prisma.PlanStatsCreateNestedManyWithoutPlanInput
-  subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutPlanInput
-}
-
-export type PlanUncheckedCreateWithoutLimitsInput = {
-  id?: string
-  name: string
-  planType?: $Enums.PlanType
-  billingCycle?: $Enums.BillingCycle | null
-  trialDays?: number
-  isActive?: boolean
-  isPublic?: boolean
-  description?: string | null
-  price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: string
-  duration: number
-  features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  externalReference?: string | null
-  stats?: Prisma.PlanStatsUncheckedCreateNestedManyWithoutPlanInput
-  subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutPlanInput
-}
-
-export type PlanCreateOrConnectWithoutLimitsInput = {
-  where: Prisma.PlanWhereUniqueInput
-  create: Prisma.XOR<Prisma.PlanCreateWithoutLimitsInput, Prisma.PlanUncheckedCreateWithoutLimitsInput>
-}
-
-export type PlanUpsertWithoutLimitsInput = {
-  update: Prisma.XOR<Prisma.PlanUpdateWithoutLimitsInput, Prisma.PlanUncheckedUpdateWithoutLimitsInput>
-  create: Prisma.XOR<Prisma.PlanCreateWithoutLimitsInput, Prisma.PlanUncheckedCreateWithoutLimitsInput>
-  where?: Prisma.PlanWhereInput
-}
-
-export type PlanUpdateToOneWithWhereWithoutLimitsInput = {
-  where?: Prisma.PlanWhereInput
-  data: Prisma.XOR<Prisma.PlanUpdateWithoutLimitsInput, Prisma.PlanUncheckedUpdateWithoutLimitsInput>
-}
-
-export type PlanUpdateWithoutLimitsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  planType?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
-  billingCycle?: Prisma.NullableEnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle | null
-  trialDays?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  duration?: Prisma.IntFieldUpdateOperationsInput | number
-  features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  stats?: Prisma.PlanStatsUpdateManyWithoutPlanNestedInput
-  subscriptions?: Prisma.SubscriptionUpdateManyWithoutPlanNestedInput
-}
-
-export type PlanUncheckedUpdateWithoutLimitsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  planType?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
-  billingCycle?: Prisma.NullableEnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle | null
-  trialDays?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  duration?: Prisma.IntFieldUpdateOperationsInput | number
-  features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  stats?: Prisma.PlanStatsUncheckedUpdateManyWithoutPlanNestedInput
-  subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutPlanNestedInput
 }
 
 export type PlanCreateWithoutStatsInput = {
-  id?: string
+  id: string
   name: string
-  planType?: $Enums.PlanType
+  tagline?: string | null
   billingCycle?: $Enums.BillingCycle | null
   trialDays?: number
-  isActive?: boolean
-  isPublic?: boolean
-  description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: string
-  duration: number
+  compareAtPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: $Enums.Currency
+  isPublic?: boolean
+  isFeatured?: boolean
+  sortOrder?: number
+  description?: string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  externalReference?: string | null
-  limits?: Prisma.PlanLimitsCreateNestedOneWithoutPlanInput
+  employeeLimit?: number
+  appointmentLimit?: number
+  emailLimit?: number
+  whatsappLimit?: number
   subscriptions?: Prisma.SubscriptionCreateNestedManyWithoutPlanInput
 }
 
 export type PlanUncheckedCreateWithoutStatsInput = {
-  id?: string
+  id: string
   name: string
-  planType?: $Enums.PlanType
+  tagline?: string | null
   billingCycle?: $Enums.BillingCycle | null
   trialDays?: number
-  isActive?: boolean
-  isPublic?: boolean
-  description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: string
-  duration: number
+  compareAtPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: $Enums.Currency
+  isPublic?: boolean
+  isFeatured?: boolean
+  sortOrder?: number
+  description?: string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  externalReference?: string | null
-  limits?: Prisma.PlanLimitsUncheckedCreateNestedOneWithoutPlanInput
+  employeeLimit?: number
+  appointmentLimit?: number
+  emailLimit?: number
+  whatsappLimit?: number
   subscriptions?: Prisma.SubscriptionUncheckedCreateNestedManyWithoutPlanInput
 }
 
@@ -898,40 +945,48 @@ export type PlanUpdateToOneWithWhereWithoutStatsInput = {
 export type PlanUpdateWithoutStatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  planType?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   billingCycle?: Prisma.NullableEnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle | null
   trialDays?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  duration?: Prisma.IntFieldUpdateOperationsInput | number
+  compareAtPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  limits?: Prisma.PlanLimitsUpdateOneWithoutPlanNestedInput
+  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
   subscriptions?: Prisma.SubscriptionUpdateManyWithoutPlanNestedInput
 }
 
 export type PlanUncheckedUpdateWithoutStatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  planType?: Prisma.EnumPlanTypeFieldUpdateOperationsInput | $Enums.PlanType
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   billingCycle?: Prisma.NullableEnumBillingCycleFieldUpdateOperationsInput | $Enums.BillingCycle | null
   trialDays?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  currency?: Prisma.StringFieldUpdateOperationsInput | string
-  duration?: Prisma.IntFieldUpdateOperationsInput | number
+  compareAtPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  currency?: Prisma.EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+  isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFeatured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   features?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  limits?: Prisma.PlanLimitsUncheckedUpdateOneWithoutPlanNestedInput
+  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
   subscriptions?: Prisma.SubscriptionUncheckedUpdateManyWithoutPlanNestedInput
 }
 
@@ -978,20 +1033,24 @@ export type PlanCountOutputTypeCountSubscriptionsArgs<ExtArgs extends runtime.Ty
 export type PlanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  planType?: boolean
+  tagline?: boolean
   billingCycle?: boolean
   trialDays?: boolean
-  isActive?: boolean
-  isPublic?: boolean
-  description?: boolean
   price?: boolean
+  compareAtPrice?: boolean
   currency?: boolean
-  duration?: boolean
+  isPublic?: boolean
+  isFeatured?: boolean
+  sortOrder?: boolean
+  description?: boolean
   features?: boolean
+  externalReference?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  externalReference?: boolean
-  limits?: boolean | Prisma.Plan$limitsArgs<ExtArgs>
+  employeeLimit?: boolean
+  appointmentLimit?: boolean
+  emailLimit?: boolean
+  whatsappLimit?: boolean
   stats?: boolean | Prisma.Plan$statsArgs<ExtArgs>
   subscriptions?: boolean | Prisma.Plan$subscriptionsArgs<ExtArgs>
   _count?: boolean | Prisma.PlanCountOutputTypeDefaultArgs<ExtArgs>
@@ -1000,60 +1059,74 @@ export type PlanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type PlanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  planType?: boolean
+  tagline?: boolean
   billingCycle?: boolean
   trialDays?: boolean
-  isActive?: boolean
-  isPublic?: boolean
-  description?: boolean
   price?: boolean
+  compareAtPrice?: boolean
   currency?: boolean
-  duration?: boolean
+  isPublic?: boolean
+  isFeatured?: boolean
+  sortOrder?: boolean
+  description?: boolean
   features?: boolean
+  externalReference?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  externalReference?: boolean
+  employeeLimit?: boolean
+  appointmentLimit?: boolean
+  emailLimit?: boolean
+  whatsappLimit?: boolean
 }, ExtArgs["result"]["plan"]>
 
 export type PlanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  planType?: boolean
+  tagline?: boolean
   billingCycle?: boolean
   trialDays?: boolean
-  isActive?: boolean
-  isPublic?: boolean
-  description?: boolean
   price?: boolean
+  compareAtPrice?: boolean
   currency?: boolean
-  duration?: boolean
+  isPublic?: boolean
+  isFeatured?: boolean
+  sortOrder?: boolean
+  description?: boolean
   features?: boolean
+  externalReference?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  externalReference?: boolean
+  employeeLimit?: boolean
+  appointmentLimit?: boolean
+  emailLimit?: boolean
+  whatsappLimit?: boolean
 }, ExtArgs["result"]["plan"]>
 
 export type PlanSelectScalar = {
   id?: boolean
   name?: boolean
-  planType?: boolean
+  tagline?: boolean
   billingCycle?: boolean
   trialDays?: boolean
-  isActive?: boolean
-  isPublic?: boolean
-  description?: boolean
   price?: boolean
+  compareAtPrice?: boolean
   currency?: boolean
-  duration?: boolean
+  isPublic?: boolean
+  isFeatured?: boolean
+  sortOrder?: boolean
+  description?: boolean
   features?: boolean
+  externalReference?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  externalReference?: boolean
+  employeeLimit?: boolean
+  appointmentLimit?: boolean
+  emailLimit?: boolean
+  whatsappLimit?: boolean
 }
 
-export type PlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "planType" | "billingCycle" | "trialDays" | "isActive" | "isPublic" | "description" | "price" | "currency" | "duration" | "features" | "createdAt" | "updatedAt" | "externalReference", ExtArgs["result"]["plan"]>
+export type PlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "tagline" | "billingCycle" | "trialDays" | "price" | "compareAtPrice" | "currency" | "isPublic" | "isFeatured" | "sortOrder" | "description" | "features" | "externalReference" | "createdAt" | "updatedAt" | "employeeLimit" | "appointmentLimit" | "emailLimit" | "whatsappLimit", ExtArgs["result"]["plan"]>
 export type PlanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  limits?: boolean | Prisma.Plan$limitsArgs<ExtArgs>
   stats?: boolean | Prisma.Plan$statsArgs<ExtArgs>
   subscriptions?: boolean | Prisma.Plan$subscriptionsArgs<ExtArgs>
   _count?: boolean | Prisma.PlanCountOutputTypeDefaultArgs<ExtArgs>
@@ -1064,26 +1137,30 @@ export type PlanIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $PlanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Plan"
   objects: {
-    limits: Prisma.$PlanLimitsPayload<ExtArgs> | null
     stats: Prisma.$PlanStatsPayload<ExtArgs>[]
     subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
-    planType: $Enums.PlanType
+    tagline: string | null
     billingCycle: $Enums.BillingCycle | null
     trialDays: number
-    isActive: boolean
-    isPublic: boolean
-    description: string | null
     price: runtime.Decimal
-    currency: string
-    duration: number
+    compareAtPrice: runtime.Decimal | null
+    currency: $Enums.Currency
+    isPublic: boolean
+    isFeatured: boolean
+    sortOrder: number
+    description: string | null
     features: runtime.JsonValue | null
+    externalReference: string | null
     createdAt: Date
     updatedAt: Date
-    externalReference: string | null
+    employeeLimit: number
+    appointmentLimit: number
+    emailLimit: number
+    whatsappLimit: number
   }, ExtArgs["result"]["plan"]>
   composites: {}
 }
@@ -1478,7 +1555,6 @@ readonly fields: PlanFieldRefs;
  */
 export interface Prisma__PlanClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  limits<T extends Prisma.Plan$limitsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Plan$limitsArgs<ExtArgs>>): Prisma.Prisma__PlanLimitsClient<runtime.Types.Result.GetResult<Prisma.$PlanLimitsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   stats<T extends Prisma.Plan$statsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Plan$statsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlanStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subscriptions<T extends Prisma.Plan$subscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Plan$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1512,19 +1588,24 @@ export interface Prisma__PlanClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface PlanFieldRefs {
   readonly id: Prisma.FieldRef<"Plan", 'String'>
   readonly name: Prisma.FieldRef<"Plan", 'String'>
-  readonly planType: Prisma.FieldRef<"Plan", 'PlanType'>
+  readonly tagline: Prisma.FieldRef<"Plan", 'String'>
   readonly billingCycle: Prisma.FieldRef<"Plan", 'BillingCycle'>
   readonly trialDays: Prisma.FieldRef<"Plan", 'Int'>
-  readonly isActive: Prisma.FieldRef<"Plan", 'Boolean'>
-  readonly isPublic: Prisma.FieldRef<"Plan", 'Boolean'>
-  readonly description: Prisma.FieldRef<"Plan", 'String'>
   readonly price: Prisma.FieldRef<"Plan", 'Decimal'>
-  readonly currency: Prisma.FieldRef<"Plan", 'String'>
-  readonly duration: Prisma.FieldRef<"Plan", 'Int'>
+  readonly compareAtPrice: Prisma.FieldRef<"Plan", 'Decimal'>
+  readonly currency: Prisma.FieldRef<"Plan", 'Currency'>
+  readonly isPublic: Prisma.FieldRef<"Plan", 'Boolean'>
+  readonly isFeatured: Prisma.FieldRef<"Plan", 'Boolean'>
+  readonly sortOrder: Prisma.FieldRef<"Plan", 'Int'>
+  readonly description: Prisma.FieldRef<"Plan", 'String'>
   readonly features: Prisma.FieldRef<"Plan", 'Json'>
+  readonly externalReference: Prisma.FieldRef<"Plan", 'String'>
   readonly createdAt: Prisma.FieldRef<"Plan", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Plan", 'DateTime'>
-  readonly externalReference: Prisma.FieldRef<"Plan", 'String'>
+  readonly employeeLimit: Prisma.FieldRef<"Plan", 'Int'>
+  readonly appointmentLimit: Prisma.FieldRef<"Plan", 'Int'>
+  readonly emailLimit: Prisma.FieldRef<"Plan", 'Int'>
+  readonly whatsappLimit: Prisma.FieldRef<"Plan", 'Int'>
 }
     
 
@@ -1910,25 +1991,6 @@ export type PlanDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Plans to delete.
    */
   limit?: number
-}
-
-/**
- * Plan.limits
- */
-export type Plan$limitsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PlanLimits
-   */
-  select?: Prisma.PlanLimitsSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the PlanLimits
-   */
-  omit?: Prisma.PlanLimitsOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PlanLimitsInclude<ExtArgs> | null
-  where?: Prisma.PlanLimitsWhereInput
 }
 
 /**

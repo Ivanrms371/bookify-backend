@@ -7,7 +7,7 @@ export const RESERVED_SLUGS = [
   'oficial',
   'verified',
   'verificado',
-  'staff',
+  'employee',
   'team',
   'equipo',
   'support',

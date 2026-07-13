@@ -3,7 +3,7 @@ import { AppointmentStatus } from 'src/generated/prisma/enums';
 
 export interface OnAppointmentCompletedData {
   tenantId: string;
-  staffId: string;
+  employeeId: string;
   customerId: string;
   startTime: Date;
   revenue: Decimal;

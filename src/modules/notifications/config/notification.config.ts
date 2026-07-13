@@ -66,7 +66,7 @@ export const NotificationConfig: NotificationConfigMap = {
     },
   },
 
-  'appointment.booked.by_staff': {
+  'appointment.booked.by_employee': {
     retry: {
       retryable: true,
       maxRetries: 3,
@@ -81,7 +81,17 @@ export const NotificationConfig: NotificationConfigMap = {
     },
   },
 
-  'appointment.cancelled.by_staff': {
+  'appointment.cancelled.by_employee': {
+    retry: {
+      retryable: true,
+      maxRetries: 3,
+    },
+    channels: {
+      USER: [{ channel: NotificationChannel.EMAIL }],
+    },
+  },
+
+  'membership.invited': {
     retry: {
       retryable: true,
       maxRetries: 3,

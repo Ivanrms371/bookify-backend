@@ -1,12 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  Block,
-  FilterByMinAdvancedMinutesParams,
-  FilterPastSlotsParams,
-  GenerateFixedSlotsParams,
-  GenerateSlotsFromBlocksParams,
-} from './types/slots.type';
-import { isSameDay, startOfDay } from 'date-fns';
+import { Block, FilterByMinAdvancedMinutesParams, FilterPastSlotsParams } from './types/slots.type';
 import { dateToMinutes, minutesToTime } from 'src/common/utils/time/time.util';
 import { AvailabilityConfig } from './types/availability-config.type';
 import { toZonedTime, format } from 'date-fns-tz';
@@ -27,7 +20,7 @@ export class SlotsGenerator {
   private generateFixedSlots({ workBlocks, interval }: { workBlocks: Block[]; interval: number }): number[] {
     const slots: number[] = [];
     for (const block of workBlocks) {
-      for (let i = block.startMinutes; i < block.endMinutes; i += interval) {
+      for (let i = block.opensAt; i < block.closesAt; i += interval) {
         slots.push(i);
       }
     }
@@ -37,8 +30,8 @@ export class SlotsGenerator {
   private generateDynamicSlots({ workBlocks, serviceDuration }: { workBlocks: Block[]; serviceDuration: number }) {
     const slots: number[] = [];
     for (const block of workBlocks) {
-      let start = block.startMinutes;
-      while (start + serviceDuration <= block.endMinutes) {
+      let start = block.opensAt;
+      while (start + serviceDuration <= block.closesAt) {
         slots.push(start);
         start += serviceDuration;
       }
@@ -50,14 +43,12 @@ export class SlotsGenerator {
     const nowUtc = new Date();
     const localNow = toZonedTime(nowUtc, config.timeZone);
 
-    // Para comparar días es más seguro formatear a string en el timezone correcto
     const todayStr = format(localNow, 'yyyy-MM-dd', { timeZone: config.timeZone });
     const targetDateStr = format(date, 'yyyy-MM-dd', { timeZone: config.timeZone });
     const isToday = todayStr === targetDateStr;
 
     if (!isToday) return slots;
 
-    // Al usar toZonedTime, sacamos la hora y minuto precisos del local
     const currentLocalHour = parseInt(format(localNow, 'HH', { timeZone: config.timeZone }), 10);
     const currentLocalMinute = parseInt(format(localNow, 'mm', { timeZone: config.timeZone }), 10);
     const nowMinutes = currentLocalHour * 60 + currentLocalMinute;
@@ -81,14 +72,14 @@ export class SlotsGenerator {
 
   private isSlotOverlapping({ slot, slotDuration, block }: { slot: number; slotDuration: number; block: Block }) {
     const slotEnd = slot + slotDuration;
-    return slot < block.endMinutes && slotEnd > block.startMinutes;
+    return slot < block.closesAt && slotEnd > block.opensAt;
   }
 
   private filterBusyBlocks({ slots, busyBlocks, slotDuration }: { slots: number[]; busyBlocks: Block[]; slotDuration: number }) {
     return slots.filter((slot) => {
       const slotEnd = slot + slotDuration;
       for (const block of busyBlocks) {
-        if (block.startMinutes > slotEnd) break;
+        if (block.opensAt > slotEnd) break;
         if (this.isSlotOverlapping({ slot, slotDuration, block })) return false;
       }
       return true;
@@ -96,7 +87,7 @@ export class SlotsGenerator {
   }
 
   private orderBusyBlocks(busyBlocks: Block[]) {
-    return busyBlocks.sort((a, b) => a.startMinutes - b.startMinutes);
+    return busyBlocks.sort((a, b) => a.opensAt - b.opensAt);
   }
 
   private generateSlotsFromWorkBlocks({

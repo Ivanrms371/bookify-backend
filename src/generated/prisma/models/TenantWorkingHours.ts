@@ -28,94 +28,76 @@ export type AggregateTenantWorkingHours = {
 
 export type TenantWorkingHoursAvgAggregateOutputType = {
   dayOfWeek: number | null
-  endMinutes: number | null
-  startMinutes: number | null
+  opensAt: number | null
+  closesAt: number | null
 }
 
 export type TenantWorkingHoursSumAggregateOutputType = {
   dayOfWeek: number | null
-  endMinutes: number | null
-  startMinutes: number | null
+  opensAt: number | null
+  closesAt: number | null
 }
 
 export type TenantWorkingHoursMinAggregateOutputType = {
   id: string | null
   tenantId: string | null
   dayOfWeek: number | null
-  isActive: boolean | null
-  name: string | null
-  createdAt: Date | null
-  endMinutes: number | null
-  startMinutes: number | null
+  opensAt: number | null
+  closesAt: number | null
 }
 
 export type TenantWorkingHoursMaxAggregateOutputType = {
   id: string | null
   tenantId: string | null
   dayOfWeek: number | null
-  isActive: boolean | null
-  name: string | null
-  createdAt: Date | null
-  endMinutes: number | null
-  startMinutes: number | null
+  opensAt: number | null
+  closesAt: number | null
 }
 
 export type TenantWorkingHoursCountAggregateOutputType = {
   id: number
   tenantId: number
   dayOfWeek: number
-  isActive: number
-  name: number
-  createdAt: number
-  endMinutes: number
-  startMinutes: number
+  opensAt: number
+  closesAt: number
   _all: number
 }
 
 
 export type TenantWorkingHoursAvgAggregateInputType = {
   dayOfWeek?: true
-  endMinutes?: true
-  startMinutes?: true
+  opensAt?: true
+  closesAt?: true
 }
 
 export type TenantWorkingHoursSumAggregateInputType = {
   dayOfWeek?: true
-  endMinutes?: true
-  startMinutes?: true
+  opensAt?: true
+  closesAt?: true
 }
 
 export type TenantWorkingHoursMinAggregateInputType = {
   id?: true
   tenantId?: true
   dayOfWeek?: true
-  isActive?: true
-  name?: true
-  createdAt?: true
-  endMinutes?: true
-  startMinutes?: true
+  opensAt?: true
+  closesAt?: true
 }
 
 export type TenantWorkingHoursMaxAggregateInputType = {
   id?: true
   tenantId?: true
   dayOfWeek?: true
-  isActive?: true
-  name?: true
-  createdAt?: true
-  endMinutes?: true
-  startMinutes?: true
+  opensAt?: true
+  closesAt?: true
 }
 
 export type TenantWorkingHoursCountAggregateInputType = {
   id?: true
   tenantId?: true
   dayOfWeek?: true
-  isActive?: true
-  name?: true
-  createdAt?: true
-  endMinutes?: true
-  startMinutes?: true
+  opensAt?: true
+  closesAt?: true
   _all?: true
 }
 
@@ -209,11 +191,8 @@ export type TenantWorkingHoursGroupByOutputType = {
   id: string
   tenantId: string
   dayOfWeek: number
-  isActive: boolean
-  name: string | null
-  createdAt: Date
-  endMinutes: number
-  startMinutes: number
+  opensAt: number
+  closesAt: number
   _count: TenantWorkingHoursCountAggregateOutputType | null
   _avg: TenantWorkingHoursAvgAggregateOutputType | null
   _sum: TenantWorkingHoursSumAggregateOutputType | null
@@ -243,11 +222,8 @@ export type TenantWorkingHoursWhereInput = {
   id?: Prisma.UuidFilter<"TenantWorkingHours"> | string
   tenantId?: Prisma.UuidFilter<"TenantWorkingHours"> | string
   dayOfWeek?: Prisma.IntFilter<"TenantWorkingHours"> | number
-  isActive?: Prisma.BoolFilter<"TenantWorkingHours"> | boolean
-  name?: Prisma.StringNullableFilter<"TenantWorkingHours"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"TenantWorkingHours"> | Date | string
-  endMinutes?: Prisma.IntFilter<"TenantWorkingHours"> | number
-  startMinutes?: Prisma.IntFilter<"TenantWorkingHours"> | number
+  opensAt?: Prisma.IntFilter<"TenantWorkingHours"> | number
+  closesAt?: Prisma.IntFilter<"TenantWorkingHours"> | number
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }
 
@@ -255,11 +231,8 @@ export type TenantWorkingHoursOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  name?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  endMinutes?: Prisma.SortOrder
-  startMinutes?: Prisma.SortOrder
+  opensAt?: Prisma.SortOrder
+  closesAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
 }
 
@@ -270,11 +243,8 @@ export type TenantWorkingHoursWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.TenantWorkingHoursWhereInput | Prisma.TenantWorkingHoursWhereInput[]
   tenantId?: Prisma.UuidFilter<"TenantWorkingHours"> | string
   dayOfWeek?: Prisma.IntFilter<"TenantWorkingHours"> | number
-  isActive?: Prisma.BoolFilter<"TenantWorkingHours"> | boolean
-  name?: Prisma.StringNullableFilter<"TenantWorkingHours"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"TenantWorkingHours"> | Date | string
-  endMinutes?: Prisma.IntFilter<"TenantWorkingHours"> | number
-  startMinutes?: Prisma.IntFilter<"TenantWorkingHours"> | number
+  opensAt?: Prisma.IntFilter<"TenantWorkingHours"> | number
+  closesAt?: Prisma.IntFilter<"TenantWorkingHours"> | number
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
 }, "id">
 
@@ -282,11 +252,8 @@ export type TenantWorkingHoursOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  name?: Prisma.SortOrderInput | Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  endMinutes?: Prisma.SortOrder
-  startMinutes?: Prisma.SortOrder
+  opensAt?: Prisma.SortOrder
+  closesAt?: Prisma.SortOrder
   _count?: Prisma.TenantWorkingHoursCountOrderByAggregateInput
   _avg?: Prisma.TenantWorkingHoursAvgOrderByAggregateInput
   _max?: Prisma.TenantWorkingHoursMaxOrderByAggregateInput
@@ -301,21 +268,15 @@ export type TenantWorkingHoursScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"TenantWorkingHours"> | string
   tenantId?: Prisma.UuidWithAggregatesFilter<"TenantWorkingHours"> | string
   dayOfWeek?: Prisma.IntWithAggregatesFilter<"TenantWorkingHours"> | number
-  isActive?: Prisma.BoolWithAggregatesFilter<"TenantWorkingHours"> | boolean
-  name?: Prisma.StringNullableWithAggregatesFilter<"TenantWorkingHours"> | string | null
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"TenantWorkingHours"> | Date | string
-  endMinutes?: Prisma.IntWithAggregatesFilter<"TenantWorkingHours"> | number
-  startMinutes?: Prisma.IntWithAggregatesFilter<"TenantWorkingHours"> | number
+  opensAt?: Prisma.IntWithAggregatesFilter<"TenantWorkingHours"> | number
+  closesAt?: Prisma.IntWithAggregatesFilter<"TenantWorkingHours"> | number
 }
 
 export type TenantWorkingHoursCreateInput = {
   id?: string
   dayOfWeek: number
-  isActive?: boolean
-  name?: string | null
-  createdAt?: Date | string
-  endMinutes: number
-  startMinutes: number
+  opensAt: number
+  closesAt: number
   tenant: Prisma.TenantCreateNestedOneWithoutTenantWorkingHoursInput
 }
 
@@ -323,21 +284,15 @@ export type TenantWorkingHoursUncheckedCreateInput = {
   id?: string
   tenantId: string
   dayOfWeek: number
-  isActive?: boolean
-  name?: string | null
-  createdAt?: Date | string
-  endMinutes: number
-  startMinutes: number
+  opensAt: number
+  closesAt: number
 }
 
 export type TenantWorkingHoursUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  opensAt?: Prisma.IntFieldUpdateOperationsInput | number
+  closesAt?: Prisma.IntFieldUpdateOperationsInput | number
   tenant?: Prisma.TenantUpdateOneRequiredWithoutTenantWorkingHoursNestedInput
 }
 
@@ -345,43 +300,31 @@ export type TenantWorkingHoursUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  opensAt?: Prisma.IntFieldUpdateOperationsInput | number
+  closesAt?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type TenantWorkingHoursCreateManyInput = {
   id?: string
   tenantId: string
   dayOfWeek: number
-  isActive?: boolean
-  name?: string | null
-  createdAt?: Date | string
-  endMinutes: number
-  startMinutes: number
+  opensAt: number
+  closesAt: number
 }
 
 export type TenantWorkingHoursUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  opensAt?: Prisma.IntFieldUpdateOperationsInput | number
+  closesAt?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type TenantWorkingHoursUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  opensAt?: Prisma.IntFieldUpdateOperationsInput | number
+  closesAt?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type TenantWorkingHoursListRelationFilter = {
@@ -398,45 +341,36 @@ export type TenantWorkingHoursCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  endMinutes?: Prisma.SortOrder
-  startMinutes?: Prisma.SortOrder
+  opensAt?: Prisma.SortOrder
+  closesAt?: Prisma.SortOrder
 }
 
 export type TenantWorkingHoursAvgOrderByAggregateInput = {
   dayOfWeek?: Prisma.SortOrder
-  endMinutes?: Prisma.SortOrder
-  startMinutes?: Prisma.SortOrder
+  opensAt?: Prisma.SortOrder
+  closesAt?: Prisma.SortOrder
 }
 
 export type TenantWorkingHoursMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  endMinutes?: Prisma.SortOrder
-  startMinutes?: Prisma.SortOrder
+  opensAt?: Prisma.SortOrder
+  closesAt?: Prisma.SortOrder
 }
 
 export type TenantWorkingHoursMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   dayOfWeek?: Prisma.SortOrder
-  isActive?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
-  endMinutes?: Prisma.SortOrder
-  startMinutes?: Prisma.SortOrder
+  opensAt?: Prisma.SortOrder
+  closesAt?: Prisma.SortOrder
 }
 
 export type TenantWorkingHoursSumOrderByAggregateInput = {
   dayOfWeek?: Prisma.SortOrder
-  endMinutes?: Prisma.SortOrder
-  startMinutes?: Prisma.SortOrder
+  opensAt?: Prisma.SortOrder
+  closesAt?: Prisma.SortOrder
 }
 
 export type TenantWorkingHoursCreateNestedManyWithoutTenantInput = {
@@ -484,21 +418,15 @@ export type TenantWorkingHoursUncheckedUpdateManyWithoutTenantNestedInput = {
 export type TenantWorkingHoursCreateWithoutTenantInput = {
   id?: string
   dayOfWeek: number
-  isActive?: boolean
-  name?: string | null
-  createdAt?: Date | string
-  endMinutes: number
-  startMinutes: number
+  opensAt: number
+  closesAt: number
 }
 
 export type TenantWorkingHoursUncheckedCreateWithoutTenantInput = {
   id?: string
   dayOfWeek: number
-  isActive?: boolean
-  name?: string | null
-  createdAt?: Date | string
-  endMinutes: number
-  startMinutes: number
+  opensAt: number
+  closesAt: number
 }
 
 export type TenantWorkingHoursCreateOrConnectWithoutTenantInput = {
@@ -534,51 +462,36 @@ export type TenantWorkingHoursScalarWhereInput = {
   id?: Prisma.UuidFilter<"TenantWorkingHours"> | string
   tenantId?: Prisma.UuidFilter<"TenantWorkingHours"> | string
   dayOfWeek?: Prisma.IntFilter<"TenantWorkingHours"> | number
-  isActive?: Prisma.BoolFilter<"TenantWorkingHours"> | boolean
-  name?: Prisma.StringNullableFilter<"TenantWorkingHours"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"TenantWorkingHours"> | Date | string
-  endMinutes?: Prisma.IntFilter<"TenantWorkingHours"> | number
-  startMinutes?: Prisma.IntFilter<"TenantWorkingHours"> | number
+  opensAt?: Prisma.IntFilter<"TenantWorkingHours"> | number
+  closesAt?: Prisma.IntFilter<"TenantWorkingHours"> | number
 }
 
 export type TenantWorkingHoursCreateManyTenantInput = {
   id?: string
   dayOfWeek: number
-  isActive?: boolean
-  name?: string | null
-  createdAt?: Date | string
-  endMinutes: number
-  startMinutes: number
+  opensAt: number
+  closesAt: number
 }
 
 export type TenantWorkingHoursUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  opensAt?: Prisma.IntFieldUpdateOperationsInput | number
+  closesAt?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type TenantWorkingHoursUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  opensAt?: Prisma.IntFieldUpdateOperationsInput | number
+  closesAt?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type TenantWorkingHoursUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  startMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  opensAt?: Prisma.IntFieldUpdateOperationsInput | number
+  closesAt?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -587,11 +500,8 @@ export type TenantWorkingHoursSelect<ExtArgs extends runtime.Types.Extensions.In
   id?: boolean
   tenantId?: boolean
   dayOfWeek?: boolean
-  isActive?: boolean
-  name?: boolean
-  createdAt?: boolean
-  endMinutes?: boolean
-  startMinutes?: boolean
+  opensAt?: boolean
+  closesAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenantWorkingHours"]>
 
@@ -599,11 +509,8 @@ export type TenantWorkingHoursSelectCreateManyAndReturn<ExtArgs extends runtime.
   id?: boolean
   tenantId?: boolean
   dayOfWeek?: boolean
-  isActive?: boolean
-  name?: boolean
-  createdAt?: boolean
-  endMinutes?: boolean
-  startMinutes?: boolean
+  opensAt?: boolean
+  closesAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenantWorkingHours"]>
 
@@ -611,11 +518,8 @@ export type TenantWorkingHoursSelectUpdateManyAndReturn<ExtArgs extends runtime.
   id?: boolean
   tenantId?: boolean
   dayOfWeek?: boolean
-  isActive?: boolean
-  name?: boolean
-  createdAt?: boolean
-  endMinutes?: boolean
-  startMinutes?: boolean
+  opensAt?: boolean
+  closesAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenantWorkingHours"]>
 
@@ -623,14 +527,11 @@ export type TenantWorkingHoursSelectScalar = {
   id?: boolean
   tenantId?: boolean
   dayOfWeek?: boolean
-  isActive?: boolean
-  name?: boolean
-  createdAt?: boolean
-  endMinutes?: boolean
-  startMinutes?: boolean
+  opensAt?: boolean
+  closesAt?: boolean
 }
 
-export type TenantWorkingHoursOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "dayOfWeek" | "isActive" | "name" | "createdAt" | "endMinutes" | "startMinutes", ExtArgs["result"]["tenantWorkingHours"]>
+export type TenantWorkingHoursOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "dayOfWeek" | "opensAt" | "closesAt", ExtArgs["result"]["tenantWorkingHours"]>
 export type TenantWorkingHoursInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
@@ -650,11 +551,8 @@ export type $TenantWorkingHoursPayload<ExtArgs extends runtime.Types.Extensions.
     id: string
     tenantId: string
     dayOfWeek: number
-    isActive: boolean
-    name: string | null
-    createdAt: Date
-    endMinutes: number
-    startMinutes: number
+    opensAt: number
+    closesAt: number
   }, ExtArgs["result"]["tenantWorkingHours"]>
   composites: {}
 }
@@ -1082,11 +980,8 @@ export interface TenantWorkingHoursFieldRefs {
   readonly id: Prisma.FieldRef<"TenantWorkingHours", 'String'>
   readonly tenantId: Prisma.FieldRef<"TenantWorkingHours", 'String'>
   readonly dayOfWeek: Prisma.FieldRef<"TenantWorkingHours", 'Int'>
-  readonly isActive: Prisma.FieldRef<"TenantWorkingHours", 'Boolean'>
-  readonly name: Prisma.FieldRef<"TenantWorkingHours", 'String'>
-  readonly createdAt: Prisma.FieldRef<"TenantWorkingHours", 'DateTime'>
-  readonly endMinutes: Prisma.FieldRef<"TenantWorkingHours", 'Int'>
-  readonly startMinutes: Prisma.FieldRef<"TenantWorkingHours", 'Int'>
+  readonly opensAt: Prisma.FieldRef<"TenantWorkingHours", 'Int'>
+  readonly closesAt: Prisma.FieldRef<"TenantWorkingHours", 'Int'>
 }
     
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { endOfDay, startOfDay, eachDayOfInterval, format } from 'date-fns';
-import { Staff } from 'src/auth/types/express-request.type';
+import { Employee } from 'src/auth/types/express-request.type';
 import { ReportsRepository } from '../repository/reports.repository';
 import { GetReportsQueryDto } from '../dto/get-reports-query.dto';
 import { CustomerReportsMapper } from '../mappers/customer-reports.mapper';
@@ -24,23 +24,23 @@ export class ManagmentReportsService {
     const endDate = endOfDay(new Date(query.endDate));
 
     const tenantStats = await this.reportsRepository.getTenantRevenueSummary(tenantId, startDate, endDate);
-    
-    const staffStats = await this.reportsRepository.getStaffRevenueGrouped(tenantId, startDate, endDate);
 
-    if (staffStats.length === 0) {
+    const employeeStats = await this.reportsRepository.getEmployeeRevenueGrouped(tenantId, startDate, endDate);
+
+    if (employeeStats.length === 0) {
       const gross = Number(tenantStats._sum.revenue || 0);
       return { grossRevenue: gross, totalCommissions: 0, netRevenue: gross };
     }
 
-    const staffIds = staffStats.map((stat) => stat.staffId);
-    const staffMembers = await this.reportsRepository.getStaffMembersWithRoles(staffIds, tenantId);
+    const employeeIds = employeeStats.map((stat) => stat.employeeId);
+    const employeeMembers = await this.reportsRepository.getEmployeeMembersWithRoles(employeeIds, tenantId);
 
     const grossRevenue = Number(tenantStats._sum.revenue || 0);
     let totalCommissions = 0;
 
-    for (const stat of staffStats) {
-      const staff = staffMembers.find((s) => s.id === stat.staffId);
-      const commissionPercent = Number(staff?.commissionPercent || 0);
+    for (const stat of employeeStats) {
+      const employee = employeeMembers.find((s) => s.id === stat.employeeId);
+      const commissionPercent = Number(employee?.commissionPercent || 0);
       const revenueGenerated = Number(stat._sum.revenue || 0);
       totalCommissions += revenueGenerated * (commissionPercent / 100);
     }
@@ -54,30 +54,30 @@ export class ManagmentReportsService {
     };
   }
 
-  async getStaffCommissions(tenantId: string, query: GetReportsQueryDto) {
+  async getEmployeeCommissions(tenantId: string, query: GetReportsQueryDto) {
     const startDate = startOfDay(new Date(query.startDate));
     const endDate = endOfDay(new Date(query.endDate));
 
-    const dailyStats = await this.reportsRepository.getStaffRevenueSum(tenantId, startDate, endDate);
+    const dailyStats = await this.reportsRepository.getEmployeeRevenueSum(tenantId, startDate, endDate);
 
     if (dailyStats.length === 0) return [];
 
-    const staffIds = dailyStats.map(s => s.staffId);
-    const staffMembers = await this.reportsRepository.getStaffMembersWithRoles(staffIds, tenantId);
+    const employeeIds = dailyStats.map((s) => s.employeeId);
+    const employeeMembers = await this.reportsRepository.getEmployeeMembersWithRoles(employeeIds, tenantId);
 
-    return dailyStats.map(stat => {
-      const staff = staffMembers.find(s => s.id === stat.staffId);
+    return dailyStats.map((stat) => {
+      const employee = employeeMembers.find((s) => s.id === stat.employeeId);
       const generatedRevenue = Number(stat._sum.revenue || 0);
-      const commissionPercent = Number(staff?.commissionPercent || 0);
+      const commissionPercent = Number(employee?.commissionPercent || 0);
       const amountToPay = generatedRevenue * (commissionPercent / 100);
 
       return {
-        staffId: stat.staffId,
-        name: staff?.displayName || 'Unknown',
+        employeeId: stat.employeeId,
+        name: employee?.displayName || 'Unknown',
         commissionPercent,
         generatedRevenue,
         amountToPay,
-        isOwner: staff?.user?.memberships?.[0]?.role === 'OWNER'
+        isOwner: employee?.user?.memberships?.[0]?.role === 'OWNER',
       };
     });
   }
@@ -150,44 +150,44 @@ export class ManagmentReportsService {
     }));
   }
 
-  async getMyPerformance(staff: Staff, tenantId: string, query: GetReportsQueryDto) {
+  async getMyPerformance(employee: Employee, tenantId: string, query: GetReportsQueryDto) {
     const startDate = startOfDay(new Date(query.startDate));
     const endDate = endOfDay(new Date(query.endDate));
 
-    const stats = await this.reportsRepository.getStaffRevenueSumByStaffId(staff.id, tenantId, startDate, endDate);
+    const stats = await this.reportsRepository.getEmployeeRevenueSumByEmployeeId(employee.id, tenantId, startDate, endDate);
 
     const generatedRevenue = Number(stats._sum.revenue || 0);
-    const commissionRate = Number(staff?.commissionPercent || 0) / 100;
+    const commissionRate = Number(employee?.commissionPercent || 0) / 100;
     const commissionEarned = generatedRevenue * commissionRate;
 
     return {
-        staffId: staff.id,
-        displayName: staff.name,
-        period: { startDate, endDate},
-        stats: {
-            completedAppointments: stats._sum.completed || 0,
-            generatedRevenue,
-            activeDays: stats._count.id,
-            myCommission: commissionEarned,
-            commissionPercent: staff?.commissionPercent
-        }
-    }
+      employeeId: employee.id,
+      displayName: employee.name,
+      period: { startDate, endDate },
+      stats: {
+        completedAppointments: stats._sum.completed || 0,
+        generatedRevenue,
+        activeDays: stats._count.id,
+        myCommission: commissionEarned,
+        commissionPercent: employee?.commissionPercent,
+      },
+    };
   }
 
-  async getMyTopCustomers(staffId: string, tenantId: string, query: GetReportsQueryDto) {
+  async getMyTopCustomers(employeeId: string, tenantId: string, query: GetReportsQueryDto) {
     const startDate = startOfDay(new Date(query.startDate));
     const endDate = endOfDay(new Date(query.endDate));
 
-    const groupedCustomers = await this.reportsRepository.getTopCustomersByDate(tenantId, startDate, endDate, staffId);
+    const groupedCustomers = await this.reportsRepository.getTopCustomersByDate(tenantId, startDate, endDate, employeeId);
 
     return this.hydrateCustomers(groupedCustomers);
   }
 
-  async getMyWorstCustomers(staffId: string, tenantId: string, query: GetReportsQueryDto) {
+  async getMyWorstCustomers(employeeId: string, tenantId: string, query: GetReportsQueryDto) {
     const startDate = startOfDay(new Date(query.startDate));
     const endDate = endOfDay(new Date(query.endDate));
 
-    const groupedCustomers = await this.reportsRepository.getWorstCustomersByDate(tenantId, startDate, endDate, staffId);
+    const groupedCustomers = await this.reportsRepository.getWorstCustomersByDate(tenantId, startDate, endDate, employeeId);
 
     return this.hydrateCustomers(groupedCustomers);
   }
@@ -195,9 +195,9 @@ export class ManagmentReportsService {
   async getTenantRevenueChartData(tenantId: string, query: GetReportsQueryDto) {
     const startDate = startOfDay(new Date(query.startDate));
     const endDate = endOfDay(new Date(query.endDate));
-    
-    const dailyData= await this.reportsRepository.getDailyRevenueBreakdown(tenantId, startDate, endDate);
-    
+
+    const dailyData = await this.reportsRepository.getDailyRevenueBreakdown(tenantId, startDate, endDate);
+
     const revenueMap = new Map();
     dailyData.forEach((d) => {
       const key = format(d.date, 'yyyy-MM-dd');
@@ -213,12 +213,12 @@ export class ManagmentReportsService {
     });
   }
 
-  async getStaffRevenueChartData(staffId: string, tenantId: string, query: GetReportsQueryDto){
+  async getEmployeeRevenueChartData(employeeId: string, tenantId: string, query: GetReportsQueryDto) {
     const startDate = startOfDay(new Date(query.startDate));
     const endDate = endOfDay(new Date(query.endDate));
-    
-    const dailyData= await this.reportsRepository.getStaffRevenueBreakdown(staffId, tenantId, startDate, endDate);
-    
+
+    const dailyData = await this.reportsRepository.getEmployeeRevenueBreakdown(employeeId, tenantId, startDate, endDate);
+
     const revenueMap = new Map();
     dailyData.forEach((d) => {
       const key = format(d.date, 'yyyy-MM-dd');

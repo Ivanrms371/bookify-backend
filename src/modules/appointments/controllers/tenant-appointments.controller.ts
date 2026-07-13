@@ -4,7 +4,7 @@ import { MembershipRoles } from 'src/common/decorators/tenant-roles.decorator';
 import { MembershipRole } from 'src/generated/prisma/enums';
 import { TenantAppointmentsService } from '../application/services/tenant-appointments.service';
 import { CreateAppointmentDto } from '../dto/create-appointment.dto';
-import { StaffAppointmentUseCase } from '../application/usecases/staff-appointment.usecase';
+import { EmployeeAppointmentUseCase } from '../application/usecases/employee-appointment.usecase';
 import { CancelAppointmentDto } from '../dto/cancel-appointment.dto';
 import { RescheduleAppointmentDto } from '../dto/reschedule-appointment.dto';
 import { GetAppointmentsQueryDto } from '../dto/appointment-query.dto';
@@ -14,14 +14,14 @@ import { GetAppointmentsQueryDto } from '../dto/appointment-query.dto';
 @Controller('/tenants/:tenantId/appointments')
 export class TenantAppointmentsController {
   constructor(
-    private readonly staffAppointmentUseCase: StaffAppointmentUseCase,
+    private readonly employeeAppointmentUseCase: EmployeeAppointmentUseCase,
     private readonly tenantAppointmentsService: TenantAppointmentsService,
   ) {}
 
   @Post('')
   async createAppointment(@Body() body: CreateAppointmentDto) {
     try {
-      await this.staffAppointmentUseCase.execute(body);
+      await this.employeeAppointmentUseCase.execute(body);
     } catch (error) {
       console.log(error);
     }

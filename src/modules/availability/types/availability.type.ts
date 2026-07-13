@@ -2,13 +2,13 @@ import { AvailabilityConfig } from './availability-config.type';
 import { SlotStrategy } from './slots.type';
 
 type Block = {
-  startMinutes: number;
-  endMinutes: number;
+  opensAt: number;
+  closesAt: number;
 };
 
 export type AppointmentsWithBlocks = {
   blocks: {
-    staffId: string;
+    employeeId: string;
     startTime: Date;
     endTime: Date;
   }[];
@@ -24,17 +24,17 @@ export type ScheduleException = {
 
 export type WorkingHour = {
   dayOfWeek: number;
-  startMinutes: number;
-  endMinutes: number;
+  opensAt: number;
+  closesAt: number;
 };
 
 export type ResolvedSchedule = {
-  startMinutes: number;
-  endMinutes: number;
+  opensAt: number;
+  closesAt: number;
 };
 
 export type FindNextAvailableDateParams = {
-  staffId: string;
+  employeeId: string;
   date: Date;
   strategy: SlotStrategy;
   serviceDuration: number;

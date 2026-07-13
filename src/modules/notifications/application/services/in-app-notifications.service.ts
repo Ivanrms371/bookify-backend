@@ -11,11 +11,11 @@ export class InAppNotificationsService {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  async count(userId: string) {
+  async countUnread(userId: string) {
     return this.inAppRepository.countUnread(userId);
   }
 
-  async getLatest(userId: string) {
+  async findLatest(userId: string) {
     return this.inAppRepository.findMany(userId, 10);
   }
 

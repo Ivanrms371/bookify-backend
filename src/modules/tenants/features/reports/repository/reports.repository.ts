@@ -19,9 +19,9 @@ export class ReportsRepository {
     });
   }
 
-  async getStaffRevenueGrouped(tenantId: string, startDate: Date, endDate: Date) {
-    return this.prisma.staffDailyStats.groupBy({
-      by: ['staffId'],
+  async getEmployeeRevenueGrouped(tenantId: string, startDate: Date, endDate: Date) {
+    return this.prisma.employeeDailyStats.groupBy({
+      by: ['employeeId'],
       where: {
         tenantId,
         date: { gte: startDate, lte: endDate },
@@ -32,9 +32,9 @@ export class ReportsRepository {
     });
   }
 
-  async getStaffCommissions(staffIds: string[]) {
-    return this.prisma.staff.findMany({
-      where: { id: { in: staffIds } },
+  async getEmployeeCommissions(employeeIds: string[]) {
+    return this.prisma.employee.findMany({
+      where: { id: { in: employeeIds } },
       select: { id: true, commissionPercent: true },
     });
   }
@@ -54,10 +54,10 @@ export class ReportsRepository {
       },
       orderBy: {
         _sum: {
-          price: 'desc'
-        }
+          price: 'desc',
+        },
       },
-      take: 10
+      take: 10,
     });
   }
 
@@ -73,14 +73,14 @@ export class ReportsRepository {
     });
   }
 
-  async getTopCustomersByDate(tenantId: string, startDate: Date, endDate: Date, staffId?: string,) {
+  async getTopCustomersByDate(tenantId: string, startDate: Date, endDate: Date, employeeId?: string) {
     return await this.prisma.appointment.groupBy({
       by: ['customerId'],
       where: {
         tenantId,
         status: 'COMPLETED',
         startTime: { gte: startDate, lte: endDate },
-        ...(staffId && { staffId }),
+        ...(employeeId && { employeeId }),
       },
       _count: { id: true },
       _sum: { price: true },
@@ -89,14 +89,14 @@ export class ReportsRepository {
     });
   }
 
-  async getWorstCustomersByDate(tenantId: string, startDate: Date, endDate: Date, staffId?: string,) {
+  async getWorstCustomersByDate(tenantId: string, startDate: Date, endDate: Date, employeeId?: string) {
     return await this.prisma.appointment.groupBy({
       by: ['customerId'],
       where: {
         tenantId,
-        status: { in: ['CANCELLED', 'NO_SHOW']},
+        status: { in: ['CANCELLED', 'NO_SHOW'] },
         startTime: { gte: startDate, lte: endDate },
-        ...(staffId && { staffId }),
+        ...(employeeId && { employeeId }),
       },
       _count: { id: true },
       _sum: { price: true },
@@ -116,7 +116,7 @@ export class ReportsRepository {
         phone: true,
         completedAppointments: true,
         totalSpent: true,
-      }
+      },
     });
   }
 
@@ -132,7 +132,7 @@ export class ReportsRepository {
         noShowCount: true,
         cancelledAppointments: true,
         totalSpent: true,
-      }
+      },
     });
   }
 
@@ -149,21 +149,21 @@ export class ReportsRepository {
     });
   }
 
-  async getStaffRevenueSum(tenantId: string, startDate: Date, endDate: Date) {
-    return this.prisma.staffDailyStats.groupBy({
-      by: ['staffId'],
+  async getEmployeeRevenueSum(tenantId: string, startDate: Date, endDate: Date) {
+    return this.prisma.employeeDailyStats.groupBy({
+      by: ['employeeId'],
       where: {
         tenantId,
         date: { gte: startDate, lte: endDate },
-        revenue: { gt: 0 }
+        revenue: { gt: 0 },
       },
       _sum: { revenue: true },
     });
   }
 
-  async getStaffMembersWithRoles(staffIds: string[], tenantId: string) {
-    return this.prisma.staff.findMany({
-      where: { id: { in: staffIds } },
+  async getEmployeeMembersWithRoles(employeeIds: string[], tenantId: string) {
+    return this.prisma.employee.findMany({
+      where: { id: { in: employeeIds } },
       select: {
         id: true,
         displayName: true,
@@ -172,17 +172,17 @@ export class ReportsRepository {
           select: {
             memberships: {
               where: { tenantId },
-              select: { role: true }
-            }
-          }
-        }
-      }
+              select: { role: true },
+            },
+          },
+        },
+      },
     });
   }
 
-  async getStaffMemberWithRole(staffId: string, tenantId: string) {
-    return this.prisma.staff.findUnique({
-      where: { id: staffId },
+  async getEmployeeMemberWithRole(employeeId: string, tenantId: string) {
+    return this.prisma.employee.findUnique({
+      where: { id: employeeId },
       select: {
         id: true,
         displayName: true,
@@ -191,29 +191,29 @@ export class ReportsRepository {
           select: {
             memberships: {
               where: { tenantId },
-              select: { role: true }
-            }
-          }
-        }
-      }
+              select: { role: true },
+            },
+          },
+        },
+      },
     });
   }
 
-  async getStaffRevenueSumByStaffId(tenantId: string, staffId: string, startDate: Date, endDate: Date) {
-    return this.prisma.staffDailyStats.aggregate({
+  async getEmployeeRevenueSumByEmployeeId(tenantId: string, employeeId: string, startDate: Date, endDate: Date) {
+    return this.prisma.employeeDailyStats.aggregate({
       where: {
         tenantId,
-        staffId,
+        employeeId,
         date: { gte: startDate, lte: endDate },
       },
-      _sum: { revenue: true,completed: true },
-      _count: { id: true, }
+      _sum: { revenue: true, completed: true },
+      _count: { id: true },
     });
   }
 
   async getDailyRevenueBreakdown(tenantId: string, startDate: Date, endDate: Date) {
     return this.prisma.tenantDailyStats.groupBy({
-      by: ["date"],
+      by: ['date'],
       where: {
         tenantId,
         date: { gte: startDate, lte: endDate },
@@ -222,21 +222,21 @@ export class ReportsRepository {
       orderBy: {
         date: 'asc',
       },
-    })
+    });
   }
 
-  async getStaffRevenueBreakdown(staffId: string, tenantId: string, startDate: Date, endDate: Date) {
-    return this.prisma.staffDailyStats.groupBy({
-      by: ["date"],
+  async getEmployeeRevenueBreakdown(employeeId: string, tenantId: string, startDate: Date, endDate: Date) {
+    return this.prisma.employeeDailyStats.groupBy({
+      by: ['date'],
       where: {
         tenantId,
-        staffId,
+        employeeId,
         date: { gte: startDate, lte: endDate },
       },
       _sum: { revenue: true },
       orderBy: {
         date: 'asc',
       },
-    })
+    });
   }
 }
