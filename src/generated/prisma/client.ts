@@ -26,7 +26,9 @@ export * from "./enums"
  * Type-safe database client for TypeScript
  * @example
  * ```
- * const prisma = new PrismaClient()
+ * const prisma = new PrismaClient({
+ *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+ * })
  * // Fetch zero or more Users
  * const users = await prisma.user.findMany()
  * ```
@@ -47,6 +49,11 @@ export type User = Prisma.UserModel
  * 
  */
 export type Membership = Prisma.MembershipModel
+/**
+ * Model Invitation
+ * 
+ */
+export type Invitation = Prisma.InvitationModel
 /**
  * Model Session
  * 
@@ -83,15 +90,15 @@ export type Service = Prisma.ServiceModel
  */
 export type ServiceAssignment = Prisma.ServiceAssignmentModel
 /**
- * Model Employee
+ * Model Professional
  * 
  */
-export type Employee = Prisma.EmployeeModel
+export type Professional = Prisma.ProfessionalModel
 /**
- * Model EmployeeWorkingHours
+ * Model ProfessionalWorkingHours
  * 
  */
-export type EmployeeWorkingHours = Prisma.EmployeeWorkingHoursModel
+export type ProfessionalWorkingHours = Prisma.ProfessionalWorkingHoursModel
 /**
  * Model TenantWorkingHours
  * 
@@ -133,15 +140,15 @@ export type TenantDailyStats = Prisma.TenantDailyStatsModel
  */
 export type TenantLifetimeStats = Prisma.TenantLifetimeStatsModel
 /**
- * Model EmployeeDailyStats
+ * Model ProfessionalDailyStats
  * 
  */
-export type EmployeeDailyStats = Prisma.EmployeeDailyStatsModel
+export type ProfessionalDailyStats = Prisma.ProfessionalDailyStatsModel
 /**
- * Model EmployeeLifetimeStats
+ * Model ProfessionalLifetimeStats
  * 
  */
-export type EmployeeLifetimeStats = Prisma.EmployeeLifetimeStatsModel
+export type ProfessionalLifetimeStats = Prisma.ProfessionalLifetimeStatsModel
 /**
  * Model Notification
  * 
@@ -192,11 +199,6 @@ export type Payment = Prisma.PaymentModel
  * 
  */
 export type PlatformStats = Prisma.PlatformStatsModel
-/**
- * Model PlatformAdmin
- * 
- */
-export type PlatformAdmin = Prisma.PlatformAdminModel
 /**
  * Model WebhookLog
  * 

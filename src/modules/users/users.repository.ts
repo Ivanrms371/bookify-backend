@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { BaseRepository } from 'src/common/database/base.repository';
 import { UserUpdateInput } from 'src/generated/prisma/models';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
+import { MembershipStatus } from 'src/generated/prisma/enums';
 
 @Injectable()
 export class UsersRepository extends BaseRepository {
@@ -31,44 +32,44 @@ export class UsersRepository extends BaseRepository {
     return this.db(tx).user.findUnique({ where: { googleId } });
   }
 
-  async getMe(userId: string, tx?: TransactionClient) {
-    return this.db(tx).user.findUniqueOrThrow({
+  async findMeContext(userId: string) {
+    return this.prisma.user.findUnique({
       where: { id: userId },
       select: {
         id: true,
-        email: true,
         name: true,
+        email: true,
         avatarUrl: true,
         memberships: {
           where: {
-            status: 'ACTIVE',
-            tenant: { deletedAt: null },
+            status: MembershipStatus.ACTIVE,
           },
-          take: 1,
           select: {
             role: true,
-            status: true,
             tenant: {
               select: {
                 id: true,
                 name: true,
                 slug: true,
                 logoUrl: true,
-                isActive: true,
-                workspaceType: true,
                 onboardingStatus: true,
+                professionals: {
+                  where: {
+                    userId,
+                    isActive: true,
+                  },
+                  select: {
+                    id: true,
+                  },
+                },
                 subscription: {
                   select: {
+                    status: true,
                     plan: {
                       select: {
                         name: true,
                       },
                     },
-                    status: true,
-                    trialEndsAt: true,
-                    currentPeriodEnd: true,
-                    cancelledAt: true,
-                    nextPaymentDate: true,
                   },
                 },
               },
@@ -76,34 +77,6 @@ export class UsersRepository extends BaseRepository {
           },
         },
       },
-    });
-  }
-
-  async markEmailVerified(userId: string, tx?: TransactionClient) {
-    return this.db(tx).user.update({
-      data: { emailVerifiedAt: new Date() },
-      where: { id: userId },
-    });
-  }
-
-  async markPhoneVerified(userId: string, tx?: TransactionClient) {
-    return this.db(tx).user.update({
-      data: { phoneVerifiedAt: new Date() },
-      where: { id: userId },
-    });
-  }
-
-  async incrementTokenVersion(userId: string, tx?: TransactionClient) {
-    return this.db(tx).user.update({
-      data: { tokenVersion: { increment: 1 } },
-      where: { id: userId },
-    });
-  }
-
-  async updateLastLogin(userId: string, tx?: TransactionClient) {
-    return this.db(tx).user.update({
-      data: { lastLoginAt: new Date() },
-      where: { id: userId },
     });
   }
 }

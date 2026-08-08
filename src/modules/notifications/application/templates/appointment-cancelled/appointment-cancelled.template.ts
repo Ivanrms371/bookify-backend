@@ -33,7 +33,7 @@ export class AppointmentCancelledTemplate implements NotificationTemplate {
   private buildInApp(variables: AppointmentCancelledVariables): BuildInAppResponse {
     return {
       title: 'Cita cancelada',
-      message: `Tu cita con ${variables.employeeName} para el ${variables.date} ha sido cancelada`,
+      message: `Tu cita con ${variables.professionalName} para el ${variables.date} ha sido cancelada`,
       actionUrl: `/appointments/${variables.appointmentId}`,
     };
   }

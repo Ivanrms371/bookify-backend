@@ -9,7 +9,7 @@ export class NotificationsController {
 
   @Get()
   async getNotificationsData(@Req() req: AuthenticatedRequest) {
-    const userId = req.user.userId;
+    const userId = req.user.id;
     const [unreadCount, notifications] = await Promise.all([
       this.inAppNotificationsService.countUnread(userId),
       this.inAppNotificationsService.findLatest(userId),
@@ -19,11 +19,11 @@ export class NotificationsController {
 
   @Put('read-all')
   async markAllAsRead(@Req() req: AuthenticatedRequest) {
-    return this.inAppNotificationsService.markAllAsRead(req.user.userId);
+    return this.inAppNotificationsService.markAllAsRead(req.user.id);
   }
 
   @Patch(':id/read')
   async markAsRead(@Req() req: AuthenticatedRequest, @Param('id') id: string) {
-    return this.inAppNotificationsService.markAsRead(id, req.user.userId);
+    return this.inAppNotificationsService.markAsRead(id, req.user.id);
   }
 }

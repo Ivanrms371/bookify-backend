@@ -193,7 +193,7 @@ export type InAppNotificationGroupByOutputType = {
   _max: InAppNotificationMaxAggregateOutputType | null
 }
 
-type GetInAppNotificationGroupByPayload<T extends InAppNotificationGroupByArgs> = Prisma.PrismaPromise<
+export type GetInAppNotificationGroupByPayload<T extends InAppNotificationGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<InAppNotificationGroupByOutputType, T['by']> &
       {
@@ -1558,6 +1558,11 @@ export type InAppNotificationFindManyArgs<ExtArgs extends runtime.Types.Extensio
    * Skip the first `n` InAppNotifications.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of InAppNotifications.
+   */
   distinct?: Prisma.InAppNotificationScalarFieldEnum | Prisma.InAppNotificationScalarFieldEnum[]
 }
 

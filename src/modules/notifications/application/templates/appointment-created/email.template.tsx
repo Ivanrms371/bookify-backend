@@ -8,12 +8,12 @@ export const AppointmentCreatedEmailTemplate = ({
   customerName = 'Iván Rodríguez',
   date = '24 de diciembre de 2024',
   time = '10:00 AM',
-  employeeName = 'Juan Pérez',
+  professionalName = 'Juan Pérez',
 }: AppointmentCreatedVariables) => {
   return (
     <Layout previewText={`Nueva cita con ${customerName}`}>
       <Section>
-        <CustomHeading>Tienes una nueva cita, {employeeName}</CustomHeading>
+        <CustomHeading>Tienes una nueva cita, {professionalName}</CustomHeading>
         <Text className="text-gray-600 text-lg leading-relaxed text-center mb-8">
           El cliente <strong>{customerName}</strong> ha agendado una cita para el <strong>{date}</strong> a las <strong>{time}</strong>
         </Text>

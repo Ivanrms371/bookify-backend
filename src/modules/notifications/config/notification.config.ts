@@ -66,7 +66,7 @@ export const NotificationConfig: NotificationConfigMap = {
     },
   },
 
-  'appointment.booked.by_employee': {
+  'appointment.booked.by_professional': {
     retry: {
       retryable: true,
       maxRetries: 3,
@@ -81,7 +81,7 @@ export const NotificationConfig: NotificationConfigMap = {
     },
   },
 
-  'appointment.cancelled.by_employee': {
+  'appointment.cancelled.by_professional': {
     retry: {
       retryable: true,
       maxRetries: 3,

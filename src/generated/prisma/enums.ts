@@ -9,6 +9,15 @@
 * 🟢 You can import this file directly.
 */
 
+export const InvitationStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type InvitationStatus = (typeof InvitationStatus)[keyof typeof InvitationStatus]
+
+
 export const AuthProvider = {
   EMAIL: 'EMAIL',
   GOOGLE: 'GOOGLE'
@@ -32,10 +41,19 @@ export type VerificationType = (typeof VerificationType)[keyof typeof Verificati
 export const MembershipRole = {
   OWNER: 'OWNER',
   ADMIN: 'ADMIN',
-  EMPLOYEE: 'EMPLOYEE'
+  PROFESSIONAL: 'PROFESSIONAL'
 } as const
 
 export type MembershipRole = (typeof MembershipRole)[keyof typeof MembershipRole]
+
+
+export const MembershipStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  INVITED: 'INVITED'
+} as const
+
+export type MembershipStatus = (typeof MembershipStatus)[keyof typeof MembershipStatus]
 
 
 export const CommissionType = {
@@ -44,25 +62,6 @@ export const CommissionType = {
 } as const
 
 export type CommissionType = (typeof CommissionType)[keyof typeof CommissionType]
-
-
-export const MembershipStatus = {
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
-  PENDING: 'PENDING',
-  INVITED: 'INVITED'
-} as const
-
-export type MembershipStatus = (typeof MembershipStatus)[keyof typeof MembershipStatus]
-
-
-export const PlatformAdminLevel = {
-  GOD: 'GOD',
-  MODERATOR: 'MODERATOR',
-  SUPPORTY: 'SUPPORTY'
-} as const
-
-export type PlatformAdminLevel = (typeof PlatformAdminLevel)[keyof typeof PlatformAdminLevel]
 
 
 export const WorkspaceType = {

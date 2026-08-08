@@ -13,7 +13,6 @@ import { NotificationProcessorService } from './application/services/notificatio
 import { NotificationScheduler } from './schedulers/notification-scheduler.service';
 import { NotificationConfigService } from './notification-config.service';
 import { InAppNotificationsRepository } from './infraestructure/repositories/in-app-notifications.repository';
-import { AppointmentCreatedListener } from './listeners/appointments/appointment-created.listener';
 import { NotificationsListener } from './notifications.listener';
 import { NotificationUsageService } from './application/services/notification-usage.service';
 import { AppointmentCreatedTemplate } from './application/templates/appointment-created/appointment-created.template';
@@ -29,10 +28,7 @@ import { InAppNotificationsService } from './application/services/in-app-notific
 import { NotificationsWsGateway } from './infraestructure/gateways/notifications.ws.gateway';
 import { TenantCreatedTemplate } from './application/templates/tenant-created/tenant-created.template';
 import { TenantCreatedListener } from './listeners/tenants/tenant-created.listener';
-import { CustomersModule } from '../tenants/features/customers/customers.module';
-import { AppointmentBookedByEmployeeTemplate } from './application/templates/appointment-booked-by-employee/appointment-booked-by-employee.template';
-import { AppointmentCancelledByEmployeeTemplate } from './application/templates/appointment-cancelled-by-employee/appointment-cancelled-by-employee.template';
-import { AppointmentCancelledByEmployeeListener } from './listeners/appointments/appointment-cancelled-by-employee.listener';
+import { CustomersModule } from '../customers/customers.module';
 import { MembershipInvitedListener } from './listeners/memberships/membership-invited.listener';
 import { MembershipInvitedTemplate } from './application/templates/membership-invited/membership-invited.template';
 
@@ -73,16 +69,12 @@ import { MembershipInvitedTemplate } from './application/templates/membership-in
     AppointmentCancelledTemplate,
     AppointmentRescheduledTemplate,
     AppointmentReminderTemplate,
-    AppointmentBookedByEmployeeTemplate,
-    AppointmentCancelledByEmployeeTemplate,
     VerificationEmailTemplate,
     TenantCreatedTemplate,
     MembershipInvitedTemplate,
 
     // Listeners
-    AppointmentCreatedListener,
     AppointmentCancelledListener,
-    AppointmentCancelledByEmployeeListener,
     AppointmentRescheduledListener,
     VerificationCreatedListener,
     TenantCreatedListener,

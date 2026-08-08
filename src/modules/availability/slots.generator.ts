@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Block, FilterByMinAdvancedMinutesParams, FilterPastSlotsParams } from './types/slots.type';
-import { dateToMinutes, minutesToTime } from 'src/common/utils/time/time.util';
+import { Block, FilterPastSlotsParams } from './types/slots.type';
+import { minutesToTime } from 'src/common/utils/time/time.util';
 import { AvailabilityConfig } from './types/availability-config.type';
 import { toZonedTime, format } from 'date-fns-tz';
+import { isBefore, isSameDay, startOfDay } from 'date-fns';
 
 type GenerateParams = {
   strategy: 'dynamic' | 'slot';
@@ -43,31 +44,22 @@ export class SlotsGenerator {
     const nowUtc = new Date();
     const localNow = toZonedTime(nowUtc, config.timeZone);
 
-    const todayStr = format(localNow, 'yyyy-MM-dd', { timeZone: config.timeZone });
-    const targetDateStr = format(date, 'yyyy-MM-dd', { timeZone: config.timeZone });
-    const isToday = todayStr === targetDateStr;
+    const today = startOfDay(localNow);
+    const targetDate = startOfDay(toZonedTime(date, config.timeZone));
 
-    if (!isToday) return slots;
+    if (isBefore(targetDate, today)) {
+      return [];
+    }
 
-    const currentLocalHour = parseInt(format(localNow, 'HH', { timeZone: config.timeZone }), 10);
-    const currentLocalMinute = parseInt(format(localNow, 'mm', { timeZone: config.timeZone }), 10);
-    const nowMinutes = currentLocalHour * 60 + currentLocalMinute;
+    if (!isSameDay(targetDate, today)) {
+      return slots;
+    }
 
-    return slots.filter((slot) => slot >= nowMinutes);
-  }
+    const currentMinutes = localNow.getHours() * 60 + localNow.getMinutes();
 
-  private filterByMinAdvancedMinutes({ slots, date, config: { timeZone, minAdvancedMinutes } }: FilterByMinAdvancedMinutesParams) {
-    const nowUtc = new Date();
+    const minimumAllowedMinutes = currentMinutes + config.minAdvancedMinutes;
 
-    const todayStr = format(nowUtc, 'yyyy-MM-dd', { timeZone });
-    const todayDateStr = format(date, 'yyyy-MM-dd', { timeZone });
-    const isToday = todayStr === todayDateStr;
-
-    if (!isToday) return slots;
-
-    const nowMinutes = dateToMinutes(date, timeZone);
-
-    return slots.filter((slot) => slot >= nowMinutes + minAdvancedMinutes);
+    return slots.filter((slot) => slot >= minimumAllowedMinutes);
   }
 
   private isSlotOverlapping({ slot, slotDuration, block }: { slot: number; slotDuration: number; block: Block }) {
@@ -75,11 +67,15 @@ export class SlotsGenerator {
     return slot < block.closesAt && slotEnd > block.opensAt;
   }
 
+  private startsAfterSlot(block: Block, slotEnd: number) {
+    return block.opensAt > slotEnd;
+  }
+
   private filterBusyBlocks({ slots, busyBlocks, slotDuration }: { slots: number[]; busyBlocks: Block[]; slotDuration: number }) {
     return slots.filter((slot) => {
       const slotEnd = slot + slotDuration;
       for (const block of busyBlocks) {
-        if (block.opensAt > slotEnd) break;
+        if (this.startsAfterSlot(block, slotEnd)) break;
         if (this.isSlotOverlapping({ slot, slotDuration, block })) return false;
       }
       return true;
@@ -124,7 +120,6 @@ export class SlotsGenerator {
 
     slots = this.filterBusyBlocks({ slots, busyBlocks: orderedBusyBlocks, slotDuration: serviceDuration });
     slots = this.filterPastSlots({ slots, date, config });
-    slots = this.filterByMinAdvancedMinutes({ slots, date, config });
 
     return this.formatSlots(slots);
   }

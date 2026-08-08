@@ -15,10 +15,10 @@ export class AppointmentCancelledListener {
   async handle(event: AppointmentCancelledEvent) {
     const payload = {
       appointmentId: event.appointmentId,
-      employeeName: event.employeeName,
+      professionalName: event.professionalName,
       customerName: event.customerName,
-      date: format(event.startTime, "dd 'de' MMMM 'de' yyyy", { locale: es }),
-      time: format(event.startTime, 'HH:mm'),
+      date: format(event.startsAt, "dd 'de' MMMM 'de' yyyy", { locale: es }),
+      time: format(event.startsAt, 'HH:mm'),
     } as AppointmentCancelledVariables;
 
     await this.notificationsService.create({

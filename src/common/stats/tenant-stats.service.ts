@@ -51,7 +51,7 @@ export class TenantStatsService {
       },
     });
 
-    const date = getZonedStartOfDay(data.startTime);
+    const date = getZonedStartOfDay(data.startsAt);
 
     await tx.tenantDailyStats.upsert({
       where: {
@@ -123,7 +123,7 @@ export class TenantStatsService {
 
     await tx.tenantLifetimeStats.upsert(upsertLifetimeStatsData);
 
-    const date = getZonedStartOfDay(data.startTime);
+    const date = getZonedStartOfDay(data.startsAt);
 
     const upsertDailyStatsData: TenantDailyStatsUpsertArgs = {
       where: {
@@ -191,7 +191,7 @@ export class TenantStatsService {
 
     await tx.tenantLifetimeStats.upsert(upsertLifetimeStatsData);
 
-    const date = getZonedStartOfDay(data.startTime);
+    const date = getZonedStartOfDay(data.startsAt);
 
     const upsertDailyStatsData: TenantDailyStatsUpsertArgs = {
       where: {
@@ -254,7 +254,7 @@ export class TenantStatsService {
 
     await tx.tenantLifetimeStats.upsert(upsertData);
 
-    const date = getZonedStartOfDay(data.startTime);
+    const date = getZonedStartOfDay(data.startsAt);
 
     const upsertDailyStatsData: TenantDailyStatsUpsertArgs = {
       where: {

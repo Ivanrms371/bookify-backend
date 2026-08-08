@@ -13,8 +13,8 @@ describe('SlotsGenerator', () => {
   }
 
   // Helper: creates a FetchedAppointmentBlock
-  function block(startH: number, startM: number, endH: number, endM: number, employeeId = 'employee-1'): FetchedAppointmentBlock {
-    return { employeeId, startTime: at(startH, startM), endTime: at(endH, endM) };
+  function block(startH: number, startM: number, endH: number, endM: number, professionalId = 'professional-1'): FetchedAppointmentBlock {
+    return { professionalId, startsAt: at(startH, startM), endsAt: at(endH, endM) };
   }
 
   beforeEach(() => {
@@ -168,7 +168,7 @@ describe('SlotsGenerator', () => {
       // Simulates a service with passive time:
       // Block 1: 9:00-9:20 (initial active)
       // Block 2: 9:50-10:10 (final active)
-      // Gap: 9:20-9:50 is FREE (passive time, employee not needed)
+      // Gap: 9:20-9:50 is FREE (passive time, professional not needed)
       const slots = generator.generate({
         strategy: 'dynamic',
         blocks: [{ opensAt: 540, closesAt: 720 }], // 9:00-12:00
@@ -303,7 +303,7 @@ describe('SlotsGenerator', () => {
 
     it('spa: 90 min service with passive time blocks', () => {
       // Masaje con piedras: 10 min active → 30 min passive → 50 min active
-      // Only the active blocks occupy the employee
+      // Only the active blocks occupy the professional
       const slots = generator.generate({
         strategy: 'dynamic',
         blocks: [{ opensAt: 540, closesAt: 1200 }], // 9:00-20:00
@@ -327,7 +327,7 @@ describe('SlotsGenerator', () => {
     });
 
     it('schedule exception: reduced hours', () => {
-      // Employee only works 9:00-13:00 due to medical appointment
+      // Professional only works 9:00-13:00 due to medical appointment
       const slots = generator.generate({
         strategy: 'dynamic',
         blocks: [{ opensAt: 540, closesAt: 780 }], // 9:00-13:00

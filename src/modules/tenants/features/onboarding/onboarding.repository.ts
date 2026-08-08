@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from 'src/common/database/base.repository';
 import { Tenant } from 'src/generated/prisma/client';
-import { MembershipRole, MembershipStatus, OnboardingStatus, WorkspaceType } from 'src/generated/prisma/enums';
-import { ServiceCreateManyArgs, ServiceCreateManyInput, TenantUpdateInput } from 'src/generated/prisma/models';
+import { MembershipRole, OnboardingStatus } from 'src/generated/prisma/enums';
+import { ServiceCreateManyInput, TenantUpdateInput } from 'src/generated/prisma/models';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { TenantOnboardingRaw } from './types/onboarding-raw.types';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
@@ -13,9 +13,9 @@ export class TenantOnboardingRepository extends BaseRepository {
     super(prisma);
   }
 
-  getOnboardingStatus(ownerId: string): Promise<TenantOnboardingRaw> {
-    return this.db().tenant.findUniqueOrThrow({
-      where: { ownerId },
+  getStatus(userId: string): Promise<TenantOnboardingRaw> {
+    return this.db().tenant.findFirstOrThrow({
+      where: { memberships: { some: { userId, role: MembershipRole.OWNER } } },
       select: {
         id: true,
         onboardingStatus: true,
@@ -45,28 +45,31 @@ export class TenantOnboardingRepository extends BaseRepository {
     });
   }
 
-  async findTenantByOwnerId(ownerId: string): Promise<Tenant | null> {
+  async findByOwnerId(userId: string): Promise<Tenant | null> {
     return this.prisma.tenant.findFirst({
       where: {
-        ownerId,
+        memberships: { some: { userId, role: MembershipRole.OWNER } },
         deletedAt: null,
       },
     });
   }
 
-  async createInitialTenant(ownerId: string): Promise<Tenant> {
+  async createInitialTenant(userId: string, ownerName: string): Promise<Tenant> {
     return this.prisma.tenant.create({
       data: {
-        ownerId,
-        onboardingStatus: OnboardingStatus.WORKSPACE_TYPE,
-
         memberships: {
           create: {
-            userId: ownerId,
+            userId,
             role: MembershipRole.OWNER,
-            status: MembershipStatus.ACTIVE,
           },
         },
+        professionals: {
+          create: {
+            displayName: ownerName,
+            user: { connect: { id: userId } },
+          },
+        },
+        onboardingStatus: OnboardingStatus.WORKSPACE_TYPE,
       },
     });
   }

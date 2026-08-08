@@ -1,5 +1,5 @@
 export interface AppointmentCreatedVariables {
-  employeeName: string;
+  professionalName: string;
   customerName: string;
   serviceName: string;
   date: string;

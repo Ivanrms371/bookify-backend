@@ -196,7 +196,7 @@ export type ScheduleExceptionBlockGroupByOutputType = {
   _max: ScheduleExceptionBlockMaxAggregateOutputType | null
 }
 
-type GetScheduleExceptionBlockGroupByPayload<T extends ScheduleExceptionBlockGroupByArgs> = Prisma.PrismaPromise<
+export type GetScheduleExceptionBlockGroupByPayload<T extends ScheduleExceptionBlockGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ScheduleExceptionBlockGroupByOutputType, T['by']> &
       {
@@ -1172,6 +1172,11 @@ export type ScheduleExceptionBlockFindManyArgs<ExtArgs extends runtime.Types.Ext
    * Skip the first `n` ScheduleExceptionBlocks.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ScheduleExceptionBlocks.
+   */
   distinct?: Prisma.ScheduleExceptionBlockScalarFieldEnum | Prisma.ScheduleExceptionBlockScalarFieldEnum[]
 }
 

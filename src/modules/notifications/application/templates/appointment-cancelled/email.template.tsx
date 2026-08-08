@@ -8,12 +8,12 @@ export const AppointmentCancelledEmailTemplate = ({
   customerName = 'Iván Rodríguez',
   date = '24 de diciembre de 2024',
   time = '10:00 AM',
-  employeeName = 'Juan Pérez',
+  professionalName = 'Juan Pérez',
 }: AppointmentCancelledVariables) => {
   return (
     <Layout previewText={`Cita cancelada con ${customerName}`}>
       <Section>
-        <CustomHeading>Cita cancelada, {employeeName}</CustomHeading>
+        <CustomHeading>Cita cancelada, {professionalName}</CustomHeading>
         <Text className="text-gray-600 text-lg leading-relaxed text-center mb-8">
           El cliente <strong>{customerName}</strong> ha cancelado la cita para el <strong>{date}</strong> a las <strong>{time}</strong>
         </Text>

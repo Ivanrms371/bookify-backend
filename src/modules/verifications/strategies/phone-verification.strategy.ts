@@ -25,7 +25,7 @@ export class PhoneVerificationStrategy {
   async verifyPhone(userId: string, code: string) {
     const verification = await this.verificationsService.verifyCode(userId, VerificationType.PHONE_CONFIRM, code);
 
-    await this.usersService.markUserPhoneVerified(userId);
+    await this.usersService.markPhoneVerified(userId);
 
     return verification;
   }

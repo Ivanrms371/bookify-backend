@@ -46,7 +46,8 @@ export type ServiceMinAggregateOutputType = {
   id: string | null
   tenantId: string | null
   name: string | null
-  image: string | null
+  imageUrl: string | null
+  imagePublicId: string | null
   description: string | null
   price: runtime.Decimal | null
   discountPercentage: number | null
@@ -63,7 +64,8 @@ export type ServiceMaxAggregateOutputType = {
   id: string | null
   tenantId: string | null
   name: string | null
-  image: string | null
+  imageUrl: string | null
+  imagePublicId: string | null
   description: string | null
   price: runtime.Decimal | null
   discountPercentage: number | null
@@ -80,7 +82,8 @@ export type ServiceCountAggregateOutputType = {
   id: number
   tenantId: number
   name: number
-  image: number
+  imageUrl: number
+  imagePublicId: number
   description: number
   price: number
   discountPercentage: number
@@ -115,7 +118,8 @@ export type ServiceMinAggregateInputType = {
   id?: true
   tenantId?: true
   name?: true
-  image?: true
+  imageUrl?: true
+  imagePublicId?: true
   description?: true
   price?: true
   discountPercentage?: true
@@ -132,7 +136,8 @@ export type ServiceMaxAggregateInputType = {
   id?: true
   tenantId?: true
   name?: true
-  image?: true
+  imageUrl?: true
+  imagePublicId?: true
   description?: true
   price?: true
   discountPercentage?: true
@@ -149,7 +154,8 @@ export type ServiceCountAggregateInputType = {
   id?: true
   tenantId?: true
   name?: true
-  image?: true
+  imageUrl?: true
+  imagePublicId?: true
   description?: true
   price?: true
   discountPercentage?: true
@@ -253,7 +259,8 @@ export type ServiceGroupByOutputType = {
   id: string
   tenantId: string
   name: string
-  image: string | null
+  imageUrl: string | null
+  imagePublicId: string | null
   description: string | null
   price: runtime.Decimal
   discountPercentage: number | null
@@ -271,7 +278,7 @@ export type ServiceGroupByOutputType = {
   _max: ServiceMaxAggregateOutputType | null
 }
 
-type GetServiceGroupByPayload<T extends ServiceGroupByArgs> = Prisma.PrismaPromise<
+export type GetServiceGroupByPayload<T extends ServiceGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ServiceGroupByOutputType, T['by']> &
       {
@@ -293,7 +300,8 @@ export type ServiceWhereInput = {
   id?: Prisma.UuidFilter<"Service"> | string
   tenantId?: Prisma.UuidFilter<"Service"> | string
   name?: Prisma.StringFilter<"Service"> | string
-  image?: Prisma.StringNullableFilter<"Service"> | string | null
+  imageUrl?: Prisma.StringNullableFilter<"Service"> | string | null
+  imagePublicId?: Prisma.StringNullableFilter<"Service"> | string | null
   description?: Prisma.StringNullableFilter<"Service"> | string | null
   price?: Prisma.DecimalFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.IntNullableFilter<"Service"> | number | null
@@ -313,7 +321,8 @@ export type ServiceOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  image?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrder
   discountPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -336,7 +345,8 @@ export type ServiceWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ServiceWhereInput | Prisma.ServiceWhereInput[]
   tenantId?: Prisma.UuidFilter<"Service"> | string
   name?: Prisma.StringFilter<"Service"> | string
-  image?: Prisma.StringNullableFilter<"Service"> | string | null
+  imageUrl?: Prisma.StringNullableFilter<"Service"> | string | null
+  imagePublicId?: Prisma.StringNullableFilter<"Service"> | string | null
   description?: Prisma.StringNullableFilter<"Service"> | string | null
   price?: Prisma.DecimalFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.IntNullableFilter<"Service"> | number | null
@@ -356,7 +366,8 @@ export type ServiceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  image?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrder
   discountPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -381,7 +392,8 @@ export type ServiceScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"Service"> | string
   tenantId?: Prisma.UuidWithAggregatesFilter<"Service"> | string
   name?: Prisma.StringWithAggregatesFilter<"Service"> | string
-  image?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
+  imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
+  imagePublicId?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
   price?: Prisma.DecimalWithAggregatesFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.IntNullableWithAggregatesFilter<"Service"> | number | null
@@ -397,7 +409,8 @@ export type ServiceScalarWhereWithAggregatesInput = {
 export type ServiceCreateInput = {
   id?: string
   name: string
-  image?: string | null
+  imageUrl?: string | null
+  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -417,7 +430,8 @@ export type ServiceUncheckedCreateInput = {
   id?: string
   tenantId: string
   name: string
-  image?: string | null
+  imageUrl?: string | null
+  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -435,7 +449,8 @@ export type ServiceUncheckedCreateInput = {
 export type ServiceUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -455,7 +470,8 @@ export type ServiceUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -474,7 +490,8 @@ export type ServiceCreateManyInput = {
   id?: string
   tenantId: string
   name: string
-  image?: string | null
+  imageUrl?: string | null
+  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -490,7 +507,8 @@ export type ServiceCreateManyInput = {
 export type ServiceUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -507,7 +525,8 @@ export type ServiceUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -534,7 +553,8 @@ export type ServiceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  image?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
   discountPercentage?: Prisma.SortOrder
@@ -559,7 +579,8 @@ export type ServiceMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  image?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
   discountPercentage?: Prisma.SortOrder
@@ -576,7 +597,8 @@ export type ServiceMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  image?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
   discountPercentage?: Prisma.SortOrder
@@ -699,7 +721,8 @@ export type ServiceUpdateOneRequiredWithoutAppointmentsNestedInput = {
 export type ServiceCreateWithoutTenantInput = {
   id?: string
   name: string
-  image?: string | null
+  imageUrl?: string | null
+  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -717,7 +740,8 @@ export type ServiceCreateWithoutTenantInput = {
 export type ServiceUncheckedCreateWithoutTenantInput = {
   id?: string
   name: string
-  image?: string | null
+  imageUrl?: string | null
+  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -765,7 +789,8 @@ export type ServiceScalarWhereInput = {
   id?: Prisma.UuidFilter<"Service"> | string
   tenantId?: Prisma.UuidFilter<"Service"> | string
   name?: Prisma.StringFilter<"Service"> | string
-  image?: Prisma.StringNullableFilter<"Service"> | string | null
+  imageUrl?: Prisma.StringNullableFilter<"Service"> | string | null
+  imagePublicId?: Prisma.StringNullableFilter<"Service"> | string | null
   description?: Prisma.StringNullableFilter<"Service"> | string | null
   price?: Prisma.DecimalFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.IntNullableFilter<"Service"> | number | null
@@ -781,7 +806,8 @@ export type ServiceScalarWhereInput = {
 export type ServiceCreateWithoutAssignmentsInput = {
   id?: string
   name: string
-  image?: string | null
+  imageUrl?: string | null
+  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -800,7 +826,8 @@ export type ServiceUncheckedCreateWithoutAssignmentsInput = {
   id?: string
   tenantId: string
   name: string
-  image?: string | null
+  imageUrl?: string | null
+  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -833,7 +860,8 @@ export type ServiceUpdateToOneWithWhereWithoutAssignmentsInput = {
 export type ServiceUpdateWithoutAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -852,7 +880,8 @@ export type ServiceUncheckedUpdateWithoutAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -869,7 +898,8 @@ export type ServiceUncheckedUpdateWithoutAssignmentsInput = {
 export type ServiceCreateWithoutAppointmentsInput = {
   id?: string
   name: string
-  image?: string | null
+  imageUrl?: string | null
+  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -888,7 +918,8 @@ export type ServiceUncheckedCreateWithoutAppointmentsInput = {
   id?: string
   tenantId: string
   name: string
-  image?: string | null
+  imageUrl?: string | null
+  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -921,7 +952,8 @@ export type ServiceUpdateToOneWithWhereWithoutAppointmentsInput = {
 export type ServiceUpdateWithoutAppointmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -940,7 +972,8 @@ export type ServiceUncheckedUpdateWithoutAppointmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -957,7 +990,8 @@ export type ServiceUncheckedUpdateWithoutAppointmentsInput = {
 export type ServiceCreateManyTenantInput = {
   id?: string
   name: string
-  image?: string | null
+  imageUrl?: string | null
+  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -973,7 +1007,8 @@ export type ServiceCreateManyTenantInput = {
 export type ServiceUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -991,7 +1026,8 @@ export type ServiceUpdateWithoutTenantInput = {
 export type ServiceUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1009,7 +1045,8 @@ export type ServiceUncheckedUpdateWithoutTenantInput = {
 export type ServiceUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1066,7 +1103,8 @@ export type ServiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   tenantId?: boolean
   name?: boolean
-  image?: boolean
+  imageUrl?: boolean
+  imagePublicId?: boolean
   description?: boolean
   price?: boolean
   discountPercentage?: boolean
@@ -1087,7 +1125,8 @@ export type ServiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   tenantId?: boolean
   name?: boolean
-  image?: boolean
+  imageUrl?: boolean
+  imagePublicId?: boolean
   description?: boolean
   price?: boolean
   discountPercentage?: boolean
@@ -1105,7 +1144,8 @@ export type ServiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   tenantId?: boolean
   name?: boolean
-  image?: boolean
+  imageUrl?: boolean
+  imagePublicId?: boolean
   description?: boolean
   price?: boolean
   discountPercentage?: boolean
@@ -1123,7 +1163,8 @@ export type ServiceSelectScalar = {
   id?: boolean
   tenantId?: boolean
   name?: boolean
-  image?: boolean
+  imageUrl?: boolean
+  imagePublicId?: boolean
   description?: boolean
   price?: boolean
   discountPercentage?: boolean
@@ -1136,7 +1177,7 @@ export type ServiceSelectScalar = {
   deletedAt?: boolean
 }
 
-export type ServiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "image" | "description" | "price" | "discountPercentage" | "discountFixed" | "durationMinutes" | "isActive" | "displayOrder" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["service"]>
+export type ServiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "imageUrl" | "imagePublicId" | "description" | "price" | "discountPercentage" | "discountFixed" | "durationMinutes" | "isActive" | "displayOrder" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["service"]>
 export type ServiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   appointments?: boolean | Prisma.Service$appointmentsArgs<ExtArgs>
   assignments?: boolean | Prisma.Service$assignmentsArgs<ExtArgs>
@@ -1161,7 +1202,8 @@ export type $ServicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     id: string
     tenantId: string
     name: string
-    image: string | null
+    imageUrl: string | null
+    imagePublicId: string | null
     description: string | null
     price: runtime.Decimal
     discountPercentage: number | null
@@ -1601,7 +1643,8 @@ export interface ServiceFieldRefs {
   readonly id: Prisma.FieldRef<"Service", 'String'>
   readonly tenantId: Prisma.FieldRef<"Service", 'String'>
   readonly name: Prisma.FieldRef<"Service", 'String'>
-  readonly image: Prisma.FieldRef<"Service", 'String'>
+  readonly imageUrl: Prisma.FieldRef<"Service", 'String'>
+  readonly imagePublicId: Prisma.FieldRef<"Service", 'String'>
   readonly description: Prisma.FieldRef<"Service", 'String'>
   readonly price: Prisma.FieldRef<"Service", 'Decimal'>
   readonly discountPercentage: Prisma.FieldRef<"Service", 'Int'>
@@ -1808,6 +1851,11 @@ export type ServiceFindManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Skip the first `n` Services.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Services.
+   */
   distinct?: Prisma.ServiceScalarFieldEnum | Prisma.ServiceScalarFieldEnum[]
 }
 

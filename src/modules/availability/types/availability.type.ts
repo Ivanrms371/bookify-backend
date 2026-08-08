@@ -8,9 +8,8 @@ type Block = {
 
 export type AppointmentsWithBlocks = {
   blocks: {
-    employeeId: string;
-    startTime: Date;
-    endTime: Date;
+    startsAt: Date;
+    endsAt: Date;
   }[];
 };
 
@@ -34,7 +33,7 @@ export type ResolvedSchedule = {
 };
 
 export type FindNextAvailableDateParams = {
-  employeeId: string;
+  professionalId: string;
   date: Date;
   strategy: SlotStrategy;
   serviceDuration: number;

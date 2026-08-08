@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MembershipRole, MembershipStatus, OnboardingStatus, Prisma } from 'src/generated/prisma/client';
+import { MembershipRole, OnboardingStatus, Prisma } from 'src/generated/prisma/client';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { BaseRepository } from 'src/common/database/base.repository';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
@@ -21,7 +21,7 @@ export class TenantsRepository extends BaseRepository {
 
   findByUserId(userId: string) {
     return this.prisma.tenant.findFirst({
-      where: { ownerId: userId },
+      where: { memberships: { some: { userId } } },
     });
   }
 
@@ -56,19 +56,22 @@ export class TenantsRepository extends BaseRepository {
         name: input.name,
         slug: input.slug,
         type: input.tenantType,
-        ownerId: userId,
         memberships: {
           create: {
             userId,
             role: MembershipRole.OWNER,
-            status: MembershipStatus.ACTIVE,
+          },
+        },
+        professionals: {
+          create: {
+            userId,
           },
         },
       },
     });
   }
 
-  getOnboardingStatus(id: string): Promise<TenantOnboardingRaw> {
+  getStatus(id: string): Promise<TenantOnboardingRaw> {
     return this.db().tenant.findUniqueOrThrow({
       where: { id },
       select: {

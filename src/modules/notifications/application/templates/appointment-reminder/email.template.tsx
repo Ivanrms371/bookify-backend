@@ -8,18 +8,18 @@ export const AppointmentReminderEmailTemplate = ({
   customerName = 'Iván Rodríguez',
   date = '24 de diciembre de 2024',
   time = '10:00 AM',
-  employeeName = 'Juan Pérez',
+  professionalName = 'Juan Pérez',
   reminderType = '24h',
   cancelUrl = 'https://localhost:4000/appointments',
   rescheduleUrl = 'https://localhost:4000/appointments',
 }: AppointmentReminderVariables) => {
   return (
-    <Layout previewText={`Recordatorio de cita con ${employeeName} ${reminderType === '24h' ? 'mañana' : 'hoy'} a las ${time}`}>
+    <Layout previewText={`Recordatorio de cita con ${professionalName} ${reminderType === '24h' ? 'mañana' : 'hoy'} a las ${time}`}>
       <Section>
         <CustomHeading>Hola {customerName}</CustomHeading>
         <Section>
           <Text className="text-gray-600 text-lg leading-relaxed text-center mb-8">
-            Te recordamos que tienes una cita programada con <strong>{employeeName}</strong> para el <strong>{date}</strong> a las{' '}
+            Te recordamos que tienes una cita programada con <strong>{professionalName}</strong> para el <strong>{date}</strong> a las{' '}
             <strong>{time}</strong>
           </Text>
           <Text className="text-gray-500 leading-relaxed text-center">

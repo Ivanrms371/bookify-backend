@@ -10,9 +10,9 @@ export type Block = {
 // AppointmentBlock fetched from DB
 
 export type FetchedAppointmentBlock = {
-  employeeId: string;
-  startTime: Date;
-  endTime: Date;
+  professionalId: string;
+  startsAt: Date;
+  endsAt: Date;
 };
 
 // Strategies
@@ -53,12 +53,6 @@ export type GenerateFixedSlotsParams = {
 // Filter Layer
 
 export type FilterPastSlotsParams = {
-  slots: number[];
-  date: Date;
-  config: AvailabilityConfig;
-};
-
-export type FilterByMinAdvancedMinutesParams = {
   slots: number[];
   date: Date;
   config: AvailabilityConfig;

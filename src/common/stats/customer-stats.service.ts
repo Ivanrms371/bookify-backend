@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { CustomerUpdateArgs, CustomerUpdateInput, TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 import { OnAppointmentCreatedData } from 'src/modules/appointments/domain/types/on-appointment-created.type';
-import { OnAppointmentCompletedData } from 'src/modules/appointments/domain/types/on-appointment-completed.type';
 import { OnAppointmentCancelledData } from 'src/modules/appointments/domain/types/on-appointment-cancelled.type';
 import { OnAppointmentNoShowData } from 'src/modules/appointments/domain/types/on-appointment-no-show.type';
 import { AppointmentStatus } from 'src/generated/prisma/enums';
+import { OnAppointmentCompletedData } from 'src/modules/appointments/domain/types/on-appointment-completed.type';
 
 /**
  * Service responsible for managing individual customer behavioral metrics.
- * 
+ *
  * It tracks engagement data for each customer, including:
  * - Appointment history (total, completed, cancelled, no-show).
  * - Financial metrics (total revenue/spent per customer).
  * - Recency metrics (first/last appointment dates).
- * 
+ *
  * These metrics are crucial for customer segmentation and ranking.
  */
 @Injectable()
@@ -21,7 +21,7 @@ export class CustomerStatsService {
   /**
    * Updates customer profile when a new appointment is created.
    * Tracks recruitment date and latest activity date.
-   * 
+   *
    * @param data Details of the created appointment
    * @param tx Transaction client
    */
@@ -38,7 +38,7 @@ export class CustomerStatsService {
           firstAppointmentAt: new Date(),
         }),
         lastAppointmentAt: {
-          set: data.startTime,
+          set: data.startsAt,
         },
       },
     });
@@ -47,7 +47,7 @@ export class CustomerStatsService {
   /**
    * Updates customer profile when an appointment is completed.
    * Decrements previous status counts if applicable (e.g., NO_SHOW -> COMPLETED).
-   * 
+   *
    * @param data Details including current revenue and previous status
    * @param tx Transaction client
    */
@@ -80,7 +80,7 @@ export class CustomerStatsService {
   /**
    * Updates customer profile when an appointment is cancelled.
    * Adjusts total spent and completion counts if rolling back a COMPLETED state.
-   * 
+   *
    * @param data Details including previous status and cancellation fault logic
    * @param tx Transaction client
    */
@@ -115,7 +115,7 @@ export class CustomerStatsService {
   /**
    * Updates customer profile when an appointment is marked as no-show.
    * Rolls back revenue and completion counters if applicable.
-   * 
+   *
    * @param data Details including previous status and revenue
    * @param tx Transaction client
    */

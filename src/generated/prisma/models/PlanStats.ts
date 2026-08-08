@@ -236,7 +236,7 @@ export type PlanStatsGroupByOutputType = {
   _max: PlanStatsMaxAggregateOutputType | null
 }
 
-type GetPlanStatsGroupByPayload<T extends PlanStatsGroupByArgs> = Prisma.PrismaPromise<
+export type GetPlanStatsGroupByPayload<T extends PlanStatsGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PlanStatsGroupByOutputType, T['by']> &
       {
@@ -1336,6 +1336,11 @@ export type PlanStatsFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Skip the first `n` PlanStats.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of PlanStats.
+   */
   distinct?: Prisma.PlanStatsScalarFieldEnum | Prisma.PlanStatsScalarFieldEnum[]
 }
 

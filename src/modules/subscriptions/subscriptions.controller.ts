@@ -1,12 +1,10 @@
 import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { SubscriptionsService } from './subscriptions.service';
-import { TenantGuard } from 'src/common/guards/tenant.guard';
-import { MembershipRoles } from 'src/common/decorators/tenant-roles.decorator';
-import { MembershipRole } from 'src/generated/prisma/enums';
 import { StartSubscriptionDto } from './dto/start-subscription.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { TenantGuard } from 'src/auth/guards/tenant.guard';
 
-@UseGuards(TenantGuard)
-@MembershipRoles(MembershipRole.OWNER)
+@UseGuards(JwtAuthGuard, TenantGuard)
 @Controller('subscriptions')
 export class SubscriptionsController {
   constructor(private readonly subscriptionsService: SubscriptionsService) {}

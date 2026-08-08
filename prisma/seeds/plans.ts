@@ -16,7 +16,7 @@ const plansData: PlanCreateInput[] = [
     features: ['1 profesional', 'Reservas ilimitadas', 'Página de reservas', 'Estadísticas básicas', 'Sin recordatorios'],
     appointmentLimit: -1,
     emailLimit: 0,
-    employeeLimit: 1,
+    professionalLimit: 1,
     whatsappLimit: 0,
   },
   {
@@ -40,7 +40,7 @@ const plansData: PlanCreateInput[] = [
     ],
     appointmentLimit: -1,
     emailLimit: 500,
-    employeeLimit: 1,
+    professionalLimit: 1,
     whatsappLimit: 200,
   },
   {
@@ -64,7 +64,7 @@ const plansData: PlanCreateInput[] = [
     ],
     appointmentLimit: -1,
     emailLimit: 500,
-    employeeLimit: 1,
+    professionalLimit: 1,
     whatsappLimit: 200,
   },
   {
@@ -88,7 +88,7 @@ const plansData: PlanCreateInput[] = [
     ],
     appointmentLimit: -1,
     emailLimit: 1200,
-    employeeLimit: 5,
+    professionalLimit: 5,
     whatsappLimit: 500,
   },
   {
@@ -112,7 +112,7 @@ const plansData: PlanCreateInput[] = [
     ],
     appointmentLimit: -1,
     emailLimit: 1200,
-    employeeLimit: 5,
+    professionalLimit: 5,
     whatsappLimit: 500,
   },
 ];

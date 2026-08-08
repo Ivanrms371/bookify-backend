@@ -25,19 +25,19 @@ export type AggregateServiceAssignment = {
 }
 
 export type ServiceAssignmentMinAggregateOutputType = {
-  employeeId: string | null
+  professionalId: string | null
   serviceId: string | null
   isActive: boolean | null
 }
 
 export type ServiceAssignmentMaxAggregateOutputType = {
-  employeeId: string | null
+  professionalId: string | null
   serviceId: string | null
   isActive: boolean | null
 }
 
 export type ServiceAssignmentCountAggregateOutputType = {
-  employeeId: number
+  professionalId: number
   serviceId: number
   isActive: number
   _all: number
@@ -45,19 +45,19 @@ export type ServiceAssignmentCountAggregateOutputType = {
 
 
 export type ServiceAssignmentMinAggregateInputType = {
-  employeeId?: true
+  professionalId?: true
   serviceId?: true
   isActive?: true
 }
 
 export type ServiceAssignmentMaxAggregateInputType = {
-  employeeId?: true
+  professionalId?: true
   serviceId?: true
   isActive?: true
 }
 
 export type ServiceAssignmentCountAggregateInputType = {
-  employeeId?: true
+  professionalId?: true
   serviceId?: true
   isActive?: true
   _all?: true
@@ -136,7 +136,7 @@ export type ServiceAssignmentGroupByArgs<ExtArgs extends runtime.Types.Extension
 }
 
 export type ServiceAssignmentGroupByOutputType = {
-  employeeId: string
+  professionalId: string
   serviceId: string
   isActive: boolean
   _count: ServiceAssignmentCountAggregateOutputType | null
@@ -144,7 +144,7 @@ export type ServiceAssignmentGroupByOutputType = {
   _max: ServiceAssignmentMaxAggregateOutputType | null
 }
 
-type GetServiceAssignmentGroupByPayload<T extends ServiceAssignmentGroupByArgs> = Prisma.PrismaPromise<
+export type GetServiceAssignmentGroupByPayload<T extends ServiceAssignmentGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ServiceAssignmentGroupByOutputType, T['by']> &
       {
@@ -163,35 +163,35 @@ export type ServiceAssignmentWhereInput = {
   AND?: Prisma.ServiceAssignmentWhereInput | Prisma.ServiceAssignmentWhereInput[]
   OR?: Prisma.ServiceAssignmentWhereInput[]
   NOT?: Prisma.ServiceAssignmentWhereInput | Prisma.ServiceAssignmentWhereInput[]
-  employeeId?: Prisma.UuidFilter<"ServiceAssignment"> | string
+  professionalId?: Prisma.UuidFilter<"ServiceAssignment"> | string
   serviceId?: Prisma.UuidFilter<"ServiceAssignment"> | string
   isActive?: Prisma.BoolFilter<"ServiceAssignment"> | boolean
-  employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
+  professional?: Prisma.XOR<Prisma.ProfessionalScalarRelationFilter, Prisma.ProfessionalWhereInput>
   service?: Prisma.XOR<Prisma.ServiceScalarRelationFilter, Prisma.ServiceWhereInput>
 }
 
 export type ServiceAssignmentOrderByWithRelationInput = {
-  employeeId?: Prisma.SortOrder
+  professionalId?: Prisma.SortOrder
   serviceId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
-  employee?: Prisma.EmployeeOrderByWithRelationInput
+  professional?: Prisma.ProfessionalOrderByWithRelationInput
   service?: Prisma.ServiceOrderByWithRelationInput
 }
 
 export type ServiceAssignmentWhereUniqueInput = Prisma.AtLeast<{
-  employeeId_serviceId?: Prisma.ServiceAssignmentEmployeeIdServiceIdCompoundUniqueInput
+  professionalId_serviceId?: Prisma.ServiceAssignmentProfessionalIdServiceIdCompoundUniqueInput
   AND?: Prisma.ServiceAssignmentWhereInput | Prisma.ServiceAssignmentWhereInput[]
   OR?: Prisma.ServiceAssignmentWhereInput[]
   NOT?: Prisma.ServiceAssignmentWhereInput | Prisma.ServiceAssignmentWhereInput[]
-  employeeId?: Prisma.UuidFilter<"ServiceAssignment"> | string
+  professionalId?: Prisma.UuidFilter<"ServiceAssignment"> | string
   serviceId?: Prisma.UuidFilter<"ServiceAssignment"> | string
   isActive?: Prisma.BoolFilter<"ServiceAssignment"> | boolean
-  employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
+  professional?: Prisma.XOR<Prisma.ProfessionalScalarRelationFilter, Prisma.ProfessionalWhereInput>
   service?: Prisma.XOR<Prisma.ServiceScalarRelationFilter, Prisma.ServiceWhereInput>
-}, "employeeId_serviceId">
+}, "professionalId_serviceId">
 
 export type ServiceAssignmentOrderByWithAggregationInput = {
-  employeeId?: Prisma.SortOrder
+  professionalId?: Prisma.SortOrder
   serviceId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   _count?: Prisma.ServiceAssignmentCountOrderByAggregateInput
@@ -203,37 +203,37 @@ export type ServiceAssignmentScalarWhereWithAggregatesInput = {
   AND?: Prisma.ServiceAssignmentScalarWhereWithAggregatesInput | Prisma.ServiceAssignmentScalarWhereWithAggregatesInput[]
   OR?: Prisma.ServiceAssignmentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ServiceAssignmentScalarWhereWithAggregatesInput | Prisma.ServiceAssignmentScalarWhereWithAggregatesInput[]
-  employeeId?: Prisma.UuidWithAggregatesFilter<"ServiceAssignment"> | string
+  professionalId?: Prisma.UuidWithAggregatesFilter<"ServiceAssignment"> | string
   serviceId?: Prisma.UuidWithAggregatesFilter<"ServiceAssignment"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"ServiceAssignment"> | boolean
 }
 
 export type ServiceAssignmentCreateInput = {
   isActive?: boolean
-  employee: Prisma.EmployeeCreateNestedOneWithoutAssignmentsInput
+  professional: Prisma.ProfessionalCreateNestedOneWithoutAssignmentsInput
   service: Prisma.ServiceCreateNestedOneWithoutAssignmentsInput
 }
 
 export type ServiceAssignmentUncheckedCreateInput = {
-  employeeId: string
+  professionalId: string
   serviceId: string
   isActive?: boolean
 }
 
 export type ServiceAssignmentUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  employee?: Prisma.EmployeeUpdateOneRequiredWithoutAssignmentsNestedInput
+  professional?: Prisma.ProfessionalUpdateOneRequiredWithoutAssignmentsNestedInput
   service?: Prisma.ServiceUpdateOneRequiredWithoutAssignmentsNestedInput
 }
 
 export type ServiceAssignmentUncheckedUpdateInput = {
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  professionalId?: Prisma.StringFieldUpdateOperationsInput | string
   serviceId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type ServiceAssignmentCreateManyInput = {
-  employeeId: string
+  professionalId: string
   serviceId: string
   isActive?: boolean
 }
@@ -243,7 +243,7 @@ export type ServiceAssignmentUpdateManyMutationInput = {
 }
 
 export type ServiceAssignmentUncheckedUpdateManyInput = {
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  professionalId?: Prisma.StringFieldUpdateOperationsInput | string
   serviceId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
@@ -258,25 +258,25 @@ export type ServiceAssignmentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type ServiceAssignmentEmployeeIdServiceIdCompoundUniqueInput = {
-  employeeId: string
+export type ServiceAssignmentProfessionalIdServiceIdCompoundUniqueInput = {
+  professionalId: string
   serviceId: string
 }
 
 export type ServiceAssignmentCountOrderByAggregateInput = {
-  employeeId?: Prisma.SortOrder
+  professionalId?: Prisma.SortOrder
   serviceId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
 }
 
 export type ServiceAssignmentMaxOrderByAggregateInput = {
-  employeeId?: Prisma.SortOrder
+  professionalId?: Prisma.SortOrder
   serviceId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
 }
 
 export type ServiceAssignmentMinOrderByAggregateInput = {
-  employeeId?: Prisma.SortOrder
+  professionalId?: Prisma.SortOrder
   serviceId?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
 }
@@ -323,55 +323,55 @@ export type ServiceAssignmentUncheckedUpdateManyWithoutServiceNestedInput = {
   deleteMany?: Prisma.ServiceAssignmentScalarWhereInput | Prisma.ServiceAssignmentScalarWhereInput[]
 }
 
-export type ServiceAssignmentCreateNestedManyWithoutEmployeeInput = {
-  create?: Prisma.XOR<Prisma.ServiceAssignmentCreateWithoutEmployeeInput, Prisma.ServiceAssignmentUncheckedCreateWithoutEmployeeInput> | Prisma.ServiceAssignmentCreateWithoutEmployeeInput[] | Prisma.ServiceAssignmentUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.ServiceAssignmentCreateOrConnectWithoutEmployeeInput | Prisma.ServiceAssignmentCreateOrConnectWithoutEmployeeInput[]
-  createMany?: Prisma.ServiceAssignmentCreateManyEmployeeInputEnvelope
+export type ServiceAssignmentCreateNestedManyWithoutProfessionalInput = {
+  create?: Prisma.XOR<Prisma.ServiceAssignmentCreateWithoutProfessionalInput, Prisma.ServiceAssignmentUncheckedCreateWithoutProfessionalInput> | Prisma.ServiceAssignmentCreateWithoutProfessionalInput[] | Prisma.ServiceAssignmentUncheckedCreateWithoutProfessionalInput[]
+  connectOrCreate?: Prisma.ServiceAssignmentCreateOrConnectWithoutProfessionalInput | Prisma.ServiceAssignmentCreateOrConnectWithoutProfessionalInput[]
+  createMany?: Prisma.ServiceAssignmentCreateManyProfessionalInputEnvelope
   connect?: Prisma.ServiceAssignmentWhereUniqueInput | Prisma.ServiceAssignmentWhereUniqueInput[]
 }
 
-export type ServiceAssignmentUncheckedCreateNestedManyWithoutEmployeeInput = {
-  create?: Prisma.XOR<Prisma.ServiceAssignmentCreateWithoutEmployeeInput, Prisma.ServiceAssignmentUncheckedCreateWithoutEmployeeInput> | Prisma.ServiceAssignmentCreateWithoutEmployeeInput[] | Prisma.ServiceAssignmentUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.ServiceAssignmentCreateOrConnectWithoutEmployeeInput | Prisma.ServiceAssignmentCreateOrConnectWithoutEmployeeInput[]
-  createMany?: Prisma.ServiceAssignmentCreateManyEmployeeInputEnvelope
+export type ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput = {
+  create?: Prisma.XOR<Prisma.ServiceAssignmentCreateWithoutProfessionalInput, Prisma.ServiceAssignmentUncheckedCreateWithoutProfessionalInput> | Prisma.ServiceAssignmentCreateWithoutProfessionalInput[] | Prisma.ServiceAssignmentUncheckedCreateWithoutProfessionalInput[]
+  connectOrCreate?: Prisma.ServiceAssignmentCreateOrConnectWithoutProfessionalInput | Prisma.ServiceAssignmentCreateOrConnectWithoutProfessionalInput[]
+  createMany?: Prisma.ServiceAssignmentCreateManyProfessionalInputEnvelope
   connect?: Prisma.ServiceAssignmentWhereUniqueInput | Prisma.ServiceAssignmentWhereUniqueInput[]
 }
 
-export type ServiceAssignmentUpdateManyWithoutEmployeeNestedInput = {
-  create?: Prisma.XOR<Prisma.ServiceAssignmentCreateWithoutEmployeeInput, Prisma.ServiceAssignmentUncheckedCreateWithoutEmployeeInput> | Prisma.ServiceAssignmentCreateWithoutEmployeeInput[] | Prisma.ServiceAssignmentUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.ServiceAssignmentCreateOrConnectWithoutEmployeeInput | Prisma.ServiceAssignmentCreateOrConnectWithoutEmployeeInput[]
-  upsert?: Prisma.ServiceAssignmentUpsertWithWhereUniqueWithoutEmployeeInput | Prisma.ServiceAssignmentUpsertWithWhereUniqueWithoutEmployeeInput[]
-  createMany?: Prisma.ServiceAssignmentCreateManyEmployeeInputEnvelope
+export type ServiceAssignmentUpdateManyWithoutProfessionalNestedInput = {
+  create?: Prisma.XOR<Prisma.ServiceAssignmentCreateWithoutProfessionalInput, Prisma.ServiceAssignmentUncheckedCreateWithoutProfessionalInput> | Prisma.ServiceAssignmentCreateWithoutProfessionalInput[] | Prisma.ServiceAssignmentUncheckedCreateWithoutProfessionalInput[]
+  connectOrCreate?: Prisma.ServiceAssignmentCreateOrConnectWithoutProfessionalInput | Prisma.ServiceAssignmentCreateOrConnectWithoutProfessionalInput[]
+  upsert?: Prisma.ServiceAssignmentUpsertWithWhereUniqueWithoutProfessionalInput | Prisma.ServiceAssignmentUpsertWithWhereUniqueWithoutProfessionalInput[]
+  createMany?: Prisma.ServiceAssignmentCreateManyProfessionalInputEnvelope
   set?: Prisma.ServiceAssignmentWhereUniqueInput | Prisma.ServiceAssignmentWhereUniqueInput[]
   disconnect?: Prisma.ServiceAssignmentWhereUniqueInput | Prisma.ServiceAssignmentWhereUniqueInput[]
   delete?: Prisma.ServiceAssignmentWhereUniqueInput | Prisma.ServiceAssignmentWhereUniqueInput[]
   connect?: Prisma.ServiceAssignmentWhereUniqueInput | Prisma.ServiceAssignmentWhereUniqueInput[]
-  update?: Prisma.ServiceAssignmentUpdateWithWhereUniqueWithoutEmployeeInput | Prisma.ServiceAssignmentUpdateWithWhereUniqueWithoutEmployeeInput[]
-  updateMany?: Prisma.ServiceAssignmentUpdateManyWithWhereWithoutEmployeeInput | Prisma.ServiceAssignmentUpdateManyWithWhereWithoutEmployeeInput[]
+  update?: Prisma.ServiceAssignmentUpdateWithWhereUniqueWithoutProfessionalInput | Prisma.ServiceAssignmentUpdateWithWhereUniqueWithoutProfessionalInput[]
+  updateMany?: Prisma.ServiceAssignmentUpdateManyWithWhereWithoutProfessionalInput | Prisma.ServiceAssignmentUpdateManyWithWhereWithoutProfessionalInput[]
   deleteMany?: Prisma.ServiceAssignmentScalarWhereInput | Prisma.ServiceAssignmentScalarWhereInput[]
 }
 
-export type ServiceAssignmentUncheckedUpdateManyWithoutEmployeeNestedInput = {
-  create?: Prisma.XOR<Prisma.ServiceAssignmentCreateWithoutEmployeeInput, Prisma.ServiceAssignmentUncheckedCreateWithoutEmployeeInput> | Prisma.ServiceAssignmentCreateWithoutEmployeeInput[] | Prisma.ServiceAssignmentUncheckedCreateWithoutEmployeeInput[]
-  connectOrCreate?: Prisma.ServiceAssignmentCreateOrConnectWithoutEmployeeInput | Prisma.ServiceAssignmentCreateOrConnectWithoutEmployeeInput[]
-  upsert?: Prisma.ServiceAssignmentUpsertWithWhereUniqueWithoutEmployeeInput | Prisma.ServiceAssignmentUpsertWithWhereUniqueWithoutEmployeeInput[]
-  createMany?: Prisma.ServiceAssignmentCreateManyEmployeeInputEnvelope
+export type ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput = {
+  create?: Prisma.XOR<Prisma.ServiceAssignmentCreateWithoutProfessionalInput, Prisma.ServiceAssignmentUncheckedCreateWithoutProfessionalInput> | Prisma.ServiceAssignmentCreateWithoutProfessionalInput[] | Prisma.ServiceAssignmentUncheckedCreateWithoutProfessionalInput[]
+  connectOrCreate?: Prisma.ServiceAssignmentCreateOrConnectWithoutProfessionalInput | Prisma.ServiceAssignmentCreateOrConnectWithoutProfessionalInput[]
+  upsert?: Prisma.ServiceAssignmentUpsertWithWhereUniqueWithoutProfessionalInput | Prisma.ServiceAssignmentUpsertWithWhereUniqueWithoutProfessionalInput[]
+  createMany?: Prisma.ServiceAssignmentCreateManyProfessionalInputEnvelope
   set?: Prisma.ServiceAssignmentWhereUniqueInput | Prisma.ServiceAssignmentWhereUniqueInput[]
   disconnect?: Prisma.ServiceAssignmentWhereUniqueInput | Prisma.ServiceAssignmentWhereUniqueInput[]
   delete?: Prisma.ServiceAssignmentWhereUniqueInput | Prisma.ServiceAssignmentWhereUniqueInput[]
   connect?: Prisma.ServiceAssignmentWhereUniqueInput | Prisma.ServiceAssignmentWhereUniqueInput[]
-  update?: Prisma.ServiceAssignmentUpdateWithWhereUniqueWithoutEmployeeInput | Prisma.ServiceAssignmentUpdateWithWhereUniqueWithoutEmployeeInput[]
-  updateMany?: Prisma.ServiceAssignmentUpdateManyWithWhereWithoutEmployeeInput | Prisma.ServiceAssignmentUpdateManyWithWhereWithoutEmployeeInput[]
+  update?: Prisma.ServiceAssignmentUpdateWithWhereUniqueWithoutProfessionalInput | Prisma.ServiceAssignmentUpdateWithWhereUniqueWithoutProfessionalInput[]
+  updateMany?: Prisma.ServiceAssignmentUpdateManyWithWhereWithoutProfessionalInput | Prisma.ServiceAssignmentUpdateManyWithWhereWithoutProfessionalInput[]
   deleteMany?: Prisma.ServiceAssignmentScalarWhereInput | Prisma.ServiceAssignmentScalarWhereInput[]
 }
 
 export type ServiceAssignmentCreateWithoutServiceInput = {
   isActive?: boolean
-  employee: Prisma.EmployeeCreateNestedOneWithoutAssignmentsInput
+  professional: Prisma.ProfessionalCreateNestedOneWithoutAssignmentsInput
 }
 
 export type ServiceAssignmentUncheckedCreateWithoutServiceInput = {
-  employeeId: string
+  professionalId: string
   isActive?: boolean
 }
 
@@ -405,83 +405,83 @@ export type ServiceAssignmentScalarWhereInput = {
   AND?: Prisma.ServiceAssignmentScalarWhereInput | Prisma.ServiceAssignmentScalarWhereInput[]
   OR?: Prisma.ServiceAssignmentScalarWhereInput[]
   NOT?: Prisma.ServiceAssignmentScalarWhereInput | Prisma.ServiceAssignmentScalarWhereInput[]
-  employeeId?: Prisma.UuidFilter<"ServiceAssignment"> | string
+  professionalId?: Prisma.UuidFilter<"ServiceAssignment"> | string
   serviceId?: Prisma.UuidFilter<"ServiceAssignment"> | string
   isActive?: Prisma.BoolFilter<"ServiceAssignment"> | boolean
 }
 
-export type ServiceAssignmentCreateWithoutEmployeeInput = {
+export type ServiceAssignmentCreateWithoutProfessionalInput = {
   isActive?: boolean
   service: Prisma.ServiceCreateNestedOneWithoutAssignmentsInput
 }
 
-export type ServiceAssignmentUncheckedCreateWithoutEmployeeInput = {
+export type ServiceAssignmentUncheckedCreateWithoutProfessionalInput = {
   serviceId: string
   isActive?: boolean
 }
 
-export type ServiceAssignmentCreateOrConnectWithoutEmployeeInput = {
+export type ServiceAssignmentCreateOrConnectWithoutProfessionalInput = {
   where: Prisma.ServiceAssignmentWhereUniqueInput
-  create: Prisma.XOR<Prisma.ServiceAssignmentCreateWithoutEmployeeInput, Prisma.ServiceAssignmentUncheckedCreateWithoutEmployeeInput>
+  create: Prisma.XOR<Prisma.ServiceAssignmentCreateWithoutProfessionalInput, Prisma.ServiceAssignmentUncheckedCreateWithoutProfessionalInput>
 }
 
-export type ServiceAssignmentCreateManyEmployeeInputEnvelope = {
-  data: Prisma.ServiceAssignmentCreateManyEmployeeInput | Prisma.ServiceAssignmentCreateManyEmployeeInput[]
+export type ServiceAssignmentCreateManyProfessionalInputEnvelope = {
+  data: Prisma.ServiceAssignmentCreateManyProfessionalInput | Prisma.ServiceAssignmentCreateManyProfessionalInput[]
   skipDuplicates?: boolean
 }
 
-export type ServiceAssignmentUpsertWithWhereUniqueWithoutEmployeeInput = {
+export type ServiceAssignmentUpsertWithWhereUniqueWithoutProfessionalInput = {
   where: Prisma.ServiceAssignmentWhereUniqueInput
-  update: Prisma.XOR<Prisma.ServiceAssignmentUpdateWithoutEmployeeInput, Prisma.ServiceAssignmentUncheckedUpdateWithoutEmployeeInput>
-  create: Prisma.XOR<Prisma.ServiceAssignmentCreateWithoutEmployeeInput, Prisma.ServiceAssignmentUncheckedCreateWithoutEmployeeInput>
+  update: Prisma.XOR<Prisma.ServiceAssignmentUpdateWithoutProfessionalInput, Prisma.ServiceAssignmentUncheckedUpdateWithoutProfessionalInput>
+  create: Prisma.XOR<Prisma.ServiceAssignmentCreateWithoutProfessionalInput, Prisma.ServiceAssignmentUncheckedCreateWithoutProfessionalInput>
 }
 
-export type ServiceAssignmentUpdateWithWhereUniqueWithoutEmployeeInput = {
+export type ServiceAssignmentUpdateWithWhereUniqueWithoutProfessionalInput = {
   where: Prisma.ServiceAssignmentWhereUniqueInput
-  data: Prisma.XOR<Prisma.ServiceAssignmentUpdateWithoutEmployeeInput, Prisma.ServiceAssignmentUncheckedUpdateWithoutEmployeeInput>
+  data: Prisma.XOR<Prisma.ServiceAssignmentUpdateWithoutProfessionalInput, Prisma.ServiceAssignmentUncheckedUpdateWithoutProfessionalInput>
 }
 
-export type ServiceAssignmentUpdateManyWithWhereWithoutEmployeeInput = {
+export type ServiceAssignmentUpdateManyWithWhereWithoutProfessionalInput = {
   where: Prisma.ServiceAssignmentScalarWhereInput
-  data: Prisma.XOR<Prisma.ServiceAssignmentUpdateManyMutationInput, Prisma.ServiceAssignmentUncheckedUpdateManyWithoutEmployeeInput>
+  data: Prisma.XOR<Prisma.ServiceAssignmentUpdateManyMutationInput, Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalInput>
 }
 
 export type ServiceAssignmentCreateManyServiceInput = {
-  employeeId: string
+  professionalId: string
   isActive?: boolean
 }
 
 export type ServiceAssignmentUpdateWithoutServiceInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  employee?: Prisma.EmployeeUpdateOneRequiredWithoutAssignmentsNestedInput
+  professional?: Prisma.ProfessionalUpdateOneRequiredWithoutAssignmentsNestedInput
 }
 
 export type ServiceAssignmentUncheckedUpdateWithoutServiceInput = {
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  professionalId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type ServiceAssignmentUncheckedUpdateManyWithoutServiceInput = {
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  professionalId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
-export type ServiceAssignmentCreateManyEmployeeInput = {
+export type ServiceAssignmentCreateManyProfessionalInput = {
   serviceId: string
   isActive?: boolean
 }
 
-export type ServiceAssignmentUpdateWithoutEmployeeInput = {
+export type ServiceAssignmentUpdateWithoutProfessionalInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   service?: Prisma.ServiceUpdateOneRequiredWithoutAssignmentsNestedInput
 }
 
-export type ServiceAssignmentUncheckedUpdateWithoutEmployeeInput = {
+export type ServiceAssignmentUncheckedUpdateWithoutProfessionalInput = {
   serviceId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
-export type ServiceAssignmentUncheckedUpdateManyWithoutEmployeeInput = {
+export type ServiceAssignmentUncheckedUpdateManyWithoutProfessionalInput = {
   serviceId?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
@@ -489,57 +489,57 @@ export type ServiceAssignmentUncheckedUpdateManyWithoutEmployeeInput = {
 
 
 export type ServiceAssignmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  employeeId?: boolean
+  professionalId?: boolean
   serviceId?: boolean
   isActive?: boolean
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  professional?: boolean | Prisma.ProfessionalDefaultArgs<ExtArgs>
   service?: boolean | Prisma.ServiceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceAssignment"]>
 
 export type ServiceAssignmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  employeeId?: boolean
+  professionalId?: boolean
   serviceId?: boolean
   isActive?: boolean
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  professional?: boolean | Prisma.ProfessionalDefaultArgs<ExtArgs>
   service?: boolean | Prisma.ServiceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceAssignment"]>
 
 export type ServiceAssignmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  employeeId?: boolean
+  professionalId?: boolean
   serviceId?: boolean
   isActive?: boolean
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  professional?: boolean | Prisma.ProfessionalDefaultArgs<ExtArgs>
   service?: boolean | Prisma.ServiceDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["serviceAssignment"]>
 
 export type ServiceAssignmentSelectScalar = {
-  employeeId?: boolean
+  professionalId?: boolean
   serviceId?: boolean
   isActive?: boolean
 }
 
-export type ServiceAssignmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"employeeId" | "serviceId" | "isActive", ExtArgs["result"]["serviceAssignment"]>
+export type ServiceAssignmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"professionalId" | "serviceId" | "isActive", ExtArgs["result"]["serviceAssignment"]>
 export type ServiceAssignmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  professional?: boolean | Prisma.ProfessionalDefaultArgs<ExtArgs>
   service?: boolean | Prisma.ServiceDefaultArgs<ExtArgs>
 }
 export type ServiceAssignmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  professional?: boolean | Prisma.ProfessionalDefaultArgs<ExtArgs>
   service?: boolean | Prisma.ServiceDefaultArgs<ExtArgs>
 }
 export type ServiceAssignmentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  professional?: boolean | Prisma.ProfessionalDefaultArgs<ExtArgs>
   service?: boolean | Prisma.ServiceDefaultArgs<ExtArgs>
 }
 
 export type $ServiceAssignmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ServiceAssignment"
   objects: {
-    employee: Prisma.$EmployeePayload<ExtArgs>
+    professional: Prisma.$ProfessionalPayload<ExtArgs>
     service: Prisma.$ServicePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    employeeId: string
+    professionalId: string
     serviceId: string
     isActive: boolean
   }, ExtArgs["result"]["serviceAssignment"]>
@@ -625,8 +625,8 @@ export interface ServiceAssignmentDelegate<ExtArgs extends runtime.Types.Extensi
    * // Get first 10 ServiceAssignments
    * const serviceAssignments = await prisma.serviceAssignment.findMany({ take: 10 })
    * 
-   * // Only select the `employeeId`
-   * const serviceAssignmentWithEmployeeIdOnly = await prisma.serviceAssignment.findMany({ select: { employeeId: true } })
+   * // Only select the `professionalId`
+   * const serviceAssignmentWithProfessionalIdOnly = await prisma.serviceAssignment.findMany({ select: { professionalId: true } })
    * 
    */
   findMany<T extends ServiceAssignmentFindManyArgs>(args?: Prisma.SelectSubset<T, ServiceAssignmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServiceAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -670,9 +670,9 @@ export interface ServiceAssignmentDelegate<ExtArgs extends runtime.Types.Extensi
    *   ]
    * })
    * 
-   * // Create many ServiceAssignments and only return the `employeeId`
-   * const serviceAssignmentWithEmployeeIdOnly = await prisma.serviceAssignment.createManyAndReturn({
-   *   select: { employeeId: true },
+   * // Create many ServiceAssignments and only return the `professionalId`
+   * const serviceAssignmentWithProfessionalIdOnly = await prisma.serviceAssignment.createManyAndReturn({
+   *   select: { professionalId: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -761,9 +761,9 @@ export interface ServiceAssignmentDelegate<ExtArgs extends runtime.Types.Extensi
    *   ]
    * })
    * 
-   * // Update zero or more ServiceAssignments and only return the `employeeId`
-   * const serviceAssignmentWithEmployeeIdOnly = await prisma.serviceAssignment.updateManyAndReturn({
-   *   select: { employeeId: true },
+   * // Update zero or more ServiceAssignments and only return the `professionalId`
+   * const serviceAssignmentWithProfessionalIdOnly = await prisma.serviceAssignment.updateManyAndReturn({
+   *   select: { professionalId: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -936,7 +936,7 @@ readonly fields: ServiceAssignmentFieldRefs;
  */
 export interface Prisma__ServiceAssignmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  employee<T extends Prisma.EmployeeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EmployeeDefaultArgs<ExtArgs>>): Prisma.Prisma__EmployeeClient<runtime.Types.Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  professional<T extends Prisma.ProfessionalDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfessionalDefaultArgs<ExtArgs>>): Prisma.Prisma__ProfessionalClient<runtime.Types.Result.GetResult<Prisma.$ProfessionalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   service<T extends Prisma.ServiceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ServiceDefaultArgs<ExtArgs>>): Prisma.Prisma__ServiceClient<runtime.Types.Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -967,7 +967,7 @@ export interface Prisma__ServiceAssignmentClient<T, Null = never, ExtArgs extend
  * Fields of the ServiceAssignment model
  */
 export interface ServiceAssignmentFieldRefs {
-  readonly employeeId: Prisma.FieldRef<"ServiceAssignment", 'String'>
+  readonly professionalId: Prisma.FieldRef<"ServiceAssignment", 'String'>
   readonly serviceId: Prisma.FieldRef<"ServiceAssignment", 'String'>
   readonly isActive: Prisma.FieldRef<"ServiceAssignment", 'Boolean'>
 }
@@ -1166,6 +1166,11 @@ export type ServiceAssignmentFindManyArgs<ExtArgs extends runtime.Types.Extensio
    * Skip the first `n` ServiceAssignments.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ServiceAssignments.
+   */
   distinct?: Prisma.ServiceAssignmentScalarFieldEnum | Prisma.ServiceAssignmentScalarFieldEnum[]
 }
 

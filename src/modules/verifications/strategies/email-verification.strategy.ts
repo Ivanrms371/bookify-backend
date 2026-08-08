@@ -31,12 +31,12 @@ export class EmailVerificationStrategy {
 
   async confirmEmail(token: string) {
     const verification = await this.verificationsService.verifyToken(token);
-    const user = await this.userService.markUserEmailVerified(verification.userId);
+    const user = await this.userService.markEmailVerified(verification.userId);
     return user;
   }
 
   async resendVerificationEmail(email: string) {
-    const user = await this.userService.findUserByEmailOrFail(email);
+    const user = await this.userService.findByEmailOrFail(email);
 
     const token = await this.verificationsService.resendCode({
       userId: user.id,

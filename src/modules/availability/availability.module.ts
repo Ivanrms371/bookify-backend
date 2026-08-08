@@ -4,11 +4,13 @@ import { AvailabilityController } from './availability.controller';
 import { AvailabilityService } from './availability.service';
 import { AvailabilityConfigMapper } from './utils/availability-config.mapper';
 import { SlotsGenerator } from './slots.generator';
+import { ServicesModule } from '../services/services.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [InfrastructureModule],
+  imports: [InfrastructureModule, ServicesModule, AuthModule],
   controllers: [AvailabilityController],
   providers: [AvailabilityService, SlotsGenerator, AvailabilityConfigMapper],
-  exports: [],
+  exports: [AvailabilityService],
 })
 export class AvailabilityModule {}

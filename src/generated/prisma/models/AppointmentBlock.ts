@@ -27,25 +27,22 @@ export type AggregateAppointmentBlock = {
 export type AppointmentBlockMinAggregateOutputType = {
   id: string | null
   appointmentId: string | null
-  employeeId: string | null
-  startTime: Date | null
-  endTime: Date | null
+  startsAt: Date | null
+  endsAt: Date | null
 }
 
 export type AppointmentBlockMaxAggregateOutputType = {
   id: string | null
   appointmentId: string | null
-  employeeId: string | null
-  startTime: Date | null
-  endTime: Date | null
+  startsAt: Date | null
+  endsAt: Date | null
 }
 
 export type AppointmentBlockCountAggregateOutputType = {
   id: number
   appointmentId: number
-  employeeId: number
-  startTime: number
-  endTime: number
+  startsAt: number
+  endsAt: number
   _all: number
 }
 
@@ -53,25 +50,22 @@ export type AppointmentBlockCountAggregateOutputType = {
 export type AppointmentBlockMinAggregateInputType = {
   id?: true
   appointmentId?: true
-  employeeId?: true
-  startTime?: true
-  endTime?: true
+  startsAt?: true
+  endsAt?: true
 }
 
 export type AppointmentBlockMaxAggregateInputType = {
   id?: true
   appointmentId?: true
-  employeeId?: true
-  startTime?: true
-  endTime?: true
+  startsAt?: true
+  endsAt?: true
 }
 
 export type AppointmentBlockCountAggregateInputType = {
   id?: true
   appointmentId?: true
-  employeeId?: true
-  startTime?: true
-  endTime?: true
+  startsAt?: true
+  endsAt?: true
   _all?: true
 }
 
@@ -150,15 +144,14 @@ export type AppointmentBlockGroupByArgs<ExtArgs extends runtime.Types.Extensions
 export type AppointmentBlockGroupByOutputType = {
   id: string
   appointmentId: string
-  employeeId: string
-  startTime: Date
-  endTime: Date
+  startsAt: Date
+  endsAt: Date
   _count: AppointmentBlockCountAggregateOutputType | null
   _min: AppointmentBlockMinAggregateOutputType | null
   _max: AppointmentBlockMaxAggregateOutputType | null
 }
 
-type GetAppointmentBlockGroupByPayload<T extends AppointmentBlockGroupByArgs> = Prisma.PrismaPromise<
+export type GetAppointmentBlockGroupByPayload<T extends AppointmentBlockGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<AppointmentBlockGroupByOutputType, T['by']> &
       {
@@ -179,18 +172,16 @@ export type AppointmentBlockWhereInput = {
   NOT?: Prisma.AppointmentBlockWhereInput | Prisma.AppointmentBlockWhereInput[]
   id?: Prisma.UuidFilter<"AppointmentBlock"> | string
   appointmentId?: Prisma.UuidFilter<"AppointmentBlock"> | string
-  employeeId?: Prisma.UuidFilter<"AppointmentBlock"> | string
-  startTime?: Prisma.DateTimeFilter<"AppointmentBlock"> | Date | string
-  endTime?: Prisma.DateTimeFilter<"AppointmentBlock"> | Date | string
+  startsAt?: Prisma.DateTimeFilter<"AppointmentBlock"> | Date | string
+  endsAt?: Prisma.DateTimeFilter<"AppointmentBlock"> | Date | string
   appointment?: Prisma.XOR<Prisma.AppointmentScalarRelationFilter, Prisma.AppointmentWhereInput>
 }
 
 export type AppointmentBlockOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
-  employeeId?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
+  startsAt?: Prisma.SortOrder
+  endsAt?: Prisma.SortOrder
   appointment?: Prisma.AppointmentOrderByWithRelationInput
 }
 
@@ -200,18 +191,16 @@ export type AppointmentBlockWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.AppointmentBlockWhereInput[]
   NOT?: Prisma.AppointmentBlockWhereInput | Prisma.AppointmentBlockWhereInput[]
   appointmentId?: Prisma.UuidFilter<"AppointmentBlock"> | string
-  employeeId?: Prisma.UuidFilter<"AppointmentBlock"> | string
-  startTime?: Prisma.DateTimeFilter<"AppointmentBlock"> | Date | string
-  endTime?: Prisma.DateTimeFilter<"AppointmentBlock"> | Date | string
+  startsAt?: Prisma.DateTimeFilter<"AppointmentBlock"> | Date | string
+  endsAt?: Prisma.DateTimeFilter<"AppointmentBlock"> | Date | string
   appointment?: Prisma.XOR<Prisma.AppointmentScalarRelationFilter, Prisma.AppointmentWhereInput>
 }, "id">
 
 export type AppointmentBlockOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
-  employeeId?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
+  startsAt?: Prisma.SortOrder
+  endsAt?: Prisma.SortOrder
   _count?: Prisma.AppointmentBlockCountOrderByAggregateInput
   _max?: Prisma.AppointmentBlockMaxOrderByAggregateInput
   _min?: Prisma.AppointmentBlockMinOrderByAggregateInput
@@ -223,64 +212,56 @@ export type AppointmentBlockScalarWhereWithAggregatesInput = {
   NOT?: Prisma.AppointmentBlockScalarWhereWithAggregatesInput | Prisma.AppointmentBlockScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"AppointmentBlock"> | string
   appointmentId?: Prisma.UuidWithAggregatesFilter<"AppointmentBlock"> | string
-  employeeId?: Prisma.UuidWithAggregatesFilter<"AppointmentBlock"> | string
-  startTime?: Prisma.DateTimeWithAggregatesFilter<"AppointmentBlock"> | Date | string
-  endTime?: Prisma.DateTimeWithAggregatesFilter<"AppointmentBlock"> | Date | string
+  startsAt?: Prisma.DateTimeWithAggregatesFilter<"AppointmentBlock"> | Date | string
+  endsAt?: Prisma.DateTimeWithAggregatesFilter<"AppointmentBlock"> | Date | string
 }
 
 export type AppointmentBlockCreateInput = {
   id?: string
-  employeeId: string
-  startTime: Date | string
-  endTime: Date | string
+  startsAt: Date | string
+  endsAt: Date | string
   appointment: Prisma.AppointmentCreateNestedOneWithoutBlocksInput
 }
 
 export type AppointmentBlockUncheckedCreateInput = {
   id?: string
   appointmentId: string
-  employeeId: string
-  startTime: Date | string
-  endTime: Date | string
+  startsAt: Date | string
+  endsAt: Date | string
 }
 
 export type AppointmentBlockUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   appointment?: Prisma.AppointmentUpdateOneRequiredWithoutBlocksNestedInput
 }
 
 export type AppointmentBlockUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   appointmentId?: Prisma.StringFieldUpdateOperationsInput | string
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AppointmentBlockCreateManyInput = {
   id?: string
   appointmentId: string
-  employeeId: string
-  startTime: Date | string
-  endTime: Date | string
+  startsAt: Date | string
+  endsAt: Date | string
 }
 
 export type AppointmentBlockUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AppointmentBlockUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   appointmentId?: Prisma.StringFieldUpdateOperationsInput | string
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AppointmentBlockListRelationFilter = {
@@ -296,25 +277,22 @@ export type AppointmentBlockOrderByRelationAggregateInput = {
 export type AppointmentBlockCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
-  employeeId?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
+  startsAt?: Prisma.SortOrder
+  endsAt?: Prisma.SortOrder
 }
 
 export type AppointmentBlockMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
-  employeeId?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
+  startsAt?: Prisma.SortOrder
+  endsAt?: Prisma.SortOrder
 }
 
 export type AppointmentBlockMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
-  employeeId?: Prisma.SortOrder
-  startTime?: Prisma.SortOrder
-  endTime?: Prisma.SortOrder
+  startsAt?: Prisma.SortOrder
+  endsAt?: Prisma.SortOrder
 }
 
 export type AppointmentBlockCreateNestedManyWithoutAppointmentInput = {
@@ -361,16 +339,14 @@ export type AppointmentBlockUncheckedUpdateManyWithoutAppointmentNestedInput = {
 
 export type AppointmentBlockCreateWithoutAppointmentInput = {
   id?: string
-  employeeId: string
-  startTime: Date | string
-  endTime: Date | string
+  startsAt: Date | string
+  endsAt: Date | string
 }
 
 export type AppointmentBlockUncheckedCreateWithoutAppointmentInput = {
   id?: string
-  employeeId: string
-  startTime: Date | string
-  endTime: Date | string
+  startsAt: Date | string
+  endsAt: Date | string
 }
 
 export type AppointmentBlockCreateOrConnectWithoutAppointmentInput = {
@@ -405,37 +381,32 @@ export type AppointmentBlockScalarWhereInput = {
   NOT?: Prisma.AppointmentBlockScalarWhereInput | Prisma.AppointmentBlockScalarWhereInput[]
   id?: Prisma.UuidFilter<"AppointmentBlock"> | string
   appointmentId?: Prisma.UuidFilter<"AppointmentBlock"> | string
-  employeeId?: Prisma.UuidFilter<"AppointmentBlock"> | string
-  startTime?: Prisma.DateTimeFilter<"AppointmentBlock"> | Date | string
-  endTime?: Prisma.DateTimeFilter<"AppointmentBlock"> | Date | string
+  startsAt?: Prisma.DateTimeFilter<"AppointmentBlock"> | Date | string
+  endsAt?: Prisma.DateTimeFilter<"AppointmentBlock"> | Date | string
 }
 
 export type AppointmentBlockCreateManyAppointmentInput = {
   id?: string
-  employeeId: string
-  startTime: Date | string
-  endTime: Date | string
+  startsAt: Date | string
+  endsAt: Date | string
 }
 
 export type AppointmentBlockUpdateWithoutAppointmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AppointmentBlockUncheckedUpdateWithoutAppointmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AppointmentBlockUncheckedUpdateManyWithoutAppointmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -443,39 +414,35 @@ export type AppointmentBlockUncheckedUpdateManyWithoutAppointmentInput = {
 export type AppointmentBlockSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   appointmentId?: boolean
-  employeeId?: boolean
-  startTime?: boolean
-  endTime?: boolean
+  startsAt?: boolean
+  endsAt?: boolean
   appointment?: boolean | Prisma.AppointmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["appointmentBlock"]>
 
 export type AppointmentBlockSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   appointmentId?: boolean
-  employeeId?: boolean
-  startTime?: boolean
-  endTime?: boolean
+  startsAt?: boolean
+  endsAt?: boolean
   appointment?: boolean | Prisma.AppointmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["appointmentBlock"]>
 
 export type AppointmentBlockSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   appointmentId?: boolean
-  employeeId?: boolean
-  startTime?: boolean
-  endTime?: boolean
+  startsAt?: boolean
+  endsAt?: boolean
   appointment?: boolean | Prisma.AppointmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["appointmentBlock"]>
 
 export type AppointmentBlockSelectScalar = {
   id?: boolean
   appointmentId?: boolean
-  employeeId?: boolean
-  startTime?: boolean
-  endTime?: boolean
+  startsAt?: boolean
+  endsAt?: boolean
 }
 
-export type AppointmentBlockOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "appointmentId" | "employeeId" | "startTime" | "endTime", ExtArgs["result"]["appointmentBlock"]>
+export type AppointmentBlockOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "appointmentId" | "startsAt" | "endsAt", ExtArgs["result"]["appointmentBlock"]>
 export type AppointmentBlockInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   appointment?: boolean | Prisma.AppointmentDefaultArgs<ExtArgs>
 }
@@ -494,9 +461,8 @@ export type $AppointmentBlockPayload<ExtArgs extends runtime.Types.Extensions.In
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     appointmentId: string
-    employeeId: string
-    startTime: Date
-    endTime: Date
+    startsAt: Date
+    endsAt: Date
   }, ExtArgs["result"]["appointmentBlock"]>
   composites: {}
 }
@@ -923,9 +889,8 @@ export interface Prisma__AppointmentBlockClient<T, Null = never, ExtArgs extends
 export interface AppointmentBlockFieldRefs {
   readonly id: Prisma.FieldRef<"AppointmentBlock", 'String'>
   readonly appointmentId: Prisma.FieldRef<"AppointmentBlock", 'String'>
-  readonly employeeId: Prisma.FieldRef<"AppointmentBlock", 'String'>
-  readonly startTime: Prisma.FieldRef<"AppointmentBlock", 'DateTime'>
-  readonly endTime: Prisma.FieldRef<"AppointmentBlock", 'DateTime'>
+  readonly startsAt: Prisma.FieldRef<"AppointmentBlock", 'DateTime'>
+  readonly endsAt: Prisma.FieldRef<"AppointmentBlock", 'DateTime'>
 }
     
 
@@ -1122,6 +1087,11 @@ export type AppointmentBlockFindManyArgs<ExtArgs extends runtime.Types.Extension
    * Skip the first `n` AppointmentBlocks.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of AppointmentBlocks.
+   */
   distinct?: Prisma.AppointmentBlockScalarFieldEnum | Prisma.AppointmentBlockScalarFieldEnum[]
 }
 

@@ -200,7 +200,7 @@ export type TenantWorkingHoursGroupByOutputType = {
   _max: TenantWorkingHoursMaxAggregateOutputType | null
 }
 
-type GetTenantWorkingHoursGroupByPayload<T extends TenantWorkingHoursGroupByArgs> = Prisma.PrismaPromise<
+export type GetTenantWorkingHoursGroupByPayload<T extends TenantWorkingHoursGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<TenantWorkingHoursGroupByOutputType, T['by']> &
       {
@@ -1178,6 +1178,11 @@ export type TenantWorkingHoursFindManyArgs<ExtArgs extends runtime.Types.Extensi
    * Skip the first `n` TenantWorkingHours.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of TenantWorkingHours.
+   */
   distinct?: Prisma.TenantWorkingHoursScalarFieldEnum | Prisma.TenantWorkingHoursScalarFieldEnum[]
 }
 

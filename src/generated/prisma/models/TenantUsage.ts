@@ -291,7 +291,7 @@ export type TenantUsageGroupByOutputType = {
   _max: TenantUsageMaxAggregateOutputType | null
 }
 
-type GetTenantUsageGroupByPayload<T extends TenantUsageGroupByArgs> = Prisma.PrismaPromise<
+export type GetTenantUsageGroupByPayload<T extends TenantUsageGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<TenantUsageGroupByOutputType, T['by']> &
       {
@@ -1542,6 +1542,11 @@ export type TenantUsageFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Skip the first `n` TenantUsages.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of TenantUsages.
+   */
   distinct?: Prisma.TenantUsageScalarFieldEnum | Prisma.TenantUsageScalarFieldEnum[]
 }
 

@@ -1,8 +1,8 @@
 export interface AppointmentCreatedEvent {
   tenantId: string;
   userId: string;
-  employeeId: string;
-  employeeName: string;
+  professionalId: string;
+  professionalName: string;
   serviceId: string;
   serviceName: string;
   customerId: string;

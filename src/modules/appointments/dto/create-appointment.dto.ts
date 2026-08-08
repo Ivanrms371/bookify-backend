@@ -1,36 +1,18 @@
-import { IsObject, IsString, IsUUID } from 'class-validator';
+import { IsString, IsUUID } from 'class-validator';
 
-class Customer {
-  @IsString()
-  name: string;
-
-  @IsString()
-  phone: string;
-
-  @IsString()
-  email: string;
-}
-
-class Appointment {
-  @IsString()
+export class CreateAppointmentDto {
   @IsUUID()
-  tenantId: string;
+  customerId: string;
 
-  @IsString()
-  @IsUUID()
-  employeeId: string;
-
-  @IsString()
   @IsUUID()
   serviceId: string;
 
-  @IsString()
-  date: Date;
-}
+  @IsUUID()
+  professionalId: string;
 
-export class CreateAppointmentDto {
-  @IsObject()
-  customer: Customer;
-  @IsObject()
-  appointment: Appointment;
+  @IsString()
+  date: string;
+
+  @IsString()
+  time: string;
 }

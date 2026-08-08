@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Membership: 'Membership',
+  Invitation: 'Invitation',
   Session: 'Session',
   Verification: 'Verification',
   VerificationLock: 'VerificationLock',
@@ -60,8 +61,8 @@ export const ModelName = {
   TenantSettings: 'TenantSettings',
   Service: 'Service',
   ServiceAssignment: 'ServiceAssignment',
-  Employee: 'Employee',
-  EmployeeWorkingHours: 'EmployeeWorkingHours',
+  Professional: 'Professional',
+  ProfessionalWorkingHours: 'ProfessionalWorkingHours',
   TenantWorkingHours: 'TenantWorkingHours',
   ScheduleException: 'ScheduleException',
   ScheduleExceptionBlock: 'ScheduleExceptionBlock',
@@ -70,8 +71,8 @@ export const ModelName = {
   AppointmentBlock: 'AppointmentBlock',
   TenantDailyStats: 'TenantDailyStats',
   TenantLifetimeStats: 'TenantLifetimeStats',
-  EmployeeDailyStats: 'EmployeeDailyStats',
-  EmployeeLifetimeStats: 'EmployeeLifetimeStats',
+  ProfessionalDailyStats: 'ProfessionalDailyStats',
+  ProfessionalLifetimeStats: 'ProfessionalLifetimeStats',
   Notification: 'Notification',
   NotificationDelivery: 'NotificationDelivery',
   InAppNotification: 'InAppNotification',
@@ -82,7 +83,6 @@ export const ModelName = {
   PlanStats: 'PlanStats',
   Payment: 'Payment',
   PlatformStats: 'PlatformStats',
-  PlatformAdmin: 'PlatformAdmin',
   WebhookLog: 'WebhookLog'
 } as const
 
@@ -92,12 +92,12 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName]
  * Enums
  */
 
-export const TransactionIsolationLevel = {
+export const TransactionIsolationLevel = runtime.makeStrictEnum({
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
   RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
-} as const
+} as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
@@ -123,17 +123,31 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const MembershipScalarFieldEnum = {
   id: 'id',
-  tenantId: 'tenantId',
   userId: 'userId',
+  tenantId: 'tenantId',
   role: 'role',
   status: 'status',
-  invitationToken: 'invitationToken',
-  jointedAt: 'jointedAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  createdAt: 'createdAt'
 } as const
 
 export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof typeof MembershipScalarFieldEnum]
+
+
+export const InvitationScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  email: 'email',
+  name: 'name',
+  phone: 'phone',
+  role: 'role',
+  serviceIds: 'serviceIds',
+  token: 'token',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type InvitationScalarFieldEnum = (typeof InvitationScalarFieldEnum)[keyof typeof InvitationScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -184,7 +198,6 @@ export type VerificationLockScalarFieldEnum = (typeof VerificationLockScalarFiel
 
 export const TenantScalarFieldEnum = {
   id: 'id',
-  ownerId: 'ownerId',
   slug: 'slug',
   name: 'name',
   type: 'type',
@@ -235,7 +248,8 @@ export const ServiceScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
-  image: 'image',
+  imageUrl: 'imageUrl',
+  imagePublicId: 'imagePublicId',
   description: 'description',
   price: 'price',
   discountPercentage: 'discountPercentage',
@@ -252,7 +266,7 @@ export type ServiceScalarFieldEnum = (typeof ServiceScalarFieldEnum)[keyof typeo
 
 
 export const ServiceAssignmentScalarFieldEnum = {
-  employeeId: 'employeeId',
+  professionalId: 'professionalId',
   serviceId: 'serviceId',
   isActive: 'isActive'
 } as const
@@ -260,14 +274,13 @@ export const ServiceAssignmentScalarFieldEnum = {
 export type ServiceAssignmentScalarFieldEnum = (typeof ServiceAssignmentScalarFieldEnum)[keyof typeof ServiceAssignmentScalarFieldEnum]
 
 
-export const EmployeeScalarFieldEnum = {
+export const ProfessionalScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   tenantId: 'tenantId',
   slotIntervalMinutes: 'slotIntervalMinutes',
   maxAdvancedDays: 'maxAdvancedDays',
   minAdvancedMinutes: 'minAdvancedMinutes',
-  title: 'title',
   bio: 'bio',
   avatarUrl: 'avatarUrl',
   avatarPublicId: 'avatarPublicId',
@@ -283,19 +296,19 @@ export const EmployeeScalarFieldEnum = {
   commissionFixed: 'commissionFixed'
 } as const
 
-export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
+export type ProfessionalScalarFieldEnum = (typeof ProfessionalScalarFieldEnum)[keyof typeof ProfessionalScalarFieldEnum]
 
 
-export const EmployeeWorkingHoursScalarFieldEnum = {
+export const ProfessionalWorkingHoursScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
-  employeeId: 'employeeId',
+  professionalId: 'professionalId',
   dayOfWeek: 'dayOfWeek',
   opensAt: 'opensAt',
   closesAt: 'closesAt'
 } as const
 
-export type EmployeeWorkingHoursScalarFieldEnum = (typeof EmployeeWorkingHoursScalarFieldEnum)[keyof typeof EmployeeWorkingHoursScalarFieldEnum]
+export type ProfessionalWorkingHoursScalarFieldEnum = (typeof ProfessionalWorkingHoursScalarFieldEnum)[keyof typeof ProfessionalWorkingHoursScalarFieldEnum]
 
 
 export const TenantWorkingHoursScalarFieldEnum = {
@@ -315,7 +328,7 @@ export const ScheduleExceptionScalarFieldEnum = {
   isClosed: 'isClosed',
   reason: 'reason',
   daysOfWeek: 'daysOfWeek',
-  employeeId: 'employeeId',
+  professionalId: 'professionalId',
   startDate: 'startDate',
   endDate: 'endDate',
   createdAt: 'createdAt'
@@ -338,13 +351,14 @@ export type ScheduleExceptionBlockScalarFieldEnum = (typeof ScheduleExceptionBlo
 export const CustomerScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
+  name: 'name',
   phone: 'phone',
   phoneCountryCode: 'phoneCountryCode',
   phoneVerified: 'phoneVerified',
+  acceptsWhatsapp: 'acceptsWhatsapp',
   email: 'email',
   emailVerified: 'emailVerified',
   emailBounced: 'emailBounced',
-  acceptsWhatsapp: 'acceptsWhatsapp',
   acceptsEmail: 'acceptsEmail',
   preferredLanguage: 'preferredLanguage',
   notes: 'notes',
@@ -355,12 +369,11 @@ export const CustomerScalarFieldEnum = {
   cancelledAppointments: 'cancelledAppointments',
   noShowCount: 'noShowCount',
   totalSpent: 'totalSpent',
-  blockedReason: 'blockedReason',
   blockedAt: 'blockedAt',
+  blockedReason: 'blockedReason',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt',
-  name: 'name'
+  deletedAt: 'deletedAt'
 } as const
 
 export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
@@ -371,28 +384,25 @@ export const AppointmentScalarFieldEnum = {
   tenantId: 'tenantId',
   serviceId: 'serviceId',
   customerId: 'customerId',
-  employeeId: 'employeeId',
+  professionalId: 'professionalId',
   status: 'status',
-  startTime: 'startTime',
-  endTime: 'endTime',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
   customerName: 'customerName',
   customerPhone: 'customerPhone',
   customerEmail: 'customerEmail',
   notes: 'notes',
   internalNotes: 'internalNotes',
-  confirmationCode: 'confirmationCode',
   price: 'price',
   discountAmount: 'discountAmount',
   discountFixed: 'discountFixed',
   discountPercentage: 'discountPercentage',
   durationMinutes: 'durationMinutes',
+  manageToken: 'manageToken',
   cancelledAt: 'cancelledAt',
-  cancelToken: 'cancelToken',
   cancellationReason: 'cancellationReason',
   rescheduleCount: 'rescheduleCount',
   rescheduleReason: 'rescheduleReason',
-  rescheduleRequestedAt: 'rescheduleRequestedAt',
-  rescheduleToken: 'rescheduleToken',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -403,9 +413,8 @@ export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[key
 export const AppointmentBlockScalarFieldEnum = {
   id: 'id',
   appointmentId: 'appointmentId',
-  employeeId: 'employeeId',
-  startTime: 'startTime',
-  endTime: 'endTime'
+  startsAt: 'startsAt',
+  endsAt: 'endsAt'
 } as const
 
 export type AppointmentBlockScalarFieldEnum = (typeof AppointmentBlockScalarFieldEnum)[keyof typeof AppointmentBlockScalarFieldEnum]
@@ -441,9 +450,9 @@ export const TenantLifetimeStatsScalarFieldEnum = {
 export type TenantLifetimeStatsScalarFieldEnum = (typeof TenantLifetimeStatsScalarFieldEnum)[keyof typeof TenantLifetimeStatsScalarFieldEnum]
 
 
-export const EmployeeDailyStatsScalarFieldEnum = {
+export const ProfessionalDailyStatsScalarFieldEnum = {
   id: 'id',
-  employeeId: 'employeeId',
+  professionalId: 'professionalId',
   date: 'date',
   revenue: 'revenue',
   appointments: 'appointments',
@@ -454,12 +463,12 @@ export const EmployeeDailyStatsScalarFieldEnum = {
   tenantId: 'tenantId'
 } as const
 
-export type EmployeeDailyStatsScalarFieldEnum = (typeof EmployeeDailyStatsScalarFieldEnum)[keyof typeof EmployeeDailyStatsScalarFieldEnum]
+export type ProfessionalDailyStatsScalarFieldEnum = (typeof ProfessionalDailyStatsScalarFieldEnum)[keyof typeof ProfessionalDailyStatsScalarFieldEnum]
 
 
-export const EmployeeLifetimeStatsScalarFieldEnum = {
+export const ProfessionalLifetimeStatsScalarFieldEnum = {
   id: 'id',
-  employeeId: 'employeeId',
+  professionalId: 'professionalId',
   totalRevenue: 'totalRevenue',
   totalAppointments: 'totalAppointments',
   totalCancelled: 'totalCancelled',
@@ -469,7 +478,7 @@ export const EmployeeLifetimeStatsScalarFieldEnum = {
   tenantId: 'tenantId'
 } as const
 
-export type EmployeeLifetimeStatsScalarFieldEnum = (typeof EmployeeLifetimeStatsScalarFieldEnum)[keyof typeof EmployeeLifetimeStatsScalarFieldEnum]
+export type ProfessionalLifetimeStatsScalarFieldEnum = (typeof ProfessionalLifetimeStatsScalarFieldEnum)[keyof typeof ProfessionalLifetimeStatsScalarFieldEnum]
 
 
 export const NotificationScalarFieldEnum = {
@@ -594,7 +603,7 @@ export const PlanScalarFieldEnum = {
   externalReference: 'externalReference',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  employeeLimit: 'employeeLimit',
+  professionalLimit: 'professionalLimit',
   appointmentLimit: 'appointmentLimit',
   emailLimit: 'emailLimit',
   whatsappLimit: 'whatsappLimit'
@@ -662,15 +671,6 @@ export const PlatformStatsScalarFieldEnum = {
 export type PlatformStatsScalarFieldEnum = (typeof PlatformStatsScalarFieldEnum)[keyof typeof PlatformStatsScalarFieldEnum]
 
 
-export const PlatformAdminScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  level: 'level'
-} as const
-
-export type PlatformAdminScalarFieldEnum = (typeof PlatformAdminScalarFieldEnum)[keyof typeof PlatformAdminScalarFieldEnum]
-
-
 export const WebhookLogScalarFieldEnum = {
   id: 'id',
   provider: 'provider',
@@ -698,15 +698,15 @@ export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
 export const JsonNullValueInput = {
-  JsonNull: 'JsonNull'
+  JsonNull: JsonNull
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullableJsonNullValueInput = {
-  DbNull: 'DbNull',
-  JsonNull: 'JsonNull'
+  DbNull: DbNull,
+  JsonNull: JsonNull
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
@@ -729,9 +729,9 @@ export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 export const JsonNullValueFilter = {
-  DbNull: 'DbNull',
-  JsonNull: 'JsonNull',
-  AnyNull: 'AnyNull'
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]

@@ -233,7 +233,7 @@ export type TenantLifetimeStatsGroupByOutputType = {
   _max: TenantLifetimeStatsMaxAggregateOutputType | null
 }
 
-type GetTenantLifetimeStatsGroupByPayload<T extends TenantLifetimeStatsGroupByArgs> = Prisma.PrismaPromise<
+export type GetTenantLifetimeStatsGroupByPayload<T extends TenantLifetimeStatsGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<TenantLifetimeStatsGroupByOutputType, T['by']> &
       {
@@ -1242,6 +1242,11 @@ export type TenantLifetimeStatsFindManyArgs<ExtArgs extends runtime.Types.Extens
    * Skip the first `n` TenantLifetimeStats.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of TenantLifetimeStats.
+   */
   distinct?: Prisma.TenantLifetimeStatsScalarFieldEnum | Prisma.TenantLifetimeStatsScalarFieldEnum[]
 }
 

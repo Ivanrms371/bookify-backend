@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 import { Notification, RecipientType } from 'src/generated/prisma/client';
 import { UsersService } from 'src/modules/users/users.service';
 import { BuildEmailResponse } from '../../domain/templates/build-email.interface';
-import { CustomersService } from 'src/modules/tenants/features/customers/customers.service';
+import { CustomersService } from 'src/modules/customers/customers.service';
 
 @Injectable()
 export class EmailGateway {
@@ -67,14 +67,14 @@ export class EmailGateway {
 
     switch (recipientType) {
       case RecipientType.CUSTOMER: {
-        const customer = await this.customersService.findById(recipientId);
+        const customer = await this.customersService.findById('', recipientId);
         if (!customer?.email) {
           throw new Error('Customer has no email');
         }
         return customer.email;
       }
       case RecipientType.USER: {
-        const user = await this.usersService.findUserById(recipientId);
+        const user = await this.usersService.findById(recipientId);
         if (!user.email) {
           throw new Error('User has no email');
         }

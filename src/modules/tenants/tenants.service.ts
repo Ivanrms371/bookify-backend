@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { TenantsRepository } from './repositories/tenants.repository';
-import { MembershipsService } from './features/memberships/memberships.service';
 import { CreateTenantDto } from './dto/create-tenant.dto';
 import { generateSlugTenant } from './utils/generate-slug.util';
 import { mapOnboardingStatus } from './mappers/onboarding-status.mapper';
@@ -8,19 +7,11 @@ import { UpdateTenantAddressDto } from './dto/update-tenant-address.dto';
 
 @Injectable()
 export class TenantsService {
-  constructor(
-    private readonly tenantsRepository: TenantsRepository,
-    private readonly membershipsService: MembershipsService,
-  ) {}
+  constructor(private readonly tenantsRepository: TenantsRepository) {}
 
   async findTenantByIdAndValidate(userId: string, tenantId: string) {
     const tenant = await this.tenantsRepository.findById(tenantId);
     if (!tenant) {
-      throw new NotFoundException('No se ha encontrado el negocio');
-    }
-
-    const member = await this.membershipsService.findByUserAndTenant(userId, tenantId);
-    if (!member) {
       throw new NotFoundException('No se ha encontrado el negocio');
     }
   }
@@ -50,7 +41,7 @@ export class TenantsService {
     return await this.tenantsRepository.create(userId, { ...data, slug });
   }
 
-  async getOnboardingStatus(userId: string) {
+  async getStatus(userId: string) {
     const tenantId = await this.tenantsRepository.findByUserId(userId);
     if (!tenantId) {
       throw new NotFoundException('No se ha encontrado el negocio');

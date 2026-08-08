@@ -1,7 +1,7 @@
 export interface OnAppointmentCreatedData {
   tenantId: string;
-  employeeId: string;
+  professionalId: string;
   customerId: string;
-  startTime: Date;
+  startsAt: Date;
   isNewCustomer: boolean;
 }

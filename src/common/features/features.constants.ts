@@ -3,7 +3,7 @@ export type Feature =
   | 'basic-analytics'
   | 'advanced-analytics'
   | 'reminders'
-  | 'multi-employee'
+  | 'multi-professional'
   | 'reports'
   | 'priority-support'
   | 'custom-branding'
@@ -18,7 +18,7 @@ export const PLAN_FEATURES = {
     'advanced-analytics',
     'reminders',
     'priority-support',
-    'multi-employee',
+    'multi-professional',
     'reports',
     'custom-branding',
     'no-ads',

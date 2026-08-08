@@ -4,15 +4,14 @@ import { UsersRepository } from './users.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Prisma } from 'src/generated/prisma/client';
 import { CreateFromInvitationDto } from './dto/create-from-invitation.dto';
-import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { UpdateUserInput } from './types/update-user.type';
-import { mapMeResponse } from './mappers/me.mapper';
+import { UserUpdateInput } from 'src/generated/prisma/models';
+import { MeUserMapper } from './mappers/user-mapper';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  async createUser(data: CreateUserDto, tx?: Prisma.TransactionClient) {
+  async create(data: CreateUserDto, tx?: Prisma.TransactionClient) {
     return await this.usersRepository.create({ ...data }, tx);
   }
 
@@ -32,14 +31,17 @@ export class UsersService {
     );
   }
 
-  async findMeById(userId: string) {
-    const data = await this.usersRepository.getMe(userId);
-    console.log('data', data);
-    const map = mapMeResponse(data);
-    return map;
+  async findMeById(userId: string, preferredTenant?: string) {
+    const rawData = await this.usersRepository.findMeContext(userId);
+
+    if (!rawData) {
+      throw new NotFoundException('User not found');
+    }
+
+    return MeUserMapper.toDomain(rawData, preferredTenant);
   }
 
-  async update(id: string, data: UpdateUserInput, tx?: Prisma.TransactionClient) {
+  async update(id: string, data: UserUpdateInput, tx?: Prisma.TransactionClient) {
     const user = await this.usersRepository.findById(id, tx);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -47,15 +49,7 @@ export class UsersService {
     return this.usersRepository.update(id, data, tx);
   }
 
-  async updatePassword(id: string, hashedPassword: string, tx?: Prisma.TransactionClient) {
-    const user = await this.usersRepository.findById(id, tx);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    return this.usersRepository.update(id, { password: hashedPassword }, tx);
-  }
-
-  async findUserById(id: string) {
+  async findById(id: string) {
     const user = await this.usersRepository.findById(id);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -63,11 +57,11 @@ export class UsersService {
     return user;
   }
 
-  async findUserByEmail(email: string) {
+  async findByEmail(email: string) {
     return await this.usersRepository.findByEmail(email);
   }
 
-  async findUserByEmailOrFail(email: string) {
+  async findByEmailOrFail(email: string) {
     const user = await this.usersRepository.findByEmail(email);
     if (!user) {
       throw new NotFoundException('Usuario no encontrado');
@@ -75,23 +69,23 @@ export class UsersService {
     return user;
   }
 
-  async findUserByGoogleId(googleId: string) {
+  async findByGoogleId(googleId: string) {
     return await this.usersRepository.findByGoogleId(googleId);
   }
 
-  async markUserEmailVerified(id: string, tx?: Prisma.TransactionClient) {
-    return this.usersRepository.markEmailVerified(id, tx);
+  async markEmailVerified(id: string, tx?: Prisma.TransactionClient) {
+    return this.usersRepository.update(id, { emailVerifiedAt: new Date() }, tx);
   }
 
-  async markUserPhoneVerified(id: string, tx?: Prisma.TransactionClient) {
-    return this.usersRepository.markPhoneVerified(id, tx);
+  async markPhoneVerified(id: string, tx?: Prisma.TransactionClient) {
+    return this.usersRepository.update(id, { phoneVerifiedAt: new Date() }, tx);
   }
 
   async incrementTokenVersion(userId: string, tx?: Prisma.TransactionClient) {
-    return this.usersRepository.incrementTokenVersion(userId, tx);
+    return this.usersRepository.update(userId, { tokenVersion: { increment: 1 } }, tx);
   }
 
   async updateLastLogin(userId: string, tx?: Prisma.TransactionClient) {
-    return this.usersRepository.updateLastLogin(userId, tx);
+    return this.usersRepository.update(userId, { lastLoginAt: new Date() }, tx);
   }
 }

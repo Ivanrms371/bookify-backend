@@ -31,7 +31,7 @@ export type PlanAvgAggregateOutputType = {
   price: runtime.Decimal | null
   compareAtPrice: runtime.Decimal | null
   sortOrder: number | null
-  employeeLimit: number | null
+  professionalLimit: number | null
   appointmentLimit: number | null
   emailLimit: number | null
   whatsappLimit: number | null
@@ -42,7 +42,7 @@ export type PlanSumAggregateOutputType = {
   price: runtime.Decimal | null
   compareAtPrice: runtime.Decimal | null
   sortOrder: number | null
-  employeeLimit: number | null
+  professionalLimit: number | null
   appointmentLimit: number | null
   emailLimit: number | null
   whatsappLimit: number | null
@@ -64,7 +64,7 @@ export type PlanMinAggregateOutputType = {
   externalReference: string | null
   createdAt: Date | null
   updatedAt: Date | null
-  employeeLimit: number | null
+  professionalLimit: number | null
   appointmentLimit: number | null
   emailLimit: number | null
   whatsappLimit: number | null
@@ -86,7 +86,7 @@ export type PlanMaxAggregateOutputType = {
   externalReference: string | null
   createdAt: Date | null
   updatedAt: Date | null
-  employeeLimit: number | null
+  professionalLimit: number | null
   appointmentLimit: number | null
   emailLimit: number | null
   whatsappLimit: number | null
@@ -109,7 +109,7 @@ export type PlanCountAggregateOutputType = {
   externalReference: number
   createdAt: number
   updatedAt: number
-  employeeLimit: number
+  professionalLimit: number
   appointmentLimit: number
   emailLimit: number
   whatsappLimit: number
@@ -122,7 +122,7 @@ export type PlanAvgAggregateInputType = {
   price?: true
   compareAtPrice?: true
   sortOrder?: true
-  employeeLimit?: true
+  professionalLimit?: true
   appointmentLimit?: true
   emailLimit?: true
   whatsappLimit?: true
@@ -133,7 +133,7 @@ export type PlanSumAggregateInputType = {
   price?: true
   compareAtPrice?: true
   sortOrder?: true
-  employeeLimit?: true
+  professionalLimit?: true
   appointmentLimit?: true
   emailLimit?: true
   whatsappLimit?: true
@@ -155,7 +155,7 @@ export type PlanMinAggregateInputType = {
   externalReference?: true
   createdAt?: true
   updatedAt?: true
-  employeeLimit?: true
+  professionalLimit?: true
   appointmentLimit?: true
   emailLimit?: true
   whatsappLimit?: true
@@ -177,7 +177,7 @@ export type PlanMaxAggregateInputType = {
   externalReference?: true
   createdAt?: true
   updatedAt?: true
-  employeeLimit?: true
+  professionalLimit?: true
   appointmentLimit?: true
   emailLimit?: true
   whatsappLimit?: true
@@ -200,7 +200,7 @@ export type PlanCountAggregateInputType = {
   externalReference?: true
   createdAt?: true
   updatedAt?: true
-  employeeLimit?: true
+  professionalLimit?: true
   appointmentLimit?: true
   emailLimit?: true
   whatsappLimit?: true
@@ -310,7 +310,7 @@ export type PlanGroupByOutputType = {
   externalReference: string | null
   createdAt: Date
   updatedAt: Date
-  employeeLimit: number
+  professionalLimit: number
   appointmentLimit: number
   emailLimit: number
   whatsappLimit: number
@@ -321,7 +321,7 @@ export type PlanGroupByOutputType = {
   _max: PlanMaxAggregateOutputType | null
 }
 
-type GetPlanGroupByPayload<T extends PlanGroupByArgs> = Prisma.PrismaPromise<
+export type GetPlanGroupByPayload<T extends PlanGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PlanGroupByOutputType, T['by']> &
       {
@@ -356,7 +356,7 @@ export type PlanWhereInput = {
   externalReference?: Prisma.StringNullableFilter<"Plan"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
-  employeeLimit?: Prisma.IntFilter<"Plan"> | number
+  professionalLimit?: Prisma.IntFilter<"Plan"> | number
   appointmentLimit?: Prisma.IntFilter<"Plan"> | number
   emailLimit?: Prisma.IntFilter<"Plan"> | number
   whatsappLimit?: Prisma.IntFilter<"Plan"> | number
@@ -381,7 +381,7 @@ export type PlanOrderByWithRelationInput = {
   externalReference?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  employeeLimit?: Prisma.SortOrder
+  professionalLimit?: Prisma.SortOrder
   appointmentLimit?: Prisma.SortOrder
   emailLimit?: Prisma.SortOrder
   whatsappLimit?: Prisma.SortOrder
@@ -409,7 +409,7 @@ export type PlanWhereUniqueInput = Prisma.AtLeast<{
   features?: Prisma.JsonNullableFilter<"Plan">
   createdAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Plan"> | Date | string
-  employeeLimit?: Prisma.IntFilter<"Plan"> | number
+  professionalLimit?: Prisma.IntFilter<"Plan"> | number
   appointmentLimit?: Prisma.IntFilter<"Plan"> | number
   emailLimit?: Prisma.IntFilter<"Plan"> | number
   whatsappLimit?: Prisma.IntFilter<"Plan"> | number
@@ -434,7 +434,7 @@ export type PlanOrderByWithAggregationInput = {
   externalReference?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  employeeLimit?: Prisma.SortOrder
+  professionalLimit?: Prisma.SortOrder
   appointmentLimit?: Prisma.SortOrder
   emailLimit?: Prisma.SortOrder
   whatsappLimit?: Prisma.SortOrder
@@ -465,7 +465,7 @@ export type PlanScalarWhereWithAggregatesInput = {
   externalReference?: Prisma.StringNullableWithAggregatesFilter<"Plan"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Plan"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Plan"> | Date | string
-  employeeLimit?: Prisma.IntWithAggregatesFilter<"Plan"> | number
+  professionalLimit?: Prisma.IntWithAggregatesFilter<"Plan"> | number
   appointmentLimit?: Prisma.IntWithAggregatesFilter<"Plan"> | number
   emailLimit?: Prisma.IntWithAggregatesFilter<"Plan"> | number
   whatsappLimit?: Prisma.IntWithAggregatesFilter<"Plan"> | number
@@ -488,7 +488,7 @@ export type PlanCreateInput = {
   externalReference?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  employeeLimit?: number
+  professionalLimit?: number
   appointmentLimit?: number
   emailLimit?: number
   whatsappLimit?: number
@@ -513,7 +513,7 @@ export type PlanUncheckedCreateInput = {
   externalReference?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  employeeLimit?: number
+  professionalLimit?: number
   appointmentLimit?: number
   emailLimit?: number
   whatsappLimit?: number
@@ -538,7 +538,7 @@ export type PlanUpdateInput = {
   externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
   whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
@@ -563,7 +563,7 @@ export type PlanUncheckedUpdateInput = {
   externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
   whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
@@ -588,7 +588,7 @@ export type PlanCreateManyInput = {
   externalReference?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  employeeLimit?: number
+  professionalLimit?: number
   appointmentLimit?: number
   emailLimit?: number
   whatsappLimit?: number
@@ -611,7 +611,7 @@ export type PlanUpdateManyMutationInput = {
   externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
   whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
@@ -634,7 +634,7 @@ export type PlanUncheckedUpdateManyInput = {
   externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
   whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
@@ -662,7 +662,7 @@ export type PlanCountOrderByAggregateInput = {
   externalReference?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  employeeLimit?: Prisma.SortOrder
+  professionalLimit?: Prisma.SortOrder
   appointmentLimit?: Prisma.SortOrder
   emailLimit?: Prisma.SortOrder
   whatsappLimit?: Prisma.SortOrder
@@ -673,7 +673,7 @@ export type PlanAvgOrderByAggregateInput = {
   price?: Prisma.SortOrder
   compareAtPrice?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
-  employeeLimit?: Prisma.SortOrder
+  professionalLimit?: Prisma.SortOrder
   appointmentLimit?: Prisma.SortOrder
   emailLimit?: Prisma.SortOrder
   whatsappLimit?: Prisma.SortOrder
@@ -695,7 +695,7 @@ export type PlanMaxOrderByAggregateInput = {
   externalReference?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  employeeLimit?: Prisma.SortOrder
+  professionalLimit?: Prisma.SortOrder
   appointmentLimit?: Prisma.SortOrder
   emailLimit?: Prisma.SortOrder
   whatsappLimit?: Prisma.SortOrder
@@ -717,7 +717,7 @@ export type PlanMinOrderByAggregateInput = {
   externalReference?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  employeeLimit?: Prisma.SortOrder
+  professionalLimit?: Prisma.SortOrder
   appointmentLimit?: Prisma.SortOrder
   emailLimit?: Prisma.SortOrder
   whatsappLimit?: Prisma.SortOrder
@@ -728,7 +728,7 @@ export type PlanSumOrderByAggregateInput = {
   price?: Prisma.SortOrder
   compareAtPrice?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
-  employeeLimit?: Prisma.SortOrder
+  professionalLimit?: Prisma.SortOrder
   appointmentLimit?: Prisma.SortOrder
   emailLimit?: Prisma.SortOrder
   whatsappLimit?: Prisma.SortOrder
@@ -783,7 +783,7 @@ export type PlanCreateWithoutSubscriptionsInput = {
   externalReference?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  employeeLimit?: number
+  professionalLimit?: number
   appointmentLimit?: number
   emailLimit?: number
   whatsappLimit?: number
@@ -807,7 +807,7 @@ export type PlanUncheckedCreateWithoutSubscriptionsInput = {
   externalReference?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  employeeLimit?: number
+  professionalLimit?: number
   appointmentLimit?: number
   emailLimit?: number
   whatsappLimit?: number
@@ -847,7 +847,7 @@ export type PlanUpdateWithoutSubscriptionsInput = {
   externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
   whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
@@ -871,7 +871,7 @@ export type PlanUncheckedUpdateWithoutSubscriptionsInput = {
   externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
   whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
@@ -895,7 +895,7 @@ export type PlanCreateWithoutStatsInput = {
   externalReference?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  employeeLimit?: number
+  professionalLimit?: number
   appointmentLimit?: number
   emailLimit?: number
   whatsappLimit?: number
@@ -919,7 +919,7 @@ export type PlanUncheckedCreateWithoutStatsInput = {
   externalReference?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  employeeLimit?: number
+  professionalLimit?: number
   appointmentLimit?: number
   emailLimit?: number
   whatsappLimit?: number
@@ -959,7 +959,7 @@ export type PlanUpdateWithoutStatsInput = {
   externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
   whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
@@ -983,7 +983,7 @@ export type PlanUncheckedUpdateWithoutStatsInput = {
   externalReference?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employeeLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  professionalLimit?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentLimit?: Prisma.IntFieldUpdateOperationsInput | number
   emailLimit?: Prisma.IntFieldUpdateOperationsInput | number
   whatsappLimit?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1047,7 +1047,7 @@ export type PlanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   externalReference?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  employeeLimit?: boolean
+  professionalLimit?: boolean
   appointmentLimit?: boolean
   emailLimit?: boolean
   whatsappLimit?: boolean
@@ -1073,7 +1073,7 @@ export type PlanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   externalReference?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  employeeLimit?: boolean
+  professionalLimit?: boolean
   appointmentLimit?: boolean
   emailLimit?: boolean
   whatsappLimit?: boolean
@@ -1096,7 +1096,7 @@ export type PlanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   externalReference?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  employeeLimit?: boolean
+  professionalLimit?: boolean
   appointmentLimit?: boolean
   emailLimit?: boolean
   whatsappLimit?: boolean
@@ -1119,13 +1119,13 @@ export type PlanSelectScalar = {
   externalReference?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  employeeLimit?: boolean
+  professionalLimit?: boolean
   appointmentLimit?: boolean
   emailLimit?: boolean
   whatsappLimit?: boolean
 }
 
-export type PlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "tagline" | "billingCycle" | "trialDays" | "price" | "compareAtPrice" | "currency" | "isPublic" | "isFeatured" | "sortOrder" | "description" | "features" | "externalReference" | "createdAt" | "updatedAt" | "employeeLimit" | "appointmentLimit" | "emailLimit" | "whatsappLimit", ExtArgs["result"]["plan"]>
+export type PlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "tagline" | "billingCycle" | "trialDays" | "price" | "compareAtPrice" | "currency" | "isPublic" | "isFeatured" | "sortOrder" | "description" | "features" | "externalReference" | "createdAt" | "updatedAt" | "professionalLimit" | "appointmentLimit" | "emailLimit" | "whatsappLimit", ExtArgs["result"]["plan"]>
 export type PlanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   stats?: boolean | Prisma.Plan$statsArgs<ExtArgs>
   subscriptions?: boolean | Prisma.Plan$subscriptionsArgs<ExtArgs>
@@ -1157,7 +1157,7 @@ export type $PlanPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     externalReference: string | null
     createdAt: Date
     updatedAt: Date
-    employeeLimit: number
+    professionalLimit: number
     appointmentLimit: number
     emailLimit: number
     whatsappLimit: number
@@ -1602,7 +1602,7 @@ export interface PlanFieldRefs {
   readonly externalReference: Prisma.FieldRef<"Plan", 'String'>
   readonly createdAt: Prisma.FieldRef<"Plan", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Plan", 'DateTime'>
-  readonly employeeLimit: Prisma.FieldRef<"Plan", 'Int'>
+  readonly professionalLimit: Prisma.FieldRef<"Plan", 'Int'>
   readonly appointmentLimit: Prisma.FieldRef<"Plan", 'Int'>
   readonly emailLimit: Prisma.FieldRef<"Plan", 'Int'>
   readonly whatsappLimit: Prisma.FieldRef<"Plan", 'Int'>
@@ -1802,6 +1802,11 @@ export type PlanFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Skip the first `n` Plans.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Plans.
+   */
   distinct?: Prisma.PlanScalarFieldEnum | Prisma.PlanScalarFieldEnum[]
 }
 

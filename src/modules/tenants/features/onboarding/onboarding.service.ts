@@ -23,17 +23,17 @@ export class TenantOnboardingService {
     private readonly workingHoursService: TenantWorkingHoursService,
   ) {}
 
-  async getOnboardingStatus(onwerId: string) {
-    const raw = await this.tenantOnboardingRepository.getOnboardingStatus(onwerId);
+  async getStatus(onwerId: string) {
+    const raw = await this.tenantOnboardingRepository.getStatus(onwerId);
     return OnboardingMapper.toResponse(raw);
   }
 
-  async initializeOnboarding(ownerId: string) {
-    const tenant = await this.tenantOnboardingRepository.findTenantByOwnerId(ownerId);
+  async initalize(ownerId: string, ownerName: string) {
+    const tenant = await this.tenantOnboardingRepository.findByOwnerId(ownerId);
     if (tenant) {
       return tenant;
     }
-    return this.tenantOnboardingRepository.createInitialTenant(ownerId);
+    return this.tenantOnboardingRepository.createInitialTenant(ownerId, ownerName);
   }
 
   async updateWorkspace(userId: string, body: WorkspaceStepDto) {
@@ -50,7 +50,7 @@ export class TenantOnboardingService {
       await this.tenantOnboardingRepository.update(tenant.id, { workspaceType: body.workspaceType });
     }
 
-    return this.getOnboardingStatus(userId);
+    return this.getStatus(userId);
   }
 
   async updateBusiness(userId: string, body: BusinessStepDto) {
@@ -70,7 +70,7 @@ export class TenantOnboardingService {
       await this.tenantOnboardingRepository.update(tenant.id, { name: body.name, slug, type: body.type });
     }
 
-    return this.getOnboardingStatus(userId);
+    return this.getStatus(userId);
   }
 
   async updateSchedule(userId: string, body: ScheduleStepDto) {
@@ -85,7 +85,7 @@ export class TenantOnboardingService {
       }
     });
 
-    return this.getOnboardingStatus(userId);
+    return this.getStatus(userId);
   }
 
   async updateServices(userId: string, body: ServicesStepDto) {
@@ -105,7 +105,7 @@ export class TenantOnboardingService {
       await this.tenantOnboardingRepository.updateStatus(tenant.id, nextStep, tx);
     });
 
-    return this.getOnboardingStatus(userId);
+    return this.getStatus(userId);
   }
 
   async updateTeam(userId: string, _body: TeamStepDto) {
@@ -117,7 +117,7 @@ export class TenantOnboardingService {
       await this.tenantOnboardingRepository.updateStatus(tenant.id, nextStep);
     }
 
-    return this.getOnboardingStatus(userId);
+    return this.getStatus(userId);
   }
 
   async updateCustomize(userId: string, body: CustomizeStepDto) {
@@ -140,7 +140,7 @@ export class TenantOnboardingService {
       });
     }
 
-    return this.getOnboardingStatus(userId);
+    return this.getStatus(userId);
   }
 
   async confirm(userId: string, _body: ConfirmStepDto) {
@@ -154,11 +154,11 @@ export class TenantOnboardingService {
       await this.tenantOnboardingRepository.updateStatus(tenant.id, nextStep);
     }
 
-    return this.getOnboardingStatus(userId);
+    return this.getStatus(userId);
   }
 
   private async requireTenantByOwnerId(userId: string): Promise<Tenant> {
-    const tenant = await this.tenantOnboardingRepository.findTenantByOwnerId(userId);
+    const tenant = await this.tenantOnboardingRepository.findByOwnerId(userId);
     if (!tenant) {
       throw new NotFoundException('Tenant not found');
     }

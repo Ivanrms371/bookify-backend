@@ -10,8 +10,6 @@ import { VerificationEmailTemplate } from '../templates/confirm-email/confirm-em
 import { AppointmentCancelledTemplate } from '../templates/appointment-cancelled/appointment-cancelled.template';
 import { AppointmentRescheduledTemplate } from '../templates/appointment-reschedule/appointment-reschedule.template';
 import { TenantCreatedTemplate } from '../templates/tenant-created/tenant-created.template';
-import { AppointmentBookedByEmployeeTemplate } from '../templates/appointment-booked-by-employee/appointment-booked-by-employee.template';
-import { AppointmentCancelledByEmployeeTemplate } from '../templates/appointment-cancelled-by-employee/appointment-cancelled-by-employee.template';
 import { MembershipInvitedTemplate } from '../templates/membership-invited/membership-invited.template';
 
 @Injectable()
@@ -25,8 +23,6 @@ export class TemplateService {
     private readonly appointmentReminderTemplate: AppointmentReminderTemplate,
     private readonly verificationEmailTemplate: VerificationEmailTemplate,
     private readonly tenantCreatedTemplate: TenantCreatedTemplate,
-    private readonly appointmentBookedByEmployeeTemplate: AppointmentBookedByEmployeeTemplate,
-    private readonly appointmentCancelledByEmployeeTemplate: AppointmentCancelledByEmployeeTemplate,
     private readonly membershipInvitedTemplate: MembershipInvitedTemplate,
   ) {
     this.templateMap.set(this.appointmentCreatedTemplate.type, this.appointmentCreatedTemplate);
@@ -35,8 +31,6 @@ export class TemplateService {
     this.templateMap.set(this.appointmentReminderTemplate.type, this.appointmentReminderTemplate);
     this.templateMap.set(this.verificationEmailTemplate.type, this.verificationEmailTemplate);
     this.templateMap.set(this.tenantCreatedTemplate.type, this.tenantCreatedTemplate);
-    this.templateMap.set(this.appointmentBookedByEmployeeTemplate.type, this.appointmentBookedByEmployeeTemplate);
-    this.templateMap.set(this.appointmentCancelledByEmployeeTemplate.type, this.appointmentCancelledByEmployeeTemplate);
     this.templateMap.set(this.membershipInvitedTemplate.type, this.membershipInvitedTemplate);
   }
 

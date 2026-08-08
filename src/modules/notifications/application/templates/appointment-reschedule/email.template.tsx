@@ -9,12 +9,12 @@ export const AppointmentRescheduleEmailTemplate = ({
   date = '24 de diciembre de 2024',
   time = '10:00 AM',
   serviceName = 'Corte de cabello',
-  employeeName = 'Juan Pérez',
+  professionalName = 'Juan Pérez',
 }: AppointmentRescheduledVariables) => {
   return (
     <Layout previewText={`Cita reprogramada con ${customerName}`}>
       <Section>
-        <CustomHeading>Cita reprogramada, {employeeName}</CustomHeading>
+        <CustomHeading>Cita reprogramada, {professionalName}</CustomHeading>
         <Text className="text-gray-600 text-lg leading-relaxed text-center mb-8">
           El cliente <strong>{customerName}</strong> ha reprogramado la cita para el <strong>{date}</strong> a las <strong>{time}</strong>
         </Text>

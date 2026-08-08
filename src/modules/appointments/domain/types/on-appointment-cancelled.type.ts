@@ -3,9 +3,9 @@ import { AppointmentStatus } from 'src/generated/prisma/enums';
 
 export interface OnAppointmentCancelledData {
   tenantId: string;
-  employeeId: string;
+  professionalId: string;
   customerId: string;
-  startTime: Date;
+  startsAt: Date;
   isCustomerFault: boolean;
   previousStatus: AppointmentStatus;
   revenue: Decimal;

@@ -248,7 +248,7 @@ export type UserGroupByOutputType = {
   _max: UserMaxAggregateOutputType | null
 }
 
-type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
+export type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<UserGroupByOutputType, T['by']> &
       {
@@ -280,10 +280,9 @@ export type UserWhereInput = {
   tokenVersion?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  employees?: Prisma.EmployeeListRelationFilter
-  inAppNotifications?: Prisma.InAppNotificationListRelationFilter
   memberships?: Prisma.MembershipListRelationFilter
-  platformAdmin?: Prisma.XOR<Prisma.PlatformAdminNullableScalarRelationFilter, Prisma.PlatformAdminWhereInput> | null
+  professionalProfile?: Prisma.ProfessionalListRelationFilter
+  inAppNotifications?: Prisma.InAppNotificationListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   verificationLocks?: Prisma.XOR<Prisma.VerificationLockNullableScalarRelationFilter, Prisma.VerificationLockWhereInput> | null
   verifications?: Prisma.VerificationListRelationFilter
@@ -303,10 +302,9 @@ export type UserOrderByWithRelationInput = {
   tokenVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  employees?: Prisma.EmployeeOrderByRelationAggregateInput
-  inAppNotifications?: Prisma.InAppNotificationOrderByRelationAggregateInput
   memberships?: Prisma.MembershipOrderByRelationAggregateInput
-  platformAdmin?: Prisma.PlatformAdminOrderByWithRelationInput
+  professionalProfile?: Prisma.ProfessionalOrderByRelationAggregateInput
+  inAppNotifications?: Prisma.InAppNotificationOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   verificationLocks?: Prisma.VerificationLockOrderByWithRelationInput
   verifications?: Prisma.VerificationOrderByRelationAggregateInput
@@ -329,10 +327,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   tokenVersion?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  employees?: Prisma.EmployeeListRelationFilter
-  inAppNotifications?: Prisma.InAppNotificationListRelationFilter
   memberships?: Prisma.MembershipListRelationFilter
-  platformAdmin?: Prisma.XOR<Prisma.PlatformAdminNullableScalarRelationFilter, Prisma.PlatformAdminWhereInput> | null
+  professionalProfile?: Prisma.ProfessionalListRelationFilter
+  inAppNotifications?: Prisma.InAppNotificationListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   verificationLocks?: Prisma.XOR<Prisma.VerificationLockNullableScalarRelationFilter, Prisma.VerificationLockWhereInput> | null
   verifications?: Prisma.VerificationListRelationFilter
@@ -392,10 +389,9 @@ export type UserCreateInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  employees?: Prisma.EmployeeCreateNestedManyWithoutUserInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
+  professionalProfile?: Prisma.ProfessionalCreateNestedManyWithoutUserInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
@@ -415,10 +411,9 @@ export type UserUncheckedCreateInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutUserInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
+  professionalProfile?: Prisma.ProfessionalUncheckedCreateNestedManyWithoutUserInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
@@ -438,10 +433,9 @@ export type UserUpdateInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employees?: Prisma.EmployeeUpdateManyWithoutUserNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
+  professionalProfile?: Prisma.ProfessionalUpdateManyWithoutUserNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
@@ -461,10 +455,9 @@ export type UserUncheckedUpdateInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutUserNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
+  professionalProfile?: Prisma.ProfessionalUncheckedUpdateManyWithoutUserNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
@@ -659,18 +652,18 @@ export type UserUpdateOneRequiredWithoutVerificationLocksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutVerificationLocksInput, Prisma.UserUpdateWithoutVerificationLocksInput>, Prisma.UserUncheckedUpdateWithoutVerificationLocksInput>
 }
 
-export type UserCreateNestedOneWithoutEmployeesInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutEmployeesInput, Prisma.UserUncheckedCreateWithoutEmployeesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEmployeesInput
+export type UserCreateNestedOneWithoutProfessionalProfileInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProfessionalProfileInput, Prisma.UserUncheckedCreateWithoutProfessionalProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProfessionalProfileInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutEmployeesNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutEmployeesInput, Prisma.UserUncheckedCreateWithoutEmployeesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEmployeesInput
-  upsert?: Prisma.UserUpsertWithoutEmployeesInput
+export type UserUpdateOneRequiredWithoutProfessionalProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProfessionalProfileInput, Prisma.UserUncheckedCreateWithoutProfessionalProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProfessionalProfileInput
+  upsert?: Prisma.UserUpsertWithoutProfessionalProfileInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEmployeesInput, Prisma.UserUpdateWithoutEmployeesInput>, Prisma.UserUncheckedUpdateWithoutEmployeesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProfessionalProfileInput, Prisma.UserUpdateWithoutProfessionalProfileInput>, Prisma.UserUncheckedUpdateWithoutProfessionalProfileInput>
 }
 
 export type UserCreateNestedOneWithoutInAppNotificationsInput = {
@@ -687,20 +680,6 @@ export type UserUpdateOneRequiredWithoutInAppNotificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInAppNotificationsInput, Prisma.UserUpdateWithoutInAppNotificationsInput>, Prisma.UserUncheckedUpdateWithoutInAppNotificationsInput>
 }
 
-export type UserCreateNestedOneWithoutPlatformAdminInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutPlatformAdminInput, Prisma.UserUncheckedCreateWithoutPlatformAdminInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPlatformAdminInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutPlatformAdminNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutPlatformAdminInput, Prisma.UserUncheckedCreateWithoutPlatformAdminInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPlatformAdminInput
-  upsert?: Prisma.UserUpsertWithoutPlatformAdminInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPlatformAdminInput, Prisma.UserUpdateWithoutPlatformAdminInput>, Prisma.UserUncheckedUpdateWithoutPlatformAdminInput>
-}
-
 export type UserCreateWithoutMembershipsInput = {
   id?: string
   name: string
@@ -715,9 +694,8 @@ export type UserCreateWithoutMembershipsInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  employees?: Prisma.EmployeeCreateNestedManyWithoutUserInput
+  professionalProfile?: Prisma.ProfessionalCreateNestedManyWithoutUserInput
   inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
@@ -737,9 +715,8 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutUserInput
+  professionalProfile?: Prisma.ProfessionalUncheckedCreateNestedManyWithoutUserInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
@@ -775,9 +752,8 @@ export type UserUpdateWithoutMembershipsInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employees?: Prisma.EmployeeUpdateManyWithoutUserNestedInput
+  professionalProfile?: Prisma.ProfessionalUpdateManyWithoutUserNestedInput
   inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
@@ -797,9 +773,8 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutUserNestedInput
+  professionalProfile?: Prisma.ProfessionalUncheckedUpdateManyWithoutUserNestedInput
   inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
@@ -819,10 +794,9 @@ export type UserCreateWithoutSessionsInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  employees?: Prisma.EmployeeCreateNestedManyWithoutUserInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
+  professionalProfile?: Prisma.ProfessionalCreateNestedManyWithoutUserInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
 }
@@ -841,10 +815,9 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutUserInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
+  professionalProfile?: Prisma.ProfessionalUncheckedCreateNestedManyWithoutUserInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
 }
@@ -879,10 +852,9 @@ export type UserUpdateWithoutSessionsInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employees?: Prisma.EmployeeUpdateManyWithoutUserNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
+  professionalProfile?: Prisma.ProfessionalUpdateManyWithoutUserNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
 }
@@ -901,10 +873,9 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutUserNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
+  professionalProfile?: Prisma.ProfessionalUncheckedUpdateManyWithoutUserNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -923,10 +894,9 @@ export type UserCreateWithoutVerificationsInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  employees?: Prisma.EmployeeCreateNestedManyWithoutUserInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
+  professionalProfile?: Prisma.ProfessionalCreateNestedManyWithoutUserInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
 }
@@ -945,10 +915,9 @@ export type UserUncheckedCreateWithoutVerificationsInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutUserInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
+  professionalProfile?: Prisma.ProfessionalUncheckedCreateNestedManyWithoutUserInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
 }
@@ -983,10 +952,9 @@ export type UserUpdateWithoutVerificationsInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employees?: Prisma.EmployeeUpdateManyWithoutUserNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
+  professionalProfile?: Prisma.ProfessionalUpdateManyWithoutUserNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
 }
@@ -1005,10 +973,9 @@ export type UserUncheckedUpdateWithoutVerificationsInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutUserNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
+  professionalProfile?: Prisma.ProfessionalUncheckedUpdateManyWithoutUserNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
 }
@@ -1027,10 +994,9 @@ export type UserCreateWithoutVerificationLocksInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  employees?: Prisma.EmployeeCreateNestedManyWithoutUserInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
+  professionalProfile?: Prisma.ProfessionalCreateNestedManyWithoutUserInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
 }
@@ -1049,10 +1015,9 @@ export type UserUncheckedCreateWithoutVerificationLocksInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutUserInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
+  professionalProfile?: Prisma.ProfessionalUncheckedCreateNestedManyWithoutUserInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1087,10 +1052,9 @@ export type UserUpdateWithoutVerificationLocksInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employees?: Prisma.EmployeeUpdateManyWithoutUserNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
+  professionalProfile?: Prisma.ProfessionalUpdateManyWithoutUserNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
 }
@@ -1109,15 +1073,14 @@ export type UserUncheckedUpdateWithoutVerificationLocksInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutUserNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
+  professionalProfile?: Prisma.ProfessionalUncheckedUpdateManyWithoutUserNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
-export type UserCreateWithoutEmployeesInput = {
+export type UserCreateWithoutProfessionalProfileInput = {
   id?: string
   name: string
   email: string
@@ -1131,15 +1094,14 @@ export type UserCreateWithoutEmployeesInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
+  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutEmployeesInput = {
+export type UserUncheckedCreateWithoutProfessionalProfileInput = {
   id?: string
   name: string
   email: string
@@ -1153,31 +1115,30 @@ export type UserUncheckedCreateWithoutEmployeesInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutEmployeesInput = {
+export type UserCreateOrConnectWithoutProfessionalProfileInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutEmployeesInput, Prisma.UserUncheckedCreateWithoutEmployeesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProfessionalProfileInput, Prisma.UserUncheckedCreateWithoutProfessionalProfileInput>
 }
 
-export type UserUpsertWithoutEmployeesInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutEmployeesInput, Prisma.UserUncheckedUpdateWithoutEmployeesInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutEmployeesInput, Prisma.UserUncheckedCreateWithoutEmployeesInput>
+export type UserUpsertWithoutProfessionalProfileInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutProfessionalProfileInput, Prisma.UserUncheckedUpdateWithoutProfessionalProfileInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProfessionalProfileInput, Prisma.UserUncheckedCreateWithoutProfessionalProfileInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutEmployeesInput = {
+export type UserUpdateToOneWithWhereWithoutProfessionalProfileInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutEmployeesInput, Prisma.UserUncheckedUpdateWithoutEmployeesInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutProfessionalProfileInput, Prisma.UserUncheckedUpdateWithoutProfessionalProfileInput>
 }
 
-export type UserUpdateWithoutEmployeesInput = {
+export type UserUpdateWithoutProfessionalProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1191,15 +1152,14 @@ export type UserUpdateWithoutEmployeesInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutEmployeesInput = {
+export type UserUncheckedUpdateWithoutProfessionalProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1213,9 +1173,8 @@ export type UserUncheckedUpdateWithoutEmployeesInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
+  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1235,9 +1194,8 @@ export type UserCreateWithoutInAppNotificationsInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  employees?: Prisma.EmployeeCreateNestedManyWithoutUserInput
   memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminCreateNestedOneWithoutUserInput
+  professionalProfile?: Prisma.ProfessionalCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
@@ -1257,9 +1215,8 @@ export type UserUncheckedCreateWithoutInAppNotificationsInput = {
   tokenVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutUserInput
   memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedCreateNestedOneWithoutUserInput
+  professionalProfile?: Prisma.ProfessionalUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
   verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
@@ -1295,9 +1252,8 @@ export type UserUpdateWithoutInAppNotificationsInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employees?: Prisma.EmployeeUpdateManyWithoutUserNestedInput
   memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUpdateOneWithoutUserNestedInput
+  professionalProfile?: Prisma.ProfessionalUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
@@ -1317,113 +1273,8 @@ export type UserUncheckedUpdateWithoutInAppNotificationsInput = {
   tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutUserNestedInput
   memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
-  platformAdmin?: Prisma.PlatformAdminUncheckedUpdateOneWithoutUserNestedInput
-  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
-  verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type UserCreateWithoutPlatformAdminInput = {
-  id?: string
-  name: string
-  email: string
-  emailVerifiedAt?: Date | string | null
-  phone?: string | null
-  phoneVerifiedAt?: Date | string | null
-  password?: string | null
-  avatarUrl?: string | null
-  googleId?: string | null
-  lastLoginAt?: Date | string | null
-  tokenVersion?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  employees?: Prisma.EmployeeCreateNestedManyWithoutUserInput
-  inAppNotifications?: Prisma.InAppNotificationCreateNestedManyWithoutUserInput
-  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockCreateNestedOneWithoutUserInput
-  verifications?: Prisma.VerificationCreateNestedManyWithoutUserInput
-}
-
-export type UserUncheckedCreateWithoutPlatformAdminInput = {
-  id?: string
-  name: string
-  email: string
-  emailVerifiedAt?: Date | string | null
-  phone?: string | null
-  phoneVerifiedAt?: Date | string | null
-  password?: string | null
-  avatarUrl?: string | null
-  googleId?: string | null
-  lastLoginAt?: Date | string | null
-  tokenVersion?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  employees?: Prisma.EmployeeUncheckedCreateNestedManyWithoutUserInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedCreateNestedManyWithoutUserInput
-  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
-  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  verificationLocks?: Prisma.VerificationLockUncheckedCreateNestedOneWithoutUserInput
-  verifications?: Prisma.VerificationUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type UserCreateOrConnectWithoutPlatformAdminInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutPlatformAdminInput, Prisma.UserUncheckedCreateWithoutPlatformAdminInput>
-}
-
-export type UserUpsertWithoutPlatformAdminInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutPlatformAdminInput, Prisma.UserUncheckedUpdateWithoutPlatformAdminInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutPlatformAdminInput, Prisma.UserUncheckedCreateWithoutPlatformAdminInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutPlatformAdminInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutPlatformAdminInput, Prisma.UserUncheckedUpdateWithoutPlatformAdminInput>
-}
-
-export type UserUpdateWithoutPlatformAdminInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employees?: Prisma.EmployeeUpdateManyWithoutUserNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUpdateManyWithoutUserNestedInput
-  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
-  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  verificationLocks?: Prisma.VerificationLockUpdateOneWithoutUserNestedInput
-  verifications?: Prisma.VerificationUpdateManyWithoutUserNestedInput
-}
-
-export type UserUncheckedUpdateWithoutPlatformAdminInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  googleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  tokenVersion?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  employees?: Prisma.EmployeeUncheckedUpdateManyWithoutUserNestedInput
-  inAppNotifications?: Prisma.InAppNotificationUncheckedUpdateManyWithoutUserNestedInput
-  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
+  professionalProfile?: Prisma.ProfessionalUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   verificationLocks?: Prisma.VerificationLockUncheckedUpdateOneWithoutUserNestedInput
   verifications?: Prisma.VerificationUncheckedUpdateManyWithoutUserNestedInput
@@ -1435,17 +1286,17 @@ export type UserUncheckedUpdateWithoutPlatformAdminInput = {
  */
 
 export type UserCountOutputType = {
-  employees: number
-  inAppNotifications: number
   memberships: number
+  professionalProfile: number
+  inAppNotifications: number
   sessions: number
   verifications: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  employees?: boolean | UserCountOutputTypeCountEmployeesArgs
-  inAppNotifications?: boolean | UserCountOutputTypeCountInAppNotificationsArgs
   memberships?: boolean | UserCountOutputTypeCountMembershipsArgs
+  professionalProfile?: boolean | UserCountOutputTypeCountProfessionalProfileArgs
+  inAppNotifications?: boolean | UserCountOutputTypeCountInAppNotificationsArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   verifications?: boolean | UserCountOutputTypeCountVerificationsArgs
 }
@@ -1463,8 +1314,15 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountEmployeesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.EmployeeWhereInput
+export type UserCountOutputTypeCountMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MembershipWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountProfessionalProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProfessionalWhereInput
 }
 
 /**
@@ -1472,13 +1330,6 @@ export type UserCountOutputTypeCountEmployeesArgs<ExtArgs extends runtime.Types.
  */
 export type UserCountOutputTypeCountInAppNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.InAppNotificationWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.MembershipWhereInput
 }
 
 /**
@@ -1510,10 +1361,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   tokenVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  employees?: boolean | Prisma.User$employeesArgs<ExtArgs>
-  inAppNotifications?: boolean | Prisma.User$inAppNotificationsArgs<ExtArgs>
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
-  platformAdmin?: boolean | Prisma.User$platformAdminArgs<ExtArgs>
+  professionalProfile?: boolean | Prisma.User$professionalProfileArgs<ExtArgs>
+  inAppNotifications?: boolean | Prisma.User$inAppNotificationsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   verificationLocks?: boolean | Prisma.User$verificationLocksArgs<ExtArgs>
   verifications?: boolean | Prisma.User$verificationsArgs<ExtArgs>
@@ -1570,10 +1420,9 @@ export type UserSelectScalar = {
 
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerifiedAt" | "phone" | "phoneVerifiedAt" | "password" | "avatarUrl" | "googleId" | "lastLoginAt" | "tokenVersion" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  employees?: boolean | Prisma.User$employeesArgs<ExtArgs>
-  inAppNotifications?: boolean | Prisma.User$inAppNotificationsArgs<ExtArgs>
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
-  platformAdmin?: boolean | Prisma.User$platformAdminArgs<ExtArgs>
+  professionalProfile?: boolean | Prisma.User$professionalProfileArgs<ExtArgs>
+  inAppNotifications?: boolean | Prisma.User$inAppNotificationsArgs<ExtArgs>
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   verificationLocks?: boolean | Prisma.User$verificationLocksArgs<ExtArgs>
   verifications?: boolean | Prisma.User$verificationsArgs<ExtArgs>
@@ -1585,10 +1434,9 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    employees: Prisma.$EmployeePayload<ExtArgs>[]
-    inAppNotifications: Prisma.$InAppNotificationPayload<ExtArgs>[]
     memberships: Prisma.$MembershipPayload<ExtArgs>[]
-    platformAdmin: Prisma.$PlatformAdminPayload<ExtArgs> | null
+    professionalProfile: Prisma.$ProfessionalPayload<ExtArgs>[]
+    inAppNotifications: Prisma.$InAppNotificationPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     verificationLocks: Prisma.$VerificationLockPayload<ExtArgs> | null
     verifications: Prisma.$VerificationPayload<ExtArgs>[]
@@ -2001,10 +1849,9 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  employees<T extends Prisma.User$employeesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$employeesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  inAppNotifications<T extends Prisma.User$inAppNotificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$inAppNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   memberships<T extends Prisma.User$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  platformAdmin<T extends Prisma.User$platformAdminArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$platformAdminArgs<ExtArgs>>): Prisma.Prisma__PlatformAdminClient<runtime.Types.Result.GetResult<Prisma.$PlatformAdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  professionalProfile<T extends Prisma.User$professionalProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$professionalProfileArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfessionalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  inAppNotifications<T extends Prisma.User$inAppNotificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$inAppNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InAppNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   verificationLocks<T extends Prisma.User$verificationLocksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationLocksArgs<ExtArgs>>): Prisma.Prisma__VerificationLockClient<runtime.Types.Result.GetResult<Prisma.$VerificationLockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   verifications<T extends Prisma.User$verificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$verificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2246,6 +2093,11 @@ export type UserFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Skip the first `n` Users.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Users.
+   */
   distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[]
 }
 
@@ -2438,54 +2290,6 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.employees
- */
-export type User$employeesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Employee
-   */
-  select?: Prisma.EmployeeSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Employee
-   */
-  omit?: Prisma.EmployeeOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.EmployeeInclude<ExtArgs> | null
-  where?: Prisma.EmployeeWhereInput
-  orderBy?: Prisma.EmployeeOrderByWithRelationInput | Prisma.EmployeeOrderByWithRelationInput[]
-  cursor?: Prisma.EmployeeWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.EmployeeScalarFieldEnum | Prisma.EmployeeScalarFieldEnum[]
-}
-
-/**
- * User.inAppNotifications
- */
-export type User$inAppNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the InAppNotification
-   */
-  select?: Prisma.InAppNotificationSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the InAppNotification
-   */
-  omit?: Prisma.InAppNotificationOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.InAppNotificationInclude<ExtArgs> | null
-  where?: Prisma.InAppNotificationWhereInput
-  orderBy?: Prisma.InAppNotificationOrderByWithRelationInput | Prisma.InAppNotificationOrderByWithRelationInput[]
-  cursor?: Prisma.InAppNotificationWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.InAppNotificationScalarFieldEnum | Prisma.InAppNotificationScalarFieldEnum[]
-}
-
-/**
  * User.memberships
  */
 export type User$membershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2510,22 +2314,51 @@ export type User$membershipsArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * User.platformAdmin
+ * User.professionalProfile
  */
-export type User$platformAdminArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$professionalProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the PlatformAdmin
+   * Select specific fields to fetch from the Professional
    */
-  select?: Prisma.PlatformAdminSelect<ExtArgs> | null
+  select?: Prisma.ProfessionalSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the PlatformAdmin
+   * Omit specific fields from the Professional
    */
-  omit?: Prisma.PlatformAdminOmit<ExtArgs> | null
+  omit?: Prisma.ProfessionalOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.PlatformAdminInclude<ExtArgs> | null
-  where?: Prisma.PlatformAdminWhereInput
+  include?: Prisma.ProfessionalInclude<ExtArgs> | null
+  where?: Prisma.ProfessionalWhereInput
+  orderBy?: Prisma.ProfessionalOrderByWithRelationInput | Prisma.ProfessionalOrderByWithRelationInput[]
+  cursor?: Prisma.ProfessionalWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProfessionalScalarFieldEnum | Prisma.ProfessionalScalarFieldEnum[]
+}
+
+/**
+ * User.inAppNotifications
+ */
+export type User$inAppNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InAppNotification
+   */
+  select?: Prisma.InAppNotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InAppNotification
+   */
+  omit?: Prisma.InAppNotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InAppNotificationInclude<ExtArgs> | null
+  where?: Prisma.InAppNotificationWhereInput
+  orderBy?: Prisma.InAppNotificationOrderByWithRelationInput | Prisma.InAppNotificationOrderByWithRelationInput[]
+  cursor?: Prisma.InAppNotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InAppNotificationScalarFieldEnum | Prisma.InAppNotificationScalarFieldEnum[]
 }
 
 /**

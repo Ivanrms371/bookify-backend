@@ -251,7 +251,7 @@ export type TenantDailyStatsGroupByOutputType = {
   _max: TenantDailyStatsMaxAggregateOutputType | null
 }
 
-type GetTenantDailyStatsGroupByPayload<T extends TenantDailyStatsGroupByArgs> = Prisma.PrismaPromise<
+export type GetTenantDailyStatsGroupByPayload<T extends TenantDailyStatsGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<TenantDailyStatsGroupByOutputType, T['by']> &
       {
@@ -1383,6 +1383,11 @@ export type TenantDailyStatsFindManyArgs<ExtArgs extends runtime.Types.Extension
    * Skip the first `n` TenantDailyStats.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of TenantDailyStats.
+   */
   distinct?: Prisma.TenantDailyStatsScalarFieldEnum | Prisma.TenantDailyStatsScalarFieldEnum[]
 }
 

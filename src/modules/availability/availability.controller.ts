@@ -1,20 +1,21 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import { GetSlotsQueryDto } from './dto/get-slots-query.dto';
 import { AvailabilityService } from './availability.service';
-import { Public } from 'src/common/decorators/public.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { TenantGuard } from 'src/auth/guards/tenant.guard';
+import { GetTenantId } from 'src/common/decorators/get-tenant-id.decorator';
 
-@Controller('employees/:employeeId/availability')
+@UseGuards(JwtAuthGuard, TenantGuard)
+@Controller('availability/professionals')
 export class AvailabilityController {
   constructor(private readonly availabilityService: AvailabilityService) {}
 
-  @Public()
-  @Get()
-  async getBaseConfig(@Param('employeeId') employeeId: string) {
-    return this.availabilityService.getBaseConfig(employeeId);
-  }
-
-  @Public()
-  @Get('slots')
-  async getSlots(@Param('employeeId') employeeId: string, @Query('date') date?: string) {
-    return this.availabilityService.getSlots(employeeId, date);
+  @Get(':professionalId')
+  async getProfessionalAvailability(
+    @GetTenantId() tenantId: string,
+    @Param('professionalId') professionalId: string,
+    @Query() query: GetSlotsQueryDto,
+  ) {
+    return this.availabilityService.getProfessionalAvailability(tenantId, professionalId, query);
   }
 }

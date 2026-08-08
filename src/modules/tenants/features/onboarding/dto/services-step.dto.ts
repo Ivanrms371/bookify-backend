@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import { ArrayMinSize, IsArray, ValidateNested } from 'class-validator';
-import { CreateServiceBulkItemDto } from 'src/modules/tenants/features/services/services/dto/create-services-bulk.dto';
+import { CreateServiceBulkItemDto } from 'src/modules/services/dto/create-services-bulk.dto';
 
 export class ServicesStepDto {
   @IsArray()

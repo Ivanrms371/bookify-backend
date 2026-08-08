@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { CustomerStatsService } from './customer-stats.service';
-import { EmployeeStatsService } from './employee-stats.service';
+import { ProfessionalStatsService } from './professional-stats.service';
 import { TenantStatsService } from './tenant-stats.service';
 
 @Module({
-  providers: [CustomerStatsService, EmployeeStatsService, TenantStatsService],
-  exports: [CustomerStatsService, EmployeeStatsService, TenantStatsService],
+  providers: [CustomerStatsService, ProfessionalStatsService, TenantStatsService],
+  exports: [CustomerStatsService, ProfessionalStatsService, TenantStatsService],
 })
 export class StatsModule {}

@@ -223,6 +223,23 @@ export type EnumMembershipStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumMembershipStatusFilter<$PrismaModel>
 }
 
+export type EnumInvitationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvitationStatus | Prisma.EnumInvitationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.InvitationStatus[] | Prisma.ListEnumInvitationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvitationStatus[] | Prisma.ListEnumInvitationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvitationStatusFilter<$PrismaModel> | $Enums.InvitationStatus
+}
+
+export type EnumInvitationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvitationStatus | Prisma.EnumInvitationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.InvitationStatus[] | Prisma.ListEnumInvitationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvitationStatus[] | Prisma.ListEnumInvitationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvitationStatusWithAggregatesFilter<$PrismaModel> | $Enums.InvitationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumInvitationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumInvitationStatusFilter<$PrismaModel>
+}
+
 export type EnumVerificationTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.VerificationType | Prisma.EnumVerificationTypeFieldRefInput<$PrismaModel>
   in?: $Enums.VerificationType[] | Prisma.ListEnumVerificationTypeFieldRefInput<$PrismaModel>
@@ -667,23 +684,6 @@ export type EnumPaymentStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel>
 }
 
-export type EnumPlatformAdminLevelFilter<$PrismaModel = never> = {
-  equals?: $Enums.PlatformAdminLevel | Prisma.EnumPlatformAdminLevelFieldRefInput<$PrismaModel>
-  in?: $Enums.PlatformAdminLevel[] | Prisma.ListEnumPlatformAdminLevelFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PlatformAdminLevel[] | Prisma.ListEnumPlatformAdminLevelFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPlatformAdminLevelFilter<$PrismaModel> | $Enums.PlatformAdminLevel
-}
-
-export type EnumPlatformAdminLevelWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.PlatformAdminLevel | Prisma.EnumPlatformAdminLevelFieldRefInput<$PrismaModel>
-  in?: $Enums.PlatformAdminLevel[] | Prisma.ListEnumPlatformAdminLevelFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PlatformAdminLevel[] | Prisma.ListEnumPlatformAdminLevelFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPlatformAdminLevelWithAggregatesFilter<$PrismaModel> | $Enums.PlatformAdminLevel
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPlatformAdminLevelFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPlatformAdminLevelFilter<$PrismaModel>
-}
-
 export type EnumWebhookStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.WebhookStatus | Prisma.EnumWebhookStatusFieldRefInput<$PrismaModel>
   in?: $Enums.WebhookStatus[] | Prisma.ListEnumWebhookStatusFieldRefInput<$PrismaModel>
@@ -919,6 +919,23 @@ export type NestedEnumMembershipStatusWithAggregatesFilter<$PrismaModel = never>
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumMembershipStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumMembershipStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumInvitationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvitationStatus | Prisma.EnumInvitationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.InvitationStatus[] | Prisma.ListEnumInvitationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvitationStatus[] | Prisma.ListEnumInvitationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvitationStatusFilter<$PrismaModel> | $Enums.InvitationStatus
+}
+
+export type NestedEnumInvitationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.InvitationStatus | Prisma.EnumInvitationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.InvitationStatus[] | Prisma.ListEnumInvitationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.InvitationStatus[] | Prisma.ListEnumInvitationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumInvitationStatusWithAggregatesFilter<$PrismaModel> | $Enums.InvitationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumInvitationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumInvitationStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumVerificationTypeFilter<$PrismaModel = never> = {
@@ -1307,23 +1324,6 @@ export type NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel = never> = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPaymentStatusFilter<$PrismaModel>
-}
-
-export type NestedEnumPlatformAdminLevelFilter<$PrismaModel = never> = {
-  equals?: $Enums.PlatformAdminLevel | Prisma.EnumPlatformAdminLevelFieldRefInput<$PrismaModel>
-  in?: $Enums.PlatformAdminLevel[] | Prisma.ListEnumPlatformAdminLevelFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PlatformAdminLevel[] | Prisma.ListEnumPlatformAdminLevelFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPlatformAdminLevelFilter<$PrismaModel> | $Enums.PlatformAdminLevel
-}
-
-export type NestedEnumPlatformAdminLevelWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.PlatformAdminLevel | Prisma.EnumPlatformAdminLevelFieldRefInput<$PrismaModel>
-  in?: $Enums.PlatformAdminLevel[] | Prisma.ListEnumPlatformAdminLevelFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PlatformAdminLevel[] | Prisma.ListEnumPlatformAdminLevelFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPlatformAdminLevelWithAggregatesFilter<$PrismaModel> | $Enums.PlatformAdminLevel
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPlatformAdminLevelFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPlatformAdminLevelFilter<$PrismaModel>
 }
 
 export type NestedEnumWebhookStatusFilter<$PrismaModel = never> = {

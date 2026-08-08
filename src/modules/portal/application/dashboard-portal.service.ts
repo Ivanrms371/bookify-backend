@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { endOfMonth, startOfMonth, subDays, subMonths } from 'date-fns';
 import { TenantStatsService } from 'src/modules/tenants/features/stats/tenant-stats.service';
-import { AppointmentsService } from 'src/modules/appointments/application/services/appointments.service';
 import { TenantUsageService } from 'src/modules/tenants/features/usage/tenant-usage.service';
 import { calculateTrend } from '../infrastructure/utils/trend.util';
 
@@ -9,7 +8,6 @@ import { calculateTrend } from '../infrastructure/utils/trend.util';
 export class DashboardPortalService {
   constructor(
     private readonly tenantStatsService: TenantStatsService,
-    private readonly appointmentsService: AppointmentsService,
     private readonly tenantUsageService: TenantUsageService,
   ) {}
 
@@ -23,21 +21,19 @@ export class DashboardPortalService {
     const lastMonthStart = startOfMonth(subMonths(today, 1));
     const lastMonthEnd = subMonths(today, 1);
 
-    const [chart, lifetime, monthStats, upcomingAppointments, quota, todayStats, yesterdayStats, thisMonthAggregate, lastMonthAggregate] =
-      await Promise.all([
-        this.tenantStatsService.getRange(tenantId, thirtyDaysAgo, today, {
-          date: true,
-          revenue: true,
-        }),
-        this.tenantStatsService.getSummary(tenantId, { totalCustomers: true }),
-        this.tenantStatsService.getRange(tenantId, startMonth, endMonth, { revenue: true, newCustomers: true }),
-        this.appointmentsService.getUpcoming(tenantId, undefined, 5),
-        this.tenantUsageService.getUsageStatus(tenantId),
-        this.tenantStatsService.getStatsForDate(tenantId, today),
-        this.tenantStatsService.getStatsForDate(tenantId, yesterday),
-        this.tenantStatsService.getAggregateRange(tenantId, startMonth, endMonth),
-        this.tenantStatsService.getAggregateRange(tenantId, lastMonthStart, lastMonthEnd),
-      ]);
+    const [chart, lifetime, monthStats, quota, todayStats, yesterdayStats, thisMonthAggregate, lastMonthAggregate] = await Promise.all([
+      this.tenantStatsService.getRange(tenantId, thirtyDaysAgo, today, {
+        date: true,
+        revenue: true,
+      }),
+      this.tenantStatsService.getSummary(tenantId, { totalCustomers: true }),
+      this.tenantStatsService.getRange(tenantId, startMonth, endMonth, { revenue: true, newCustomers: true }),
+      this.tenantUsageService.getUsageStatus(tenantId),
+      this.tenantStatsService.getStatsForDate(tenantId, today),
+      this.tenantStatsService.getStatsForDate(tenantId, yesterday),
+      this.tenantStatsService.getAggregateRange(tenantId, startMonth, endMonth),
+      this.tenantStatsService.getAggregateRange(tenantId, lastMonthStart, lastMonthEnd),
+    ]);
 
     const revenueThisMonth = Number(thisMonthAggregate?._sum?.revenue ?? 0);
     const revenueLastMonth = Number(lastMonthAggregate?._sum?.revenue ?? 0);
@@ -66,7 +62,6 @@ export class DashboardPortalService {
       chart,
       lifetime,
       monthStats,
-      upcomingAppointments,
       quota,
       stats,
     };
