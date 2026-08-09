@@ -13,7 +13,9 @@ export class InvitationsRepository {
   }
 
   async findByToken(token: string) {
-    return this.prisma.invitation.findUnique({ where: { token } });
+    return this.prisma.invitation.findFirst({
+      where: { token, NOT: { status: 'CANCELLED' } },
+    });
   }
 
   async findById(id: string) {
@@ -43,7 +45,7 @@ export class InvitationsRepository {
 
   async findMany(tenantId: string) {
     return this.prisma.invitation.findMany({
-      where: { tenantId },
+      where: { tenantId, status: 'PENDING' },
       orderBy: { createdAt: 'desc' },
       select: {
         id: true,

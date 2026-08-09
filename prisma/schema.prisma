@@ -79,6 +79,7 @@ enum InvitationStatus {
   PENDING
   ACCEPTED
   EXPIRED
+  CANCELLED
 }
 
 model Session {

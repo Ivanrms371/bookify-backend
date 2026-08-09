@@ -3,6 +3,7 @@ import { randomBytes } from 'crypto';
 import { addDays } from 'date-fns';
 import { InvitationsRepository } from './invitations.repository';
 import type { CreateInviteDto } from './dto/create-invite.dto';
+import { InvitationStatus } from 'src/generated/prisma/enums';
 
 @Injectable()
 export class InvitationsService {
@@ -34,7 +35,7 @@ export class InvitationsService {
     return { success: true };
   }
 
-  async accept(token: string): Promise<{ message: string }> {
+  async accept(token: string) {
     const invitation = await this.invitationsRepository.findByToken(token);
 
     if (!invitation) {
@@ -46,11 +47,11 @@ export class InvitationsService {
     }
 
     if (invitation.expiresAt < new Date()) {
-      await this.invitationsRepository.updateStatus(token, 'EXPIRED');
+      await this.invitationsRepository.updateStatus(token, InvitationStatus.EXPIRED);
       throw new BadRequestException('La invitación ha expirado');
     }
 
-    await this.invitationsRepository.updateStatus(token, 'ACCEPTED');
+    await this.invitationsRepository.updateStatus(token, InvitationStatus.ACCEPTED);
 
     // TODO: create user account + membership + assign services
 
@@ -86,6 +87,24 @@ export class InvitationsService {
       commissionType: dto.commissionType ?? comisionType,
       token,
       expiresAt,
+    });
+
+    return { success: true };
+  }
+
+  async cancel(tenantId: string, id: string) {
+    const invitation = await this.invitationsRepository.findById(id);
+
+    if (!invitation || invitation.tenantId !== tenantId) {
+      throw new NotFoundException('Invitación no encontrada');
+    }
+
+    if (invitation.status !== 'PENDING') {
+      throw new BadRequestException('Solo se pueden cancelar invitaciones pendientes');
+    }
+
+    await this.invitationsRepository.update(id, {
+      status: 'CANCELLED',
     });
 
     return { success: true };
