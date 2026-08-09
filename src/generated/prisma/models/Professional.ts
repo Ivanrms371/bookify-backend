@@ -852,10 +852,6 @@ export type ProfessionalUpdateOneRequiredWithoutAssignmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfessionalUpdateToOneWithWhereWithoutAssignmentsInput, Prisma.ProfessionalUpdateWithoutAssignmentsInput>, Prisma.ProfessionalUncheckedUpdateWithoutAssignmentsInput>
 }
 
-export type NullableEnumCommissionTypeFieldUpdateOperationsInput = {
-  set?: $Enums.CommissionType | null
-}
-
 export type ProfessionalCreateNestedOneWithoutWorkingHoursInput = {
   create?: Prisma.XOR<Prisma.ProfessionalCreateWithoutWorkingHoursInput, Prisma.ProfessionalUncheckedCreateWithoutWorkingHoursInput>
   connectOrCreate?: Prisma.ProfessionalCreateOrConnectWithoutWorkingHoursInput

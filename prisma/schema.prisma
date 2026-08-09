@@ -63,6 +63,8 @@ model Invitation {
   serviceIds         String[]         @map("service_ids") // IDs de servicios pre-asignados
   token              String           @unique
   status             InvitationStatus @default(PENDING)
+  commissionType       CommissionType? @map("comision_type")
+  commissionValue    Decimal?         @map("comision_value")
   expiresAt          DateTime         @map("expires_at")
   createdAt          DateTime         @default(now()) @map("created_at")
 

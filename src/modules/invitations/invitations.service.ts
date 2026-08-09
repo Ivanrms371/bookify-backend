@@ -10,7 +10,7 @@ export class InvitationsService {
 
   async invite(tenantId: string, dto: CreateInviteDto) {
     // Prevent duplicate pending invitations for the same email in this tenant
-    const existing = await this.invitationsRepository.findByTenantAndEmail(tenantId, dto.email);
+    const existing = await this.invitationsRepository.findByEmail(tenantId, dto.email);
     if (existing?.status === 'PENDING') {
       throw new BadRequestException('Ya existe una invitación pendiente para este correo');
     }
@@ -18,15 +18,12 @@ export class InvitationsService {
     const token = randomBytes(32).toString('hex');
     const expiresAt = addDays(new Date(), 7); // 7-day expiry
 
-    const { name, email, phone, role, serviceIds = [] } = dto;
+    const { comisionType, ...restDto } = dto;
 
     const invitation = await this.invitationsRepository.create({
+      ...restDto,
+      commissionType: dto.commissionType ?? comisionType,
       tenant: { connect: { id: tenantId } },
-      email,
-      name,
-      phone,
-      role,
-      serviceIds,
       token,
       expiresAt,
     });
@@ -60,7 +57,41 @@ export class InvitationsService {
     return { message: 'Invitación aceptada correctamente' };
   }
 
+  async update(tenantId: string, id: string, dto: CreateInviteDto) {
+    const invitation = await this.invitationsRepository.findById(id);
+
+    if (!invitation || invitation.tenantId !== tenantId) {
+      throw new NotFoundException('Invitación no encontrada');
+    }
+
+    if (invitation.status !== 'PENDING') {
+      throw new BadRequestException('Solo se pueden editar invitaciones pendientes');
+    }
+
+    const { comisionType, ...restDto } = dto;
+
+    let token = invitation.token;
+    let expiresAt = invitation.expiresAt;
+    if (dto.email !== invitation.email) {
+      const existing = await this.invitationsRepository.findByEmail(tenantId, dto.email);
+      if (existing && existing.id !== id && existing.status === 'PENDING') {
+        throw new BadRequestException('Ya existe una invitación pendiente para este correo');
+      }
+      token = randomBytes(32).toString('hex');
+      expiresAt = addDays(new Date(), 7);
+    }
+
+    await this.invitationsRepository.update(id, {
+      ...restDto,
+      commissionType: dto.commissionType ?? comisionType,
+      token,
+      expiresAt,
+    });
+
+    return { success: true };
+  }
+
   async getAll(tenantId: string) {
-    return this.invitationsRepository.findAllByTenant(tenantId);
+    return this.invitationsRepository.findMany(tenantId);
   }
 }
