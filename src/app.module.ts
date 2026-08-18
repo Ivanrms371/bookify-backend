@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ScheduleModule as NestScheduleModule } from '@nestjs/schedule';
 import { PrismaModule } from './shared/prisma/prisma.module';
 import { CloudinaryModule } from './shared/integrations/cloudinary/cloudinary.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { TenantsModule } from './modules/tenants/tenants.module';
 import { PlansModule } from './modules/plans/plans.module';
-import { ScheduleModule } from '@nestjs/schedule';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { VerificationsModule } from './modules/verifications/verifications.module';
 import { WebhookModule } from './common/webhooks/webhook.module';
@@ -23,20 +23,20 @@ import { MediaModule } from './shared/media/media.module';
 import { StatsModule } from './common/stats/stats.module';
 import { CustomersModule } from './modules/customers/customers.module';
 import { ServicesModule } from './modules/services/services.module';
-// import { PortalModule } from './modules/portal/portal.module';
 import { TenantOnboardingModule } from './modules/tenants/features/onboarding/onboarding.module';
-import { TenantWorkingHoursModule } from './modules/tenants/features/working-hours/tenant-working.hours.module';
 import { ProfessionalsModule } from './modules/professional/professionals.module';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { InvitationsModule } from './modules/invitations/invitations.module';
+import { MembershipsModule } from './modules/memberships/memberships.module';
+import { ScheduleModule } from './modules/schedule/schedule.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    ScheduleModule.forRoot(),
+    NestScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
     CloudinaryModule,
     CookieModule,
@@ -53,7 +53,6 @@ import { InvitationsModule } from './modules/invitations/invitations.module';
     SettingsModule,
     AvailabilityModule,
     TenantsModule,
-    TenantWorkingHoursModule,
     TenantOnboardingModule,
     CustomersModule,
     PlansModule,
@@ -65,6 +64,8 @@ import { InvitationsModule } from './modules/invitations/invitations.module';
     UsersModule,
     VerificationsModule,
     WebhookModule,
+    MembershipsModule,
+    ScheduleModule,
   ],
 })
 export class AppModule {}

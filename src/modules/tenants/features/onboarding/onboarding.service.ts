@@ -12,7 +12,6 @@ import { ServicesStepDto } from './dto/services-step.dto';
 import { TeamStepDto } from './dto/team-step.dto';
 import { CustomizeStepDto } from './dto/customize-step.dto';
 import { ConfirmStepDto } from './dto/confirm-step.dto';
-import { TenantWorkingHoursService } from '../working-hours/tenant-working-hours.service';
 import { generateSlugTenant } from '../../utils/generate-slug.util';
 
 @Injectable()
@@ -20,7 +19,6 @@ export class TenantOnboardingService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly tenantOnboardingRepository: TenantOnboardingRepository,
-    private readonly workingHoursService: TenantWorkingHoursService,
   ) {}
 
   async getStatus(onwerId: string) {
@@ -74,18 +72,16 @@ export class TenantOnboardingService {
   }
 
   async updateSchedule(userId: string, body: ScheduleStepDto) {
-    const tenant = await this.requireTenantByOwnerId(userId);
-    const workspaceType = this.getWorkspaceTypeOrThrow(tenant);
-    const nextStep = getNextOnboardingStep(workspaceType, OnboardingStatus.SCHEDULE);
-
-    await this.prisma.$transaction(async (tx) => {
-      await this.workingHoursService.bulkUpdate(tenant.id, body, tx);
-      if (tenant.onboardingStatus === OnboardingStatus.SCHEDULE) {
-        await this.tenantOnboardingRepository.updateStatus(tenant.id, nextStep);
-      }
-    });
-
-    return this.getStatus(userId);
+    // const tenant = await this.requireTenantByOwnerId(userId);
+    // const workspaceType = this.getWorkspaceTypeOrThrow(tenant);
+    // const nextStep = getNextOnboardingStep(workspaceType, OnboardingStatus.SCHEDULE);
+    // await this.prisma.$transaction(async (tx) => {
+    //   await this.workingHoursService.bulkUpdate(tenant.id, body, tx);
+    //   if (tenant.onboardingStatus === OnboardingStatus.SCHEDULE) {
+    //     await this.tenantOnboardingRepository.updateStatus(tenant.id, nextStep);
+    //   }
+    // });
+    // return this.getStatus(userId);
   }
 
   async updateServices(userId: string, body: ServicesStepDto) {

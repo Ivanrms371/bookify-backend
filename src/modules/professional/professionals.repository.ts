@@ -8,12 +8,13 @@ import {
   ProfessionalUpdateInput,
   ProfessionalWhereInput,
   ServiceAssignmentCreateInput,
+  ServiceAssignmentCreateManyInput,
 } from 'src/generated/prisma/models';
+import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 
 @Injectable()
 export class ProfessionalsRepository {
   constructor(private readonly prisma: PrismaService) {}
-
   async findMany(tenantId: string, query: GetProfessionalsQueryDto) {
     const { serviceId, skip, take } = query;
 
@@ -33,6 +34,7 @@ export class ProfessionalsRepository {
         select: {
           email: true,
           phone: true,
+          phoneCountryCode: true,
         },
       },
     };
@@ -58,16 +60,40 @@ export class ProfessionalsRepository {
     return this.prisma.professional.findUnique({ where: { id, tenantId, deletedAt: null } });
   }
 
+  async findByIdWithDetails(tenantId: string, id: string) {
+    return this.prisma.professional.findUnique({
+      where: { id, tenantId, deletedAt: null },
+      include: {
+        user: {
+          include: {
+            memberships: {
+              where: { tenantId },
+            },
+          },
+        },
+        assignments: true,
+        workingHours: true,
+      },
+    });
+  }
+
   async create(data: ProfessionalCreateInput) {
     return this.prisma.professional.create({ data });
   }
 
-  async update(tenantId: string, id: string, data: ProfessionalUpdateInput) {
-    return this.prisma.professional.update({ where: { id, tenantId }, data });
+  async update(tenantId: string, id: string, data: ProfessionalUpdateInput, tx?: TransactionClient) {
+    const client = tx || this.prisma;
+    return client.professional.update({ where: { id, tenantId }, data });
   }
 
   async softDelete(tenantId: string, id: string) {
     return this.prisma.professional.update({ where: { id, tenantId }, data: { deletedAt: new Date() } });
+  }
+
+  async replaceServices(professionalId: string, data: ServiceAssignmentCreateManyInput[], tx?: TransactionClient) {
+    const client = tx || this.prisma;
+    await client.serviceAssignment.deleteMany({ where: { professionalId } });
+    return await client.serviceAssignment.createMany({ data });
   }
 
   async addService(professionalId: string, servicId: string) {

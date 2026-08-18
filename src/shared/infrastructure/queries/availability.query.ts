@@ -54,17 +54,9 @@ export class AvailabilityQuery extends BaseRepository {
 
         exceptions: {
           where: {
-            startDate: { lte: end },
-            endDate: { gte: start },
-          },
-          take: 1,
-          select: {
-            isClosed: true,
-            blocks: {
-              select: {
-                opensAt: true,
-                closesAt: true,
-              },
+            scheduleException: {
+              startDate: { lt: end },
+              endDate: { gt: start },
             },
           },
         },
@@ -150,13 +142,12 @@ export class AvailabilityQuery extends BaseRepository {
   async getExceptionsInRange(professionalId: string, start: Date, end: Date) {
     return await this.prisma.scheduleException.findMany({
       where: {
-        professionalId,
+        professionals: { some: { professionalId } },
         startDate: { lte: end },
         endDate: { gte: start },
       },
       select: {
         isClosed: true,
-        daysOfWeek: true,
         blocks: {
           select: {
             opensAt: true,

@@ -1,6 +1,22 @@
-import { IsArray, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min } from 'class-validator';
-import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+  Min,
+  IsBoolean,
+  ValidateNested,
+  IsDecimal,
+} from 'class-validator';
+import { Type, Transform } from 'class-transformer';
 import { MembershipRole, CommissionType } from 'src/generated/prisma/enums';
+import { CreateScheduleDto } from 'src/common/dto/create-schedule.dto';
+import { Decimal } from '@prisma/client/runtime/client';
+import { coerceToDecimal } from 'src/common/utils/to-decimal.util';
 
 export class CreateInviteDto {
   @IsString()
@@ -11,11 +27,20 @@ export class CreateInviteDto {
   email: string;
 
   @IsString()
+  @IsNotEmpty()
+  phone: string;
+
+  @IsString()
+  @IsNotEmpty()
+  phoneCountryCode: string;
+
+  @IsString()
   @IsOptional()
-  phone?: string;
+  bio?: string;
 
   @IsEnum(MembershipRole)
-  role: MembershipRole;
+  @IsOptional()
+  role?: MembershipRole;
 
   @IsArray()
   @IsUUID('all', { each: true })
@@ -26,13 +51,7 @@ export class CreateInviteDto {
   @IsOptional()
   commissionType?: CommissionType;
 
-  @IsEnum(CommissionType)
+  @Transform(({ value }) => (value !== undefined && value !== null ? coerceToDecimal(value) : value))
   @IsOptional()
-  comisionType?: CommissionType;
-
-  @IsNumber()
-  @Min(0)
-  @IsOptional()
-  @Type(() => Number)
-  commissionValue?: number;
+  commissionAmount?: Decimal;
 }

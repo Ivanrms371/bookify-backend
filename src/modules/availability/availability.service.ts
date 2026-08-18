@@ -143,10 +143,10 @@ export class AvailabilityService {
 
       const slots = this.slotsGenerator.generate({
         strategy: 'dynamic',
+        date: currentDate,
         workBlocks,
         busyBlocks,
         serviceDuration,
-        date: currentDate,
         config,
       });
 
@@ -168,9 +168,7 @@ export class AvailabilityService {
 
   private findExceptionForDate(date: Date, dayOfWeek: number, exceptions: ScheduleException[]): ScheduleException | undefined {
     const day = startOfDay(date);
-    return exceptions.find(
-      (ex) => ex.daysOfWeek.includes(dayOfWeek) && !isAfter(startOfDay(ex.startDate), day) && !isAfter(day, startOfDay(ex.endDate)),
-    );
+    return exceptions.find((ex) => !isAfter(startOfDay(ex.startDate), day) && !isAfter(day, startOfDay(ex.endDate)));
   }
 
   private groupExceptionsByDay(exceptions: ScheduleException[]): Map<string, ScheduleException> {
@@ -182,12 +180,7 @@ export class AvailabilityService {
       const end = startOfDay(exception.endDate);
 
       while (!isAfter(current, end)) {
-        const dayOfWeek = getDay(current);
-
-        if (exception.daysOfWeek.includes(dayOfWeek)) {
-          map.set(getKey(current), exception);
-        }
-
+        map.set(getKey(current), exception);
         current = addDays(current, 1);
       }
     }
@@ -230,7 +223,7 @@ export class AvailabilityService {
   }
 
   private resolveWorkingHours(workingHours: WorkingHour[], day: number, exception?: ScheduleException): Block[] {
-    if (exception && exception.daysOfWeek.includes(day)) {
+    if (exception) {
       if (exception.isClosed) return [];
       return exception.blocks;
     }

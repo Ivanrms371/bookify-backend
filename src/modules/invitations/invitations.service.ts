@@ -19,20 +19,14 @@ export class InvitationsService {
     const token = randomBytes(32).toString('hex');
     const expiresAt = addDays(new Date(), 7); // 7-day expiry
 
-    const { comisionType, ...restDto } = dto;
-
     const invitation = await this.invitationsRepository.create({
-      ...restDto,
-      commissionType: dto.commissionType ?? comisionType,
+      ...dto,
       tenant: { connect: { id: tenantId } },
       token,
       expiresAt,
     });
 
-    // TODO: send invitation email via email service
-    console.log('Sending email ' + invitation.email);
-
-    return { success: true };
+    return invitation;
   }
 
   async accept(token: string) {
@@ -69,8 +63,6 @@ export class InvitationsService {
       throw new BadRequestException('Solo se pueden editar invitaciones pendientes');
     }
 
-    const { comisionType, ...restDto } = dto;
-
     let token = invitation.token;
     let expiresAt = invitation.expiresAt;
     if (dto.email !== invitation.email) {
@@ -83,8 +75,7 @@ export class InvitationsService {
     }
 
     await this.invitationsRepository.update(id, {
-      ...restDto,
-      commissionType: dto.commissionType ?? comisionType,
+      ...dto,
       token,
       expiresAt,
     });

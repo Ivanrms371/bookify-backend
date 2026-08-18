@@ -13,6 +13,7 @@ model User {
   email              String              @unique
   emailVerifiedAt    DateTime?           @map("email_verified_at")
   phone              String?
+  phoneCountryCode   String              @default("598") @map("phone_country_code")
   phoneVerifiedAt    DateTime?           @map("phone_verified_at")
   
   password           String?
@@ -32,7 +33,7 @@ model User {
   verifications      Verification[]
 
   @@index([email])
-  @@index([phone])
+  @@unique([phoneCountryCode, phone])
   @@index([googleId])
   @@map("users")
 }
@@ -57,14 +58,18 @@ model Invitation {
   id                 String           @id @default(dbgenerated("uuidv7()")) @db.Uuid
   tenantId           String           @map("tenant_id") @db.Uuid
   email              String
-  name               String?          // Nombre que le asignó el Admin
+  name               String?          
+  phoneCountryCode   String  @default("598") @map("phone_country_code")
   phone              String?
   role               MembershipRole   @default(PROFESSIONAL)
-  serviceIds         String[]         @map("service_ids") // IDs de servicios pre-asignados
+
+  serviceIds         String[]         @map("service_ids")
   token              String           @unique
   status             InvitationStatus @default(PENDING)
-  commissionType       CommissionType? @map("comision_type")
-  commissionValue    Decimal?         @map("comision_value")
+  commissionType       CommissionType? @map("commission_type")
+  commissionAmount    Decimal?         @map("commission_amount")
+
+  schedule           Json?
   expiresAt          DateTime         @map("expires_at")
   createdAt          DateTime         @default(now()) @map("created_at")
 
@@ -203,7 +208,7 @@ model TenantSettings {
   maxPendingApptsPerClient  Int     @default(10) @map("max_pending_appts_per_client")
   requireConfirmation       Boolean @default(false) @map("require_confirmation")
   holidayClosureAutoApply   Boolean @default(false) @map("holiday_closure_auto_apply")
-  allowPassiveTimeBooking   Boolean @default(true) @map("allow_passive_time_booking")
+  allowPassiveTimeBooking   Boolean @default(false) @map("allow_passive_time_booking")
   timeZone                  String  @default("America/Montevideo") @map("time_zone")
   tenant                    Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
@@ -264,13 +269,12 @@ model Professional {
   deletedAt           DateTime?              @map("deleted_at")
   colorTheme          String?                @map("color_theme")
   commissionType      CommissionType?        @default(PERCENTAGE) @map("commission_type")
-  commissionPercent   Decimal?               @default(0) @map("commission_percent") @db.Decimal(10, 2)
-  commissionFixed     Decimal?               @default(0) @map("commission_fixed") @db.Decimal(10, 2)
+  commissionAmount     Decimal?               @default(0) @map("commission_amount") @db.Decimal(10, 2)
   appointments        Appointment[]
   lifetimeStats       ProfessionalLifetimeStats?
   stats               ProfessionalDailyStats[]
   workingHours        ProfessionalWorkingHours[]
-  exceptions          ScheduleException[]
+  exceptions          ScheduleExceptionProfessional[]
   assignments         ServiceAssignment[]
 
   user                User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -311,22 +315,33 @@ model TenantWorkingHours {
 }
 
 model ScheduleException {
-  id         String                   @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenantId   String                   @map("tenant_id") @db.Uuid
-  isClosed   Boolean                  @map("is_closed")
-  reason     String?
-  daysOfWeek Int[]                    @map("days_of_week")
-  professionalId String                   @map("professional_id") @db.Uuid
-  startDate  DateTime                 @map("start_date")
-  endDate    DateTime                 @map("end_date")
-  createdAt  DateTime                 @default(now()) @map("created_at")
-  blocks     ScheduleExceptionBlock[]
-  professional   Professional                 @relation(fields: [professionalId], references: [id], onDelete: Cascade)
-  tenant     Tenant                   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenantId  String   @map("tenant_id") @db.Uuid
+  isClosed  Boolean  @map("is_closed")
+  reason    String?
+  startDate DateTime @map("start_date")
+  endDate   DateTime @map("end_date")
+  createdAt DateTime @default(now()) @map("created_at")
 
-  @@index([professionalId])
-  @@index([professionalId, startDate, endDate])
+  blocks         ScheduleExceptionBlock[]
+  professionals  ScheduleExceptionProfessional[]
+  tenant         Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([startDate, endDate])
   @@map("schedule_exceptions")
+}
+
+model ScheduleExceptionProfessional {
+  scheduleExceptionId String @map("schedule_exception_id") @db.Uuid
+  professionalId     String @map("professional_id") @db.Uuid
+
+  scheduleException ScheduleException @relation(fields: [scheduleExceptionId], references: [id], onDelete: Cascade)
+
+  professional Professional @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+
+  @@id([scheduleExceptionId, professionalId])
+  @@index([professionalId])
+  @@map("schedule_exception_professionals")
 }
 
 model ScheduleExceptionBlock {

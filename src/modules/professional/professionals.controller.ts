@@ -1,10 +1,11 @@
-import { Controller, Get, Query, UseGuards, Req, Post, Put, Delete, Param } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards, Req, Post, Put, Delete, Param, Body } from '@nestjs/common';
 import { ProfessionalsService } from './professionals.service';
 import { AuthenticatedRequest } from 'src/auth/types/express-request.type';
 import { GetProfessionalsQueryDto } from './dto/get-professionals-query.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { TenantGuard } from 'src/auth/guards/tenant.guard';
 import { GetTenantId } from 'src/common/decorators/get-tenant-id.decorator';
+import { UpdateProfessionalDto } from './dto/update-professional.dto';
 
 @UseGuards(JwtAuthGuard, TenantGuard)
 @Controller('professionals')
@@ -21,11 +22,18 @@ export class ProfessionalsController {
     return this.professionalsService.findById(tenantId, id);
   }
 
+  @Get(':id/details')
+  async getDetails(@Req() req: AuthenticatedRequest, @GetTenantId() tenantId: string, @Param('id') id: string) {
+    return this.professionalsService.getByIdWithDetails(tenantId, id);
+  }
+
   @Post('')
   async create() {}
 
   @Put(':id')
-  async update() {}
+  async update(@GetTenantId() tenantId: string, @Param('id') id: string, @Body() dto: UpdateProfessionalDto) {
+    return this.professionalsService.update(tenantId, id, dto);
+  }
 
   @Delete(':id')
   async delete(@Req() req: AuthenticatedRequest, @GetTenantId() tenantId: string, @Param('id') id: string) {

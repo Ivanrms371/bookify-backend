@@ -88,6 +88,11 @@ export type TenantWorkingHours = Prisma.TenantWorkingHoursModel
  */
 export type ScheduleException = Prisma.ScheduleExceptionModel
 /**
+ * Model ScheduleExceptionProfessional
+ * 
+ */
+export type ScheduleExceptionProfessional = Prisma.ScheduleExceptionProfessionalModel
+/**
  * Model ScheduleExceptionBlock
  * 
  */

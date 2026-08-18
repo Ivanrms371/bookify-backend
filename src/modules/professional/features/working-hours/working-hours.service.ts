@@ -1,125 +1,44 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { WorkingHoursRepository } from './working-hours.repository';
-import { ProfessionalsService } from '../../professionals.service';
-import { CreateWorkingHourDto } from './dto/create-working-hour.dto';
-import { UpdateWorkingHourDto } from './dto/update-working-hour.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { ProfessionalWorkingHoursRepository } from './working-hours.repository';
+import { dayOfWeekToInt } from 'src/common/utils/day-of-week.util';
 import { timeToMinutes } from 'src/common/utils/time/time.util';
-import { ValidateOverlapParams } from './types/validate-overlap.type';
-import { getDay } from 'date-fns';
-import { TenantProfessionalParamsDto, TenantProfessionalWorkingHoursParamsDto } from './dto/working-hours.params.dto';
+import { validateOverlaps } from 'src/common/utils/validate-overlap';
+import { CreateWorkingHoursBulkDto } from './dto/create-working-hour.dto';
+import { PrismaService } from 'src/shared/prisma/prisma.service';
+import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 
 @Injectable()
-export class WorkingHoursService {
+export class ProfessionalWorkingHoursService {
   constructor(
-    private readonly professionalsService: ProfessionalsService,
-    private readonly workingHoursRepository: WorkingHoursRepository,
+    private readonly prisma: PrismaService,
+    private readonly workingHoursRepository: ProfessionalWorkingHoursRepository,
   ) {}
 
-  private async validateOverlap({ dayOfWeek, closesAt, professionalId, opensAt, excludeWorkingHourId }: ValidateOverlapParams) {
-    const existing = await this.workingHoursRepository.findByProfessionalAndDay(professionalId, dayOfWeek);
+  async replaceAll(tenantId: string, professionalId: string, dto: CreateWorkingHoursBulkDto, tx?: TransactionClient) {
+    const workingHours = dto.workingHours.flatMap((wh) => {
+      return wh.intervals.map((i) => {
+        const dayOfWeek = dayOfWeekToInt(wh.dayOfWeek);
+        const opensAt = timeToMinutes(i.opensAt);
+        const closesAt = timeToMinutes(i.closesAt);
 
-    const overlap = existing
-      .filter((b) => !excludeWorkingHourId || b.id !== excludeWorkingHourId)
-      .some((b) => opensAt < b.closesAt && closesAt > b.opensAt);
-
-    if (overlap) {
-      throw new BadRequestException('Ya existe un horario en el mismo rango de tiempo');
-    }
-  }
-
-  async findAll(params: TenantProfessionalParamsDto) {
-    const staff = await this.professionalsService.findEntityOrFail(params.tenantId, params.professionalId);
-
-    const workingHours = await this.workingHoursRepository.findMany(staff.id);
-    return workingHours;
-  }
-
-  async create(params: TenantProfessionalParamsDto, dto: CreateWorkingHourDto) {
-    const staff = await this.professionalsService.findEntityOrFail(params.tenantId, params.professionalId);
-
-    const opensAt = timeToMinutes(dto.startsAt);
-    const closesAt = timeToMinutes(dto.endsAt);
-
-    await this.validateOverlap({
-      professionalId: staff.id,
-      dayOfWeek: dto.dayOfWeek,
-      opensAt,
-      closesAt,
+        return {
+          tenantId,
+          professionalId,
+          dayOfWeek,
+          opensAt,
+          closesAt,
+        };
+      });
     });
 
-    const workingHour = await this.workingHoursRepository.create({
-      tenant: { connect: { id: params.tenantId } },
-      professional: { connect: { id: staff.id } },
-      dayOfWeek: dto.dayOfWeek,
-      opensAt,
-      closesAt,
-    });
-    return workingHour;
-  }
+    // const result = validateOverlaps();
 
-  async update(params: TenantProfessionalWorkingHoursParamsDto, dto: UpdateWorkingHourDto) {
-    const staff = await this.professionalsService.findEntityOrFail(params.tenantId, params.professionalId);
+    // if (!result) {
+    //   throw new BadRequestException('Algunos horarios están superpuestos, por favor verifique.');
+    // }
 
-    const workingHour = await this.workingHoursRepository.findById(params.workingHourId);
-    if (!workingHour || workingHour.professionalId !== staff.id) {
-      throw new NotFoundException('Horario no encontrado');
-    }
+    await this.workingHoursRepository.deleteMany(tenantId, professionalId, tx);
 
-    const opensAt = dto.startsAt ? timeToMinutes(dto.startsAt) : workingHour.opensAt;
-    const closesAt = dto.endsAt ? timeToMinutes(dto.endsAt) : workingHour.closesAt;
-    const dayOfWeek = dto.dayOfWeek ?? workingHour.dayOfWeek;
-
-    await this.validateOverlap({
-      professionalId: staff.id,
-      dayOfWeek,
-      opensAt,
-      closesAt,
-      excludeWorkingHourId: params.workingHourId,
-    });
-
-    return await this.workingHoursRepository.update(params.workingHourId, {
-      dayOfWeek,
-      opensAt,
-      closesAt,
-    });
-  }
-
-  async delete(params: TenantProfessionalWorkingHoursParamsDto) {
-    const staff = await this.professionalsService.findEntityOrFail(params.tenantId, params.professionalId);
-
-    const workingHour = await this.workingHoursRepository.findById(params.workingHourId);
-    if (!workingHour || workingHour.professionalId !== staff.id) {
-      throw new NotFoundException('Horario no encontrado');
-    }
-
-    return await this.workingHoursRepository.delete(params.workingHourId);
-  }
-
-  async getWorkingBlocks(professionalId: string, date: Date) {
-    const dayOfWeek = getDay(date);
-    return await this.workingHoursRepository.findForSlots(professionalId, dayOfWeek);
-  }
-
-  async assign(
-    professionalId: string,
-    tenantId: string,
-    blocks: Array<{ dayOfWeek: number; opensAt: number; closesAt: number; isActive: boolean; name?: string }>,
-    tx?: any,
-  ) {
-    if (!blocks || blocks.length === 0) return;
-
-    await this.workingHoursRepository.deleteByProfessionalId(professionalId, tenantId, tx);
-
-    const dataToCreate = blocks.map((wh) => ({
-      tenantId,
-      professionalId,
-      dayOfWeek: wh.dayOfWeek,
-      opensAt: wh.opensAt,
-      closesAt: wh.closesAt,
-      isActive: wh.isActive,
-      name: wh.name || undefined,
-    }));
-
-    await this.workingHoursRepository.createMany(dataToCreate as any, tx);
+    return this.workingHoursRepository.createMany({ data: workingHours }, tx);
   }
 }

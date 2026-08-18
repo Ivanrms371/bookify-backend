@@ -2,6 +2,11 @@ import { format } from 'date-fns-tz';
 
 export function timeToMinutes(time: string): number {
   const [h, m] = time.split(':').map(Number);
+
+  if (!Number.isInteger(h) || !Number.isInteger(m) || h < 0 || h > 23 || m < 0 || m > 59) {
+    throw new Error(`Invalid time: ${time}`);
+  }
+
   return h * 60 + m;
 }
 

@@ -31,8 +31,7 @@ export type ProfessionalAvgAggregateOutputType = {
   maxAdvancedDays: number | null
   minAdvancedMinutes: number | null
   displayOrder: number | null
-  commissionPercent: runtime.Decimal | null
-  commissionFixed: runtime.Decimal | null
+  commissionAmount: runtime.Decimal | null
 }
 
 export type ProfessionalSumAggregateOutputType = {
@@ -40,8 +39,7 @@ export type ProfessionalSumAggregateOutputType = {
   maxAdvancedDays: number | null
   minAdvancedMinutes: number | null
   displayOrder: number | null
-  commissionPercent: runtime.Decimal | null
-  commissionFixed: runtime.Decimal | null
+  commissionAmount: runtime.Decimal | null
 }
 
 export type ProfessionalMinAggregateOutputType = {
@@ -62,8 +60,7 @@ export type ProfessionalMinAggregateOutputType = {
   deletedAt: Date | null
   colorTheme: string | null
   commissionType: $Enums.CommissionType | null
-  commissionPercent: runtime.Decimal | null
-  commissionFixed: runtime.Decimal | null
+  commissionAmount: runtime.Decimal | null
 }
 
 export type ProfessionalMaxAggregateOutputType = {
@@ -84,8 +81,7 @@ export type ProfessionalMaxAggregateOutputType = {
   deletedAt: Date | null
   colorTheme: string | null
   commissionType: $Enums.CommissionType | null
-  commissionPercent: runtime.Decimal | null
-  commissionFixed: runtime.Decimal | null
+  commissionAmount: runtime.Decimal | null
 }
 
 export type ProfessionalCountAggregateOutputType = {
@@ -106,8 +102,7 @@ export type ProfessionalCountAggregateOutputType = {
   deletedAt: number
   colorTheme: number
   commissionType: number
-  commissionPercent: number
-  commissionFixed: number
+  commissionAmount: number
   _all: number
 }
 
@@ -117,8 +112,7 @@ export type ProfessionalAvgAggregateInputType = {
   maxAdvancedDays?: true
   minAdvancedMinutes?: true
   displayOrder?: true
-  commissionPercent?: true
-  commissionFixed?: true
+  commissionAmount?: true
 }
 
 export type ProfessionalSumAggregateInputType = {
@@ -126,8 +120,7 @@ export type ProfessionalSumAggregateInputType = {
   maxAdvancedDays?: true
   minAdvancedMinutes?: true
   displayOrder?: true
-  commissionPercent?: true
-  commissionFixed?: true
+  commissionAmount?: true
 }
 
 export type ProfessionalMinAggregateInputType = {
@@ -148,8 +141,7 @@ export type ProfessionalMinAggregateInputType = {
   deletedAt?: true
   colorTheme?: true
   commissionType?: true
-  commissionPercent?: true
-  commissionFixed?: true
+  commissionAmount?: true
 }
 
 export type ProfessionalMaxAggregateInputType = {
@@ -170,8 +162,7 @@ export type ProfessionalMaxAggregateInputType = {
   deletedAt?: true
   colorTheme?: true
   commissionType?: true
-  commissionPercent?: true
-  commissionFixed?: true
+  commissionAmount?: true
 }
 
 export type ProfessionalCountAggregateInputType = {
@@ -192,8 +183,7 @@ export type ProfessionalCountAggregateInputType = {
   deletedAt?: true
   colorTheme?: true
   commissionType?: true
-  commissionPercent?: true
-  commissionFixed?: true
+  commissionAmount?: true
   _all?: true
 }
 
@@ -301,8 +291,7 @@ export type ProfessionalGroupByOutputType = {
   deletedAt: Date | null
   colorTheme: string | null
   commissionType: $Enums.CommissionType | null
-  commissionPercent: runtime.Decimal | null
-  commissionFixed: runtime.Decimal | null
+  commissionAmount: runtime.Decimal | null
   _count: ProfessionalCountAggregateOutputType | null
   _avg: ProfessionalAvgAggregateOutputType | null
   _sum: ProfessionalSumAggregateOutputType | null
@@ -346,13 +335,12 @@ export type ProfessionalWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"Professional"> | Date | string | null
   colorTheme?: Prisma.StringNullableFilter<"Professional"> | string | null
   commissionType?: Prisma.EnumCommissionTypeNullableFilter<"Professional"> | $Enums.CommissionType | null
-  commissionPercent?: Prisma.DecimalNullableFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.DecimalNullableFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.DecimalNullableFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentListRelationFilter
   lifetimeStats?: Prisma.XOR<Prisma.ProfessionalLifetimeStatsNullableScalarRelationFilter, Prisma.ProfessionalLifetimeStatsWhereInput> | null
   stats?: Prisma.ProfessionalDailyStatsListRelationFilter
   workingHours?: Prisma.ProfessionalWorkingHoursListRelationFilter
-  exceptions?: Prisma.ScheduleExceptionListRelationFilter
+  exceptions?: Prisma.ScheduleExceptionProfessionalListRelationFilter
   assignments?: Prisma.ServiceAssignmentListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
@@ -376,13 +364,12 @@ export type ProfessionalOrderByWithRelationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   colorTheme?: Prisma.SortOrderInput | Prisma.SortOrder
   commissionType?: Prisma.SortOrderInput | Prisma.SortOrder
-  commissionPercent?: Prisma.SortOrderInput | Prisma.SortOrder
-  commissionFixed?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   appointments?: Prisma.AppointmentOrderByRelationAggregateInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsOrderByWithRelationInput
   stats?: Prisma.ProfessionalDailyStatsOrderByRelationAggregateInput
   workingHours?: Prisma.ProfessionalWorkingHoursOrderByRelationAggregateInput
-  exceptions?: Prisma.ScheduleExceptionOrderByRelationAggregateInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalOrderByRelationAggregateInput
   assignments?: Prisma.ServiceAssignmentOrderByRelationAggregateInput
   user?: Prisma.UserOrderByWithRelationInput
   tenant?: Prisma.TenantOrderByWithRelationInput
@@ -410,13 +397,12 @@ export type ProfessionalWhereUniqueInput = Prisma.AtLeast<{
   deletedAt?: Prisma.DateTimeNullableFilter<"Professional"> | Date | string | null
   colorTheme?: Prisma.StringNullableFilter<"Professional"> | string | null
   commissionType?: Prisma.EnumCommissionTypeNullableFilter<"Professional"> | $Enums.CommissionType | null
-  commissionPercent?: Prisma.DecimalNullableFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.DecimalNullableFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.DecimalNullableFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentListRelationFilter
   lifetimeStats?: Prisma.XOR<Prisma.ProfessionalLifetimeStatsNullableScalarRelationFilter, Prisma.ProfessionalLifetimeStatsWhereInput> | null
   stats?: Prisma.ProfessionalDailyStatsListRelationFilter
   workingHours?: Prisma.ProfessionalWorkingHoursListRelationFilter
-  exceptions?: Prisma.ScheduleExceptionListRelationFilter
+  exceptions?: Prisma.ScheduleExceptionProfessionalListRelationFilter
   assignments?: Prisma.ServiceAssignmentListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
@@ -440,8 +426,7 @@ export type ProfessionalOrderByWithAggregationInput = {
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   colorTheme?: Prisma.SortOrderInput | Prisma.SortOrder
   commissionType?: Prisma.SortOrderInput | Prisma.SortOrder
-  commissionPercent?: Prisma.SortOrderInput | Prisma.SortOrder
-  commissionFixed?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ProfessionalCountOrderByAggregateInput
   _avg?: Prisma.ProfessionalAvgOrderByAggregateInput
   _max?: Prisma.ProfessionalMaxOrderByAggregateInput
@@ -470,8 +455,7 @@ export type ProfessionalScalarWhereWithAggregatesInput = {
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Professional"> | Date | string | null
   colorTheme?: Prisma.StringNullableWithAggregatesFilter<"Professional"> | string | null
   commissionType?: Prisma.EnumCommissionTypeNullableWithAggregatesFilter<"Professional"> | $Enums.CommissionType | null
-  commissionPercent?: Prisma.DecimalNullableWithAggregatesFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.DecimalNullableWithAggregatesFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.DecimalNullableWithAggregatesFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 export type ProfessionalCreateInput = {
@@ -490,13 +474,12 @@ export type ProfessionalCreateInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
   user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
   tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
@@ -520,13 +503,12 @@ export type ProfessionalUncheckedCreateInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
@@ -546,13 +528,12 @@ export type ProfessionalUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
@@ -576,13 +557,12 @@ export type ProfessionalUncheckedUpdateInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
@@ -604,8 +584,7 @@ export type ProfessionalCreateManyInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 export type ProfessionalUpdateManyMutationInput = {
@@ -624,8 +603,7 @@ export type ProfessionalUpdateManyMutationInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 export type ProfessionalUncheckedUpdateManyInput = {
@@ -646,8 +624,7 @@ export type ProfessionalUncheckedUpdateManyInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 export type ProfessionalListRelationFilter = {
@@ -688,8 +665,7 @@ export type ProfessionalCountOrderByAggregateInput = {
   deletedAt?: Prisma.SortOrder
   colorTheme?: Prisma.SortOrder
   commissionType?: Prisma.SortOrder
-  commissionPercent?: Prisma.SortOrder
-  commissionFixed?: Prisma.SortOrder
+  commissionAmount?: Prisma.SortOrder
 }
 
 export type ProfessionalAvgOrderByAggregateInput = {
@@ -697,8 +673,7 @@ export type ProfessionalAvgOrderByAggregateInput = {
   maxAdvancedDays?: Prisma.SortOrder
   minAdvancedMinutes?: Prisma.SortOrder
   displayOrder?: Prisma.SortOrder
-  commissionPercent?: Prisma.SortOrder
-  commissionFixed?: Prisma.SortOrder
+  commissionAmount?: Prisma.SortOrder
 }
 
 export type ProfessionalMaxOrderByAggregateInput = {
@@ -719,8 +694,7 @@ export type ProfessionalMaxOrderByAggregateInput = {
   deletedAt?: Prisma.SortOrder
   colorTheme?: Prisma.SortOrder
   commissionType?: Prisma.SortOrder
-  commissionPercent?: Prisma.SortOrder
-  commissionFixed?: Prisma.SortOrder
+  commissionAmount?: Prisma.SortOrder
 }
 
 export type ProfessionalMinOrderByAggregateInput = {
@@ -741,8 +715,7 @@ export type ProfessionalMinOrderByAggregateInput = {
   deletedAt?: Prisma.SortOrder
   colorTheme?: Prisma.SortOrder
   commissionType?: Prisma.SortOrder
-  commissionPercent?: Prisma.SortOrder
-  commissionFixed?: Prisma.SortOrder
+  commissionAmount?: Prisma.SortOrder
 }
 
 export type ProfessionalSumOrderByAggregateInput = {
@@ -750,8 +723,7 @@ export type ProfessionalSumOrderByAggregateInput = {
   maxAdvancedDays?: Prisma.SortOrder
   minAdvancedMinutes?: Prisma.SortOrder
   displayOrder?: Prisma.SortOrder
-  commissionPercent?: Prisma.SortOrder
-  commissionFixed?: Prisma.SortOrder
+  commissionAmount?: Prisma.SortOrder
 }
 
 export type ProfessionalCreateNestedManyWithoutUserInput = {
@@ -938,13 +910,12 @@ export type ProfessionalCreateWithoutUserInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
   tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
 }
@@ -966,13 +937,12 @@ export type ProfessionalUncheckedCreateWithoutUserInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
@@ -1023,8 +993,7 @@ export type ProfessionalScalarWhereInput = {
   deletedAt?: Prisma.DateTimeNullableFilter<"Professional"> | Date | string | null
   colorTheme?: Prisma.StringNullableFilter<"Professional"> | string | null
   commissionType?: Prisma.EnumCommissionTypeNullableFilter<"Professional"> | $Enums.CommissionType | null
-  commissionPercent?: Prisma.DecimalNullableFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.DecimalNullableFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.DecimalNullableFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 export type ProfessionalCreateWithoutTenantInput = {
@@ -1043,13 +1012,12 @@ export type ProfessionalCreateWithoutTenantInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
   user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
 }
@@ -1071,13 +1039,12 @@ export type ProfessionalUncheckedCreateWithoutTenantInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
@@ -1123,13 +1090,12 @@ export type ProfessionalCreateWithoutAssignmentsInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
   tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
 }
@@ -1152,13 +1118,12 @@ export type ProfessionalUncheckedCreateWithoutAssignmentsInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalCreateOrConnectWithoutAssignmentsInput = {
@@ -1193,13 +1158,12 @@ export type ProfessionalUpdateWithoutAssignmentsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
 }
@@ -1222,13 +1186,12 @@ export type ProfessionalUncheckedUpdateWithoutAssignmentsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalCreateWithoutWorkingHoursInput = {
@@ -1247,12 +1210,11 @@ export type ProfessionalCreateWithoutWorkingHoursInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
   user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
   tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
@@ -1276,12 +1238,11 @@ export type ProfessionalUncheckedCreateWithoutWorkingHoursInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
@@ -1317,12 +1278,11 @@ export type ProfessionalUpdateWithoutWorkingHoursInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
@@ -1346,12 +1306,11 @@ export type ProfessionalUncheckedUpdateWithoutWorkingHoursInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
@@ -1371,8 +1330,7 @@ export type ProfessionalCreateWithoutExceptionsInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
@@ -1400,8 +1358,7 @@ export type ProfessionalUncheckedCreateWithoutExceptionsInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
@@ -1441,8 +1398,7 @@ export type ProfessionalUpdateWithoutExceptionsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
@@ -1470,8 +1426,7 @@ export type ProfessionalUncheckedUpdateWithoutExceptionsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
@@ -1495,12 +1450,11 @@ export type ProfessionalCreateWithoutAppointmentsInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
   user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
   tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
@@ -1524,12 +1478,11 @@ export type ProfessionalUncheckedCreateWithoutAppointmentsInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
@@ -1565,12 +1518,11 @@ export type ProfessionalUpdateWithoutAppointmentsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
@@ -1594,12 +1546,11 @@ export type ProfessionalUncheckedUpdateWithoutAppointmentsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
@@ -1619,12 +1570,11 @@ export type ProfessionalCreateWithoutStatsInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
   user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
   tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
@@ -1648,12 +1598,11 @@ export type ProfessionalUncheckedCreateWithoutStatsInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
@@ -1689,12 +1638,11 @@ export type ProfessionalUpdateWithoutStatsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
@@ -1718,12 +1666,11 @@ export type ProfessionalUncheckedUpdateWithoutStatsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
@@ -1743,12 +1690,11 @@ export type ProfessionalCreateWithoutLifetimeStatsInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
   user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
   tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
@@ -1772,12 +1718,11 @@ export type ProfessionalUncheckedCreateWithoutLifetimeStatsInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
@@ -1813,12 +1758,11 @@ export type ProfessionalUpdateWithoutLifetimeStatsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
@@ -1842,12 +1786,11 @@ export type ProfessionalUncheckedUpdateWithoutLifetimeStatsInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
@@ -1868,8 +1811,7 @@ export type ProfessionalCreateManyUserInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 export type ProfessionalUpdateWithoutUserInput = {
@@ -1888,13 +1830,12 @@ export type ProfessionalUpdateWithoutUserInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
 }
@@ -1916,13 +1857,12 @@ export type ProfessionalUncheckedUpdateWithoutUserInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
@@ -1943,8 +1883,7 @@ export type ProfessionalUncheckedUpdateManyWithoutUserInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 export type ProfessionalCreateManyTenantInput = {
@@ -1964,8 +1903,7 @@ export type ProfessionalCreateManyTenantInput = {
   deletedAt?: Date | string | null
   colorTheme?: string | null
   commissionType?: $Enums.CommissionType | null
-  commissionPercent?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 export type ProfessionalUpdateWithoutTenantInput = {
@@ -1984,13 +1922,12 @@ export type ProfessionalUpdateWithoutTenantInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
 }
@@ -2012,13 +1949,12 @@ export type ProfessionalUncheckedUpdateWithoutTenantInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
   lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionUncheckedUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
@@ -2039,8 +1975,7 @@ export type ProfessionalUncheckedUpdateManyWithoutTenantInput = {
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionPercent?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  commissionFixed?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 
@@ -2099,7 +2034,7 @@ export type ProfessionalCountOutputTypeCountWorkingHoursArgs<ExtArgs extends run
  * ProfessionalCountOutputType without action
  */
 export type ProfessionalCountOutputTypeCountExceptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ScheduleExceptionWhereInput
+  where?: Prisma.ScheduleExceptionProfessionalWhereInput
 }
 
 /**
@@ -2128,8 +2063,7 @@ export type ProfessionalSelect<ExtArgs extends runtime.Types.Extensions.Internal
   deletedAt?: boolean
   colorTheme?: boolean
   commissionType?: boolean
-  commissionPercent?: boolean
-  commissionFixed?: boolean
+  commissionAmount?: boolean
   appointments?: boolean | Prisma.Professional$appointmentsArgs<ExtArgs>
   lifetimeStats?: boolean | Prisma.Professional$lifetimeStatsArgs<ExtArgs>
   stats?: boolean | Prisma.Professional$statsArgs<ExtArgs>
@@ -2159,8 +2093,7 @@ export type ProfessionalSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   deletedAt?: boolean
   colorTheme?: boolean
   commissionType?: boolean
-  commissionPercent?: boolean
-  commissionFixed?: boolean
+  commissionAmount?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["professional"]>
@@ -2183,8 +2116,7 @@ export type ProfessionalSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   deletedAt?: boolean
   colorTheme?: boolean
   commissionType?: boolean
-  commissionPercent?: boolean
-  commissionFixed?: boolean
+  commissionAmount?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["professional"]>
@@ -2207,11 +2139,10 @@ export type ProfessionalSelectScalar = {
   deletedAt?: boolean
   colorTheme?: boolean
   commissionType?: boolean
-  commissionPercent?: boolean
-  commissionFixed?: boolean
+  commissionAmount?: boolean
 }
 
-export type ProfessionalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "tenantId" | "slotIntervalMinutes" | "maxAdvancedDays" | "minAdvancedMinutes" | "bio" | "avatarUrl" | "avatarPublicId" | "isActive" | "displayName" | "displayOrder" | "createdAt" | "updatedAt" | "deletedAt" | "colorTheme" | "commissionType" | "commissionPercent" | "commissionFixed", ExtArgs["result"]["professional"]>
+export type ProfessionalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "tenantId" | "slotIntervalMinutes" | "maxAdvancedDays" | "minAdvancedMinutes" | "bio" | "avatarUrl" | "avatarPublicId" | "isActive" | "displayName" | "displayOrder" | "createdAt" | "updatedAt" | "deletedAt" | "colorTheme" | "commissionType" | "commissionAmount", ExtArgs["result"]["professional"]>
 export type ProfessionalInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   appointments?: boolean | Prisma.Professional$appointmentsArgs<ExtArgs>
   lifetimeStats?: boolean | Prisma.Professional$lifetimeStatsArgs<ExtArgs>
@@ -2239,7 +2170,7 @@ export type $ProfessionalPayload<ExtArgs extends runtime.Types.Extensions.Intern
     lifetimeStats: Prisma.$ProfessionalLifetimeStatsPayload<ExtArgs> | null
     stats: Prisma.$ProfessionalDailyStatsPayload<ExtArgs>[]
     workingHours: Prisma.$ProfessionalWorkingHoursPayload<ExtArgs>[]
-    exceptions: Prisma.$ScheduleExceptionPayload<ExtArgs>[]
+    exceptions: Prisma.$ScheduleExceptionProfessionalPayload<ExtArgs>[]
     assignments: Prisma.$ServiceAssignmentPayload<ExtArgs>[]
     user: Prisma.$UserPayload<ExtArgs>
     tenant: Prisma.$TenantPayload<ExtArgs>
@@ -2262,8 +2193,7 @@ export type $ProfessionalPayload<ExtArgs extends runtime.Types.Extensions.Intern
     deletedAt: Date | null
     colorTheme: string | null
     commissionType: $Enums.CommissionType | null
-    commissionPercent: runtime.Decimal | null
-    commissionFixed: runtime.Decimal | null
+    commissionAmount: runtime.Decimal | null
   }, ExtArgs["result"]["professional"]>
   composites: {}
 }
@@ -2662,7 +2592,7 @@ export interface Prisma__ProfessionalClient<T, Null = never, ExtArgs extends run
   lifetimeStats<T extends Prisma.Professional$lifetimeStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$lifetimeStatsArgs<ExtArgs>>): Prisma.Prisma__ProfessionalLifetimeStatsClient<runtime.Types.Result.GetResult<Prisma.$ProfessionalLifetimeStatsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   stats<T extends Prisma.Professional$statsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$statsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfessionalDailyStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workingHours<T extends Prisma.Professional$workingHoursArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$workingHoursArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfessionalWorkingHoursPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  exceptions<T extends Prisma.Professional$exceptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$exceptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduleExceptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  exceptions<T extends Prisma.Professional$exceptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$exceptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduleExceptionProfessionalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignments<T extends Prisma.Professional$assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$assignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServiceAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
@@ -2712,8 +2642,7 @@ export interface ProfessionalFieldRefs {
   readonly deletedAt: Prisma.FieldRef<"Professional", 'DateTime'>
   readonly colorTheme: Prisma.FieldRef<"Professional", 'String'>
   readonly commissionType: Prisma.FieldRef<"Professional", 'CommissionType'>
-  readonly commissionPercent: Prisma.FieldRef<"Professional", 'Decimal'>
-  readonly commissionFixed: Prisma.FieldRef<"Professional", 'Decimal'>
+  readonly commissionAmount: Prisma.FieldRef<"Professional", 'Decimal'>
 }
     
 
@@ -3210,23 +3139,23 @@ export type Professional$workingHoursArgs<ExtArgs extends runtime.Types.Extensio
  */
 export type Professional$exceptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the ScheduleException
+   * Select specific fields to fetch from the ScheduleExceptionProfessional
    */
-  select?: Prisma.ScheduleExceptionSelect<ExtArgs> | null
+  select?: Prisma.ScheduleExceptionProfessionalSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the ScheduleException
+   * Omit specific fields from the ScheduleExceptionProfessional
    */
-  omit?: Prisma.ScheduleExceptionOmit<ExtArgs> | null
+  omit?: Prisma.ScheduleExceptionProfessionalOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ScheduleExceptionInclude<ExtArgs> | null
-  where?: Prisma.ScheduleExceptionWhereInput
-  orderBy?: Prisma.ScheduleExceptionOrderByWithRelationInput | Prisma.ScheduleExceptionOrderByWithRelationInput[]
-  cursor?: Prisma.ScheduleExceptionWhereUniqueInput
+  include?: Prisma.ScheduleExceptionProfessionalInclude<ExtArgs> | null
+  where?: Prisma.ScheduleExceptionProfessionalWhereInput
+  orderBy?: Prisma.ScheduleExceptionProfessionalOrderByWithRelationInput | Prisma.ScheduleExceptionProfessionalOrderByWithRelationInput[]
+  cursor?: Prisma.ScheduleExceptionProfessionalWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.ScheduleExceptionScalarFieldEnum | Prisma.ScheduleExceptionScalarFieldEnum[]
+  distinct?: Prisma.ScheduleExceptionProfessionalScalarFieldEnum | Prisma.ScheduleExceptionProfessionalScalarFieldEnum[]
 }
 
 /**
