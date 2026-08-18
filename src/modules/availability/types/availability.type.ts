@@ -15,7 +15,6 @@ export type AppointmentsWithBlocks = {
 
 export type ScheduleException = {
   isClosed: boolean;
-  daysOfWeek: number[];
   endDate: Date;
   startDate: Date;
   blocks: Block[];

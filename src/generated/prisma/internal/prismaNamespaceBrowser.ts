@@ -65,6 +65,7 @@ export const ModelName = {
   ProfessionalWorkingHours: 'ProfessionalWorkingHours',
   TenantWorkingHours: 'TenantWorkingHours',
   ScheduleException: 'ScheduleException',
+  ScheduleExceptionProfessional: 'ScheduleExceptionProfessional',
   ScheduleExceptionBlock: 'ScheduleExceptionBlock',
   Customer: 'Customer',
   Appointment: 'Appointment',
@@ -108,6 +109,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerifiedAt: 'emailVerifiedAt',
   phone: 'phone',
+  phoneCountryCode: 'phoneCountryCode',
   phoneVerifiedAt: 'phoneVerifiedAt',
   password: 'password',
   avatarUrl: 'avatarUrl',
@@ -138,13 +140,15 @@ export const InvitationScalarFieldEnum = {
   tenantId: 'tenantId',
   email: 'email',
   name: 'name',
+  phoneCountryCode: 'phoneCountryCode',
   phone: 'phone',
   role: 'role',
   serviceIds: 'serviceIds',
   token: 'token',
   status: 'status',
   commissionType: 'commissionType',
-  commissionValue: 'commissionValue',
+  commissionAmount: 'commissionAmount',
+  schedule: 'schedule',
   expiresAt: 'expiresAt',
   createdAt: 'createdAt'
 } as const
@@ -294,8 +298,7 @@ export const ProfessionalScalarFieldEnum = {
   deletedAt: 'deletedAt',
   colorTheme: 'colorTheme',
   commissionType: 'commissionType',
-  commissionPercent: 'commissionPercent',
-  commissionFixed: 'commissionFixed'
+  commissionAmount: 'commissionAmount'
 } as const
 
 export type ProfessionalScalarFieldEnum = (typeof ProfessionalScalarFieldEnum)[keyof typeof ProfessionalScalarFieldEnum]
@@ -329,14 +332,20 @@ export const ScheduleExceptionScalarFieldEnum = {
   tenantId: 'tenantId',
   isClosed: 'isClosed',
   reason: 'reason',
-  daysOfWeek: 'daysOfWeek',
-  professionalId: 'professionalId',
   startDate: 'startDate',
   endDate: 'endDate',
   createdAt: 'createdAt'
 } as const
 
 export type ScheduleExceptionScalarFieldEnum = (typeof ScheduleExceptionScalarFieldEnum)[keyof typeof ScheduleExceptionScalarFieldEnum]
+
+
+export const ScheduleExceptionProfessionalScalarFieldEnum = {
+  scheduleExceptionId: 'scheduleExceptionId',
+  professionalId: 'professionalId'
+} as const
+
+export type ScheduleExceptionProfessionalScalarFieldEnum = (typeof ScheduleExceptionProfessionalScalarFieldEnum)[keyof typeof ScheduleExceptionProfessionalScalarFieldEnum]
 
 
 export const ScheduleExceptionBlockScalarFieldEnum = {
@@ -699,19 +708,19 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
 export const NullableJsonNullValueInput = {
   DbNull: DbNull,
   JsonNull: JsonNull
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {

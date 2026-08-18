@@ -411,6 +411,7 @@ export const ModelName = {
   ProfessionalWorkingHours: 'ProfessionalWorkingHours',
   TenantWorkingHours: 'TenantWorkingHours',
   ScheduleException: 'ScheduleException',
+  ScheduleExceptionProfessional: 'ScheduleExceptionProfessional',
   ScheduleExceptionBlock: 'ScheduleExceptionBlock',
   Customer: 'Customer',
   Appointment: 'Appointment',
@@ -445,7 +446,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "membership" | "invitation" | "session" | "verification" | "verificationLock" | "tenant" | "tenantSettings" | "service" | "serviceAssignment" | "professional" | "professionalWorkingHours" | "tenantWorkingHours" | "scheduleException" | "scheduleExceptionBlock" | "customer" | "appointment" | "appointmentBlock" | "tenantDailyStats" | "tenantLifetimeStats" | "professionalDailyStats" | "professionalLifetimeStats" | "notification" | "notificationDelivery" | "inAppNotification" | "notificationLog" | "tenantUsage" | "subscription" | "plan" | "planStats" | "payment" | "platformStats" | "webhookLog"
+    modelProps: "user" | "membership" | "invitation" | "session" | "verification" | "verificationLock" | "tenant" | "tenantSettings" | "service" | "serviceAssignment" | "professional" | "professionalWorkingHours" | "tenantWorkingHours" | "scheduleException" | "scheduleExceptionProfessional" | "scheduleExceptionBlock" | "customer" | "appointment" | "appointmentBlock" | "tenantDailyStats" | "tenantLifetimeStats" | "professionalDailyStats" | "professionalLifetimeStats" | "notification" | "notificationDelivery" | "inAppNotification" | "notificationLog" | "tenantUsage" | "subscription" | "plan" | "planStats" | "payment" | "platformStats" | "webhookLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1482,6 +1483,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ScheduleExceptionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ScheduleExceptionCountAggregateOutputType> | number
+        }
+      }
+    }
+    ScheduleExceptionProfessional: {
+      payload: Prisma.$ScheduleExceptionProfessionalPayload<ExtArgs>
+      fields: Prisma.ScheduleExceptionProfessionalFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ScheduleExceptionProfessionalFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleExceptionProfessionalPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ScheduleExceptionProfessionalFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleExceptionProfessionalPayload>
+        }
+        findFirst: {
+          args: Prisma.ScheduleExceptionProfessionalFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleExceptionProfessionalPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ScheduleExceptionProfessionalFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleExceptionProfessionalPayload>
+        }
+        findMany: {
+          args: Prisma.ScheduleExceptionProfessionalFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleExceptionProfessionalPayload>[]
+        }
+        create: {
+          args: Prisma.ScheduleExceptionProfessionalCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleExceptionProfessionalPayload>
+        }
+        createMany: {
+          args: Prisma.ScheduleExceptionProfessionalCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ScheduleExceptionProfessionalCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleExceptionProfessionalPayload>[]
+        }
+        delete: {
+          args: Prisma.ScheduleExceptionProfessionalDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleExceptionProfessionalPayload>
+        }
+        update: {
+          args: Prisma.ScheduleExceptionProfessionalUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleExceptionProfessionalPayload>
+        }
+        deleteMany: {
+          args: Prisma.ScheduleExceptionProfessionalDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ScheduleExceptionProfessionalUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ScheduleExceptionProfessionalUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleExceptionProfessionalPayload>[]
+        }
+        upsert: {
+          args: Prisma.ScheduleExceptionProfessionalUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScheduleExceptionProfessionalPayload>
+        }
+        aggregate: {
+          args: Prisma.ScheduleExceptionProfessionalAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateScheduleExceptionProfessional>
+        }
+        groupBy: {
+          args: Prisma.ScheduleExceptionProfessionalGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScheduleExceptionProfessionalGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ScheduleExceptionProfessionalCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScheduleExceptionProfessionalCountAggregateOutputType> | number
         }
       }
     }
@@ -2936,6 +3011,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerifiedAt: 'emailVerifiedAt',
   phone: 'phone',
+  phoneCountryCode: 'phoneCountryCode',
   phoneVerifiedAt: 'phoneVerifiedAt',
   password: 'password',
   avatarUrl: 'avatarUrl',
@@ -2966,13 +3042,15 @@ export const InvitationScalarFieldEnum = {
   tenantId: 'tenantId',
   email: 'email',
   name: 'name',
+  phoneCountryCode: 'phoneCountryCode',
   phone: 'phone',
   role: 'role',
   serviceIds: 'serviceIds',
   token: 'token',
   status: 'status',
   commissionType: 'commissionType',
-  commissionValue: 'commissionValue',
+  commissionAmount: 'commissionAmount',
+  schedule: 'schedule',
   expiresAt: 'expiresAt',
   createdAt: 'createdAt'
 } as const
@@ -3122,8 +3200,7 @@ export const ProfessionalScalarFieldEnum = {
   deletedAt: 'deletedAt',
   colorTheme: 'colorTheme',
   commissionType: 'commissionType',
-  commissionPercent: 'commissionPercent',
-  commissionFixed: 'commissionFixed'
+  commissionAmount: 'commissionAmount'
 } as const
 
 export type ProfessionalScalarFieldEnum = (typeof ProfessionalScalarFieldEnum)[keyof typeof ProfessionalScalarFieldEnum]
@@ -3157,14 +3234,20 @@ export const ScheduleExceptionScalarFieldEnum = {
   tenantId: 'tenantId',
   isClosed: 'isClosed',
   reason: 'reason',
-  daysOfWeek: 'daysOfWeek',
-  professionalId: 'professionalId',
   startDate: 'startDate',
   endDate: 'endDate',
   createdAt: 'createdAt'
 } as const
 
 export type ScheduleExceptionScalarFieldEnum = (typeof ScheduleExceptionScalarFieldEnum)[keyof typeof ScheduleExceptionScalarFieldEnum]
+
+
+export const ScheduleExceptionProfessionalScalarFieldEnum = {
+  scheduleExceptionId: 'scheduleExceptionId',
+  professionalId: 'professionalId'
+} as const
+
+export type ScheduleExceptionProfessionalScalarFieldEnum = (typeof ScheduleExceptionProfessionalScalarFieldEnum)[keyof typeof ScheduleExceptionProfessionalScalarFieldEnum]
 
 
 export const ScheduleExceptionBlockScalarFieldEnum = {
@@ -3527,19 +3610,19 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
-
-
 export const NullableJsonNullValueInput = {
   DbNull: DbNull,
   JsonNull: JsonNull
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -3686,6 +3769,20 @@ export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMo
 
 
 /**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
  * Reference to a field of type 'VerificationType'
  */
 export type EnumVerificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationType'>
@@ -3773,20 +3870,6 @@ export type EnumRecipientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'RecipientType[]'
  */
 export type ListEnumRecipientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecipientType[]'>
-    
-
-
-/**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -4066,6 +4149,7 @@ export type GlobalOmitConfig = {
   professionalWorkingHours?: Prisma.ProfessionalWorkingHoursOmit
   tenantWorkingHours?: Prisma.TenantWorkingHoursOmit
   scheduleException?: Prisma.ScheduleExceptionOmit
+  scheduleExceptionProfessional?: Prisma.ScheduleExceptionProfessionalOmit
   scheduleExceptionBlock?: Prisma.ScheduleExceptionBlockOmit
   customer?: Prisma.CustomerOmit
   appointment?: Prisma.AppointmentOmit

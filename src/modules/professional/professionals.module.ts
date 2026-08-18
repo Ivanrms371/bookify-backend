@@ -3,26 +3,16 @@ import { ProfessionalsService } from './professionals.service';
 
 import { ProfessionalsRepository } from './professionals.repository';
 import { StatsModule } from 'src/common/stats/stats.module';
-import { WorkingHoursController } from './features/working-hours/working-hours.controller';
-import { ScheduleExceptionsController } from './features/schedule-exceptions/schedule-exceptions.controller';
-import { WorkingHoursService } from './features/working-hours/working-hours.service';
-import { WorkingHoursRepository } from './features/working-hours/working-hours.repository';
-import { ScheduleExceptionsService } from './features/schedule-exceptions/schedule-exceptions.service';
-import { ScheduleExceptionsRepository } from './features/schedule-exceptions/schedule-exceptions.repository';
+import { ProfessionalWorkingHoursService } from './features/working-hours/working-hours.service';
+import { ProfessionalWorkingHoursRepository } from './features/working-hours/working-hours.repository';
 import { ProfessionalsController } from './professionals.controller';
 import { AuthModule } from 'src/auth/auth.module';
+import { MembershipsModule } from '../memberships/memberships.module';
 
 @Module({
-  imports: [AuthModule, StatsModule],
-  controllers: [ProfessionalsController, WorkingHoursController, ScheduleExceptionsController],
-  providers: [
-    ProfessionalsService,
-    ProfessionalsRepository,
-    WorkingHoursService,
-    WorkingHoursRepository,
-    ScheduleExceptionsService,
-    ScheduleExceptionsRepository,
-  ],
-  exports: [ProfessionalsService, StatsModule, WorkingHoursService, ScheduleExceptionsService],
+  imports: [AuthModule, StatsModule, MembershipsModule],
+  controllers: [ProfessionalsController],
+  providers: [ProfessionalsService, ProfessionalsRepository, ProfessionalWorkingHoursService, ProfessionalWorkingHoursRepository],
+  exports: [ProfessionalsService, StatsModule, ProfessionalWorkingHoursService],
 })
 export class ProfessionalsModule {}

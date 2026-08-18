@@ -8,7 +8,9 @@ export const DAY_OF_WEEK_TO_INT = {
   saturday: 6,
 } as const;
 
-export type DayOfWeek = keyof typeof DAY_OF_WEEK_TO_INT;
+export const DAY_OF_WEEK_VALUES = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
+
+export type DayOfWeek = (typeof DAY_OF_WEEK_VALUES)[number];
 
 export const INT_TO_DAY_OF_WEEK = {
   0: 'sunday',
@@ -19,3 +21,5 @@ export const INT_TO_DAY_OF_WEEK = {
   5: 'friday',
   6: 'saturday',
 } as const;
+
+export type DayOfWeekNumber = keyof typeof INT_TO_DAY_OF_WEEK;

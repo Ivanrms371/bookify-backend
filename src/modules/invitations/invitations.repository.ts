@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import type { MembershipRole } from 'src/generated/prisma/enums';
-import type { InvitationStatus } from 'src/generated/prisma/enums';
+import { InvitationStatus } from 'src/generated/prisma/enums';
 import { InvitationCreateInput } from 'src/generated/prisma/models';
 
 @Injectable()
@@ -13,13 +13,11 @@ export class InvitationsRepository {
   }
 
   async findByToken(token: string) {
-    return this.prisma.invitation.findFirst({
-      where: { token, NOT: { status: 'CANCELLED' } },
-    });
+    return this.prisma.invitation.findUnique({ where: { token, status: InvitationStatus.PENDING } });
   }
 
   async findById(id: string) {
-    return this.prisma.invitation.findUnique({ where: { id } });
+    return this.prisma.invitation.findUnique({ where: { id, status: InvitationStatus.PENDING } });
   }
 
   async update(id: string, data: any) {
@@ -38,25 +36,27 @@ export class InvitationsRepository {
 
   async findByEmail(tenantId: string, email: string) {
     return this.prisma.invitation.findFirst({
-      where: { tenantId, email },
+      where: { tenantId, email, status: { in: [InvitationStatus.PENDING, InvitationStatus.ACCEPTED] } },
       orderBy: { createdAt: 'desc' },
     });
   }
 
   async findMany(tenantId: string) {
     return this.prisma.invitation.findMany({
-      where: { tenantId, status: 'PENDING' },
+      where: { tenantId, status: InvitationStatus.PENDING },
       orderBy: { createdAt: 'desc' },
       select: {
         id: true,
         email: true,
         name: true,
+        phoneCountryCode: true,
         phone: true,
         role: true,
         status: true,
         commissionType: true,
-        commissionValue: true,
+        commissionAmount: true,
         serviceIds: true,
+        schedule: true,
         createdAt: true,
         expiresAt: true,
       },

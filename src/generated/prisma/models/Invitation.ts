@@ -27,11 +27,11 @@ export type AggregateInvitation = {
 }
 
 export type InvitationAvgAggregateOutputType = {
-  commissionValue: runtime.Decimal | null
+  commissionAmount: runtime.Decimal | null
 }
 
 export type InvitationSumAggregateOutputType = {
-  commissionValue: runtime.Decimal | null
+  commissionAmount: runtime.Decimal | null
 }
 
 export type InvitationMinAggregateOutputType = {
@@ -39,12 +39,13 @@ export type InvitationMinAggregateOutputType = {
   tenantId: string | null
   email: string | null
   name: string | null
+  phoneCountryCode: string | null
   phone: string | null
   role: $Enums.MembershipRole | null
   token: string | null
   status: $Enums.InvitationStatus | null
   commissionType: $Enums.CommissionType | null
-  commissionValue: runtime.Decimal | null
+  commissionAmount: runtime.Decimal | null
   expiresAt: Date | null
   createdAt: Date | null
 }
@@ -54,12 +55,13 @@ export type InvitationMaxAggregateOutputType = {
   tenantId: string | null
   email: string | null
   name: string | null
+  phoneCountryCode: string | null
   phone: string | null
   role: $Enums.MembershipRole | null
   token: string | null
   status: $Enums.InvitationStatus | null
   commissionType: $Enums.CommissionType | null
-  commissionValue: runtime.Decimal | null
+  commissionAmount: runtime.Decimal | null
   expiresAt: Date | null
   createdAt: Date | null
 }
@@ -69,13 +71,15 @@ export type InvitationCountAggregateOutputType = {
   tenantId: number
   email: number
   name: number
+  phoneCountryCode: number
   phone: number
   role: number
   serviceIds: number
   token: number
   status: number
   commissionType: number
-  commissionValue: number
+  commissionAmount: number
+  schedule: number
   expiresAt: number
   createdAt: number
   _all: number
@@ -83,11 +87,11 @@ export type InvitationCountAggregateOutputType = {
 
 
 export type InvitationAvgAggregateInputType = {
-  commissionValue?: true
+  commissionAmount?: true
 }
 
 export type InvitationSumAggregateInputType = {
-  commissionValue?: true
+  commissionAmount?: true
 }
 
 export type InvitationMinAggregateInputType = {
@@ -95,12 +99,13 @@ export type InvitationMinAggregateInputType = {
   tenantId?: true
   email?: true
   name?: true
+  phoneCountryCode?: true
   phone?: true
   role?: true
   token?: true
   status?: true
   commissionType?: true
-  commissionValue?: true
+  commissionAmount?: true
   expiresAt?: true
   createdAt?: true
 }
@@ -110,12 +115,13 @@ export type InvitationMaxAggregateInputType = {
   tenantId?: true
   email?: true
   name?: true
+  phoneCountryCode?: true
   phone?: true
   role?: true
   token?: true
   status?: true
   commissionType?: true
-  commissionValue?: true
+  commissionAmount?: true
   expiresAt?: true
   createdAt?: true
 }
@@ -125,13 +131,15 @@ export type InvitationCountAggregateInputType = {
   tenantId?: true
   email?: true
   name?: true
+  phoneCountryCode?: true
   phone?: true
   role?: true
   serviceIds?: true
   token?: true
   status?: true
   commissionType?: true
-  commissionValue?: true
+  commissionAmount?: true
+  schedule?: true
   expiresAt?: true
   createdAt?: true
   _all?: true
@@ -228,13 +236,15 @@ export type InvitationGroupByOutputType = {
   tenantId: string
   email: string
   name: string | null
+  phoneCountryCode: string
   phone: string | null
   role: $Enums.MembershipRole
   serviceIds: string[]
   token: string
   status: $Enums.InvitationStatus
   commissionType: $Enums.CommissionType | null
-  commissionValue: runtime.Decimal | null
+  commissionAmount: runtime.Decimal | null
+  schedule: runtime.JsonValue | null
   expiresAt: Date
   createdAt: Date
   _count: InvitationCountAggregateOutputType | null
@@ -267,13 +277,15 @@ export type InvitationWhereInput = {
   tenantId?: Prisma.UuidFilter<"Invitation"> | string
   email?: Prisma.StringFilter<"Invitation"> | string
   name?: Prisma.StringNullableFilter<"Invitation"> | string | null
+  phoneCountryCode?: Prisma.StringFilter<"Invitation"> | string
   phone?: Prisma.StringNullableFilter<"Invitation"> | string | null
   role?: Prisma.EnumMembershipRoleFilter<"Invitation"> | $Enums.MembershipRole
   serviceIds?: Prisma.StringNullableListFilter<"Invitation">
   token?: Prisma.StringFilter<"Invitation"> | string
   status?: Prisma.EnumInvitationStatusFilter<"Invitation"> | $Enums.InvitationStatus
   commissionType?: Prisma.EnumCommissionTypeNullableFilter<"Invitation"> | $Enums.CommissionType | null
-  commissionValue?: Prisma.DecimalNullableFilter<"Invitation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.DecimalNullableFilter<"Invitation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.JsonNullableFilter<"Invitation">
   expiresAt?: Prisma.DateTimeFilter<"Invitation"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Invitation"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
@@ -284,13 +296,15 @@ export type InvitationOrderByWithRelationInput = {
   tenantId?: Prisma.SortOrder
   email?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   serviceIds?: Prisma.SortOrder
   token?: Prisma.SortOrder
   status?: Prisma.SortOrder
   commissionType?: Prisma.SortOrderInput | Prisma.SortOrder
-  commissionValue?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionAmount?: Prisma.SortOrderInput | Prisma.SortOrder
+  schedule?: Prisma.SortOrderInput | Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
@@ -305,12 +319,14 @@ export type InvitationWhereUniqueInput = Prisma.AtLeast<{
   tenantId?: Prisma.UuidFilter<"Invitation"> | string
   email?: Prisma.StringFilter<"Invitation"> | string
   name?: Prisma.StringNullableFilter<"Invitation"> | string | null
+  phoneCountryCode?: Prisma.StringFilter<"Invitation"> | string
   phone?: Prisma.StringNullableFilter<"Invitation"> | string | null
   role?: Prisma.EnumMembershipRoleFilter<"Invitation"> | $Enums.MembershipRole
   serviceIds?: Prisma.StringNullableListFilter<"Invitation">
   status?: Prisma.EnumInvitationStatusFilter<"Invitation"> | $Enums.InvitationStatus
   commissionType?: Prisma.EnumCommissionTypeNullableFilter<"Invitation"> | $Enums.CommissionType | null
-  commissionValue?: Prisma.DecimalNullableFilter<"Invitation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.DecimalNullableFilter<"Invitation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.JsonNullableFilter<"Invitation">
   expiresAt?: Prisma.DateTimeFilter<"Invitation"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Invitation"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
@@ -321,13 +337,15 @@ export type InvitationOrderByWithAggregationInput = {
   tenantId?: Prisma.SortOrder
   email?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
   serviceIds?: Prisma.SortOrder
   token?: Prisma.SortOrder
   status?: Prisma.SortOrder
   commissionType?: Prisma.SortOrderInput | Prisma.SortOrder
-  commissionValue?: Prisma.SortOrderInput | Prisma.SortOrder
+  commissionAmount?: Prisma.SortOrderInput | Prisma.SortOrder
+  schedule?: Prisma.SortOrderInput | Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.InvitationCountOrderByAggregateInput
@@ -345,13 +363,15 @@ export type InvitationScalarWhereWithAggregatesInput = {
   tenantId?: Prisma.UuidWithAggregatesFilter<"Invitation"> | string
   email?: Prisma.StringWithAggregatesFilter<"Invitation"> | string
   name?: Prisma.StringNullableWithAggregatesFilter<"Invitation"> | string | null
+  phoneCountryCode?: Prisma.StringWithAggregatesFilter<"Invitation"> | string
   phone?: Prisma.StringNullableWithAggregatesFilter<"Invitation"> | string | null
   role?: Prisma.EnumMembershipRoleWithAggregatesFilter<"Invitation"> | $Enums.MembershipRole
   serviceIds?: Prisma.StringNullableListFilter<"Invitation">
   token?: Prisma.StringWithAggregatesFilter<"Invitation"> | string
   status?: Prisma.EnumInvitationStatusWithAggregatesFilter<"Invitation"> | $Enums.InvitationStatus
   commissionType?: Prisma.EnumCommissionTypeNullableWithAggregatesFilter<"Invitation"> | $Enums.CommissionType | null
-  commissionValue?: Prisma.DecimalNullableWithAggregatesFilter<"Invitation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.DecimalNullableWithAggregatesFilter<"Invitation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.JsonNullableWithAggregatesFilter<"Invitation">
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"Invitation"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Invitation"> | Date | string
 }
@@ -360,13 +380,15 @@ export type InvitationCreateInput = {
   id?: string
   email: string
   name?: string | null
+  phoneCountryCode?: string
   phone?: string | null
   role?: $Enums.MembershipRole
   serviceIds?: Prisma.InvitationCreateserviceIdsInput | string[]
   token: string
   status?: $Enums.InvitationStatus
   commissionType?: $Enums.CommissionType | null
-  commissionValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   expiresAt: Date | string
   createdAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutInvitationsInput
@@ -377,13 +399,15 @@ export type InvitationUncheckedCreateInput = {
   tenantId: string
   email: string
   name?: string | null
+  phoneCountryCode?: string
   phone?: string | null
   role?: $Enums.MembershipRole
   serviceIds?: Prisma.InvitationCreateserviceIdsInput | string[]
   token: string
   status?: $Enums.InvitationStatus
   commissionType?: $Enums.CommissionType | null
-  commissionValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   expiresAt: Date | string
   createdAt?: Date | string
 }
@@ -392,13 +416,15 @@ export type InvitationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
   serviceIds?: Prisma.InvitationUpdateserviceIdsInput | string[]
   token?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutInvitationsNestedInput
@@ -409,13 +435,15 @@ export type InvitationUncheckedUpdateInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
   serviceIds?: Prisma.InvitationUpdateserviceIdsInput | string[]
   token?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -425,13 +453,15 @@ export type InvitationCreateManyInput = {
   tenantId: string
   email: string
   name?: string | null
+  phoneCountryCode?: string
   phone?: string | null
   role?: $Enums.MembershipRole
   serviceIds?: Prisma.InvitationCreateserviceIdsInput | string[]
   token: string
   status?: $Enums.InvitationStatus
   commissionType?: $Enums.CommissionType | null
-  commissionValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   expiresAt: Date | string
   createdAt?: Date | string
 }
@@ -440,13 +470,15 @@ export type InvitationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
   serviceIds?: Prisma.InvitationUpdateserviceIdsInput | string[]
   token?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -456,13 +488,15 @@ export type InvitationUncheckedUpdateManyInput = {
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
   serviceIds?: Prisma.InvitationUpdateserviceIdsInput | string[]
   token?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -480,19 +514,21 @@ export type InvitationCountOrderByAggregateInput = {
   tenantId?: Prisma.SortOrder
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   role?: Prisma.SortOrder
   serviceIds?: Prisma.SortOrder
   token?: Prisma.SortOrder
   status?: Prisma.SortOrder
   commissionType?: Prisma.SortOrder
-  commissionValue?: Prisma.SortOrder
+  commissionAmount?: Prisma.SortOrder
+  schedule?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type InvitationAvgOrderByAggregateInput = {
-  commissionValue?: Prisma.SortOrder
+  commissionAmount?: Prisma.SortOrder
 }
 
 export type InvitationMaxOrderByAggregateInput = {
@@ -500,12 +536,13 @@ export type InvitationMaxOrderByAggregateInput = {
   tenantId?: Prisma.SortOrder
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   role?: Prisma.SortOrder
   token?: Prisma.SortOrder
   status?: Prisma.SortOrder
   commissionType?: Prisma.SortOrder
-  commissionValue?: Prisma.SortOrder
+  commissionAmount?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -515,18 +552,19 @@ export type InvitationMinOrderByAggregateInput = {
   tenantId?: Prisma.SortOrder
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   role?: Prisma.SortOrder
   token?: Prisma.SortOrder
   status?: Prisma.SortOrder
   commissionType?: Prisma.SortOrder
-  commissionValue?: Prisma.SortOrder
+  commissionAmount?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type InvitationSumOrderByAggregateInput = {
-  commissionValue?: Prisma.SortOrder
+  commissionAmount?: Prisma.SortOrder
 }
 
 export type InvitationListRelationFilter = {
@@ -610,13 +648,15 @@ export type InvitationCreateWithoutTenantInput = {
   id?: string
   email: string
   name?: string | null
+  phoneCountryCode?: string
   phone?: string | null
   role?: $Enums.MembershipRole
   serviceIds?: Prisma.InvitationCreateserviceIdsInput | string[]
   token: string
   status?: $Enums.InvitationStatus
   commissionType?: $Enums.CommissionType | null
-  commissionValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   expiresAt: Date | string
   createdAt?: Date | string
 }
@@ -625,13 +665,15 @@ export type InvitationUncheckedCreateWithoutTenantInput = {
   id?: string
   email: string
   name?: string | null
+  phoneCountryCode?: string
   phone?: string | null
   role?: $Enums.MembershipRole
   serviceIds?: Prisma.InvitationCreateserviceIdsInput | string[]
   token: string
   status?: $Enums.InvitationStatus
   commissionType?: $Enums.CommissionType | null
-  commissionValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   expiresAt: Date | string
   createdAt?: Date | string
 }
@@ -670,13 +712,15 @@ export type InvitationScalarWhereInput = {
   tenantId?: Prisma.UuidFilter<"Invitation"> | string
   email?: Prisma.StringFilter<"Invitation"> | string
   name?: Prisma.StringNullableFilter<"Invitation"> | string | null
+  phoneCountryCode?: Prisma.StringFilter<"Invitation"> | string
   phone?: Prisma.StringNullableFilter<"Invitation"> | string | null
   role?: Prisma.EnumMembershipRoleFilter<"Invitation"> | $Enums.MembershipRole
   serviceIds?: Prisma.StringNullableListFilter<"Invitation">
   token?: Prisma.StringFilter<"Invitation"> | string
   status?: Prisma.EnumInvitationStatusFilter<"Invitation"> | $Enums.InvitationStatus
   commissionType?: Prisma.EnumCommissionTypeNullableFilter<"Invitation"> | $Enums.CommissionType | null
-  commissionValue?: Prisma.DecimalNullableFilter<"Invitation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.DecimalNullableFilter<"Invitation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.JsonNullableFilter<"Invitation">
   expiresAt?: Prisma.DateTimeFilter<"Invitation"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Invitation"> | Date | string
 }
@@ -685,13 +729,15 @@ export type InvitationCreateManyTenantInput = {
   id?: string
   email: string
   name?: string | null
+  phoneCountryCode?: string
   phone?: string | null
   role?: $Enums.MembershipRole
   serviceIds?: Prisma.InvitationCreateserviceIdsInput | string[]
   token: string
   status?: $Enums.InvitationStatus
   commissionType?: $Enums.CommissionType | null
-  commissionValue?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   expiresAt: Date | string
   createdAt?: Date | string
 }
@@ -700,13 +746,15 @@ export type InvitationUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
   serviceIds?: Prisma.InvitationUpdateserviceIdsInput | string[]
   token?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -715,13 +763,15 @@ export type InvitationUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
   serviceIds?: Prisma.InvitationUpdateserviceIdsInput | string[]
   token?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -730,13 +780,15 @@ export type InvitationUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
   serviceIds?: Prisma.InvitationUpdateserviceIdsInput | string[]
   token?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumInvitationStatusFieldUpdateOperationsInput | $Enums.InvitationStatus
   commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionValue?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  schedule?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -748,13 +800,15 @@ export type InvitationSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   tenantId?: boolean
   email?: boolean
   name?: boolean
+  phoneCountryCode?: boolean
   phone?: boolean
   role?: boolean
   serviceIds?: boolean
   token?: boolean
   status?: boolean
   commissionType?: boolean
-  commissionValue?: boolean
+  commissionAmount?: boolean
+  schedule?: boolean
   expiresAt?: boolean
   createdAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
@@ -765,13 +819,15 @@ export type InvitationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   tenantId?: boolean
   email?: boolean
   name?: boolean
+  phoneCountryCode?: boolean
   phone?: boolean
   role?: boolean
   serviceIds?: boolean
   token?: boolean
   status?: boolean
   commissionType?: boolean
-  commissionValue?: boolean
+  commissionAmount?: boolean
+  schedule?: boolean
   expiresAt?: boolean
   createdAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
@@ -782,13 +838,15 @@ export type InvitationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   tenantId?: boolean
   email?: boolean
   name?: boolean
+  phoneCountryCode?: boolean
   phone?: boolean
   role?: boolean
   serviceIds?: boolean
   token?: boolean
   status?: boolean
   commissionType?: boolean
-  commissionValue?: boolean
+  commissionAmount?: boolean
+  schedule?: boolean
   expiresAt?: boolean
   createdAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
@@ -799,18 +857,20 @@ export type InvitationSelectScalar = {
   tenantId?: boolean
   email?: boolean
   name?: boolean
+  phoneCountryCode?: boolean
   phone?: boolean
   role?: boolean
   serviceIds?: boolean
   token?: boolean
   status?: boolean
   commissionType?: boolean
-  commissionValue?: boolean
+  commissionAmount?: boolean
+  schedule?: boolean
   expiresAt?: boolean
   createdAt?: boolean
 }
 
-export type InvitationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "email" | "name" | "phone" | "role" | "serviceIds" | "token" | "status" | "commissionType" | "commissionValue" | "expiresAt" | "createdAt", ExtArgs["result"]["invitation"]>
+export type InvitationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "email" | "name" | "phoneCountryCode" | "phone" | "role" | "serviceIds" | "token" | "status" | "commissionType" | "commissionAmount" | "schedule" | "expiresAt" | "createdAt", ExtArgs["result"]["invitation"]>
 export type InvitationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }
@@ -831,13 +891,15 @@ export type $InvitationPayload<ExtArgs extends runtime.Types.Extensions.Internal
     tenantId: string
     email: string
     name: string | null
+    phoneCountryCode: string
     phone: string | null
     role: $Enums.MembershipRole
     serviceIds: string[]
     token: string
     status: $Enums.InvitationStatus
     commissionType: $Enums.CommissionType | null
-    commissionValue: runtime.Decimal | null
+    commissionAmount: runtime.Decimal | null
+    schedule: runtime.JsonValue | null
     expiresAt: Date
     createdAt: Date
   }, ExtArgs["result"]["invitation"]>
@@ -1268,13 +1330,15 @@ export interface InvitationFieldRefs {
   readonly tenantId: Prisma.FieldRef<"Invitation", 'String'>
   readonly email: Prisma.FieldRef<"Invitation", 'String'>
   readonly name: Prisma.FieldRef<"Invitation", 'String'>
+  readonly phoneCountryCode: Prisma.FieldRef<"Invitation", 'String'>
   readonly phone: Prisma.FieldRef<"Invitation", 'String'>
   readonly role: Prisma.FieldRef<"Invitation", 'MembershipRole'>
   readonly serviceIds: Prisma.FieldRef<"Invitation", 'String[]'>
   readonly token: Prisma.FieldRef<"Invitation", 'String'>
   readonly status: Prisma.FieldRef<"Invitation", 'InvitationStatus'>
   readonly commissionType: Prisma.FieldRef<"Invitation", 'CommissionType'>
-  readonly commissionValue: Prisma.FieldRef<"Invitation", 'Decimal'>
+  readonly commissionAmount: Prisma.FieldRef<"Invitation", 'Decimal'>
+  readonly schedule: Prisma.FieldRef<"Invitation", 'Json'>
   readonly expiresAt: Prisma.FieldRef<"Invitation", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Invitation", 'DateTime'>
 }
