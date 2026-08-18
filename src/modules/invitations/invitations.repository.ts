@@ -13,7 +13,20 @@ export class InvitationsRepository {
   }
 
   async findByToken(token: string) {
-    return this.prisma.invitation.findUnique({ where: { token } });
+    return this.prisma.invitation.findFirst({
+      where: { token, NOT: { status: 'CANCELLED' } },
+    });
+  }
+
+  async findById(id: string) {
+    return this.prisma.invitation.findUnique({ where: { id } });
+  }
+
+  async update(id: string, data: any) {
+    return this.prisma.invitation.update({
+      where: { id },
+      data,
+    });
   }
 
   async updateStatus(token: string, status: InvitationStatus) {
@@ -23,16 +36,16 @@ export class InvitationsRepository {
     });
   }
 
-  async findByTenantAndEmail(tenantId: string, email: string) {
+  async findByEmail(tenantId: string, email: string) {
     return this.prisma.invitation.findFirst({
       where: { tenantId, email },
       orderBy: { createdAt: 'desc' },
     });
   }
 
-  async findAllByTenant(tenantId: string) {
+  async findMany(tenantId: string) {
     return this.prisma.invitation.findMany({
-      where: { tenantId },
+      where: { tenantId, status: 'PENDING' },
       orderBy: { createdAt: 'desc' },
       select: {
         id: true,
@@ -41,6 +54,9 @@ export class InvitationsRepository {
         phone: true,
         role: true,
         status: true,
+        commissionType: true,
+        commissionValue: true,
+        serviceIds: true,
         createdAt: true,
         expiresAt: true,
       },

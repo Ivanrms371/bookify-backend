@@ -682,14 +682,6 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type NullableDecimalFieldUpdateOperationsInput = {
-  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
-}
-
 export type ServiceCreateNestedOneWithoutAssignmentsInput = {
   create?: Prisma.XOR<Prisma.ServiceCreateWithoutAssignmentsInput, Prisma.ServiceUncheckedCreateWithoutAssignmentsInput>
   connectOrCreate?: Prisma.ServiceCreateOrConnectWithoutAssignmentsInput

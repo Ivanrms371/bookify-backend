@@ -2971,6 +2971,8 @@ export const InvitationScalarFieldEnum = {
   serviceIds: 'serviceIds',
   token: 'token',
   status: 'status',
+  commissionType: 'commissionType',
+  commissionValue: 'commissionValue',
   expiresAt: 'expiresAt',
   createdAt: 'createdAt'
 } as const
@@ -3656,6 +3658,34 @@ export type ListEnumInvitationStatusFieldRefInput<$PrismaModel> = FieldRefInputT
 
 
 /**
+ * Reference to a field of type 'CommissionType'
+ */
+export type EnumCommissionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommissionType'>
+    
+
+
+/**
+ * Reference to a field of type 'CommissionType[]'
+ */
+export type ListEnumCommissionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommissionType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
  * Reference to a field of type 'VerificationType'
  */
 export type EnumVerificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationType'>
@@ -3715,34 +3745,6 @@ export type EnumOnboardingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'OnboardingStatus[]'
  */
 export type ListEnumOnboardingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OnboardingStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-/**
- * Reference to a field of type 'CommissionType'
- */
-export type EnumCommissionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommissionType'>
-    
-
-
-/**
- * Reference to a field of type 'CommissionType[]'
- */
-export type ListEnumCommissionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommissionType[]'>
     
 
 

@@ -143,6 +143,8 @@ export const InvitationScalarFieldEnum = {
   serviceIds: 'serviceIds',
   token: 'token',
   status: 'status',
+  commissionType: 'commissionType',
+  commissionValue: 'commissionValue',
   expiresAt: 'expiresAt',
   createdAt: 'createdAt'
 } as const

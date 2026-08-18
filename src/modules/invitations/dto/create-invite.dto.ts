@@ -1,5 +1,6 @@
-import { IsArray, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
-import { MembershipRole } from 'src/generated/prisma/enums';
+import { IsArray, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+import { MembershipRole, CommissionType } from 'src/generated/prisma/enums';
 
 export class CreateInviteDto {
   @IsString()
@@ -20,4 +21,18 @@ export class CreateInviteDto {
   @IsUUID('all', { each: true })
   @IsOptional()
   serviceIds?: string[];
+
+  @IsEnum(CommissionType)
+  @IsOptional()
+  commissionType?: CommissionType;
+
+  @IsEnum(CommissionType)
+  @IsOptional()
+  comisionType?: CommissionType;
+
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  @Type(() => Number)
+  commissionValue?: number;
 }

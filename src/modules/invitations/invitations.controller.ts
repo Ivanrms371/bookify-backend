@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards, Put, Patch, ParseUUIDPipe } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { TenantGuard } from 'src/auth/guards/tenant.guard';
 import { GetTenantId } from 'src/common/decorators/get-tenant-id.decorator';
@@ -28,6 +28,28 @@ export class InvitationsController {
   @Post('invite')
   invite(@GetTenantId() tenantId: string, @Body() dto: CreateInviteDto) {
     return this.invitationsService.invite(tenantId, dto);
+  }
+
+  /**
+   * PUT /invitations/:id
+   * Requires authentication + tenant context.
+   * Updates an invitation record.
+   */
+  @UseGuards(JwtAuthGuard, TenantGuard)
+  @Put(':id')
+  update(@GetTenantId() tenantId: string, @Param('id', ParseUUIDPipe) id: string, @Body() dto: CreateInviteDto) {
+    return this.invitationsService.update(tenantId, id, dto);
+  }
+
+  /**
+   * PATCH /invitations/:id/cancel
+   * Requires authentication + tenant context.
+   * Cancels an invitation.
+   */
+  @UseGuards(JwtAuthGuard, TenantGuard)
+  @Patch(':id/cancel')
+  cancel(@GetTenantId() tenantId: string, @Param('id', ParseUUIDPipe) id: string) {
+    return this.invitationsService.cancel(tenantId, id);
   }
 
 
