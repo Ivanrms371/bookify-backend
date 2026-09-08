@@ -1,258 +1,415 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { addDays, endOfDay, getDay, isAfter, parseISO, startOfDay } from 'date-fns';
-import { toZonedTime, format } from 'date-fns-tz';
-import { AvailabilityQuery } from 'src/shared/infrastructure/queries/availability.query';
-import { SlotsGenerator } from './slots.generator';
-import { dateToMinutes } from 'src/common/utils/time/time.util';
-import { AvailabilityConfigMapper } from './utils/availability-config.mapper';
-import { Block } from './types/slots.type';
-import { AppointmentsWithBlocks, FindNextAvailableDateParams, ScheduleException, WorkingHour } from './types/availability.type';
-import { GetSlotsQueryDto } from './dto/get-slots-query.dto';
-import { ServicesService } from '../services/services.service';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { AvailabilityRepository } from './availability.repository';
+import { SlotsGenerator } from './slots-generator';
+import { tz, TZDate } from '@date-fns/tz';
+import {
+  addDays,
+  differenceInCalendarDays,
+  getDay,
+  isAfter,
+  isValid,
+  format,
+  endOfDay,
+  startOfDay,
+  parseISO,
+  addMinutes,
+  isBefore,
+} from 'date-fns';
+import {
+  AvailabilityOverviewResponse,
+  DateRangeResolutionResult,
+  DayAvailabilityResponse,
+  DayOverviewItem,
+  DayOverviewStatus,
+  DaySlotsSummary,
+  GetAvailabilityOverviewParams,
+  GetDayAvailabilityParams,
+  ValidateSlotAvailabilityParams,
+} from './types/availability.types';
+import { BusyIntervalUtc, GenerateSlotsContext, TimeRange } from './types/slots.types';
 
 @Injectable()
 export class AvailabilityService {
   constructor(
+    private readonly availabilityRepository: AvailabilityRepository,
     private readonly slotsGenerator: SlotsGenerator,
-    private readonly availability: AvailabilityQuery,
-    private readonly availabilityMapper: AvailabilityConfigMapper,
-    private readonly servicesService: ServicesService,
   ) {}
 
-  private readonly MAX_DAYS = 60;
+  private readonly MAX_DAYS_SCAN = 30;
 
-  private hasSlots(slots: string[]) {
-    return slots.length > 0;
-  }
-
-  private async getAvailabilityContext(tenantId: string, professionalId: string, date?: string | Date) {
-    const config = await this.availability.getAvailabilityConfig(tenantId, professionalId);
-
-    if (!config || !config?.tenant?.settings) {
-      throw new BadRequestException('No se encontro disponibilidad para la fecha');
-    }
-
-    const availabilityConfig = this.availabilityMapper.toAvailabilityConfig({
-      ...config,
-      tenant: {
-        ...config.tenant,
-        settings: config.tenant.settings,
-      },
+  async getAvailableSlotsByDay(params: GetDayAvailabilityParams): Promise<DayAvailabilityResponse> {
+    const { days } = await this.resolveSlotsForDateRange({
+      tenantId: params.tenantId,
+      professionalId: params.professionalId,
+      serviceId: params.serviceId,
+      startDateStr: params.date,
+      stopOnFirstFound: true,
     });
 
-    const { timeZone } = availabilityConfig;
+    const requestedDay = days.find((s) => s.date === params.date);
+    const targetSlots = requestedDay?.slots ?? [];
 
-    const targetDate = date ? toZonedTime(typeof date === 'string' ? parseISO(date) : date, timeZone) : toZonedTime(new Date(), timeZone);
-
-    const start = startOfDay(targetDate);
-    const end = endOfDay(targetDate);
-
-    const [appointments, exceptions] = await Promise.all([
-      this.availability.getAppointmentsInRange(professionalId, start, end),
-      this.availability.getExceptionsInRange(professionalId, start, end),
-    ]);
-
-    const day = getDay(targetDate);
-
-    const exception = this.findExceptionForDate(targetDate, day, exceptions);
-    const busyBlocks = this.resolveBusyBlocks(appointments, timeZone);
-    const workBlocks = this.resolveWorkingHours(availabilityConfig.workingHours, day, exception);
-
-    return {
-      config: availabilityConfig,
-      date: targetDate,
-      busyBlocks,
-      workBlocks,
-    };
-  }
-
-  async getProfessionalAvailability(tenantId: string, professionalId: string, query: GetSlotsQueryDto) {
-    const { config, date, workBlocks, busyBlocks } = await this.getAvailabilityContext(tenantId, professionalId, query.date);
-
-    const service = await this.servicesService.findById(tenantId, query.serviceId);
-    const { durationMinutes } = service;
-
-    const slots = this.slotsGenerator.generate({
-      strategy: 'dynamic',
-      serviceDuration: durationMinutes,
-      config,
-      date,
-      workBlocks,
-      busyBlocks,
-    });
-
-    if (this.hasSlots(slots)) {
+    if (targetSlots.length > 0) {
       return {
-        slots,
-        date: format(date, 'yyyy-MM-dd'),
+        date: params.date,
+        isAvailable: true,
+        slots: targetSlots,
       };
     }
 
-    const { nextAvailableDate } = await this.getNextAvailableSlot({
-      serviceDuration: durationMinutes,
-      strategy: 'dynamic',
-      date: date,
-      config,
-      professionalId,
-    });
+    const nextAvailableDay = days.find((s) => s.date !== params.date && s.slots.length > 0);
 
     return {
+      date: params.date,
+      isAvailable: false,
       slots: [],
-      nextAvailableDate: nextAvailableDate ? format(nextAvailableDate, 'yyyy-MM-dd') : null,
-      date,
+      nextAvailable: nextAvailableDay
+        ? {
+            date: nextAvailableDay.date,
+            slots: nextAvailableDay.slots,
+          }
+        : null,
     };
   }
 
-  async checkAvailability(tenantId: string, professionalId: string, startsAt: Date, endsAt: Date) {
-    const { config, workBlocks, busyBlocks } = await this.getAvailabilityContext(tenantId, professionalId, startsAt);
+  async getAvailableOverview(params: GetAvailabilityOverviewParams): Promise<AvailabilityOverviewResponse> {
+    const { tenantId, professionalId, serviceId, startDate, endDate, saturationThreshold = 3 } = params;
 
-    const { timeZone } = config;
+    const { timeZone, days } = await this.resolveSlotsForDateRange({
+      tenantId,
+      professionalId,
+      serviceId,
+      startDateStr: startDate,
+      endDateStr: endDate,
+      stopOnFirstFound: false,
+    });
 
-    const localStart = toZonedTime(startsAt, timeZone);
-    const localEnd = toZonedTime(endsAt, timeZone);
+    const daysOverview: Record<string, DayOverviewItem> = {};
 
-    if (!this.isWithinWorkingHours(localStart, localEnd, workBlocks, timeZone)) {
+    for (const day of days) {
+      const count = day.slots.length;
+      let status: DayOverviewStatus;
+
+      if (!day.hasAvailability) {
+        status = day.reason === 'FULLY_BOOKED' ? 'EMPTY' : 'CLOSED';
+      } else if (count <= saturationThreshold) {
+        status = 'SATURATED';
+      } else {
+        status = 'AVAILABLE';
+      }
+
+      daysOverview[day.date] = {
+        date: day.date,
+        status,
+        availableCount: count,
+        reason: day.message,
+      };
+    }
+
+    return {
+      timeZone,
+      days: daysOverview,
+    };
+  }
+
+  /**
+   * Valida si un slot puntual está disponible (ej. al reservar o cambiar horario)
+   * Consultando únicamente el rango del día en cuestión.
+   */
+  async isSlotAvailable(params: ValidateSlotAvailabilityParams): Promise<boolean> {
+    const { tenantId, professionalId, serviceId, startTime, ignoreMinAdvanced = false } = params;
+
+    const { settings, professional, service } = await this.loadConfiguration(tenantId, professionalId, serviceId);
+
+    const timeZone = settings.timeZone || 'America/Montevideo';
+    const bufferMinutes = settings.bufferTimeMinutes;
+    const minAdvancedMinutes = professional.minAdvancedMinutes ?? settings.minAdvancedMinutes;
+
+    const slotDate = parseISO(startTime);
+
+    if (!isValid(slotDate)) {
+      throw new BadRequestException('Formato de fecha inválido para startTime.');
+    }
+
+    const minStartTime = addMinutes(new Date(), ignoreMinAdvanced ? 0 : minAdvancedMinutes);
+
+    if (isBefore(slotDate, minStartTime)) {
       return false;
     }
 
-    return !this.isOverlapping(localStart, localEnd, busyBlocks, timeZone);
+    const localDate = new TZDate(slotDate, timeZone);
+    const dayStartUtc = new Date(startOfDay(localDate).toISOString());
+    const dayEndUtc = new Date(endOfDay(localDate).toISOString());
+
+    const timeline = await this.availabilityRepository.getTimelineForRange({
+      tenantId,
+      professionalId,
+      rangeStartUtc: dayStartUtc,
+      rangeEndUtc: dayEndUtc,
+    });
+
+    const busyIntervals = this.extractBusyIntervals(timeline.appointments);
+
+    const dayContext = this.buildDayContext({
+      currentDayLocal: localDate,
+      timeZone,
+      timeline,
+      settings,
+      professional,
+      service,
+      busyIntervalsUtc: busyIntervals,
+    });
+
+    if (dayContext.isFullyClosed || dayContext.workingHours.length === 0) {
+      return false;
+    }
+
+    const requestedStart = slotDate;
+    const requestedEnd = addMinutes(requestedStart, service.durationMinutes + bufferMinutes);
+
+    const isWithinWorkingHours = this.isWithinWorkingHours(requestedStart, requestedEnd, dayContext.workingHours, timeZone);
+
+    if (!isWithinWorkingHours) {
+      return false;
+    }
+
+    const hasOverlap = busyIntervals.some(({ startsAt, endsAt }) => startsAt < requestedEnd && endsAt > requestedStart);
+
+    if (hasOverlap) {
+      return false;
+    }
+
+    return true;
   }
 
-  private async getNextAvailableSlot({ professionalId, date, config, serviceDuration }: FindNextAvailableDateParams) {
-    const maxAdvancedDays = Math.min(config.maxAdvancedDays ?? this.MAX_DAYS, this.MAX_DAYS);
+  private isWithinWorkingHours(startTime: Date, endTime: Date, workingHours: TimeRange[], timeZone: string): boolean {
+    const start = new TZDate(startTime, timeZone);
+    const end = new TZDate(endTime, timeZone);
 
-    const start = startOfDay(date);
-    const end = endOfDay(addDays(date, maxAdvancedDays));
+    const startMinutes = start.getHours() * 60 + start.getMinutes();
+    const endMinutes = end.getHours() * 60 + end.getMinutes();
 
-    const [appointments, exceptions] = await Promise.all([
-      this.availability.getAppointmentsInRange(professionalId, start, end),
-      this.availability.getExceptionsInRange(professionalId, start, end),
-    ]);
+    return workingHours.some(({ opensAt, closesAt }) => startMinutes >= opensAt && endMinutes <= closesAt);
+  }
 
-    const busyBlockGroups = this.groupBusyBlocksByDay(appointments, config.timeZone);
-    const exceptionMap = this.groupExceptionsByDay(exceptions);
+  private async resolveSlotsForDateRange(params: {
+    tenantId: string;
+    professionalId: string;
+    serviceId: string;
+    startDateStr: string; // 'YYYY-MM-DD'
+    endDateStr?: string;
+    stopOnFirstFound?: boolean;
+  }): Promise<DateRangeResolutionResult> {
+    const { tenantId, professionalId, serviceId, startDateStr, endDateStr, stopOnFirstFound = false } = params;
 
-    for (let i = 0; i < maxAdvancedDays; i++) {
-      const currentDate = addDays(date, i);
-      const key = format(currentDate, 'yyyy-MM-dd', { timeZone: config.timeZone });
+    const { settings, professional, service } = await this.availabilityRepository.getConfigurationContext(
+      tenantId,
+      professionalId,
+      serviceId,
+    );
 
-      const busyBlocks = busyBlockGroups.get(key) || [];
-      const exception = exceptionMap.get(key);
+    if (!settings) throw new NotFoundException('Configuración de negocio no encontrada.');
+    if (!service) throw new NotFoundException('Servicio inactivo o inexistente.');
+    if (!professional) throw new NotFoundException('Profesional no asignado al servicio.');
 
-      const workBlocks = this.resolveWorkingHours(config.workingHours, getDay(currentDate), exception);
+    const timeZone = settings.timeZone || 'America/Montevideo';
+
+    const startLocal = startOfDay(parseISO(startDateStr), { in: tz(timeZone) });
+
+    if (!isValid(startLocal)) {
+      throw new BadRequestException('Fecha de inicio inválida. Use YYYY-MM-DD.');
+    }
+
+    let endLocal: TZDate;
+
+    if (endDateStr) {
+      endLocal = endOfDay(parseISO(endDateStr), { in: tz(timeZone) });
+      if (!isValid(endLocal) || isAfter(startLocal, endLocal)) {
+        throw new BadRequestException('Rango de fechas inválido.');
+      }
+    } else {
+      const allowedMaxDays = professional.maxAdvancedDays ?? settings.maxAdvancedDays ?? 30;
+      const daysToScan = Math.min(allowedMaxDays, this.MAX_DAYS_SCAN);
+      endLocal = endOfDay(addDays(startLocal, daysToScan));
+    }
+    const timeline = await this.availabilityRepository.getTimelineForRange({
+      tenantId,
+      professionalId,
+      rangeStartUtc: new Date(startLocal.toISOString()),
+      rangeEndUtc: new Date(endLocal.toISOString()),
+    });
+
+    const allBusyIntervals: Array<{ startsAt: Date; endsAt: Date }> = [];
+    for (const appt of timeline.appointments) {
+      allBusyIntervals.push({ startsAt: appt.startsAt, endsAt: appt.endsAt });
+      if (appt.blocks) {
+        for (const block of appt.blocks) {
+          allBusyIntervals.push({ startsAt: block.startsAt, endsAt: block.endsAt });
+        }
+      }
+    }
+
+    const slotInterval = professional.slotIntervalMinutes || settings.slotIntervalMinutes || 30;
+    const minAdvancedMinutes = professional.minAdvancedMinutes ?? settings.minAdvancedMinutes ?? 30;
+    const maxAdvancedDays = professional.maxAdvancedDays ?? settings.maxAdvancedDays ?? 30;
+    const bufferMinutes = settings.bufferTimeMinutes ?? 0;
+
+    const hasCustomSchedule = timeline.professionalHours.length > 0;
+
+    const daysCount = differenceInCalendarDays(endLocal, startLocal) + 1;
+    const days: DaySlotsSummary[] = [];
+
+    for (let i = 0; i < daysCount; i++) {
+      const currentDayLocal = addDays(startLocal, i);
+      const currentDateStr = format(currentDayLocal, 'yyyy-MM-dd');
+      const dayOfWeek = getDay(currentDayLocal); // 0 (Sun) a 6 (Sat)
+
+      const effectiveWorkingHours = hasCustomSchedule
+        ? timeline.professionalHours.filter((h) => h.dayOfWeek === dayOfWeek)
+        : timeline.tenantHours.filter((h) => h.dayOfWeek === dayOfWeek);
+
+      if (effectiveWorkingHours.length === 0) {
+        days.push({
+          date: currentDateStr,
+          hasAvailability: false,
+          reason: hasCustomSchedule ? 'PROFESSIONAL_OFF' : 'BUSINESS_CLOSED',
+          slots: [],
+        });
+        continue;
+      }
+
+      // Exceptions of the day
+      const currentDayStartUtc = new Date(startOfDay(currentDayLocal).getTime());
+      const currentDayEndUtc = new Date(endOfDay(currentDayLocal).getTime());
+
+      const activeExceptions = timeline.exceptions.filter((e) => e.startDate <= currentDayEndUtc && e.endDate >= currentDayStartUtc);
+
+      const isFullyClosed = activeExceptions.find((e) => e.isClosed) ?? false;
+      if (isFullyClosed) {
+        days.push({
+          date: currentDateStr,
+          hasAvailability: false,
+          reason: 'SCHEDULE_EXCEPTION',
+          message: isFullyClosed.reason ?? undefined,
+          slots: [],
+        });
+        continue;
+      }
+
+      const exceptionBlocks = activeExceptions.flatMap((e) => e.blocks.map((b) => ({ opensAt: b.opensAt, closesAt: b.closesAt })));
 
       const slots = this.slotsGenerator.generate({
-        strategy: 'dynamic',
-        date: currentDate,
-        workBlocks,
-        busyBlocks,
-        serviceDuration,
-        config,
+        targetDate: currentDateStr,
+        timeZone,
+        serviceDuration: service.durationMinutes,
+        workingHours: effectiveWorkingHours,
+        slotInterval,
+        bufferMinutes,
+        minAdvancedMinutes,
+        maxAdvancedDays,
+        isFullyClosed,
+        exceptionBlocks,
+        busyIntervalsUtc: allBusyIntervals,
       });
 
-      if (this.hasSlots(slots)) {
-        return {
-          maxAdvancedDays,
-          nextAvailableDate: currentDate,
-          slots,
-        };
+      if (slots.length === 0) {
+        days.push({
+          date: currentDateStr,
+          hasAvailability: false,
+          reason: 'FULLY_BOOKED',
+          slots: [],
+        });
+        continue;
+      }
+
+      days.push({
+        date: currentDateStr,
+        hasAvailability: true,
+        reason: 'AVAILABLE',
+        slots,
+      });
+
+      if (stopOnFirstFound && i > 0 && slots.length > 0) {
+        break;
       }
     }
 
     return {
-      maxAdvancedDays,
-      nextAvailableDate: null,
-      slots: [],
+      timeZone,
+      days,
     };
   }
 
-  private findExceptionForDate(date: Date, dayOfWeek: number, exceptions: ScheduleException[]): ScheduleException | undefined {
-    const day = startOfDay(date);
-    return exceptions.find((ex) => !isAfter(startOfDay(ex.startDate), day) && !isAfter(day, startOfDay(ex.endDate)));
+  private async loadConfiguration(tenantId: string, professionalId: string, serviceId: string) {
+    const { settings, professional, service } = await this.availabilityRepository.getConfigurationContext(
+      tenantId,
+      professionalId,
+      serviceId,
+    );
+
+    if (!settings) throw new NotFoundException('Configuración de negocio no encontrada.');
+    if (!service) throw new NotFoundException('Servicio inactivo o inexistente.');
+    if (!professional) throw new NotFoundException('Profesional no asignado al servicio.');
+
+    return { settings, professional, service };
   }
 
-  private groupExceptionsByDay(exceptions: ScheduleException[]): Map<string, ScheduleException> {
-    const map = new Map<string, ScheduleException>();
-    const getKey = (date: Date) => format(date, 'yyyy-MM-dd');
-
-    for (const exception of exceptions) {
-      let current = startOfDay(exception.startDate);
-      const end = startOfDay(exception.endDate);
-
-      while (!isAfter(current, end)) {
-        map.set(getKey(current), exception);
-        current = addDays(current, 1);
-      }
-    }
-    return map;
-  }
-
-  private groupBusyBlocksByDay(appointments: AppointmentsWithBlocks[], timeZone: string): Map<string, Block[]> {
-    const map = new Map<string, Block[]>();
-    const getKey = (date: Date) => format(date, 'yyyy-MM-dd');
+  private extractBusyIntervals(
+    appointments: Array<{ startsAt: Date; endsAt: Date; blocks?: Array<{ startsAt: Date; endsAt: Date }> }>,
+  ): BusyIntervalUtc[] {
+    const intervals: BusyIntervalUtc[] = [];
 
     for (const appt of appointments) {
-      for (const block of appt.blocks) {
-        const localStartTime = toZonedTime(block.startsAt, timeZone);
-        const localEndTime = toZonedTime(block.endsAt, timeZone);
-        const key = getKey(localStartTime);
-        if (!map.has(key)) map.set(key, []);
-        map.get(key)!.push({
-          opensAt: dateToMinutes(localStartTime, timeZone),
-          closesAt: dateToMinutes(localEndTime, timeZone),
-        });
+      intervals.push({ startsAt: appt.startsAt, endsAt: appt.endsAt });
+      if (appt.blocks) {
+        for (const block of appt.blocks) {
+          intervals.push({ startsAt: block.startsAt, endsAt: block.endsAt });
+        }
       }
     }
-    return map;
+
+    return intervals;
   }
 
-  private resolveBusyBlocks(appointments: AppointmentsWithBlocks[], timeZone: string): Block[] {
-    const blocks: Block[] = [];
-    for (const appt of appointments) {
-      for (const block of appt.blocks) {
-        const localStartTime = toZonedTime(block.startsAt, timeZone);
-        const localEndTime = toZonedTime(block.endsAt, timeZone);
+  private buildDayContext(params: {
+    currentDayLocal: TZDate;
+    timeZone: string;
+    timeline: Awaited<ReturnType<AvailabilityRepository['getTimelineForRange']>>;
+    settings: any;
+    professional: any;
+    service: any;
+    busyIntervalsUtc: BusyIntervalUtc[];
+  }): GenerateSlotsContext {
+    const { currentDayLocal, timeZone, timeline, settings, professional, service, busyIntervalsUtc } = params;
 
-        blocks.push({
-          opensAt: dateToMinutes(localStartTime, timeZone),
-          closesAt: dateToMinutes(localEndTime, timeZone),
-        });
-      }
-    }
-    return blocks;
-  }
+    const dayOfWeek = getDay(currentDayLocal);
+    const currentDateStr = format(currentDayLocal, 'yyyy-MM-dd');
 
-  private resolveWorkingHours(workingHours: WorkingHour[], day: number, exception?: ScheduleException): Block[] {
-    if (exception) {
-      if (exception.isClosed) return [];
-      return exception.blocks;
-    }
+    const hasCustomSchedule = timeline.professionalHours.length > 0;
+    const workingHours = hasCustomSchedule
+      ? timeline.professionalHours.filter((h) => h.dayOfWeek === dayOfWeek)
+      : timeline.tenantHours.filter((h) => h.dayOfWeek === dayOfWeek);
 
-    const blocks: Block[] = [];
-    for (const wh of workingHours) {
-      if (wh.dayOfWeek === day) {
-        blocks.push({
-          opensAt: wh.opensAt,
-          closesAt: wh.closesAt,
-        });
-      }
-    }
-    return blocks;
-  }
+    const currentDayStartUtc = new Date(startOfDay(currentDayLocal).getTime());
+    const currentDayEndUtc = new Date(endOfDay(currentDayLocal).getTime());
 
-  private isWithinWorkingHours(startsAt: Date, endsAt: Date, workBlocks: Block[], timeZone: string): boolean {
-    const startMinutes = dateToMinutes(startsAt, timeZone);
-    const endMinutes = dateToMinutes(endsAt, timeZone);
+    const activeExceptions = timeline.exceptions.filter((e) => e.startDate <= currentDayEndUtc && e.endDate >= currentDayStartUtc);
 
-    return workBlocks.some((block) => {
-      return startMinutes >= block.opensAt && endMinutes <= block.closesAt;
-    });
-  }
+    const isFullyClosed = activeExceptions.some((e) => e.isClosed);
+    const exceptionBlocks = activeExceptions.flatMap((e) => e.blocks.map((b) => ({ opensAt: b.opensAt, closesAt: b.closesAt })));
 
-  private isOverlapping(startsAt: Date, endsAt: Date, busyBlocks: Block[], timeZone: string) {
-    const startMinutes = dateToMinutes(startsAt, timeZone);
-    const endMinutes = dateToMinutes(endsAt, timeZone);
-
-    return busyBlocks.some((block) => startMinutes < block.closesAt && endMinutes > block.opensAt);
+    return {
+      targetDate: currentDateStr,
+      timeZone,
+      serviceDuration: service.durationMinutes,
+      slotInterval: professional.slotIntervalMinutes || settings.slotIntervalMinutes || 30,
+      bufferMinutes: settings.bufferTimeMinutes ?? 0,
+      minAdvancedMinutes: professional.minAdvancedMinutes ?? settings.minAdvancedMinutes ?? 30,
+      maxAdvancedDays: professional.maxAdvancedDays ?? settings.maxAdvancedDays ?? 30,
+      workingHours,
+      isFullyClosed,
+      exceptionBlocks,
+      busyIntervalsUtc,
+    };
   }
 }
