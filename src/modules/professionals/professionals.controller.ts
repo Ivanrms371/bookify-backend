@@ -53,7 +53,7 @@ export class ProfessionalsController {
     return this.professionalsService.delete(tenantId, id);
   }
 
-  @Permissions(PERMISSIONS.PROFESSIONAL_CREATE)
+  @Permissions(PERMISSIONS.PROFESSIONAL_UPDATE)
   @Post(':id/services/:serviceId')
   async addService(
     @Req() req: AuthenticatedRequest,
@@ -64,7 +64,7 @@ export class ProfessionalsController {
     return this.professionalsService.addService({ professionalId: id, serviceId, tenantId });
   }
 
-  @Permissions(PERMISSIONS.PROFESSIONAL_DELETE)
+  @Permissions(PERMISSIONS.PROFESSIONAL_UPDATE)
   @Delete(':id/services/:serviceId')
   async deleteService(
     @Req() req: AuthenticatedRequest,
