@@ -1,211 +1,226 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { VerificationsRepository } from '../repositories/verifications.repository';
-import { CodeGeneratorService } from './code-generator.service';
-import { VerificationLocksService } from './verification-locks.service';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import * as crypto from 'crypto';
+import { VerificationsRepository } from '../verifications.repository';
+import { CreateVerificationDto } from '../domain/dto/create-verification.dto';
+import { VerifyOtpDto } from '../domain/dto/verify-otp.dto';
+import {
+  getVerificationExpiresAt,
+  isOtpVerification,
+  isMagicLinkVerification,
+  VERIFICATION_MAX_ATTEMPTS,
+} from '../domain/verification-rules';
+import { VerifyTokenDto } from '../domain/dto/verify-token.dto';
 import { VerificationType } from 'src/generated/prisma/enums';
-import { CreateVerificationParams } from '../types/verification.interface';
-import { channel } from 'diagnostics_channel';
+import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
+import { CustomersService } from 'src/modules/customers/customers.service';
+import { UsersService } from 'src/modules/users/users.service';
+import { PrismaService } from 'src/shared/prisma/prisma.service';
 
 @Injectable()
 export class VerificationsService {
-  private readonly logger = new Logger(VerificationsService.name);
-  private readonly maxAttempts = 3;
-
   constructor(
-    private readonly verificationsRepository: VerificationsRepository,
-    private readonly codeGenerator: CodeGeneratorService,
-    private readonly lockService: VerificationLocksService,
+    private readonly prisma: PrismaService,
+    private readonly repository: VerificationsRepository,
+    private readonly usersService: UsersService,
+    private readonly customersService: CustomersService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  /**
-   *  Create code verification
-   */
-  async createCodeVerification({ userId, type, address }: CreateVerificationParams) {
-    await this.lockService.checkLock(userId);
-
-    // generate code
-    const code = this.codeGenerator.generateNumericCode();
-    const codeHash = this.codeGenerator.generateCodeHash(code);
-
-    // expires
-    const expiresAt = new Date();
-    expiresAt.setMinutes(expiresAt.getMinutes() + 15);
-
-    // create verification
-    const verification = await this.verificationsRepository.create({
-      type,
-      userId,
-      codeHash,
-      expiresAt,
-      address,
-      maxAttempts: this.maxAttempts,
-    });
-
-    this.logger.log(`Verification created for user ${userId}`);
-
-    // return code (plaintext) to send to user
-    return {
-      verification,
-      code,
-    };
+  private sha256(val: string): string {
+    return crypto.createHash('sha256').update(val).digest('hex');
   }
 
-  /**
-   * Create token verification
-   */
-  async createTokenVerification({ userId, type, address }: CreateVerificationParams) {
-    const existing = await this.verificationsRepository.findPendingVerificationByUserAndType(userId, type);
-
-    if (existing && this.maxAttempts <= existing.attempts) {
-      throw new BadRequestException('Has superado el límite de intentos');
+  private async emitVerificationCompleted(
+    record: { id: string; type: string; recipientId: string; recipientType: string },
+    tx: TransactionClient,
+  ) {
+    const verifiedAt = new Date();
+    switch (record.type) {
+      case VerificationType.CUSTOMER_PHONE_VERIFICATION:
+        await this.customersService.markPhoneAsVerified(record.recipientId, tx);
+        break;
+      case VerificationType.CUSTOMER_EMAIL_VERIFICATION:
+        await this.customersService.markEmailAsVerified(record.recipientId, tx);
+        break;
+      case VerificationType.USER_EMAIL_VERIFICATION:
+        await this.usersService.markEmailAsVerified(record.recipientId, tx);
+        break;
+      case VerificationType.USER_PHONE_VERIFICATION:
+        await this.usersService.markPhoneAsVerified(record.recipientId, tx);
+        break;
+      case VerificationType.PASSWORD_RESET:
+        break;
+      default:
+        throw new BadRequestException(`Type of verification doesn't supported: ${record.type}`);
     }
-
-    await this.lockService.checkLock(userId);
-
-    const { token, tokenHash } = this.codeGenerator.generateTokenAndHash();
-
-    const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + 1);
-
-    if (existing) {
-      await this.verificationsRepository.update(existing.id, {
-        tokenHash,
-        expiresAt,
-        address,
-        maxAttempts: this.maxAttempts,
-        sentCount: { increment: 1 },
-      });
-
-      this.logger.log(`Verification updated for user ${userId}`);
-
-      return token;
-    }
-
-    await this.verificationsRepository.create({
-      type,
-      userId,
-      tokenHash,
-      expiresAt,
-      address,
-      maxAttempts: this.maxAttempts,
-    });
-
-    this.logger.log(`Verification created for user ${userId}`);
-
-    return token;
   }
 
-  /**
-   * Verify code
-   */
-  async verifyCode(userId: string, type: VerificationType, code: string) {
-    // 1. check if is blocked
-    await this.lockService.checkLock(userId);
+  private async checkIfAlreadyVerified(type: VerificationType, recipientId: string, tenantId?: string): Promise<boolean> {
+    switch (type) {
+      case VerificationType.CUSTOMER_PHONE_VERIFICATION: {
+        if (!tenantId) {
+          throw new NotFoundException('Customer cannot be found.');
+        }
+        const customer = await this.customersService.findById(tenantId, recipientId);
+        return !!customer?.phoneVerifiedAt;
+      }
+      case VerificationType.CUSTOMER_EMAIL_VERIFICATION: {
+        if (!tenantId) {
+          throw new NotFoundException('Customer cannot be found.');
+        }
+        const customer = await this.customersService.findById(tenantId, recipientId);
+        return !!customer?.emailVerifiedAt;
+      }
+      case VerificationType.USER_EMAIL_VERIFICATION: {
+        const user = await this.usersService.findById(recipientId);
+        return !!user?.emailVerifiedAt;
+      }
+      case VerificationType.USER_PHONE_VERIFICATION: {
+        const user = await this.usersService.findById(recipientId);
+        return !!user?.phoneVerifiedAt;
+      }
+      case VerificationType.PASSWORD_RESET:
+        return false;
+      default:
+        return false;
+    }
+  }
 
-    // 2. find verification
-    const verification = await this.verificationsRepository.findPendingVerificationByUserAndType(userId, type);
+  async requestVerification(dto: CreateVerificationDto) {
+    const { type, recipientId, recipientType, tenantId } = dto;
+    const isOtp = isOtpVerification(type);
+    const isMagic = isMagicLinkVerification(type);
 
-    if (!verification) {
-      throw new NotFoundException('Código de verificación no encontrado');
+    if (!isOtp && !isMagic) {
+      throw new BadRequestException('Tipo de verificación no soportado');
     }
 
-    // 3. check expiration
-    if (verification.expiresAt < new Date()) {
-      throw new BadRequestException('Código de verificación expirado');
+    const isAlreadyVerified = await this.checkIfAlreadyVerified(type, recipientId, tenantId);
+    if (isAlreadyVerified) {
+      throw new BadRequestException('Ya se encuentra verificado');
     }
 
-    // 4. Check if locked
-    if (verification.lockedAt) {
-      throw new BadRequestException('Código bloqueado por múltiples intentos fallidos');
-    }
-
-    // 5. Check if is code verification
-    if (!verification.codeHash) {
-      throw new BadRequestException('Código de verificación no encontrado');
-    }
-
-    const isValid = this.codeGenerator.verifyCodeHash(code, verification.codeHash);
-    if (!isValid) {
-      // increase attempts
-      await this.verificationsRepository.incrementAttempts(verification.id);
-
-      const attemptsLeft = verification.maxAttempts - verification.attempts - 1;
-
-      if (attemptsLeft <= 0) {
-        await this.verificationsRepository.lock(verification.id);
-        await this.lockService.lockForMaxAttempts({
-          address: verification.address,
-          userId,
-        });
-
-        throw new BadRequestException('Código bloqueado por múltiples intentos fallidos');
+    // Protección anti-spam: Cooldown de 60s y tope de envíos
+    const latest = await this.repository.findLatestActive(recipientId, recipientType, type);
+    if (latest) {
+      const elapsedSeconds = (Date.now() - latest.createdAt.getTime()) / 1000;
+      if (elapsedSeconds < 60) {
+        const wait = Math.ceil(60 - elapsedSeconds);
+        throw new BadRequestException(`Espera ${wait} segundos antes de solicitar otro código.`);
       }
 
-      throw new BadRequestException(`Código incorrecto. Te quedan ${attemptsLeft} intentos.`);
+      if (latest.sentCount >= 5) {
+        throw new BadRequestException('Has superado el límite de intentos para esta dirección. Intenta más tarde.');
+      }
     }
 
-    // Code valid
-    await this.verificationsRepository.markAsVerified(verification.id);
+    let token: string | undefined;
+    let tokenHash: string | undefined;
+    let code: string | undefined;
+    let codeHash: string | undefined;
 
-    this.logger.log(`Verification successful for user ${userId} (${type})`);
+    if (isMagic) {
+      token = crypto.randomBytes(32).toString('hex');
+      tokenHash = this.sha256(token);
+    } else {
+      code = crypto.randomInt(100000, 999999).toString();
+      codeHash = this.sha256(code);
+    }
 
-    return verification;
+    await this.repository.invalidateActive(recipientId, recipientType, type);
+
+    const expiresAt = getVerificationExpiresAt(type);
+
+    const record = await this.repository.create({
+      type,
+      recipientId,
+      recipientType,
+      tokenHash,
+      codeHash,
+      expiresAt,
+      maxAttempts: VERIFICATION_MAX_ATTEMPTS,
+      sentCount: (latest?.sentCount ?? 0) + 1,
+    });
+
+    this.eventEmitter.emit('verification.created', {
+      verificationId: record.id,
+      type: record.type,
+      recipientId: record.recipientId,
+      recipientType: record.recipientType,
+      token,
+      code,
+      expiresAt: record.expiresAt,
+    });
+
+    return { success: true };
   }
 
-  /**
-   * Verify token
-   */
-  async verifyToken(token: string) {
-    // 1. Get hash of the token
-    const tokenHash = this.codeGenerator.hashToken(token);
+  async verifyToken(dto: VerifyTokenDto) {
+    const { token, type } = dto;
+    const tokenHash = this.sha256(token);
 
-    // 2. find verification
-    const verification = await this.verificationsRepository.findByToken(tokenHash);
+    const record = await this.repository.findByTokenHash(tokenHash);
 
-    // 3. Check if exists
-    if (!verification) {
-      throw new NotFoundException({
-        status: 404,
-        error: 'verification_not_found',
-        message: 'No hemos encontrado ninguna solicitud de verificación.',
-      });
+    if (!record || record.type !== type) {
+      throw new NotFoundException('Verificación no encontrada o inválida');
     }
 
-    // 4. Check if is not expired
-    if (verification.expiresAt < new Date()) {
-      throw new BadRequestException({
-        status: 400,
-        error: 'verification_expired',
-        message: 'La verificación ha expirado.',
-      });
+    if (record.verifiedAt !== null) {
+      throw new BadRequestException('La verificación ya fue utilizada');
     }
 
-    // 5. Check if is not verified
-    if (verification.verifiedAt) {
-      throw new BadRequestException({
-        status: 400,
-        error: 'email_already_verified',
-        message: 'Este enlance ya ha sido utilizado.',
-      });
+    if (record.expiresAt < new Date()) {
+      throw new BadRequestException('La verificación ha expirado');
     }
 
-    // 6. Mark as verified
-    await this.verificationsRepository.markAsVerified(verification.id);
+    if (record.lockedAt !== null) {
+      throw new BadRequestException('La verificación está bloqueada');
+    }
 
-    this.logger.log(`Token verified for user ${verification.userId} (${verification.type})`);
-    return { success: true, userId: verification.userId, type: verification.type };
+    await this.prisma.$transaction(async (tx) => {
+      await this.repository.markAsVerified(record.id, tx);
+      await this.emitVerificationCompleted(record, tx);
+    });
+
+    return { success: true, recipientId: record.recipientId, recipientType: record.recipientType };
   }
 
-  /**
-   * Resend code
-   */
-  async resendCode({ userId, type, address }: CreateVerificationParams) {
-    const verification = await this.verificationsRepository.findPendingVerificationByUserAndType(userId, type);
+  async verifyCode(dto: VerifyOtpDto) {
+    const { recipientId, recipientType, type, code } = dto;
+    const record = await this.repository.findLatestActive(recipientId, recipientType, type);
 
-    if (!verification) {
-      throw new NotFoundException('Código de verificación no encontrado');
+    if (!record || !record.codeHash) {
+      throw new NotFoundException('No hay una verificación activa para esta dirección');
     }
 
-    return await this.createTokenVerification({ userId, type, address });
+    if (record.verifiedAt !== null) {
+      throw new BadRequestException('El código ya fue utilizado');
+    }
+
+    if (record.expiresAt < new Date()) {
+      throw new BadRequestException('El código de verificación ha expirado');
+    }
+
+    if (record.lockedAt !== null) {
+      throw new BadRequestException('El código está bloqueado por demasiados intentos fallidos');
+    }
+
+    const inputHash = Buffer.from(this.sha256(code), 'hex');
+    const targetHash = Buffer.from(record.codeHash, 'hex');
+
+    const isValid = inputHash.length === targetHash.length && crypto.timingSafeEqual(inputHash, targetHash);
+
+    if (!isValid) {
+      await this.repository.registerFailedAttempt(record.id, record.attempts, record.maxAttempts);
+      throw new BadRequestException('Código de verificación incorrecto');
+    }
+
+    await this.prisma.$transaction(async (tx) => {
+      await this.repository.markAsVerified(record.id, tx);
+      await this.emitVerificationCompleted(record, tx);
+    });
+
+    return { success: true, recipientId: record.recipientId, recipientType: record.recipientType };
   }
 }

@@ -1,57 +1,29 @@
-// verification.controller.ts
-import { Controller, Get, Post, Body, Query, Res, Ip, Headers, Request } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { VerificationsService } from './core/verifications.service';
+import { CreateVerificationDto } from './domain/dto/create-verification.dto';
+import { VerifyOtpDto } from './domain/dto/verify-otp.dto';
+import { VerifyTokenDto } from './domain/dto/verify-token.dto';
+import { Public } from 'src/common/security/decorators/public.decorator';
+// import { Throttle } from '@nestjs/throttler'; // TODO: add if @nestjs/throttler is configured
 
-// Strategies hacen todo el trabajo
-import { EmailVerificationStrategy } from './strategies/email-verification.strategy';
-import { PhoneVerificationStrategy } from './strategies/phone-verification.strategy';
-import { PasswordResetStrategy } from './strategies/password-reset.strategy';
-
-@Controller('verification')
+@Public()
+@Controller('verifications')
 export class VerificationsController {
-  constructor(
-    private emailVerification: EmailVerificationStrategy,
-    private phoneVerification: PhoneVerificationStrategy,
-    private passwordReset: PasswordResetStrategy,
-  ) {}
+  constructor(private readonly verificationsService: VerificationsService) {}
 
-  @Get('email/confirm')
-  async confirmEmail(@Query('token') token: string, @Ip() ip: string, @Headers('user-agent') userAgent: string, @Res() res: Response) {
-    return this.emailVerification.confirmEmail(token);
+  @Post('request')
+  // @Throttle({ default: { limit: 3, ttl: 60000 } })
+  async requestVerification(@Body() dto: CreateVerificationDto) {
+    return this.verificationsService.requestVerification(dto);
   }
 
-  @Post('email/resend')
-  async resendEmail(@Body('email') email: string) {
-    return this.emailVerification.resendVerificationEmail(email);
+  @Post('verify')
+  async verifyToken(@Body() dto: VerifyTokenDto) {
+    return this.verificationsService.verifyToken(dto);
   }
 
-  // @Post('phone/send')
-  // async sendPhoneCode(@Request() req, @Body('phone') phone: string) {
-  //   return this.phoneVerification.sendVerificationCode(req.user.id, phone, req.user.tenantId, req.ip);
-  // }
-
-  // @Post('phone/verify')
-  // async verifyPhone(@Request() req, @Body('code') code: string) {
-  //   return this.phoneVerification.verifyPhone(req.user.id, code);
-  // }
-
-  // @Post('phone/resend')
-  // async resendPhoneCode(@Request() req) {
-  //   return this.phoneVerification.resendVerificationCode(req.user.id);
-  // }
-
-  // @Post('password/request')
-  // async requestPasswordReset(@Body('email') email: string, @Ip() ip: string) {
-  //   return this.passwordReset.requestReset(email, ip);
-  // }
-
-  // @Get('password/verify')
-  // async verifyResetToken(@Query('token') token: string) {
-  //   return this.passwordReset.verifyToken(token);
-  // }
-
-  // @Post('password/reset')
-  // async resetPassword(@Body('token') token: string, @Body('newPassword') newPassword: string) {
-  //   return this.passwordReset.resetPassword(token, newPassword);
-  // }
+  @Post('verify-code')
+  async verifyCode(@Body() dto: VerifyOtpDto) {
+    return this.verificationsService.verifyCode(dto);
+  }
 }
