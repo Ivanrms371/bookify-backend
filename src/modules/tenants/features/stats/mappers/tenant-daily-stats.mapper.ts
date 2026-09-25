@@ -1,8 +1,4 @@
-import { 
-  eachDayOfInterval, 
-  isSameDay, 
-  startOfDay 
-} from 'date-fns';
+import { eachDayOfInterval, isSameDay, startOfDay } from 'date-fns';
 import { TenantDailyStats } from 'src/generated/prisma/client';
 import { TenantDailyStat } from '../types/tenant-daily-stats.type';
 
@@ -21,20 +17,14 @@ export class TenantDailyStatsMapper {
     };
   }
 
-  static toDomainList(
-    raw: Partial<TenantDailyStats>[], 
-    startDate: Date, 
-    endDate: Date
-  ): Partial<TenantDailyStat>[] {
+  static toDomainList(raw: Partial<TenantDailyStats>[], startDate: Date, endDate: Date): Partial<TenantDailyStat>[] {
     const allDaysInInterval = eachDayOfInterval({
       start: startOfDay(startDate),
       end: startOfDay(endDate),
     });
 
     return allDaysInInterval.map((currentDay) => {
-      const statsForDay = raw.filter((r) => 
-        r.date && isSameDay(new Date(r.date), currentDay)
-      );
+      const statsForDay = raw.filter((r) => r.date && isSameDay(new Date(r.date), currentDay));
 
       if (statsForDay.length === 0) {
         return {
@@ -52,7 +42,7 @@ export class TenantDailyStatsMapper {
       return statsForDay.reduce((acc, curr) => {
         const mapped = this.toDomain(curr);
         return {
-          date: currentDay, 
+          date: currentDay,
           revenue: (acc.revenue || 0) + (mapped.revenue || 0),
           appointments: (acc.appointments || 0) + (mapped.appointments || 0),
           confirmed: (acc.confirmed || 0) + (mapped.confirmed || 0),

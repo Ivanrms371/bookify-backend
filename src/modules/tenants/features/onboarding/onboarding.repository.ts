@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { BaseRepository } from 'src/common/database/base.repository';
 import { Tenant } from 'src/generated/prisma/client';
 import { MembershipRole, OnboardingStatus } from 'src/generated/prisma/enums';
-import { ServiceCreateManyInput, TenantUpdateInput } from 'src/generated/prisma/models';
+import { ServiceCreateManyInput, TenantUpdateInput, TenantWorkingHoursCreateManyInput } from 'src/generated/prisma/models';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { TenantOnboardingRaw } from './types/onboarding-raw.types';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
@@ -65,7 +65,7 @@ export class TenantOnboardingRepository extends BaseRepository {
         },
         professionals: {
           create: {
-            displayName: ownerName,
+            name: ownerName, email: "", phoneCountryCode: "", phoneNumber: "",
             user: { connect: { id: userId } },
           },
         },
@@ -94,22 +94,22 @@ export class TenantOnboardingRepository extends BaseRepository {
     });
   }
 
-  async finalizeAndActivateTenant(tenantId: string): Promise<Tenant> {
-    return this.prisma.tenant.update({
+  async completeOnboarding(tenantId: string, tx?: TransactionClient): Promise<Tenant> {
+    return this.db(tx).tenant.update({
       where: { id: tenantId },
       data: {
         isActive: true,
         isPublic: true,
         onboardingStatus: OnboardingStatus.COMPLETED,
-
-        settings: {
-          create: {},
-        },
-        lifetimeStats: {
-          create: {},
-        },
+        settings: { create: {} },
+        lifetimeStats: { create: {} },
       },
     });
+  }
+
+  async replaceSchedules(tenantId: string, data: TenantWorkingHoursCreateManyInput[], tx?: TransactionClient): Promise<void> {
+    await this.db(tx).tenantWorkingHours.deleteMany({ where: { tenantId } });
+    await this.db(tx).tenantWorkingHours.createMany({ data });
   }
 
   async replaceServices(tenantId: string, data: ServiceCreateManyInput[], tx?: TransactionClient): Promise<void> {

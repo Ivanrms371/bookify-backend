@@ -1,69 +1,23 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { TenantsRepository } from './repositories/tenants.repository';
-import { CreateTenantDto } from './dto/create-tenant.dto';
-import { generateSlugTenant } from './utils/generate-slug.util';
-import { mapOnboardingStatus } from './mappers/onboarding-status.mapper';
-import { UpdateTenantAddressDto } from './dto/update-tenant-address.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { TenantsRepository } from './tenants.repository';
 
 @Injectable()
 export class TenantsService {
   constructor(private readonly tenantsRepository: TenantsRepository) {}
 
-  async findTenantByIdAndValidate(userId: string, tenantId: string) {
-    const tenant = await this.tenantsRepository.findById(tenantId);
-    if (!tenant) {
-      throw new NotFoundException('No se ha encontrado el negocio');
-    }
+  findBySlug(tenantSlug: string) {
+    return this.tenantsRepository.findBySlug(tenantSlug);
   }
 
-  async findTenantById(tenantId: string) {
-    const tenant = await this.tenantsRepository.findById(tenantId);
+  findPublicBySlug(tenantSlug: string) {
+    return this.tenantsRepository.findPublicBySlug(tenantSlug);
+  }
+
+  async findById(id: string) {
+    const tenant = await this.tenantsRepository.findById(id);
     if (!tenant) {
-      throw new Error('Tenant not found');
+      throw new NotFoundException('Tenant not found');
     }
     return tenant;
-  }
-
-  async findBySlug(slug: string) {
-    const tenant = await this.tenantsRepository.findBySlug(slug);
-    if (!tenant) {
-      throw new NotFoundException('No se ha encontrado el negocio');
-    }
-    return tenant;
-  }
-
-  async createTenant(userId: string, data: CreateTenantDto) {
-    const slug = generateSlugTenant(data.slug);
-    const tenantExists = await this.tenantsRepository.findBySlug(slug);
-    if (tenantExists) {
-      throw new BadRequestException('La URL ya existe');
-    }
-    return await this.tenantsRepository.create(userId, { ...data, slug });
-  }
-
-  async getStatus(userId: string) {
-    const tenantId = await this.tenantsRepository.findByUserId(userId);
-    if (!tenantId) {
-      throw new NotFoundException('No se ha encontrado el negocio');
-    }
-    // return mapOnboardingStatus(tenantId);
-  }
-
-  async updateAddress(tenantId: string, dto: UpdateTenantAddressDto) {
-    const tenant = await this.tenantsRepository.findById(tenantId);
-    if (!tenant) {
-      throw new NotFoundException('No se ha encontrado el negocio');
-    }
-    return this.tenantsRepository.updateAddress(tenantId, dto);
-  }
-
-  async completeOnboarding(tenantId: string) {
-    const tenant = await this.tenantsRepository.findById(tenantId);
-    if (!tenant) {
-      throw new NotFoundException('No se ha encontrado el negocio');
-    }
-
-    const updated = await this.tenantsRepository.markOnboardingAsCompleted(tenantId);
-    return { onboardingStatus: updated.onboardingStatus };
   }
 }

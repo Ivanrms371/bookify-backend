@@ -15,7 +15,7 @@ export class UpdateGeneralSettingsDto {
 
   @IsOptional()
   @IsString()
-  phone?: string;
+  phoneNumber?: string;
 
   @IsOptional()
   @IsString()

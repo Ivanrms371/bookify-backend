@@ -1,4 +1,4 @@
-export class MembershipInvitedEvent {
+export class InvitationCreatedEvent {
   constructor(
     public readonly tenantId: string,
     public readonly userId: string,

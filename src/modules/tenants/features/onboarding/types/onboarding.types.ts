@@ -2,6 +2,8 @@ import { Step } from '../config/onboarding-steps.config';
 import { OnboardingStatus, TenantType, WorkspaceType } from 'src/generated/prisma/enums';
 import { TenantOnboardingRaw } from './onboarding-raw.types';
 
+import type { WorkingHoursResponse } from '../mappers/working-hour.mapper';
+
 export type OnboardingSavedData = {
   workspaceType: WorkspaceType | null;
   name: string | null;
@@ -10,7 +12,7 @@ export type OnboardingSavedData = {
   logoUrl: string | null;
   coverUrl: string | null;
   colorTheme: string | null;
-  workingHours: TenantOnboardingRaw['tenantWorkingHours'];
+  workingHours: WorkingHoursResponse;
   services: TenantOnboardingRaw['services'];
 };
 

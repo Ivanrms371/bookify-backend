@@ -1,17 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { BaseRepository } from 'src/common/database/base.repository';
-import { TenantSettingsCreateInput, TenantSettingsUpdateInput } from 'src/generated/prisma/models';
-import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 import { UpdateGeneralSettingsDto } from './dto/update-general-settings.dto';
 import { UpdateAppointmentSettingsDto } from './dto/update-appointment-settings.dto';
+import {
+  RawTenantSettingsResponse,
+  TenantAppointmentConfigResponse,
+  UpdateTenantGeneralSettingsResponse,
+  UpdateTenantAppointmentSettingsResponse,
+} from './types/tenant-settings.types';
 
 @Injectable()
-export class SettingsRepository extends BaseRepository {
+export class TenantSettingsRepository extends BaseRepository {
   constructor(prisma: PrismaService) {
     super(prisma);
   }
-  async getSettings(tenantId: string) {
+  async getSettings(tenantId: string): Promise<RawTenantSettingsResponse | null> {
     return this.db().tenant.findUnique({
       where: { id: tenantId },
       select: {
@@ -21,7 +25,7 @@ export class SettingsRepository extends BaseRepository {
         logoPublicId: true,
         coverUrl: true,
         coverPublicId: true,
-        phone: true,
+        phoneNumber: true,
         addressLine1: true,
         addressLine2: true,
         city: true,
@@ -53,7 +57,13 @@ export class SettingsRepository extends BaseRepository {
     });
   }
 
-  async updateGeneralSettings(tenantId: string, data: UpdateGeneralSettingsDto) {
+  async getAppointmentConfig(tenantId: string): Promise<TenantAppointmentConfigResponse | null> {
+    return this.prisma.tenantSettings.findUnique({
+      where: { tenantId },
+    });
+  }
+
+  async updateGeneralSettings(tenantId: string, data: UpdateGeneralSettingsDto): Promise<UpdateTenantGeneralSettingsResponse> {
     const { timeZone, ...tenantData } = data;
 
     return this.db().tenant.update({
@@ -71,7 +81,7 @@ export class SettingsRepository extends BaseRepository {
     });
   }
 
-  async updateAppointmentSettings(tenantId: string, data: UpdateAppointmentSettingsDto) {
+  async updateAppointmentSettings(tenantId: string, data: UpdateAppointmentSettingsDto): Promise<UpdateTenantAppointmentSettingsResponse> {
     return this.db().tenant.update({
       where: { id: tenantId },
       data: {

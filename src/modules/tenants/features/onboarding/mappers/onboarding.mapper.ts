@@ -13,23 +13,23 @@ export class OnboardingMapper {
     };
 
     switch (raw.workspaceType) {
-      case WorkspaceType.MULTI_STAFF:
+      case WorkspaceType.TEAM:
         return {
           ...base,
-          workspaceType: WorkspaceType.MULTI_STAFF,
-          steps: OnboardingStepMapper.forWorkspaceType(raw.workspaceType, raw.onboardingStatus as StepId),
+          workspaceType: WorkspaceType.TEAM,
+          steps: OnboardingStepMapper.forWorkspaceType(raw.workspaceType, raw.onboardingStatus),
         };
-      case WorkspaceType.INDEPENDENT:
+      case WorkspaceType.INDIVIDUAL:
         return {
           ...base,
-          workspaceType: WorkspaceType.INDEPENDENT,
-          steps: OnboardingStepMapper.forWorkspaceType(raw.workspaceType, raw.onboardingStatus as StepId),
+          workspaceType: WorkspaceType.INDIVIDUAL,
+          steps: OnboardingStepMapper.forWorkspaceType(raw.workspaceType, raw.onboardingStatus),
         };
       default:
         return {
           ...base,
-          workspaceType: WorkspaceType.MULTI_STAFF,
-          steps: OnboardingStepMapper.forWorkspaceType(WorkspaceType.MULTI_STAFF, raw.onboardingStatus as StepId),
+          workspaceType: WorkspaceType.INDIVIDUAL,
+          steps: OnboardingStepMapper.forWorkspaceType(WorkspaceType.INDIVIDUAL, raw.onboardingStatus),
         };
     }
   }

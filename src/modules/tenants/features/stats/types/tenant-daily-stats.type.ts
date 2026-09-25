@@ -1,4 +1,3 @@
-
 export interface TenantDailyStat {
   date: Date;
   revenue: number;

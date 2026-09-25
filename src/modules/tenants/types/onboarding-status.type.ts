@@ -11,7 +11,7 @@ export interface TenantInput {
   province: string | null;
   city: string | null;
   country: string | null;
-  phone: string | null;
+  phoneNumber: string | null;
   logoUrl: string | null;
   coverUrl: string | null;
   onboardingCompleted: boolean;

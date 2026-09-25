@@ -1,7 +1,7 @@
 import type { TenantOnboardingRaw } from '../types/onboarding-raw.types';
 import type { OnboardingSavedData } from '../types/onboarding.types';
 import { ServiceMapper } from './service.mapper';
-import { WorkingHourMapper } from './working-hour.mapper';
+import { WorkingHoursMapper } from './working-hour.mapper';
 
 export class OnboardingSavedDataMapper {
   static toResponse(raw: TenantOnboardingRaw): OnboardingSavedData {
@@ -13,7 +13,7 @@ export class OnboardingSavedDataMapper {
       logoUrl: raw.logoUrl,
       coverUrl: raw.coverUrl,
       colorTheme: raw.colorTheme,
-      workingHours: raw.tenantWorkingHours.map(WorkingHourMapper.toResponse),
+      workingHours: WorkingHoursMapper.toResponse(raw.tenantWorkingHours),
       services: raw.services.map(ServiceMapper.toResponse),
     };
   }

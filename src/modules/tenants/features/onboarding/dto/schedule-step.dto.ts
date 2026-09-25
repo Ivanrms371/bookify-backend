@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsString, Matches, ValidateNested } from 'class-validator';
-import { DayOfWeek } from 'src/common/constants/day-of-week.constants';
+import { IsArray, IsBoolean, IsIn, IsNotEmpty, IsOptional, IsString, Matches, ValidateNested } from 'class-validator';
+import { DAY_OF_WEEK_VALUES, DayOfWeek } from 'src/common/constants/day-of-week.constants';
 
 class ScheduleIntervalDto {
   @IsString()
@@ -16,7 +16,11 @@ class ScheduleIntervalDto {
 
 class ScheduleWorkingHourDto {
   @IsString()
+  @IsIn(DAY_OF_WEEK_VALUES)
   dayOfWeek: DayOfWeek;
+
+  @IsBoolean()
+  isActive: boolean;
 
   @IsArray()
   @ValidateNested({ each: true })

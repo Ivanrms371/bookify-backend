@@ -3,7 +3,7 @@ import { IsOptional, IsString } from 'class-validator';
 export class UpdateTenantAddressDto {
   @IsString()
   @IsOptional()
-  phone?: string;
+  phoneNumber?: string;
 
   @IsString()
   @IsOptional()
