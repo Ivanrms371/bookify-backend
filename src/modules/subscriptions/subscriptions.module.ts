@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { PlansModule } from 'src/modules/plans/plans.module';
-import { MercadoPagoModule } from 'src/shared/integrations/mercadopago/mercadopago.module';
 import { WebhookModule } from 'src/common/webhooks/webhook.module';
 import { NotificationsModule } from 'src/modules/notifications/notifications.module';
 import { SubscriptionsController } from './subscriptions.controller';
 import { SubscriptionsService } from './subscriptions.service';
 import { SubscriptionsRepository } from './subscriptions.repository';
-import { AuthModule } from 'src/auth/auth.module';
+import { PlansService } from './plans.service';
+import { LemonSqueezyModule } from 'src/shared/integrations/lemon-squeezy/lemon-squeezy.module';
 
 @Module({
-  imports: [AuthModule, PlansModule, MercadoPagoModule, WebhookModule, NotificationsModule],
+  imports: [LemonSqueezyModule, WebhookModule, NotificationsModule],
   controllers: [SubscriptionsController],
-  providers: [SubscriptionsService, SubscriptionsRepository],
+  providers: [SubscriptionsService, PlansService, SubscriptionsRepository],
+  exports: [SubscriptionsService],
 })
 export class SubscriptionsModule {}
