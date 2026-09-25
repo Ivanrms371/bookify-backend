@@ -26,6 +26,7 @@ export const PERMISSIONS = {
   PROFESSIONAL_READ: 'professional:read',
   PROFESSIONAL_CREATE: 'professional:create',
   PROFESSIONAL_UPDATE: 'professional:update',
+  PROFESSIONAL_UPDATE_SELF: 'professional:update_self',
   PROFESSIONAL_DELETE: 'professional:delete',
 
   // Staff
@@ -35,6 +36,8 @@ export const PERMISSIONS = {
   TEAM_DELETE: 'team:delete',
   SCHEDULE_READ: 'schedule:read',
   SCHEDULE_UPDATE: 'schedule:update',
+  SCHEDULE_UPDATE_SELF: 'schedule:update_self',
+  SCHEDULE_EXCEPTION_UPDATE: 'schedule_exception:update',
 
   // Tenant
   TENANT_READ: 'tenant:read',

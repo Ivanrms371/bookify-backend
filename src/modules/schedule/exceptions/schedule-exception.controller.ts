@@ -23,19 +23,19 @@ export class ScheduleExceptionController {
     return this.scheduleExceptionService.findById(tenantId, id);
   }
 
-  @Permissions(PERMISSIONS.SCHEDULE_UPDATE)
+  @Permissions(PERMISSIONS.SCHEDULE_EXCEPTION_UPDATE)
   @Post()
   create(@GetTenantId() tenantId: string, @Body() dto: CreateScheduleExceptionDto) {
     return this.scheduleExceptionService.create(tenantId, dto);
   }
 
-  @Permissions(PERMISSIONS.SCHEDULE_UPDATE)
+  @Permissions(PERMISSIONS.SCHEDULE_EXCEPTION_UPDATE)
   @Put(':id')
   update(@Param('id', ParseUUIDv7Pipe) id: string, @GetTenantId() tenantId: string, @Body() dto: UpdateScheduleExceptionDto) {
     return this.scheduleExceptionService.update(tenantId, id, dto);
   }
 
-  @Permissions(PERMISSIONS.SCHEDULE_UPDATE)
+  @Permissions(PERMISSIONS.SCHEDULE_EXCEPTION_UPDATE)
   @Delete(':id')
   delete(@Param('id', ParseUUIDv7Pipe) id: string, @GetTenantId() tenantId: string) {
     return this.scheduleExceptionService.delete(tenantId, id);

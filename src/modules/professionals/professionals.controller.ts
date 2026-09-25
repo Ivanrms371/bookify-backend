@@ -31,7 +31,7 @@ export class ProfessionalsController {
     return this.professionalsService.getByIdWithDetails(tenantId, id);
   }
 
-  @Permissions(PERMISSIONS.PROFESSIONAL_UPDATE)
+  @Permissions(PERMISSIONS.PROFESSIONAL_UPDATE_SELF)
   @Put('me/profile')
   async updateMyProfessionalProfile(
     @GetTenantId() tenantId: string,
@@ -39,6 +39,29 @@ export class ProfessionalsController {
     @Body() dto: UpdateProfessionalProfileDto,
   ) {
     return this.professionalsService.updateProfileByUser(tenantId, userId, dto);
+  }
+
+
+  @Permissions(PERMISSIONS.PROFESSIONAL_UPDATE_SELF)
+  @Post('me/services/:serviceId')
+  async addMyService(
+    @GetTenantId() tenantId: string,
+    @CurrentUser('id') userId: string,
+    @Param('serviceId') serviceId: string,
+  ) {
+    const prof = await this.professionalsService.findByUserId(tenantId, userId);
+    return this.professionalsService.addService({ professionalId: prof.id, serviceId, tenantId });
+  }
+
+  @Permissions(PERMISSIONS.PROFESSIONAL_UPDATE_SELF)
+  @Delete('me/services/:serviceId')
+  async deleteMyService(
+    @GetTenantId() tenantId: string,
+    @CurrentUser('id') userId: string,
+    @Param('serviceId') serviceId: string,
+  ) {
+    const prof = await this.professionalsService.findByUserId(tenantId, userId);
+    return this.professionalsService.removeService({ professionalId: prof.id, serviceId, tenantId });
   }
 
   @Permissions(PERMISSIONS.PROFESSIONAL_UPDATE)

@@ -4,8 +4,6 @@ import { CreateScheduleExceptionDto } from '../dto/create-schedule-exception.dto
 import { UpdateScheduleExceptionDto } from '../dto/update-schedule-exception.dto';
 import { isAfter } from 'date-fns';
 import { mapTimeIntervals } from '../mappers/map-time-interval.mapper';
-import { dayOfWeekToInt } from 'src/common/utils/day-of-week.util';
-import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { toScheduleExceptionResponse } from '../mappers/schedule-exception.mapper';
 
 @Injectable()

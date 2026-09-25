@@ -140,6 +140,14 @@ export class ProfessionalsService {
     });
   }
 
+  
+  async findByUserId(tenantId: string, userId: string) {
+    const professional = await this.professionalsRepository.findByUserId(tenantId, userId);
+    if (!professional) {
+      throw new NotFoundException('Perfil profesional no encontrado para este usuario');
+    }
+    return professional;
+  }
   async linkToUser(tenantId: string, id: string, userId: string, tx?: TransactionClient) {
     return this.professionalsRepository.update(tenantId, id, { user: { connect: { id: userId } } }, tx);
   }
