@@ -83,13 +83,7 @@ export class TenantSettingsRepository extends BaseRepository {
   }
 
   
-  async replaceWorkingHours(tenantId: string, data: { tenantId: string; dayOfWeek: number; opensAt: number; closesAt: number }[], tx?: TransactionClient): Promise<void> {
-    await this.db(tx).tenantWorkingHours.deleteMany({ where: { tenantId } });
-    if (data.length > 0) {
-      await this.db(tx).tenantWorkingHours.createMany({ data });
-    }
-  }
-
+  
   async updateAppointmentSettings(tenantId: string, data: UpdateAppointmentSettingsDto): Promise<UpdateTenantAppointmentSettingsResponse> {
     return this.db().tenant.update({
       where: { id: tenantId },

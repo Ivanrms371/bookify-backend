@@ -5,7 +5,6 @@ import { TenantSettingsService } from './tenant-settings.service';
 import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { UpdateGeneralSettingsDto } from './dto/update-general-settings.dto';
 import { UpdateAppointmentSettingsDto } from './dto/update-appointment-settings.dto';
-import { UpdateTenantWorkingHoursDto } from './dto/update-tenant-working-hours.dto';
 import {
   TenantSettingsResponse,
   UpdateTenantGeneralSettingsResponse,
@@ -31,18 +30,8 @@ export class TenantSettingsController {
     return this.tenantSettingsService.updateGeneralSettings(tenantId, updateDto);
   }
 
-  @Permissions(PERMISSIONS.TENANT_UPDATE)
+    @Permissions(PERMISSIONS.TENANT_UPDATE)
   @Patch('appointments')
-  
-  @Permissions(PERMISSIONS.TENANT_UPDATE)
-  @Patch('working-hours')
-  async updateWorkingHours(
-    @GetTenantId() tenantId: string,
-    @Body() updateDto: UpdateTenantWorkingHoursDto,
-  ) {
-    return this.tenantSettingsService.updateWorkingHours(tenantId, updateDto);
-  }
-
   async updateAppointmentSettings(
     @GetTenantId() tenantId: string,
     @Body() updateDto: UpdateAppointmentSettingsDto,
