@@ -101,17 +101,17 @@ export class ProfileMapper {
         phoneNumber: user.phoneNumber,
         birthDate: user.birthDate,
         bio: user.bio,
-      },
-      professional: professional ? {
-        id: professional.id,
-        name: professional.name,
-        email: professional.email,
-        profession: professional.profession,
-        bio: professional.bio,
-        avatarUrl: professional.avatarUrl,
-        colorTheme: professional.colorTheme,
-        slotIntervalMinutes: professional.slotIntervalMinutes,
-      } : null,
+        professional: professional ? {
+          id: professional.id,
+          name: professional.name,
+          email: professional.email,
+          profession: professional.profession,
+          bio: professional.bio,
+          avatarUrl: professional.avatarUrl,
+          colorTheme: professional.colorTheme,
+          slotIntervalMinutes: professional.slotIntervalMinutes,
+        } : null,
+      }
     };
   }
 }
