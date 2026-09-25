@@ -29,11 +29,11 @@ export class MembershipsRepository extends BaseRepository {
                 name: true,
                 avatarUrl: true,
                 colorTheme: true,
-              }
-            }
-          }
-        }
-      }
+              },
+            },
+          },
+        },
+      },
     });
   }
 

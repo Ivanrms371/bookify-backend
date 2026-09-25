@@ -14,6 +14,7 @@ export const PERMISSIONS = {
   CUSTOMER_READ: 'customer:read',
   CUSTOMER_UPDATE: 'customer:update',
   CUSTOMER_DELETE: 'customer:delete',
+  CUSTOMER_BLOCK: 'customer:block',
 
   // Services
   SERVICE_CREATE: 'service:create',

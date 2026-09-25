@@ -35,6 +35,7 @@ import { LemonSqueezyModule } from './shared/integrations/lemon-squeezy/lemon-sq
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './common/security/guards/jwt-auth.guard';
 import { TenantGuard } from './common/security/guards/tenant.guard';
+import { PermissionsGuard } from './common/security/guards/permissions.guard';
 import { SessionsModule } from './auth/sessions/sessions.module';
 import { TeamModule } from './modules/team/team.module';
 
@@ -86,6 +87,10 @@ import { TeamModule } from './modules/team/team.module';
     {
       provide: APP_GUARD,
       useClass: TenantGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionsGuard,
     },
   ],
 })

@@ -24,9 +24,7 @@ export class TeamService {
     const members = await this.membershipsService.findAll(tenantId);
     const invitations = await this.invitationsService.findPending(tenantId);
 
-    const formattedMembers = members
-      .filter((m) => m.isActive)
-      .map(TeamMapper.toTeamMemberDto);
+    const formattedMembers = members.filter((m) => m.isActive).map(TeamMapper.toTeamMemberDto);
 
     const formattedInvitations = invitations.map(TeamMapper.toPendingInvitationDto);
 
@@ -41,12 +39,16 @@ export class TeamService {
       const professional = await this.professionalsService.create(tenantId, dto, tx);
 
       if (dto.giveAccess && dto.email) {
-        await this.invitationsService.create(tenantId, {
-          name: dto.name,
-          email: dto.email,
-          role: dto.role || MembershipRole.STAFF,
-          professionalId: professional.id,
-        }, tx);
+        await this.invitationsService.create(
+          tenantId,
+          {
+            name: dto.name,
+            email: dto.email,
+            role: dto.role || MembershipRole.STAFF,
+            professionalId: professional.id,
+          },
+          tx,
+        );
       }
 
       return professional;
@@ -70,7 +72,7 @@ export class TeamService {
             dto.email,
             dto.role || MembershipRole.STAFF,
             dto.name || professional.name,
-            tx
+            tx,
           );
         }
       } else if (dto.giveAccess === false) {

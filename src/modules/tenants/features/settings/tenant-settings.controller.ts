@@ -1,3 +1,5 @@
+import { PERMISSIONS } from 'src/common/security/constants/permissions.constant';
+import { Permissions } from 'src/common/security/decorators/permissions.decorator';
 import { Controller, Get, Patch, Body } from '@nestjs/common';
 import { TenantSettingsService } from './tenant-settings.service';
 import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
@@ -13,11 +15,13 @@ import {
 export class TenantSettingsController {
   constructor(private readonly tenantSettingsService: TenantSettingsService) {}
 
+  @Permissions(PERMISSIONS.TENANT_READ)
   @Get()
   async getSettings(@GetTenantId() tenantId: string): Promise<TenantSettingsResponse> {
     return this.tenantSettingsService.getSettings(tenantId);
   }
 
+  @Permissions(PERMISSIONS.TENANT_UPDATE)
   @Patch('general')
   async updateGeneralSettings(
     @GetTenantId() tenantId: string,
@@ -26,6 +30,7 @@ export class TenantSettingsController {
     return this.tenantSettingsService.updateGeneralSettings(tenantId, updateDto);
   }
 
+  @Permissions(PERMISSIONS.TENANT_UPDATE)
   @Patch('appointments')
   async updateAppointmentSettings(
     @GetTenantId() tenantId: string,

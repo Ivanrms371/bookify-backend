@@ -10,6 +10,7 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 import { IS_OPTIONAL_TENANT_KEY } from '../decorators/optional-tenant.decorator';
 import { SKIP_TENANT_KEY } from '../decorators/skip-tenant.decorator';
 import { isUUID } from 'class-validator';
+import { ROLE_PERMISSIONS } from '../constants/role-permissions.constants';
 
 @Injectable()
 export class TenantGuard implements CanActivate {
@@ -33,7 +34,6 @@ export class TenantGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    
     const isSkipTenant = this.reflector.getAllAndOverride<boolean>(SKIP_TENANT_KEY, [context.getHandler(), context.getClass()]);
     if (isSkipTenant) {
       return true;
@@ -79,7 +79,7 @@ export class TenantGuard implements CanActivate {
         tenantId: membership.tenant.id,
         tenantSlug: membership.tenant.slug,
         role: membership.role,
-        permissions: [],
+        permissions: (ROLE_PERMISSIONS[membership.role] as unknown as string[]) || [],
       };
 
       return true;
@@ -138,7 +138,7 @@ export class TenantGuard implements CanActivate {
       tenantId: resolvedTenantId,
       tenantSlug: membership.tenant.slug,
       role: membership.role,
-      permissions: [],
+      permissions: (ROLE_PERMISSIONS[membership.role] as unknown as string[]) || [],
     };
 
     return true;

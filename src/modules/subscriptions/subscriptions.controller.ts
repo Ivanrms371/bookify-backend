@@ -1,3 +1,5 @@
+import { PERMISSIONS } from 'src/common/security/constants/permissions.constant';
+import { Permissions } from 'src/common/security/decorators/permissions.decorator';
 // src/modules/subscriptions/subscriptions.controller.ts
 
 import {
@@ -14,10 +16,9 @@ import {
   Req,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Request } from 'express';
 import { IsEnum, IsNotEmpty } from 'class-validator';
 import { SubscriptionsService } from './subscriptions.service';
-import { BillingCycle, MembershipRole } from 'src/generated/prisma/enums';
+import { BillingCycle } from 'src/generated/prisma/enums';
 import { PlanId } from './plans.config';
 import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { CurrentUser } from 'src/common/security/decorators/current-user.decorator';
@@ -40,6 +41,7 @@ export class SubscriptionsController {
   /**
    * Retrieves the current subscription state for the authenticated workspace.
    */
+  @Permissions(PERMISSIONS.BILLING_READ)
   @Get('current')
   async getCurrentSubscription(@GetTenantId() tenantId: string) {
     return this.subscriptionsService.getSubscriptionByTenantId(tenantId);
@@ -48,6 +50,7 @@ export class SubscriptionsController {
   /**
    * Generates a signed Lemon Squeezy checkout session URL for purchasing or upgrading a plan.
    */
+  @Permissions(PERMISSIONS.BILLING_MANAGE)
   @Post('checkout')
   async createCheckout(@Body() dto: CreateCheckoutDto, @CurrentUser() user: AuthenticatedUser, @GetTenantId() tenantId: string) {
     const checkoutUrl = await this.subscriptionsService.createCheckoutSession(tenantId, user.email, user.name, dto.planId, dto.cycle);
@@ -58,6 +61,7 @@ export class SubscriptionsController {
   /**
    * Generates an authenticated, single-use URL for the Lemon Squeezy Customer Portal.
    */
+  @Permissions(PERMISSIONS.BILLING_MANAGE)
   @Get('portal')
   async getCustomerPortal(@GetTenantId() tenantId: string) {
     const portalUrl = await this.subscriptionsService.getCustomerPortalSession(tenantId);

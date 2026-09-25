@@ -1,3 +1,5 @@
+import { PERMISSIONS } from 'src/common/security/constants/permissions.constant';
+import { Permissions } from 'src/common/security/decorators/permissions.decorator';
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Req, Res } from '@nestjs/common';
 
 import { CurrentTenant } from 'src/common/security/decorators/current-tenant.decorator';
@@ -13,11 +15,13 @@ import { ConfigService } from '@nestjs/config';
 export class InvitationsController {
   constructor(private readonly invitationsService: InvitationsService) {}
 
+  @Permissions(PERMISSIONS.TEAM_INVITE)
   @Post()
   create(@CurrentTenant() tenantId: string, @Body() dto: CreateInviteDto) {
     return this.invitationsService.create(tenantId, dto);
   }
 
+  @Permissions(PERMISSIONS.TEAM_INVITE)
   @Delete(':id')
   revoke(@CurrentTenant() tenantId: string, @Param('id', ParseUUIDPipe) invitationId: string) {
     return this.invitationsService.revoke(tenantId, invitationId);

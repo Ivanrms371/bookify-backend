@@ -5,18 +5,22 @@ export class TeamMapper {
       userId: member.userId,
       role: member.role,
       isActive: member.isActive,
-      user: member.user ? {
-        id: member.user.id,
-        name: member.user.name,
-        email: member.user.email,
-        avatarUrl: member.user.avatarUrl,
-      } : null,
-      professional: member.user?.professional ? {
-        id: member.user.professional.id,
-        name: member.user.professional.name,
-        avatarUrl: member.user.professional.avatarUrl,
-        colorTheme: member.user.professional.colorTheme,
-      } : null,
+      user: member.user
+        ? {
+            id: member.user.id,
+            name: member.user.name,
+            email: member.user.email,
+            avatarUrl: member.user.avatarUrl,
+          }
+        : null,
+      professional: member.user?.professional
+        ? {
+            id: member.user.professional.id,
+            name: member.user.professional.name,
+            avatarUrl: member.user.professional.avatarUrl,
+            colorTheme: member.user.professional.colorTheme,
+          }
+        : null,
     };
   }
 

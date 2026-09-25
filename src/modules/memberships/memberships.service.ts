@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { MembershipsRepository } from './memberships.repository';
 import { MembershipUpdateInput, TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 
@@ -13,7 +13,6 @@ export class MembershipsService {
     }
   }
 
-  
   async updateRoleByMembershipId(tenantId: string, membershipId: string, role: any, tx?: TransactionClient) {
     return this.membershipsRepository.update(tenantId, membershipId, { role }, tx);
   }
@@ -21,7 +20,6 @@ export class MembershipsService {
   async deactivateByMembershipId(tenantId: string, membershipId: string, tx?: TransactionClient) {
     return this.membershipsRepository.update(tenantId, membershipId, { isActive: false }, tx);
   }
-
 
   async updateRole(tenantId: string, userId: string, role: any, tx?: TransactionClient) {
     const membership = await this.membershipsRepository.findByUserId(tenantId, userId, tx);

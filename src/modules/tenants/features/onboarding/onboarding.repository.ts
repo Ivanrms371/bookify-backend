@@ -65,7 +65,10 @@ export class TenantOnboardingRepository extends BaseRepository {
         },
         professionals: {
           create: {
-            name: ownerName, email: "", phoneCountryCode: "", phoneNumber: "",
+            name: ownerName,
+            email: '',
+            phoneCountryCode: '',
+            phoneNumber: '',
             user: { connect: { id: userId } },
           },
         },

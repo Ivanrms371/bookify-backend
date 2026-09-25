@@ -60,6 +60,10 @@ export class ProfessionalsRepository extends BaseRepository {
     });
   }
 
+  async findByUserId(tenantId: string, userId: string, tx?: TransactionClient) {
+    return this.db(tx).professional.findFirst({ where: { userId, tenantId, deletedAt: null } });
+  }
+
   async findById(tenantId: string, id: string, tx?: TransactionClient) {
     return this.db(tx).professional.findUnique({ where: { id, tenantId, deletedAt: null } });
   }

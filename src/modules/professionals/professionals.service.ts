@@ -5,6 +5,7 @@ import { AddServiceDto } from './dto/add-service.dto';
 import { RemoveServiceDto } from './dto/remove-service.dto';
 import { ProfessionalsMapper } from './professionals.mapper';
 import { UpdateProfessionalDto } from './dto/update-professional.dto';
+import { UpdateProfessionalProfileDto } from './dto/update-professional-profile.dto';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { MembershipsService } from '../memberships/memberships.service';
 import { ServiceAssignmentCreateManyInput } from 'src/generated/prisma/models';
@@ -117,6 +118,26 @@ export class ProfessionalsService {
     }
 
     return { success: true };
+  }
+
+  async updateProfileByUser(tenantId: string, userId: string, dto: UpdateProfessionalProfileDto) {
+    const professional = await this.professionalsRepository.findByUserId(tenantId, userId);
+    if (!professional) {
+      throw new NotFoundException('Perfil profesional no encontrado para este usuario');
+    }
+
+    const { name, phoneNumber, phoneCountryCode, avatarUrl, avatarPublicId, bio, profession, colorTheme } = dto;
+
+    return this.professionalsRepository.update(tenantId, professional.id, {
+      name,
+      phoneNumber,
+      phoneCountryCode,
+      avatarUrl,
+      avatarPublicId,
+      bio,
+      profession,
+      colorTheme,
+    });
   }
 
   async linkToUser(tenantId: string, id: string, userId: string, tx?: TransactionClient) {

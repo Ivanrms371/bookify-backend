@@ -12,7 +12,6 @@ export class VerificationsController {
   constructor(private readonly verificationsService: VerificationsService) {}
 
   @Post('request')
-  // @Throttle({ default: { limit: 3, ttl: 60000 } })
   async requestVerification(@Body() dto: CreateVerificationDto) {
     return this.verificationsService.requestVerification(dto);
   }
