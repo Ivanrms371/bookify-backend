@@ -1,22 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { NotificationTemplate } from '../../../domain/templates/notification-template.interface';
 import { BuildEmailResponse } from '../../../domain/templates/build-email.interface';
-import { MembershipInvitedVariables } from './membership-invited.type';
+import { InvitationCreatedVariables } from './invitation-created.type';
 import { NotificationChannel } from 'src/generated/prisma/enums';
 import React from 'react';
 import { render } from '@react-email/render';
-import MembershipInvitedEmail from '../_components/MembershipInvitedEmail';
+import InvitationCreatedEmail from './InvitationCreatedEmail';
 
 @Injectable()
-export class MembershipInvitedTemplate implements NotificationTemplate {
-  type = 'membership.invited';
-  private readonly baseUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-
+export class InvitationCreatedTemplate implements NotificationTemplate {
+  type = 'invitation.created';
   build(channel: NotificationChannel, payload: Record<string, any>): BuildEmailResponse | null {
-
     switch (channel) {
       case NotificationChannel.EMAIL:
-        return this.buildEmail(payload as MembershipInvitedVariables);
+        return this.buildEmail(payload as InvitationCreatedVariables);
       case NotificationChannel.IN_APP:
         throw new Error(`Channel not supported for ${this.type}`);
       case NotificationChannel.WHATSAPP:
@@ -26,10 +23,10 @@ export class MembershipInvitedTemplate implements NotificationTemplate {
     }
   }
 
-  private buildEmail(payload: MembershipInvitedVariables): BuildEmailResponse {
+  private buildEmail(payload: InvitationCreatedVariables): BuildEmailResponse {
     return {
       subject: `Te han invitado a unirte a ${payload.tenantName} en Turnify`,
-      react: MembershipInvitedEmail(payload),
+      react: InvitationCreatedEmail(payload),
     };
   }
 }

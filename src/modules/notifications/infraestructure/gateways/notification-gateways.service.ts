@@ -25,7 +25,7 @@ export class NotificationGatewaysService {
       case NotificationChannel.EMAIL:
         return await this.emailGateway.send(notification, template as BuildEmailResponse);
       case NotificationChannel.WHATSAPP:
-        return await this.whatsappGateway.send(notification, template as BuildWhatsappResponse);
+        return await this.whatsappGateway.send(notification, template);
       case NotificationChannel.IN_APP:
         return await this.inAppService.send(notification, template as BuildInAppResponse);
       default:

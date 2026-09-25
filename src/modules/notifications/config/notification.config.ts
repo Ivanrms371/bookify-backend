@@ -6,6 +6,7 @@ export const NotificationConfig: NotificationConfigMap = {
     retry: {
       retryable: true,
       maxRetries: 3,
+      backoffDelays: [60_000, 300_000, 900_000],
     },
     channels: {
       USER: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL }],
@@ -22,9 +23,23 @@ export const NotificationConfig: NotificationConfigMap = {
     retry: {
       retryable: true,
       maxRetries: 1,
+      backoffDelays: [10_000],
     },
     channels: {
       USER: [{ channel: NotificationChannel.EMAIL }],
+      CUSTOMER: [{ channel: NotificationChannel.EMAIL }],
+    },
+  },
+
+  'verification.phoneNumber.created': {
+    retry: {
+      retryable: true,
+      maxRetries: 1,
+      backoffDelays: [10_000],
+    },
+    channels: {
+      USER: [{ channel: NotificationChannel.WHATSAPP }],
+      CUSTOMER: [{ channel: NotificationChannel.WHATSAPP }],
     },
   },
 
@@ -91,7 +106,7 @@ export const NotificationConfig: NotificationConfigMap = {
     },
   },
 
-  'membership.invited': {
+  'invitation.created': {
     retry: {
       retryable: true,
       maxRetries: 3,

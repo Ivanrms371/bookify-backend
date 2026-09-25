@@ -5,7 +5,7 @@ import { NotificationLogsRepository } from '../../infraestructure/repositories/n
 import { NotificationDeliveryRepository } from '../../infraestructure/repositories/notification-delivery.repository';
 import { NotificationConfigService } from '../../notification-config.service';
 import { NotificationProcessorInput } from '../../types/notification-processor.type';
-import { NotificationChannel } from 'src/generated/prisma/enums';
+import { NotificationChannel, RecipientType } from 'src/generated/prisma/enums';
 import { NotificationUsageService } from './notification-usage.service';
 import { CostProtectionError } from '../../errors/cost-protection.error';
 import { NotImplementedError } from '../../errors/not-implemented.error';
@@ -41,37 +41,46 @@ export class NotificationProcessorService {
       await this.usageService.incrementUsage(notification.tenantId, channel);
       await this.logRepository.createSuccessLog(delivery.id);
     } catch (error) {
-      this.logger.error(`Delivery ${deliveryId} failed`, error.stack);
-      const config = this.configService.getConfig(type);
+      const err = error instanceof Error ? error : new Error(String(error));
+      this.logger.error(`Delivery ${deliveryId} failed: ${err.message}`, err.stack);
+
+      await this.logRepository.createErrorLog(deliveryId, err.message);
+
+      const retryPolicy = this.configService.getRetryPolicy(type, notification.recipientType, channel);
       const channelConfig = this.configService.getChannelConfig(type, notification.recipientType, channel);
-      await this.logRepository.createErrorLog(deliveryId, error.message);
-      if (error instanceof CostProtectionError) {
-        await this.deliveryRepository.markAsFailed(deliveryId);
-        if (channelConfig?.fallback?.length) {
-          await this.createFallback(notificationId, channelConfig.fallback);
-        }
-        return;
-      }
-      if (error instanceof NotImplementedError) {
-        await this.deliveryRepository.markAsFailed(deliveryId);
-        if (channelConfig?.fallback?.length) {
-          await this.createFallback(notificationId, channelConfig.fallback);
-        }
-        return;
-      }
-      if (config.retry.retryable && retryCount < config.retry.maxRetries) {
+
+      const isPermanentError = err instanceof CostProtectionError || err instanceof NotImplementedError;
+
+      const canRetry = !isPermanentError && retryPolicy.retryable && retryCount < retryPolicy.maxRetries;
+
+      if (canRetry) {
+        const nextRunAt = this.getNextRetry(type, notification.recipientType, channel, retryCount);
+
         await this.deliveryRepository.incrementRetries(deliveryId, {
-          runAt: this.getNextRetry(retryCount),
+          runAt: nextRunAt,
+          errorMessage: err.message,
         });
         return;
       }
-      await this.deliveryRepository.markAsFailed(deliveryId);
+
+      await this.deliveryRepository.markAsFailed(deliveryId, err.message);
+
+      if (channelConfig?.fallback?.length) {
+        this.logger.log(`Triggering fallback for delivery ${deliveryId} on notification ${notificationId}`);
+        await this.createFallback(notificationId, channelConfig.fallback);
+      }
     }
   }
 
-  async processAll() {
-    const pendingDeliveries = await this.deliveryRepository.findPending();
-    console.log(pendingDeliveries);
+  async processBatch(limit = 50) {
+    const pendingDeliveries = await this.deliveryRepository.findPendingToProcess(limit);
+
+    if (pendingDeliveries.length === 0) {
+      return;
+    }
+
+    this.logger.log(`Processing ${pendingDeliveries.length} pending notifications...`);
+
     for (let i = 0; i < pendingDeliveries.length; i += this.CONCURRENCY) {
       const batch = pendingDeliveries.slice(i, i + this.CONCURRENCY);
       await Promise.all(batch.map((delivery) => this.process(delivery)));
@@ -98,9 +107,12 @@ export class NotificationProcessorService {
     }
   }
 
-  private getNextRetry(retryCount: number): Date {
-    const delays = [60_000, 300_000, 900_000];
-    const delay = delays[retryCount] ?? 900_000;
+  private getNextRetry(type: string, recipientType: RecipientType, channel: NotificationChannel, retryCount: number): Date {
+    const retryPolicy = this.configService.getRetryPolicy(type, recipientType, channel);
+    const delays = retryPolicy.backoffDelays ?? [60_000, 300_000, 900_000];
+
+    const delay = delays[retryCount] ?? delays[delays.length - 1] ?? 60_000;
+
     const runAt = new Date(Date.now() + delay);
     runAt.setMilliseconds(0);
     return runAt;

@@ -7,13 +7,17 @@ import { PrismaService } from 'src/shared/prisma/prisma.service';
 export class NotificationDeliveryRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findPending() {
+  async findPendingToProcess(limit: number) {
     return this.prisma.notificationDelivery.findMany({
       where: {
         status: 'PENDING',
         runAt: {
           lte: new Date(),
         },
+      },
+      take: limit,
+      orderBy: {
+        runAt: 'asc',
       },
       select: {
         id: true,
@@ -61,25 +65,20 @@ export class NotificationDeliveryRepository {
     });
   }
 
-  async incrementRetries(
-    deliveryId: string,
-    options?: {
-      runAt?: Date;
-    },
-  ) {
+  async incrementRetries(deliveryId: string, data: { runAt?: Date; errorMessage?: string }) {
     return this.prisma.notificationDelivery.update({
       where: { id: deliveryId },
       data: {
         retryCount: { increment: 1 },
-        runAt: options?.runAt,
+        ...data,
       },
     });
   }
 
-  async markAsFailed(id: string) {
+  async markAsFailed(id: string, errorMessage?: string) {
     return this.prisma.notificationDelivery.update({
       where: { id },
-      data: { status: 'FAILED' },
+      data: { status: 'FAILED', errorMessage },
     });
   }
 }

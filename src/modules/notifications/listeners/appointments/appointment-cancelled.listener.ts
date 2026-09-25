@@ -19,7 +19,7 @@ export class AppointmentCancelledListener {
       customerName: event.customerName,
       date: format(event.startsAt, "dd 'de' MMMM 'de' yyyy", { locale: es }),
       time: format(event.startsAt, 'HH:mm'),
-    } as AppointmentCancelledVariables;
+    };
 
     await this.notificationsService.create({
       tenantId: event.tenantId,

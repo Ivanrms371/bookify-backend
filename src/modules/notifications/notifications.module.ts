@@ -29,8 +29,8 @@ import { NotificationsWsGateway } from './infraestructure/gateways/notifications
 import { TenantCreatedTemplate } from './application/templates/tenant-created/tenant-created.template';
 import { TenantCreatedListener } from './listeners/tenants/tenant-created.listener';
 import { CustomersModule } from '../customers/customers.module';
-import { MembershipInvitedListener } from './listeners/memberships/membership-invited.listener';
-import { MembershipInvitedTemplate } from './application/templates/membership-invited/membership-invited.template';
+import { InvitationCreatedListener } from './listeners/invitations/invitation-created.listener';
+import { InvitationCreatedTemplate } from './application/templates/invitation-created/invitation-created.template';
 
 @Module({
   imports: [TenantUsageModule, UsersModule, CustomersModule],
@@ -71,14 +71,14 @@ import { MembershipInvitedTemplate } from './application/templates/membership-in
     AppointmentReminderTemplate,
     VerificationEmailTemplate,
     TenantCreatedTemplate,
-    MembershipInvitedTemplate,
+    InvitationCreatedTemplate,
 
     // Listeners
     AppointmentCancelledListener,
     AppointmentRescheduledListener,
     VerificationCreatedListener,
     TenantCreatedListener,
-    MembershipInvitedListener,
+    InvitationCreatedListener,
   ],
 })
 export class NotificationsModule {}

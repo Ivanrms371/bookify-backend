@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Req, Patch, Param, Put } from '@nestjs/common';
 import EventEmitter2 from 'eventemitter2';
-import { AuthenticatedRequest } from 'src/auth/types/express-request.type';
+import { AuthenticatedRequest } from 'src/common/security/types/authenticated-request.type';
 import { InAppNotificationsService } from './application/services/in-app-notifications.service';
 
 @Controller('notifications')

@@ -7,22 +7,22 @@ export class NotificationUsageService {
   constructor(private readonly tenantUsageService: TenantUsageService) {}
 
   async canSend(tenantId: string | null, channel: NotificationChannel) {
-    if (!tenantId) {
-      return true && channel !== NotificationChannel.WHATSAPP;
-    }
-    const quota = await this.tenantUsageService.findByTenantId(tenantId);
-    if (!quota) {
-      return false;
-    }
-
-    switch (channel) {
-      case NotificationChannel.EMAIL:
-        return quota.emailCount < quota.emailLimit;
-      case NotificationChannel.WHATSAPP:
-        return quota.whatsappCount < quota.whatsappLimit;
-      default:
-        return true;
-    }
+    return true;
+    // if (!tenantId) {
+    //   return true && channel !== NotificationChannel.WHATSAPP;
+    // }
+    // const quota = await this.tenantUsageService.findByTenantId(tenantId);
+    // if (!quota) {
+    //   return false;
+    // }
+    // switch (channel) {
+    //   case NotificationChannel.EMAIL:
+    //     return quota.emailCount < quota.emailLimit;
+    //   case NotificationChannel.WHATSAPP:
+    //     return quota.whatsappCount < quota.whatsappLimit;
+    //   default:
+    //     return true;
+    // }
   }
 
   async incrementUsage(tenantId: string | null, channel: NotificationChannel) {

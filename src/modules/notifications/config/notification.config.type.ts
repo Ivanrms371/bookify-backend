@@ -3,11 +3,13 @@ import { NotificationChannel, RecipientType } from 'src/generated/prisma/enums';
 export type RetryConfig = {
   retryable: boolean;
   maxRetries: number;
+  backoffDelays?: number[];
 };
 
 export type ChannelConfig = {
   channel: NotificationChannel;
   fallback?: NotificationChannel[];
+  retry?: Partial<RetryConfig>;
 };
 
 export type ChannelsByRecipient = Partial<Record<RecipientType, ChannelConfig[]>>;

@@ -1,27 +1,25 @@
 import React from 'react';
-import { Layout } from './Layout';
+import { Layout } from '../_components/Layout';
 import { Heading } from '@react-email/components';
-import { Button } from './Button';
+import { Button } from '../_components/Button';
 import { Text } from '@react-email/components';
 
-interface MembershipInvitedEmailProps {
+interface InvitationCreatedEmailProps {
   tenantName: string;
   inviteLink: string;
   role: string;
 }
 
-export const MembershipInvitedEmail = ({ tenantName, role, inviteLink }: MembershipInvitedEmailProps) => {
+export const InvitationCreatedEmail = ({ tenantName, role, inviteLink }: InvitationCreatedEmailProps) => {
   return (
     <Layout previewText={`Has sido invitado a unirte a ${tenantName} en Turnify`}>
       <Heading>Has sido invitado a unirte a {tenantName}</Heading>
-      
+
+      <Text style={{ fontSize: '16px', lineHeight: '24px', color: '#4b5563' }}>Hola,</Text>
+
       <Text style={{ fontSize: '16px', lineHeight: '24px', color: '#4b5563' }}>
-        Hola,
-      </Text>
-      
-      <Text style={{ fontSize: '16px', lineHeight: '24px', color: '#4b5563' }}>
-        Te han invitado a unirte a <strong>{tenantName}</strong> como <strong>{role}</strong> en Turnify.
-        Para aceptar la invitación y completar tu registro o inicio de sesión, haz clic en el siguiente botón:
+        Te han invitado a unirte a <strong>{tenantName}</strong> como <strong>{role}</strong> en Turnify. Para aceptar la invitación y
+        completar tu registro o inicio de sesión, haz clic en el siguiente botón:
       </Text>
 
       <Button href={inviteLink}>Aceptar Invitación</Button>
@@ -36,4 +34,4 @@ export const MembershipInvitedEmail = ({ tenantName, role, inviteLink }: Members
   );
 };
 
-export default MembershipInvitedEmail;
+export default InvitationCreatedEmail;

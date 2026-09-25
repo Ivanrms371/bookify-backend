@@ -10,7 +10,7 @@ import { VerificationEmailTemplate } from '../templates/confirm-email/confirm-em
 import { AppointmentCancelledTemplate } from '../templates/appointment-cancelled/appointment-cancelled.template';
 import { AppointmentRescheduledTemplate } from '../templates/appointment-reschedule/appointment-reschedule.template';
 import { TenantCreatedTemplate } from '../templates/tenant-created/tenant-created.template';
-import { MembershipInvitedTemplate } from '../templates/membership-invited/membership-invited.template';
+import { InvitationCreatedTemplate } from '../templates/invitation-created/invitation-created.template';
 
 @Injectable()
 export class TemplateService {
@@ -23,7 +23,7 @@ export class TemplateService {
     private readonly appointmentReminderTemplate: AppointmentReminderTemplate,
     private readonly verificationEmailTemplate: VerificationEmailTemplate,
     private readonly tenantCreatedTemplate: TenantCreatedTemplate,
-    private readonly membershipInvitedTemplate: MembershipInvitedTemplate,
+    private readonly membershipInvitedTemplate: InvitationCreatedTemplate,
   ) {
     this.templateMap.set(this.appointmentCreatedTemplate.type, this.appointmentCreatedTemplate);
     this.templateMap.set(this.appointmentCancelledTemplate.type, this.appointmentCancelledTemplate);

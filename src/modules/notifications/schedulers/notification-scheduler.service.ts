@@ -5,11 +5,23 @@ import { NotificationProcessorService } from '../application/services/notificati
 @Injectable()
 export class NotificationScheduler {
   private readonly logger = new Logger(NotificationScheduler.name);
+  private isProcessing = false;
   constructor(private readonly processor: NotificationProcessorService) {}
 
-  @Cron(CronExpression.EVERY_MINUTE)
-  handle() {
-    this.logger.log('Processing notifications');
-    this.processor.processAll();
+  @Cron(CronExpression.EVERY_10_SECONDS)
+  async handle() {
+    if (this.isProcessing) {
+      return;
+    }
+
+    this.isProcessing = true;
+
+    try {
+      await this.processor.processBatch();
+    } catch (error) {
+      this.logger.error('Error executing notification batch', error instanceof Error ? error.stack : error);
+    } finally {
+      this.isProcessing = false;
+    }
   }
 }

@@ -20,7 +20,7 @@ export class TenantCreatedListener {
       payload: {
         tenantName: event.tenantName,
         userName: event.userName,
-      } as TenantCreatedVariables,
+      },
     });
   }
 }
