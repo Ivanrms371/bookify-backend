@@ -9,6 +9,14 @@
 * 🟢 You can import this file directly.
 */
 
+export const DiscountType = {
+  PERCENTAGE: 'PERCENTAGE',
+  FIXED: 'FIXED'
+} as const
+
+export type DiscountType = (typeof DiscountType)[keyof typeof DiscountType]
+
+
 export const InvitationStatus = {
   PENDING: 'PENDING',
   ACCEPTED: 'ACCEPTED',
@@ -28,12 +36,11 @@ export type AuthProvider = (typeof AuthProvider)[keyof typeof AuthProvider]
 
 
 export const VerificationType = {
-  APPOINTMENT: 'APPOINTMENT',
-  PASSWORD_RESET: 'PASSWORD_RESET',
-  EMAIL_CONFIRM: 'EMAIL_CONFIRM',
-  PHONE_CONFIRM: 'PHONE_CONFIRM',
-  MAGIC_LINK: 'MAGIC_LINK',
-  AUTH_CODE: 'AUTH_CODE'
+  CUSTOMER_PHONE_VERIFICATION: 'CUSTOMER_PHONE_VERIFICATION',
+  CUSTOMER_EMAIL_VERIFICATION: 'CUSTOMER_EMAIL_VERIFICATION',
+  USER_EMAIL_VERIFICATION: 'USER_EMAIL_VERIFICATION',
+  USER_PHONE_VERIFICATION: 'USER_PHONE_VERIFICATION',
+  PASSWORD_RESET: 'PASSWORD_RESET'
 } as const
 
 export type VerificationType = (typeof VerificationType)[keyof typeof VerificationType]
@@ -42,19 +49,10 @@ export type VerificationType = (typeof VerificationType)[keyof typeof Verificati
 export const MembershipRole = {
   OWNER: 'OWNER',
   ADMIN: 'ADMIN',
-  PROFESSIONAL: 'PROFESSIONAL'
+  STAFF: 'STAFF'
 } as const
 
 export type MembershipRole = (typeof MembershipRole)[keyof typeof MembershipRole]
-
-
-export const MembershipStatus = {
-  ACTIVE: 'ACTIVE',
-  INACTIVE: 'INACTIVE',
-  INVITED: 'INVITED'
-} as const
-
-export type MembershipStatus = (typeof MembershipStatus)[keyof typeof MembershipStatus]
 
 
 export const CommissionType = {
@@ -66,8 +64,8 @@ export type CommissionType = (typeof CommissionType)[keyof typeof CommissionType
 
 
 export const WorkspaceType = {
-  INDEPENDENT: 'INDEPENDENT',
-  MULTI_STAFF: 'MULTI_STAFF'
+  INDIVIDUAL: 'INDIVIDUAL',
+  TEAM: 'TEAM'
 } as const
 
 export type WorkspaceType = (typeof WorkspaceType)[keyof typeof WorkspaceType]
@@ -101,15 +99,6 @@ export const OnboardingStatus = {
 export type OnboardingStatus = (typeof OnboardingStatus)[keyof typeof OnboardingStatus]
 
 
-export const PlanType = {
-  FREE: 'FREE',
-  PRO: 'PRO',
-  TEAM: 'TEAM'
-} as const
-
-export type PlanType = (typeof PlanType)[keyof typeof PlanType]
-
-
 export const Currency = {
   UYU: 'UYU',
   USD: 'USD',
@@ -130,11 +119,11 @@ export type BillingCycle = (typeof BillingCycle)[keyof typeof BillingCycle]
 export const SubscriptionStatus = {
   TRIAL: 'TRIAL',
   ACTIVE: 'ACTIVE',
+  PAUSED: 'PAUSED',
   PAST_DUE: 'PAST_DUE',
   CANCELLED: 'CANCELLED',
   EXPIRED: 'EXPIRED',
-  SUSPENDED: 'SUSPENDED',
-  PENDING_PAYMENT: 'PENDING_PAYMENT'
+  SUSPENDED: 'SUSPENDED'
 } as const
 
 export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
@@ -150,6 +139,14 @@ export const PaymentStatus = {
 } as const
 
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const CreatedByType = {
+  CUSTOMER: 'CUSTOMER',
+  STAFF: 'STAFF'
+} as const
+
+export type CreatedByType = (typeof CreatedByType)[keyof typeof CreatedByType]
 
 
 export const AppointmentStatus = {

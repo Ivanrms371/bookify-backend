@@ -384,10 +384,6 @@ export type NotificationScalarRelationFilter = {
   isNot?: Prisma.NotificationWhereInput
 }
 
-export type EnumRecipientTypeFieldUpdateOperationsInput = {
-  set?: $Enums.RecipientType
-}
-
 export type NotificationCreateNestedOneWithoutDeliveriesInput = {
   create?: Prisma.XOR<Prisma.NotificationCreateWithoutDeliveriesInput, Prisma.NotificationUncheckedCreateWithoutDeliveriesInput>
   connectOrCreate?: Prisma.NotificationCreateOrConnectWithoutDeliveriesInput

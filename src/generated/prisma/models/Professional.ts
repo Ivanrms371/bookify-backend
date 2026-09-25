@@ -30,79 +30,78 @@ export type ProfessionalAvgAggregateOutputType = {
   slotIntervalMinutes: number | null
   maxAdvancedDays: number | null
   minAdvancedMinutes: number | null
-  displayOrder: number | null
-  commissionAmount: runtime.Decimal | null
 }
 
 export type ProfessionalSumAggregateOutputType = {
   slotIntervalMinutes: number | null
   maxAdvancedDays: number | null
   minAdvancedMinutes: number | null
-  displayOrder: number | null
-  commissionAmount: runtime.Decimal | null
 }
 
 export type ProfessionalMinAggregateOutputType = {
   id: string | null
-  userId: string | null
   tenantId: string | null
+  userId: string | null
   slotIntervalMinutes: number | null
   maxAdvancedDays: number | null
   minAdvancedMinutes: number | null
+  name: string | null
+  email: string | null
+  phoneCountryCode: string | null
+  phoneNumber: string | null
+  profession: string | null
   bio: string | null
   avatarUrl: string | null
   avatarPublicId: string | null
+  colorTheme: string | null
   isActive: boolean | null
-  displayName: string | null
-  displayOrder: number | null
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
-  colorTheme: string | null
-  commissionType: $Enums.CommissionType | null
-  commissionAmount: runtime.Decimal | null
 }
 
 export type ProfessionalMaxAggregateOutputType = {
   id: string | null
-  userId: string | null
   tenantId: string | null
+  userId: string | null
   slotIntervalMinutes: number | null
   maxAdvancedDays: number | null
   minAdvancedMinutes: number | null
+  name: string | null
+  email: string | null
+  phoneCountryCode: string | null
+  phoneNumber: string | null
+  profession: string | null
   bio: string | null
   avatarUrl: string | null
   avatarPublicId: string | null
+  colorTheme: string | null
   isActive: boolean | null
-  displayName: string | null
-  displayOrder: number | null
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
-  colorTheme: string | null
-  commissionType: $Enums.CommissionType | null
-  commissionAmount: runtime.Decimal | null
 }
 
 export type ProfessionalCountAggregateOutputType = {
   id: number
-  userId: number
   tenantId: number
+  userId: number
   slotIntervalMinutes: number
   maxAdvancedDays: number
   minAdvancedMinutes: number
+  name: number
+  email: number
+  phoneCountryCode: number
+  phoneNumber: number
+  profession: number
   bio: number
   avatarUrl: number
   avatarPublicId: number
+  colorTheme: number
   isActive: number
-  displayName: number
-  displayOrder: number
   createdAt: number
   updatedAt: number
   deletedAt: number
-  colorTheme: number
-  commissionType: number
-  commissionAmount: number
   _all: number
 }
 
@@ -111,79 +110,78 @@ export type ProfessionalAvgAggregateInputType = {
   slotIntervalMinutes?: true
   maxAdvancedDays?: true
   minAdvancedMinutes?: true
-  displayOrder?: true
-  commissionAmount?: true
 }
 
 export type ProfessionalSumAggregateInputType = {
   slotIntervalMinutes?: true
   maxAdvancedDays?: true
   minAdvancedMinutes?: true
-  displayOrder?: true
-  commissionAmount?: true
 }
 
 export type ProfessionalMinAggregateInputType = {
   id?: true
-  userId?: true
   tenantId?: true
+  userId?: true
   slotIntervalMinutes?: true
   maxAdvancedDays?: true
   minAdvancedMinutes?: true
+  name?: true
+  email?: true
+  phoneCountryCode?: true
+  phoneNumber?: true
+  profession?: true
   bio?: true
   avatarUrl?: true
   avatarPublicId?: true
+  colorTheme?: true
   isActive?: true
-  displayName?: true
-  displayOrder?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
-  colorTheme?: true
-  commissionType?: true
-  commissionAmount?: true
 }
 
 export type ProfessionalMaxAggregateInputType = {
   id?: true
-  userId?: true
   tenantId?: true
+  userId?: true
   slotIntervalMinutes?: true
   maxAdvancedDays?: true
   minAdvancedMinutes?: true
+  name?: true
+  email?: true
+  phoneCountryCode?: true
+  phoneNumber?: true
+  profession?: true
   bio?: true
   avatarUrl?: true
   avatarPublicId?: true
+  colorTheme?: true
   isActive?: true
-  displayName?: true
-  displayOrder?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
-  colorTheme?: true
-  commissionType?: true
-  commissionAmount?: true
 }
 
 export type ProfessionalCountAggregateInputType = {
   id?: true
-  userId?: true
   tenantId?: true
+  userId?: true
   slotIntervalMinutes?: true
   maxAdvancedDays?: true
   minAdvancedMinutes?: true
+  name?: true
+  email?: true
+  phoneCountryCode?: true
+  phoneNumber?: true
+  profession?: true
   bio?: true
   avatarUrl?: true
   avatarPublicId?: true
+  colorTheme?: true
   isActive?: true
-  displayName?: true
-  displayOrder?: true
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
-  colorTheme?: true
-  commissionType?: true
-  commissionAmount?: true
   _all?: true
 }
 
@@ -275,23 +273,24 @@ export type ProfessionalGroupByArgs<ExtArgs extends runtime.Types.Extensions.Int
 
 export type ProfessionalGroupByOutputType = {
   id: string
-  userId: string
   tenantId: string
+  userId: string | null
   slotIntervalMinutes: number
   maxAdvancedDays: number
   minAdvancedMinutes: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession: string | null
   bio: string | null
   avatarUrl: string | null
   avatarPublicId: string | null
+  colorTheme: string | null
   isActive: boolean
-  displayName: string | null
-  displayOrder: number
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
-  colorTheme: string | null
-  commissionType: $Enums.CommissionType | null
-  commissionAmount: runtime.Decimal | null
   _count: ProfessionalCountAggregateOutputType | null
   _avg: ProfessionalAvgAggregateOutputType | null
   _sum: ProfessionalSumAggregateOutputType | null
@@ -319,114 +318,120 @@ export type ProfessionalWhereInput = {
   OR?: Prisma.ProfessionalWhereInput[]
   NOT?: Prisma.ProfessionalWhereInput | Prisma.ProfessionalWhereInput[]
   id?: Prisma.UuidFilter<"Professional"> | string
-  userId?: Prisma.UuidFilter<"Professional"> | string
   tenantId?: Prisma.UuidFilter<"Professional"> | string
+  userId?: Prisma.UuidNullableFilter<"Professional"> | string | null
   slotIntervalMinutes?: Prisma.IntFilter<"Professional"> | number
   maxAdvancedDays?: Prisma.IntFilter<"Professional"> | number
   minAdvancedMinutes?: Prisma.IntFilter<"Professional"> | number
+  name?: Prisma.StringFilter<"Professional"> | string
+  email?: Prisma.StringFilter<"Professional"> | string
+  phoneCountryCode?: Prisma.StringFilter<"Professional"> | string
+  phoneNumber?: Prisma.StringFilter<"Professional"> | string
+  profession?: Prisma.StringNullableFilter<"Professional"> | string | null
   bio?: Prisma.StringNullableFilter<"Professional"> | string | null
   avatarUrl?: Prisma.StringNullableFilter<"Professional"> | string | null
   avatarPublicId?: Prisma.StringNullableFilter<"Professional"> | string | null
+  colorTheme?: Prisma.StringNullableFilter<"Professional"> | string | null
   isActive?: Prisma.BoolFilter<"Professional"> | boolean
-  displayName?: Prisma.StringNullableFilter<"Professional"> | string | null
-  displayOrder?: Prisma.IntFilter<"Professional"> | number
   createdAt?: Prisma.DateTimeFilter<"Professional"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Professional"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Professional"> | Date | string | null
-  colorTheme?: Prisma.StringNullableFilter<"Professional"> | string | null
-  commissionType?: Prisma.EnumCommissionTypeNullableFilter<"Professional"> | $Enums.CommissionType | null
-  commissionAmount?: Prisma.DecimalNullableFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  invitations?: Prisma.InvitationListRelationFilter
   appointments?: Prisma.AppointmentListRelationFilter
-  lifetimeStats?: Prisma.XOR<Prisma.ProfessionalLifetimeStatsNullableScalarRelationFilter, Prisma.ProfessionalLifetimeStatsWhereInput> | null
-  stats?: Prisma.ProfessionalDailyStatsListRelationFilter
   workingHours?: Prisma.ProfessionalWorkingHoursListRelationFilter
   exceptions?: Prisma.ScheduleExceptionProfessionalListRelationFilter
   assignments?: Prisma.ServiceAssignmentListRelationFilter
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
+  lifetimeStats?: Prisma.XOR<Prisma.ProfessionalLifetimeStatsNullableScalarRelationFilter, Prisma.ProfessionalLifetimeStatsWhereInput> | null
+  stats?: Prisma.ProfessionalDailyStatsListRelationFilter
 }
 
 export type ProfessionalOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   slotIntervalMinutes?: Prisma.SortOrder
   maxAdvancedDays?: Prisma.SortOrder
   minAdvancedMinutes?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
+  profession?: Prisma.SortOrderInput | Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   avatarPublicId?: Prisma.SortOrderInput | Prisma.SortOrder
+  colorTheme?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
-  displayName?: Prisma.SortOrderInput | Prisma.SortOrder
-  displayOrder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  colorTheme?: Prisma.SortOrderInput | Prisma.SortOrder
-  commissionType?: Prisma.SortOrderInput | Prisma.SortOrder
-  commissionAmount?: Prisma.SortOrderInput | Prisma.SortOrder
+  tenant?: Prisma.TenantOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
+  invitations?: Prisma.InvitationOrderByRelationAggregateInput
   appointments?: Prisma.AppointmentOrderByRelationAggregateInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsOrderByWithRelationInput
-  stats?: Prisma.ProfessionalDailyStatsOrderByRelationAggregateInput
   workingHours?: Prisma.ProfessionalWorkingHoursOrderByRelationAggregateInput
   exceptions?: Prisma.ScheduleExceptionProfessionalOrderByRelationAggregateInput
   assignments?: Prisma.ServiceAssignmentOrderByRelationAggregateInput
-  user?: Prisma.UserOrderByWithRelationInput
-  tenant?: Prisma.TenantOrderByWithRelationInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsOrderByWithRelationInput
+  stats?: Prisma.ProfessionalDailyStatsOrderByRelationAggregateInput
 }
 
 export type ProfessionalWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  userId_tenantId?: Prisma.ProfessionalUserIdTenantIdCompoundUniqueInput
+  userId?: string
   AND?: Prisma.ProfessionalWhereInput | Prisma.ProfessionalWhereInput[]
   OR?: Prisma.ProfessionalWhereInput[]
   NOT?: Prisma.ProfessionalWhereInput | Prisma.ProfessionalWhereInput[]
-  userId?: Prisma.UuidFilter<"Professional"> | string
   tenantId?: Prisma.UuidFilter<"Professional"> | string
   slotIntervalMinutes?: Prisma.IntFilter<"Professional"> | number
   maxAdvancedDays?: Prisma.IntFilter<"Professional"> | number
   minAdvancedMinutes?: Prisma.IntFilter<"Professional"> | number
+  name?: Prisma.StringFilter<"Professional"> | string
+  email?: Prisma.StringFilter<"Professional"> | string
+  phoneCountryCode?: Prisma.StringFilter<"Professional"> | string
+  phoneNumber?: Prisma.StringFilter<"Professional"> | string
+  profession?: Prisma.StringNullableFilter<"Professional"> | string | null
   bio?: Prisma.StringNullableFilter<"Professional"> | string | null
   avatarUrl?: Prisma.StringNullableFilter<"Professional"> | string | null
   avatarPublicId?: Prisma.StringNullableFilter<"Professional"> | string | null
+  colorTheme?: Prisma.StringNullableFilter<"Professional"> | string | null
   isActive?: Prisma.BoolFilter<"Professional"> | boolean
-  displayName?: Prisma.StringNullableFilter<"Professional"> | string | null
-  displayOrder?: Prisma.IntFilter<"Professional"> | number
   createdAt?: Prisma.DateTimeFilter<"Professional"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Professional"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Professional"> | Date | string | null
-  colorTheme?: Prisma.StringNullableFilter<"Professional"> | string | null
-  commissionType?: Prisma.EnumCommissionTypeNullableFilter<"Professional"> | $Enums.CommissionType | null
-  commissionAmount?: Prisma.DecimalNullableFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
+  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  invitations?: Prisma.InvitationListRelationFilter
   appointments?: Prisma.AppointmentListRelationFilter
-  lifetimeStats?: Prisma.XOR<Prisma.ProfessionalLifetimeStatsNullableScalarRelationFilter, Prisma.ProfessionalLifetimeStatsWhereInput> | null
-  stats?: Prisma.ProfessionalDailyStatsListRelationFilter
   workingHours?: Prisma.ProfessionalWorkingHoursListRelationFilter
   exceptions?: Prisma.ScheduleExceptionProfessionalListRelationFilter
   assignments?: Prisma.ServiceAssignmentListRelationFilter
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
-}, "id" | "userId_tenantId">
+  lifetimeStats?: Prisma.XOR<Prisma.ProfessionalLifetimeStatsNullableScalarRelationFilter, Prisma.ProfessionalLifetimeStatsWhereInput> | null
+  stats?: Prisma.ProfessionalDailyStatsListRelationFilter
+}, "id" | "userId">
 
 export type ProfessionalOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   slotIntervalMinutes?: Prisma.SortOrder
   maxAdvancedDays?: Prisma.SortOrder
   minAdvancedMinutes?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
+  profession?: Prisma.SortOrderInput | Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   avatarPublicId?: Prisma.SortOrderInput | Prisma.SortOrder
+  colorTheme?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
-  displayName?: Prisma.SortOrderInput | Prisma.SortOrder
-  displayOrder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  colorTheme?: Prisma.SortOrderInput | Prisma.SortOrder
-  commissionType?: Prisma.SortOrderInput | Prisma.SortOrder
-  commissionAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ProfessionalCountOrderByAggregateInput
   _avg?: Prisma.ProfessionalAvgOrderByAggregateInput
   _max?: Prisma.ProfessionalMaxOrderByAggregateInput
@@ -439,23 +444,24 @@ export type ProfessionalScalarWhereWithAggregatesInput = {
   OR?: Prisma.ProfessionalScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ProfessionalScalarWhereWithAggregatesInput | Prisma.ProfessionalScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"Professional"> | string
-  userId?: Prisma.UuidWithAggregatesFilter<"Professional"> | string
   tenantId?: Prisma.UuidWithAggregatesFilter<"Professional"> | string
+  userId?: Prisma.UuidNullableWithAggregatesFilter<"Professional"> | string | null
   slotIntervalMinutes?: Prisma.IntWithAggregatesFilter<"Professional"> | number
   maxAdvancedDays?: Prisma.IntWithAggregatesFilter<"Professional"> | number
   minAdvancedMinutes?: Prisma.IntWithAggregatesFilter<"Professional"> | number
+  name?: Prisma.StringWithAggregatesFilter<"Professional"> | string
+  email?: Prisma.StringWithAggregatesFilter<"Professional"> | string
+  phoneCountryCode?: Prisma.StringWithAggregatesFilter<"Professional"> | string
+  phoneNumber?: Prisma.StringWithAggregatesFilter<"Professional"> | string
+  profession?: Prisma.StringNullableWithAggregatesFilter<"Professional"> | string | null
   bio?: Prisma.StringNullableWithAggregatesFilter<"Professional"> | string | null
   avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"Professional"> | string | null
   avatarPublicId?: Prisma.StringNullableWithAggregatesFilter<"Professional"> | string | null
+  colorTheme?: Prisma.StringNullableWithAggregatesFilter<"Professional"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"Professional"> | boolean
-  displayName?: Prisma.StringNullableWithAggregatesFilter<"Professional"> | string | null
-  displayOrder?: Prisma.IntWithAggregatesFilter<"Professional"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Professional"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Professional"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Professional"> | Date | string | null
-  colorTheme?: Prisma.StringNullableWithAggregatesFilter<"Professional"> | string | null
-  commissionType?: Prisma.EnumCommissionTypeNullableWithAggregatesFilter<"Professional"> | $Enums.CommissionType | null
-  commissionAmount?: Prisma.DecimalNullableWithAggregatesFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 export type ProfessionalCreateInput = {
@@ -463,53 +469,57 @@ export type ProfessionalCreateInput = {
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  user?: Prisma.UserCreateNestedOneWithoutProfessionalInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
-  user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
-  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalUncheckedCreateInput = {
   id?: string
-  userId: string
   tenantId: string
+  userId?: string | null
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalUpdateInput = {
@@ -517,74 +527,79 @@ export type ProfessionalUpdateInput = {
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  user?: Prisma.UserUpdateOneWithoutProfessionalNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutProfessionalNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutProfessionalNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalCreateManyInput = {
   id?: string
-  userId: string
   tenantId: string
+  userId?: string | null
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 export type ProfessionalUpdateManyMutationInput = {
@@ -592,39 +607,46 @@ export type ProfessionalUpdateManyMutationInput = {
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 export type ProfessionalUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+}
+
+export type ProfessionalNullableScalarRelationFilter = {
+  is?: Prisma.ProfessionalWhereInput | null
+  isNot?: Prisma.ProfessionalWhereInput | null
 }
 
 export type ProfessionalListRelationFilter = {
@@ -642,130 +664,130 @@ export type ProfessionalScalarRelationFilter = {
   isNot?: Prisma.ProfessionalWhereInput
 }
 
-export type ProfessionalUserIdTenantIdCompoundUniqueInput = {
-  userId: string
-  tenantId: string
-}
-
 export type ProfessionalCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   slotIntervalMinutes?: Prisma.SortOrder
   maxAdvancedDays?: Prisma.SortOrder
   minAdvancedMinutes?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
+  profession?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   avatarPublicId?: Prisma.SortOrder
+  colorTheme?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
-  displayName?: Prisma.SortOrder
-  displayOrder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  colorTheme?: Prisma.SortOrder
-  commissionType?: Prisma.SortOrder
-  commissionAmount?: Prisma.SortOrder
 }
 
 export type ProfessionalAvgOrderByAggregateInput = {
   slotIntervalMinutes?: Prisma.SortOrder
   maxAdvancedDays?: Prisma.SortOrder
   minAdvancedMinutes?: Prisma.SortOrder
-  displayOrder?: Prisma.SortOrder
-  commissionAmount?: Prisma.SortOrder
 }
 
 export type ProfessionalMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   slotIntervalMinutes?: Prisma.SortOrder
   maxAdvancedDays?: Prisma.SortOrder
   minAdvancedMinutes?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
+  profession?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   avatarPublicId?: Prisma.SortOrder
+  colorTheme?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
-  displayName?: Prisma.SortOrder
-  displayOrder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  colorTheme?: Prisma.SortOrder
-  commissionType?: Prisma.SortOrder
-  commissionAmount?: Prisma.SortOrder
 }
 
 export type ProfessionalMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  userId?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   slotIntervalMinutes?: Prisma.SortOrder
   maxAdvancedDays?: Prisma.SortOrder
   minAdvancedMinutes?: Prisma.SortOrder
+  name?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  phoneCountryCode?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
+  profession?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   avatarPublicId?: Prisma.SortOrder
+  colorTheme?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
-  displayName?: Prisma.SortOrder
-  displayOrder?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
-  colorTheme?: Prisma.SortOrder
-  commissionType?: Prisma.SortOrder
-  commissionAmount?: Prisma.SortOrder
 }
 
 export type ProfessionalSumOrderByAggregateInput = {
   slotIntervalMinutes?: Prisma.SortOrder
   maxAdvancedDays?: Prisma.SortOrder
   minAdvancedMinutes?: Prisma.SortOrder
-  displayOrder?: Prisma.SortOrder
-  commissionAmount?: Prisma.SortOrder
 }
 
-export type ProfessionalCreateNestedManyWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.ProfessionalCreateWithoutUserInput, Prisma.ProfessionalUncheckedCreateWithoutUserInput> | Prisma.ProfessionalCreateWithoutUserInput[] | Prisma.ProfessionalUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.ProfessionalCreateOrConnectWithoutUserInput | Prisma.ProfessionalCreateOrConnectWithoutUserInput[]
-  createMany?: Prisma.ProfessionalCreateManyUserInputEnvelope
-  connect?: Prisma.ProfessionalWhereUniqueInput | Prisma.ProfessionalWhereUniqueInput[]
+export type ProfessionalCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ProfessionalCreateWithoutUserInput, Prisma.ProfessionalUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.ProfessionalCreateOrConnectWithoutUserInput
+  connect?: Prisma.ProfessionalWhereUniqueInput
 }
 
-export type ProfessionalUncheckedCreateNestedManyWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.ProfessionalCreateWithoutUserInput, Prisma.ProfessionalUncheckedCreateWithoutUserInput> | Prisma.ProfessionalCreateWithoutUserInput[] | Prisma.ProfessionalUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.ProfessionalCreateOrConnectWithoutUserInput | Prisma.ProfessionalCreateOrConnectWithoutUserInput[]
-  createMany?: Prisma.ProfessionalCreateManyUserInputEnvelope
-  connect?: Prisma.ProfessionalWhereUniqueInput | Prisma.ProfessionalWhereUniqueInput[]
+export type ProfessionalUncheckedCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ProfessionalCreateWithoutUserInput, Prisma.ProfessionalUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.ProfessionalCreateOrConnectWithoutUserInput
+  connect?: Prisma.ProfessionalWhereUniqueInput
 }
 
-export type ProfessionalUpdateManyWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.ProfessionalCreateWithoutUserInput, Prisma.ProfessionalUncheckedCreateWithoutUserInput> | Prisma.ProfessionalCreateWithoutUserInput[] | Prisma.ProfessionalUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.ProfessionalCreateOrConnectWithoutUserInput | Prisma.ProfessionalCreateOrConnectWithoutUserInput[]
-  upsert?: Prisma.ProfessionalUpsertWithWhereUniqueWithoutUserInput | Prisma.ProfessionalUpsertWithWhereUniqueWithoutUserInput[]
-  createMany?: Prisma.ProfessionalCreateManyUserInputEnvelope
-  set?: Prisma.ProfessionalWhereUniqueInput | Prisma.ProfessionalWhereUniqueInput[]
-  disconnect?: Prisma.ProfessionalWhereUniqueInput | Prisma.ProfessionalWhereUniqueInput[]
-  delete?: Prisma.ProfessionalWhereUniqueInput | Prisma.ProfessionalWhereUniqueInput[]
-  connect?: Prisma.ProfessionalWhereUniqueInput | Prisma.ProfessionalWhereUniqueInput[]
-  update?: Prisma.ProfessionalUpdateWithWhereUniqueWithoutUserInput | Prisma.ProfessionalUpdateWithWhereUniqueWithoutUserInput[]
-  updateMany?: Prisma.ProfessionalUpdateManyWithWhereWithoutUserInput | Prisma.ProfessionalUpdateManyWithWhereWithoutUserInput[]
-  deleteMany?: Prisma.ProfessionalScalarWhereInput | Prisma.ProfessionalScalarWhereInput[]
+export type ProfessionalUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfessionalCreateWithoutUserInput, Prisma.ProfessionalUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.ProfessionalCreateOrConnectWithoutUserInput
+  upsert?: Prisma.ProfessionalUpsertWithoutUserInput
+  disconnect?: Prisma.ProfessionalWhereInput | boolean
+  delete?: Prisma.ProfessionalWhereInput | boolean
+  connect?: Prisma.ProfessionalWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfessionalUpdateToOneWithWhereWithoutUserInput, Prisma.ProfessionalUpdateWithoutUserInput>, Prisma.ProfessionalUncheckedUpdateWithoutUserInput>
 }
 
-export type ProfessionalUncheckedUpdateManyWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.ProfessionalCreateWithoutUserInput, Prisma.ProfessionalUncheckedCreateWithoutUserInput> | Prisma.ProfessionalCreateWithoutUserInput[] | Prisma.ProfessionalUncheckedCreateWithoutUserInput[]
-  connectOrCreate?: Prisma.ProfessionalCreateOrConnectWithoutUserInput | Prisma.ProfessionalCreateOrConnectWithoutUserInput[]
-  upsert?: Prisma.ProfessionalUpsertWithWhereUniqueWithoutUserInput | Prisma.ProfessionalUpsertWithWhereUniqueWithoutUserInput[]
-  createMany?: Prisma.ProfessionalCreateManyUserInputEnvelope
-  set?: Prisma.ProfessionalWhereUniqueInput | Prisma.ProfessionalWhereUniqueInput[]
-  disconnect?: Prisma.ProfessionalWhereUniqueInput | Prisma.ProfessionalWhereUniqueInput[]
-  delete?: Prisma.ProfessionalWhereUniqueInput | Prisma.ProfessionalWhereUniqueInput[]
-  connect?: Prisma.ProfessionalWhereUniqueInput | Prisma.ProfessionalWhereUniqueInput[]
-  update?: Prisma.ProfessionalUpdateWithWhereUniqueWithoutUserInput | Prisma.ProfessionalUpdateWithWhereUniqueWithoutUserInput[]
-  updateMany?: Prisma.ProfessionalUpdateManyWithWhereWithoutUserInput | Prisma.ProfessionalUpdateManyWithWhereWithoutUserInput[]
-  deleteMany?: Prisma.ProfessionalScalarWhereInput | Prisma.ProfessionalScalarWhereInput[]
+export type ProfessionalUncheckedUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfessionalCreateWithoutUserInput, Prisma.ProfessionalUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.ProfessionalCreateOrConnectWithoutUserInput
+  upsert?: Prisma.ProfessionalUpsertWithoutUserInput
+  disconnect?: Prisma.ProfessionalWhereInput | boolean
+  delete?: Prisma.ProfessionalWhereInput | boolean
+  connect?: Prisma.ProfessionalWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfessionalUpdateToOneWithWhereWithoutUserInput, Prisma.ProfessionalUpdateWithoutUserInput>, Prisma.ProfessionalUncheckedUpdateWithoutUserInput>
+}
+
+export type ProfessionalCreateNestedOneWithoutInvitationsInput = {
+  create?: Prisma.XOR<Prisma.ProfessionalCreateWithoutInvitationsInput, Prisma.ProfessionalUncheckedCreateWithoutInvitationsInput>
+  connectOrCreate?: Prisma.ProfessionalCreateOrConnectWithoutInvitationsInput
+  connect?: Prisma.ProfessionalWhereUniqueInput
+}
+
+export type ProfessionalUpdateOneWithoutInvitationsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfessionalCreateWithoutInvitationsInput, Prisma.ProfessionalUncheckedCreateWithoutInvitationsInput>
+  connectOrCreate?: Prisma.ProfessionalCreateOrConnectWithoutInvitationsInput
+  upsert?: Prisma.ProfessionalUpsertWithoutInvitationsInput
+  disconnect?: Prisma.ProfessionalWhereInput | boolean
+  delete?: Prisma.ProfessionalWhereInput | boolean
+  connect?: Prisma.ProfessionalWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfessionalUpdateToOneWithWhereWithoutInvitationsInput, Prisma.ProfessionalUpdateWithoutInvitationsInput>, Prisma.ProfessionalUncheckedUpdateWithoutInvitationsInput>
 }
 
 export type ProfessionalCreateNestedManyWithoutTenantInput = {
@@ -899,25 +921,27 @@ export type ProfessionalCreateWithoutUserInput = {
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
-  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalUncheckedCreateWithoutUserInput = {
@@ -926,24 +950,26 @@ export type ProfessionalUncheckedCreateWithoutUserInput = {
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalCreateOrConnectWithoutUserInput = {
@@ -951,49 +977,199 @@ export type ProfessionalCreateOrConnectWithoutUserInput = {
   create: Prisma.XOR<Prisma.ProfessionalCreateWithoutUserInput, Prisma.ProfessionalUncheckedCreateWithoutUserInput>
 }
 
-export type ProfessionalCreateManyUserInputEnvelope = {
-  data: Prisma.ProfessionalCreateManyUserInput | Prisma.ProfessionalCreateManyUserInput[]
-  skipDuplicates?: boolean
-}
-
-export type ProfessionalUpsertWithWhereUniqueWithoutUserInput = {
-  where: Prisma.ProfessionalWhereUniqueInput
+export type ProfessionalUpsertWithoutUserInput = {
   update: Prisma.XOR<Prisma.ProfessionalUpdateWithoutUserInput, Prisma.ProfessionalUncheckedUpdateWithoutUserInput>
   create: Prisma.XOR<Prisma.ProfessionalCreateWithoutUserInput, Prisma.ProfessionalUncheckedCreateWithoutUserInput>
+  where?: Prisma.ProfessionalWhereInput
 }
 
-export type ProfessionalUpdateWithWhereUniqueWithoutUserInput = {
-  where: Prisma.ProfessionalWhereUniqueInput
+export type ProfessionalUpdateToOneWithWhereWithoutUserInput = {
+  where?: Prisma.ProfessionalWhereInput
   data: Prisma.XOR<Prisma.ProfessionalUpdateWithoutUserInput, Prisma.ProfessionalUncheckedUpdateWithoutUserInput>
 }
 
-export type ProfessionalUpdateManyWithWhereWithoutUserInput = {
-  where: Prisma.ProfessionalScalarWhereInput
-  data: Prisma.XOR<Prisma.ProfessionalUpdateManyMutationInput, Prisma.ProfessionalUncheckedUpdateManyWithoutUserInput>
+export type ProfessionalUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutProfessionalNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
+  workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
+  assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
 }
 
-export type ProfessionalScalarWhereInput = {
-  AND?: Prisma.ProfessionalScalarWhereInput | Prisma.ProfessionalScalarWhereInput[]
-  OR?: Prisma.ProfessionalScalarWhereInput[]
-  NOT?: Prisma.ProfessionalScalarWhereInput | Prisma.ProfessionalScalarWhereInput[]
-  id?: Prisma.UuidFilter<"Professional"> | string
-  userId?: Prisma.UuidFilter<"Professional"> | string
-  tenantId?: Prisma.UuidFilter<"Professional"> | string
-  slotIntervalMinutes?: Prisma.IntFilter<"Professional"> | number
-  maxAdvancedDays?: Prisma.IntFilter<"Professional"> | number
-  minAdvancedMinutes?: Prisma.IntFilter<"Professional"> | number
-  bio?: Prisma.StringNullableFilter<"Professional"> | string | null
-  avatarUrl?: Prisma.StringNullableFilter<"Professional"> | string | null
-  avatarPublicId?: Prisma.StringNullableFilter<"Professional"> | string | null
-  isActive?: Prisma.BoolFilter<"Professional"> | boolean
-  displayName?: Prisma.StringNullableFilter<"Professional"> | string | null
-  displayOrder?: Prisma.IntFilter<"Professional"> | number
-  createdAt?: Prisma.DateTimeFilter<"Professional"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Professional"> | Date | string
-  deletedAt?: Prisma.DateTimeNullableFilter<"Professional"> | Date | string | null
-  colorTheme?: Prisma.StringNullableFilter<"Professional"> | string | null
-  commissionType?: Prisma.EnumCommissionTypeNullableFilter<"Professional"> | $Enums.CommissionType | null
-  commissionAmount?: Prisma.DecimalNullableFilter<"Professional"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+export type ProfessionalUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutProfessionalNestedInput
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
+  workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
+  assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
+}
+
+export type ProfessionalCreateWithoutInvitationsInput = {
+  id?: string
+  slotIntervalMinutes?: number
+  maxAdvancedDays?: number
+  minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
+  bio?: string | null
+  avatarUrl?: string | null
+  avatarPublicId?: string | null
+  colorTheme?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  user?: Prisma.UserCreateNestedOneWithoutProfessionalInput
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
+  workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
+  assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
+}
+
+export type ProfessionalUncheckedCreateWithoutInvitationsInput = {
+  id?: string
+  tenantId: string
+  userId?: string | null
+  slotIntervalMinutes?: number
+  maxAdvancedDays?: number
+  minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
+  bio?: string | null
+  avatarUrl?: string | null
+  avatarPublicId?: string | null
+  colorTheme?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
+  workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
+  assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
+}
+
+export type ProfessionalCreateOrConnectWithoutInvitationsInput = {
+  where: Prisma.ProfessionalWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfessionalCreateWithoutInvitationsInput, Prisma.ProfessionalUncheckedCreateWithoutInvitationsInput>
+}
+
+export type ProfessionalUpsertWithoutInvitationsInput = {
+  update: Prisma.XOR<Prisma.ProfessionalUpdateWithoutInvitationsInput, Prisma.ProfessionalUncheckedUpdateWithoutInvitationsInput>
+  create: Prisma.XOR<Prisma.ProfessionalCreateWithoutInvitationsInput, Prisma.ProfessionalUncheckedCreateWithoutInvitationsInput>
+  where?: Prisma.ProfessionalWhereInput
+}
+
+export type ProfessionalUpdateToOneWithWhereWithoutInvitationsInput = {
+  where?: Prisma.ProfessionalWhereInput
+  data: Prisma.XOR<Prisma.ProfessionalUpdateWithoutInvitationsInput, Prisma.ProfessionalUncheckedUpdateWithoutInvitationsInput>
+}
+
+export type ProfessionalUpdateWithoutInvitationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  user?: Prisma.UserUpdateOneWithoutProfessionalNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
+  workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
+  assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
+}
+
+export type ProfessionalUncheckedUpdateWithoutInvitationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
+  minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
+  workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
+  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
+  assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalCreateWithoutTenantInput = {
@@ -1001,51 +1177,55 @@ export type ProfessionalCreateWithoutTenantInput = {
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  user?: Prisma.UserCreateNestedOneWithoutProfessionalInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
-  user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalUncheckedCreateWithoutTenantInput = {
   id?: string
-  userId: string
+  userId?: string | null
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalCreateOrConnectWithoutTenantInput = {
@@ -1074,56 +1254,85 @@ export type ProfessionalUpdateManyWithWhereWithoutTenantInput = {
   data: Prisma.XOR<Prisma.ProfessionalUpdateManyMutationInput, Prisma.ProfessionalUncheckedUpdateManyWithoutTenantInput>
 }
 
+export type ProfessionalScalarWhereInput = {
+  AND?: Prisma.ProfessionalScalarWhereInput | Prisma.ProfessionalScalarWhereInput[]
+  OR?: Prisma.ProfessionalScalarWhereInput[]
+  NOT?: Prisma.ProfessionalScalarWhereInput | Prisma.ProfessionalScalarWhereInput[]
+  id?: Prisma.UuidFilter<"Professional"> | string
+  tenantId?: Prisma.UuidFilter<"Professional"> | string
+  userId?: Prisma.UuidNullableFilter<"Professional"> | string | null
+  slotIntervalMinutes?: Prisma.IntFilter<"Professional"> | number
+  maxAdvancedDays?: Prisma.IntFilter<"Professional"> | number
+  minAdvancedMinutes?: Prisma.IntFilter<"Professional"> | number
+  name?: Prisma.StringFilter<"Professional"> | string
+  email?: Prisma.StringFilter<"Professional"> | string
+  phoneCountryCode?: Prisma.StringFilter<"Professional"> | string
+  phoneNumber?: Prisma.StringFilter<"Professional"> | string
+  profession?: Prisma.StringNullableFilter<"Professional"> | string | null
+  bio?: Prisma.StringNullableFilter<"Professional"> | string | null
+  avatarUrl?: Prisma.StringNullableFilter<"Professional"> | string | null
+  avatarPublicId?: Prisma.StringNullableFilter<"Professional"> | string | null
+  colorTheme?: Prisma.StringNullableFilter<"Professional"> | string | null
+  isActive?: Prisma.BoolFilter<"Professional"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Professional"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Professional"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Professional"> | Date | string | null
+}
+
 export type ProfessionalCreateWithoutAssignmentsInput = {
   id?: string
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  user?: Prisma.UserCreateNestedOneWithoutProfessionalInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
-  user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
-  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalUncheckedCreateWithoutAssignmentsInput = {
   id?: string
-  userId: string
   tenantId: string
+  userId?: string | null
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalCreateOrConnectWithoutAssignmentsInput = {
@@ -1147,51 +1356,55 @@ export type ProfessionalUpdateWithoutAssignmentsInput = {
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  user?: Prisma.UserUpdateOneWithoutProfessionalNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutProfessionalNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalUncheckedUpdateWithoutAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutProfessionalNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalCreateWithoutWorkingHoursInput = {
@@ -1199,51 +1412,55 @@ export type ProfessionalCreateWithoutWorkingHoursInput = {
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  user?: Prisma.UserCreateNestedOneWithoutProfessionalInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
-  user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
-  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalUncheckedCreateWithoutWorkingHoursInput = {
   id?: string
-  userId: string
   tenantId: string
+  userId?: string | null
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalCreateOrConnectWithoutWorkingHoursInput = {
@@ -1267,51 +1484,55 @@ export type ProfessionalUpdateWithoutWorkingHoursInput = {
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  user?: Prisma.UserUpdateOneWithoutProfessionalNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutProfessionalNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalUncheckedUpdateWithoutWorkingHoursInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutProfessionalNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalCreateWithoutExceptionsInput = {
@@ -1319,51 +1540,55 @@ export type ProfessionalCreateWithoutExceptionsInput = {
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  user?: Prisma.UserCreateNestedOneWithoutProfessionalInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
-  user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
-  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalUncheckedCreateWithoutExceptionsInput = {
   id?: string
-  userId: string
   tenantId: string
+  userId?: string | null
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalCreateOrConnectWithoutExceptionsInput = {
@@ -1387,51 +1612,55 @@ export type ProfessionalUpdateWithoutExceptionsInput = {
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  user?: Prisma.UserUpdateOneWithoutProfessionalNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutProfessionalNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalUncheckedUpdateWithoutExceptionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutProfessionalNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalCreateWithoutAppointmentsInput = {
@@ -1439,51 +1668,55 @@ export type ProfessionalCreateWithoutAppointmentsInput = {
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
+  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  user?: Prisma.UserCreateNestedOneWithoutProfessionalInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
-  user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
-  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalUncheckedCreateWithoutAppointmentsInput = {
   id?: string
-  userId: string
   tenantId: string
+  userId?: string | null
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalCreateOrConnectWithoutAppointmentsInput = {
@@ -1507,51 +1740,55 @@ export type ProfessionalUpdateWithoutAppointmentsInput = {
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  user?: Prisma.UserUpdateOneWithoutProfessionalNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalUncheckedUpdateWithoutAppointmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalCreateWithoutStatsInput = {
@@ -1559,51 +1796,55 @@ export type ProfessionalCreateWithoutStatsInput = {
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  user?: Prisma.UserCreateNestedOneWithoutProfessionalInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
-  user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
-  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsCreateNestedOneWithoutProfessionalInput
 }
 
 export type ProfessionalUncheckedCreateWithoutStatsInput = {
   id?: string
-  userId: string
   tenantId: string
+  userId?: string | null
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedCreateNestedOneWithoutProfessionalInput
 }
 
 export type ProfessionalCreateOrConnectWithoutStatsInput = {
@@ -1627,51 +1868,55 @@ export type ProfessionalUpdateWithoutStatsInput = {
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  user?: Prisma.UserUpdateOneWithoutProfessionalNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutProfessionalNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
 }
 
 export type ProfessionalUncheckedUpdateWithoutStatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutProfessionalNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
 }
 
 export type ProfessionalCreateWithoutLifetimeStatsInput = {
@@ -1679,51 +1924,55 @@ export type ProfessionalCreateWithoutLifetimeStatsInput = {
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  user?: Prisma.UserCreateNestedOneWithoutProfessionalInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutProfessionalInput
-  user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
-  tenant: Prisma.TenantCreateNestedOneWithoutProfessionalsInput
+  stats?: Prisma.ProfessionalDailyStatsCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalUncheckedCreateWithoutLifetimeStatsInput = {
   id?: string
-  userId: string
   tenantId: string
+  userId?: string | null
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutProfessionalInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessionalInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedCreateNestedManyWithoutProfessionalInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedCreateNestedManyWithoutProfessionalInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutProfessionalInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedCreateNestedManyWithoutProfessionalInput
 }
 
 export type ProfessionalCreateOrConnectWithoutLifetimeStatsInput = {
@@ -1747,163 +1996,76 @@ export type ProfessionalUpdateWithoutLifetimeStatsInput = {
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  user?: Prisma.UserUpdateOneWithoutProfessionalNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutProfessionalNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalUncheckedUpdateWithoutLifetimeStatsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutProfessionalNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
-}
-
-export type ProfessionalCreateManyUserInput = {
-  id?: string
-  tenantId: string
-  slotIntervalMinutes?: number
-  maxAdvancedDays?: number
-  minAdvancedMinutes?: number
-  bio?: string | null
-  avatarUrl?: string | null
-  avatarPublicId?: string | null
-  isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-}
-
-export type ProfessionalUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
-  minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
-  workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
-  assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
-  tenant?: Prisma.TenantUpdateOneRequiredWithoutProfessionalsNestedInput
-}
-
-export type ProfessionalUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
-  minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
   stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
-  workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
-  exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
-  assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
-}
-
-export type ProfessionalUncheckedUpdateManyWithoutUserInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenantId?: Prisma.StringFieldUpdateOperationsInput | string
-  slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
-  minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
-  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 export type ProfessionalCreateManyTenantInput = {
   id?: string
-  userId: string
+  userId?: string | null
   slotIntervalMinutes?: number
   maxAdvancedDays?: number
   minAdvancedMinutes?: number
+  name: string
+  email: string
+  phoneCountryCode: string
+  phoneNumber: string
+  profession?: string | null
   bio?: string | null
   avatarUrl?: string | null
   avatarPublicId?: string | null
+  colorTheme?: string | null
   isActive?: boolean
-  displayName?: string | null
-  displayOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
-  colorTheme?: string | null
-  commissionType?: $Enums.CommissionType | null
-  commissionAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 export type ProfessionalUpdateWithoutTenantInput = {
@@ -1911,71 +2073,76 @@ export type ProfessionalUpdateWithoutTenantInput = {
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  user?: Prisma.UserUpdateOneWithoutProfessionalNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutProfessionalNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutProfessionalNestedInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUpdateManyWithoutProfessionalNestedInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutProfessionalNestedInput
-  user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutProfessionalNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessionalNestedInput
-  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
-  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
   workingHours?: Prisma.ProfessionalWorkingHoursUncheckedUpdateManyWithoutProfessionalNestedInput
   exceptions?: Prisma.ScheduleExceptionProfessionalUncheckedUpdateManyWithoutProfessionalNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutProfessionalNestedInput
+  lifetimeStats?: Prisma.ProfessionalLifetimeStatsUncheckedUpdateOneWithoutProfessionalNestedInput
+  stats?: Prisma.ProfessionalDailyStatsUncheckedUpdateManyWithoutProfessionalNestedInput
 }
 
 export type ProfessionalUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   slotIntervalMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   maxAdvancedDays?: Prisma.IntFieldUpdateOperationsInput | number
   minAdvancedMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneCountryCode?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  profession?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarPublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  colorTheme?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  commissionType?: Prisma.NullableEnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType | null
-  commissionAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 
@@ -1984,19 +2151,21 @@ export type ProfessionalUncheckedUpdateManyWithoutTenantInput = {
  */
 
 export type ProfessionalCountOutputType = {
+  invitations: number
   appointments: number
-  stats: number
   workingHours: number
   exceptions: number
   assignments: number
+  stats: number
 }
 
 export type ProfessionalCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  invitations?: boolean | ProfessionalCountOutputTypeCountInvitationsArgs
   appointments?: boolean | ProfessionalCountOutputTypeCountAppointmentsArgs
-  stats?: boolean | ProfessionalCountOutputTypeCountStatsArgs
   workingHours?: boolean | ProfessionalCountOutputTypeCountWorkingHoursArgs
   exceptions?: boolean | ProfessionalCountOutputTypeCountExceptionsArgs
   assignments?: boolean | ProfessionalCountOutputTypeCountAssignmentsArgs
+  stats?: boolean | ProfessionalCountOutputTypeCountStatsArgs
 }
 
 /**
@@ -2012,15 +2181,15 @@ export type ProfessionalCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types
 /**
  * ProfessionalCountOutputType without action
  */
-export type ProfessionalCountOutputTypeCountAppointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AppointmentWhereInput
+export type ProfessionalCountOutputTypeCountInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvitationWhereInput
 }
 
 /**
  * ProfessionalCountOutputType without action
  */
-export type ProfessionalCountOutputTypeCountStatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ProfessionalDailyStatsWhereInput
+export type ProfessionalCountOutputTypeCountAppointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AppointmentWhereInput
 }
 
 /**
@@ -2044,156 +2213,171 @@ export type ProfessionalCountOutputTypeCountAssignmentsArgs<ExtArgs extends runt
   where?: Prisma.ServiceAssignmentWhereInput
 }
 
+/**
+ * ProfessionalCountOutputType without action
+ */
+export type ProfessionalCountOutputTypeCountStatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProfessionalDailyStatsWhereInput
+}
+
 
 export type ProfessionalSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  userId?: boolean
   tenantId?: boolean
+  userId?: boolean
   slotIntervalMinutes?: boolean
   maxAdvancedDays?: boolean
   minAdvancedMinutes?: boolean
+  name?: boolean
+  email?: boolean
+  phoneCountryCode?: boolean
+  phoneNumber?: boolean
+  profession?: boolean
   bio?: boolean
   avatarUrl?: boolean
   avatarPublicId?: boolean
+  colorTheme?: boolean
   isActive?: boolean
-  displayName?: boolean
-  displayOrder?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  colorTheme?: boolean
-  commissionType?: boolean
-  commissionAmount?: boolean
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Professional$userArgs<ExtArgs>
+  invitations?: boolean | Prisma.Professional$invitationsArgs<ExtArgs>
   appointments?: boolean | Prisma.Professional$appointmentsArgs<ExtArgs>
-  lifetimeStats?: boolean | Prisma.Professional$lifetimeStatsArgs<ExtArgs>
-  stats?: boolean | Prisma.Professional$statsArgs<ExtArgs>
   workingHours?: boolean | Prisma.Professional$workingHoursArgs<ExtArgs>
   exceptions?: boolean | Prisma.Professional$exceptionsArgs<ExtArgs>
   assignments?: boolean | Prisma.Professional$assignmentsArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  lifetimeStats?: boolean | Prisma.Professional$lifetimeStatsArgs<ExtArgs>
+  stats?: boolean | Prisma.Professional$statsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfessionalCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["professional"]>
 
 export type ProfessionalSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  userId?: boolean
   tenantId?: boolean
+  userId?: boolean
   slotIntervalMinutes?: boolean
   maxAdvancedDays?: boolean
   minAdvancedMinutes?: boolean
+  name?: boolean
+  email?: boolean
+  phoneCountryCode?: boolean
+  phoneNumber?: boolean
+  profession?: boolean
   bio?: boolean
   avatarUrl?: boolean
   avatarPublicId?: boolean
+  colorTheme?: boolean
   isActive?: boolean
-  displayName?: boolean
-  displayOrder?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  colorTheme?: boolean
-  commissionType?: boolean
-  commissionAmount?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Professional$userArgs<ExtArgs>
 }, ExtArgs["result"]["professional"]>
 
 export type ProfessionalSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  userId?: boolean
   tenantId?: boolean
+  userId?: boolean
   slotIntervalMinutes?: boolean
   maxAdvancedDays?: boolean
   minAdvancedMinutes?: boolean
+  name?: boolean
+  email?: boolean
+  phoneCountryCode?: boolean
+  phoneNumber?: boolean
+  profession?: boolean
   bio?: boolean
   avatarUrl?: boolean
   avatarPublicId?: boolean
+  colorTheme?: boolean
   isActive?: boolean
-  displayName?: boolean
-  displayOrder?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  colorTheme?: boolean
-  commissionType?: boolean
-  commissionAmount?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Professional$userArgs<ExtArgs>
 }, ExtArgs["result"]["professional"]>
 
 export type ProfessionalSelectScalar = {
   id?: boolean
-  userId?: boolean
   tenantId?: boolean
+  userId?: boolean
   slotIntervalMinutes?: boolean
   maxAdvancedDays?: boolean
   minAdvancedMinutes?: boolean
+  name?: boolean
+  email?: boolean
+  phoneCountryCode?: boolean
+  phoneNumber?: boolean
+  profession?: boolean
   bio?: boolean
   avatarUrl?: boolean
   avatarPublicId?: boolean
+  colorTheme?: boolean
   isActive?: boolean
-  displayName?: boolean
-  displayOrder?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
-  colorTheme?: boolean
-  commissionType?: boolean
-  commissionAmount?: boolean
 }
 
-export type ProfessionalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "tenantId" | "slotIntervalMinutes" | "maxAdvancedDays" | "minAdvancedMinutes" | "bio" | "avatarUrl" | "avatarPublicId" | "isActive" | "displayName" | "displayOrder" | "createdAt" | "updatedAt" | "deletedAt" | "colorTheme" | "commissionType" | "commissionAmount", ExtArgs["result"]["professional"]>
+export type ProfessionalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "userId" | "slotIntervalMinutes" | "maxAdvancedDays" | "minAdvancedMinutes" | "name" | "email" | "phoneCountryCode" | "phoneNumber" | "profession" | "bio" | "avatarUrl" | "avatarPublicId" | "colorTheme" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["professional"]>
 export type ProfessionalInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Professional$userArgs<ExtArgs>
+  invitations?: boolean | Prisma.Professional$invitationsArgs<ExtArgs>
   appointments?: boolean | Prisma.Professional$appointmentsArgs<ExtArgs>
-  lifetimeStats?: boolean | Prisma.Professional$lifetimeStatsArgs<ExtArgs>
-  stats?: boolean | Prisma.Professional$statsArgs<ExtArgs>
   workingHours?: boolean | Prisma.Professional$workingHoursArgs<ExtArgs>
   exceptions?: boolean | Prisma.Professional$exceptionsArgs<ExtArgs>
   assignments?: boolean | Prisma.Professional$assignmentsArgs<ExtArgs>
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  lifetimeStats?: boolean | Prisma.Professional$lifetimeStatsArgs<ExtArgs>
+  stats?: boolean | Prisma.Professional$statsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfessionalCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProfessionalIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Professional$userArgs<ExtArgs>
 }
 export type ProfessionalIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.Professional$userArgs<ExtArgs>
 }
 
 export type $ProfessionalPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Professional"
   objects: {
+    tenant: Prisma.$TenantPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs> | null
+    invitations: Prisma.$InvitationPayload<ExtArgs>[]
     appointments: Prisma.$AppointmentPayload<ExtArgs>[]
-    lifetimeStats: Prisma.$ProfessionalLifetimeStatsPayload<ExtArgs> | null
-    stats: Prisma.$ProfessionalDailyStatsPayload<ExtArgs>[]
     workingHours: Prisma.$ProfessionalWorkingHoursPayload<ExtArgs>[]
     exceptions: Prisma.$ScheduleExceptionProfessionalPayload<ExtArgs>[]
     assignments: Prisma.$ServiceAssignmentPayload<ExtArgs>[]
-    user: Prisma.$UserPayload<ExtArgs>
-    tenant: Prisma.$TenantPayload<ExtArgs>
+    lifetimeStats: Prisma.$ProfessionalLifetimeStatsPayload<ExtArgs> | null
+    stats: Prisma.$ProfessionalDailyStatsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    userId: string
     tenantId: string
+    userId: string | null
     slotIntervalMinutes: number
     maxAdvancedDays: number
     minAdvancedMinutes: number
+    name: string
+    email: string
+    phoneCountryCode: string
+    phoneNumber: string
+    profession: string | null
     bio: string | null
     avatarUrl: string | null
     avatarPublicId: string | null
+    colorTheme: string | null
     isActive: boolean
-    displayName: string | null
-    displayOrder: number
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
-    colorTheme: string | null
-    commissionType: $Enums.CommissionType | null
-    commissionAmount: runtime.Decimal | null
   }, ExtArgs["result"]["professional"]>
   composites: {}
 }
@@ -2588,14 +2772,15 @@ readonly fields: ProfessionalFieldRefs;
  */
 export interface Prisma__ProfessionalClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.Professional$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  invitations<T extends Prisma.Professional$invitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$invitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   appointments<T extends Prisma.Professional$appointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  lifetimeStats<T extends Prisma.Professional$lifetimeStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$lifetimeStatsArgs<ExtArgs>>): Prisma.Prisma__ProfessionalLifetimeStatsClient<runtime.Types.Result.GetResult<Prisma.$ProfessionalLifetimeStatsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  stats<T extends Prisma.Professional$statsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$statsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfessionalDailyStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workingHours<T extends Prisma.Professional$workingHoursArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$workingHoursArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfessionalWorkingHoursPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   exceptions<T extends Prisma.Professional$exceptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$exceptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduleExceptionProfessionalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignments<T extends Prisma.Professional$assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$assignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServiceAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  lifetimeStats<T extends Prisma.Professional$lifetimeStatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$lifetimeStatsArgs<ExtArgs>>): Prisma.Prisma__ProfessionalLifetimeStatsClient<runtime.Types.Result.GetResult<Prisma.$ProfessionalLifetimeStatsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  stats<T extends Prisma.Professional$statsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professional$statsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfessionalDailyStatsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2626,23 +2811,24 @@ export interface Prisma__ProfessionalClient<T, Null = never, ExtArgs extends run
  */
 export interface ProfessionalFieldRefs {
   readonly id: Prisma.FieldRef<"Professional", 'String'>
-  readonly userId: Prisma.FieldRef<"Professional", 'String'>
   readonly tenantId: Prisma.FieldRef<"Professional", 'String'>
+  readonly userId: Prisma.FieldRef<"Professional", 'String'>
   readonly slotIntervalMinutes: Prisma.FieldRef<"Professional", 'Int'>
   readonly maxAdvancedDays: Prisma.FieldRef<"Professional", 'Int'>
   readonly minAdvancedMinutes: Prisma.FieldRef<"Professional", 'Int'>
+  readonly name: Prisma.FieldRef<"Professional", 'String'>
+  readonly email: Prisma.FieldRef<"Professional", 'String'>
+  readonly phoneCountryCode: Prisma.FieldRef<"Professional", 'String'>
+  readonly phoneNumber: Prisma.FieldRef<"Professional", 'String'>
+  readonly profession: Prisma.FieldRef<"Professional", 'String'>
   readonly bio: Prisma.FieldRef<"Professional", 'String'>
   readonly avatarUrl: Prisma.FieldRef<"Professional", 'String'>
   readonly avatarPublicId: Prisma.FieldRef<"Professional", 'String'>
+  readonly colorTheme: Prisma.FieldRef<"Professional", 'String'>
   readonly isActive: Prisma.FieldRef<"Professional", 'Boolean'>
-  readonly displayName: Prisma.FieldRef<"Professional", 'String'>
-  readonly displayOrder: Prisma.FieldRef<"Professional", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Professional", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Professional", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"Professional", 'DateTime'>
-  readonly colorTheme: Prisma.FieldRef<"Professional", 'String'>
-  readonly commissionType: Prisma.FieldRef<"Professional", 'CommissionType'>
-  readonly commissionAmount: Prisma.FieldRef<"Professional", 'Decimal'>
 }
     
 
@@ -3044,6 +3230,49 @@ export type ProfessionalDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
 }
 
 /**
+ * Professional.user
+ */
+export type Professional$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * Professional.invitations
+ */
+export type Professional$invitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invitation
+   */
+  select?: Prisma.InvitationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invitation
+   */
+  omit?: Prisma.InvitationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvitationInclude<ExtArgs> | null
+  where?: Prisma.InvitationWhereInput
+  orderBy?: Prisma.InvitationOrderByWithRelationInput | Prisma.InvitationOrderByWithRelationInput[]
+  cursor?: Prisma.InvitationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvitationScalarFieldEnum | Prisma.InvitationScalarFieldEnum[]
+}
+
+/**
  * Professional.appointments
  */
 export type Professional$appointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3065,49 +3294,6 @@ export type Professional$appointmentsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.AppointmentScalarFieldEnum | Prisma.AppointmentScalarFieldEnum[]
-}
-
-/**
- * Professional.lifetimeStats
- */
-export type Professional$lifetimeStatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the ProfessionalLifetimeStats
-   */
-  select?: Prisma.ProfessionalLifetimeStatsSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the ProfessionalLifetimeStats
-   */
-  omit?: Prisma.ProfessionalLifetimeStatsOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ProfessionalLifetimeStatsInclude<ExtArgs> | null
-  where?: Prisma.ProfessionalLifetimeStatsWhereInput
-}
-
-/**
- * Professional.stats
- */
-export type Professional$statsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the ProfessionalDailyStats
-   */
-  select?: Prisma.ProfessionalDailyStatsSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the ProfessionalDailyStats
-   */
-  omit?: Prisma.ProfessionalDailyStatsOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.ProfessionalDailyStatsInclude<ExtArgs> | null
-  where?: Prisma.ProfessionalDailyStatsWhereInput
-  orderBy?: Prisma.ProfessionalDailyStatsOrderByWithRelationInput | Prisma.ProfessionalDailyStatsOrderByWithRelationInput[]
-  cursor?: Prisma.ProfessionalDailyStatsWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ProfessionalDailyStatsScalarFieldEnum | Prisma.ProfessionalDailyStatsScalarFieldEnum[]
 }
 
 /**
@@ -3180,6 +3366,49 @@ export type Professional$assignmentsArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.ServiceAssignmentScalarFieldEnum | Prisma.ServiceAssignmentScalarFieldEnum[]
+}
+
+/**
+ * Professional.lifetimeStats
+ */
+export type Professional$lifetimeStatsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProfessionalLifetimeStats
+   */
+  select?: Prisma.ProfessionalLifetimeStatsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProfessionalLifetimeStats
+   */
+  omit?: Prisma.ProfessionalLifetimeStatsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProfessionalLifetimeStatsInclude<ExtArgs> | null
+  where?: Prisma.ProfessionalLifetimeStatsWhereInput
+}
+
+/**
+ * Professional.stats
+ */
+export type Professional$statsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProfessionalDailyStats
+   */
+  select?: Prisma.ProfessionalDailyStatsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProfessionalDailyStats
+   */
+  omit?: Prisma.ProfessionalDailyStatsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProfessionalDailyStatsInclude<ExtArgs> | null
+  where?: Prisma.ProfessionalDailyStatsWhereInput
+  orderBy?: Prisma.ProfessionalDailyStatsOrderByWithRelationInput | Prisma.ProfessionalDailyStatsOrderByWithRelationInput[]
+  cursor?: Prisma.ProfessionalDailyStatsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProfessionalDailyStatsScalarFieldEnum | Prisma.ProfessionalDailyStatsScalarFieldEnum[]
 }
 
 /**

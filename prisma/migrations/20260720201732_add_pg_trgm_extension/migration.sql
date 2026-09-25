@@ -10,4 +10,4 @@ USING gin ("email" gin_trgm_ops);
 
 CREATE INDEX "customers_phone_trgm_idx"
 ON "customers"
-USING gin ("phone" gin_trgm_ops);
+USING gin ("phoneNumber" gin_trgm_ops);

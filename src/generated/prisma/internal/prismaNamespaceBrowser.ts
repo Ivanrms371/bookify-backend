@@ -56,7 +56,6 @@ export const ModelName = {
   Invitation: 'Invitation',
   Session: 'Session',
   Verification: 'Verification',
-  VerificationLock: 'VerificationLock',
   Tenant: 'Tenant',
   TenantSettings: 'TenantSettings',
   Service: 'Service',
@@ -80,8 +79,6 @@ export const ModelName = {
   NotificationLog: 'NotificationLog',
   TenantUsage: 'TenantUsage',
   Subscription: 'Subscription',
-  Plan: 'Plan',
-  PlanStats: 'PlanStats',
   Payment: 'Payment',
   PlatformStats: 'PlatformStats',
   WebhookLog: 'WebhookLog'
@@ -108,7 +105,7 @@ export const UserScalarFieldEnum = {
   name: 'name',
   email: 'email',
   emailVerifiedAt: 'emailVerifiedAt',
-  phone: 'phone',
+  phoneNumber: 'phoneNumber',
   phoneCountryCode: 'phoneCountryCode',
   phoneVerifiedAt: 'phoneVerifiedAt',
   password: 'password',
@@ -128,8 +125,7 @@ export const MembershipScalarFieldEnum = {
   userId: 'userId',
   tenantId: 'tenantId',
   role: 'role',
-  status: 'status',
-  createdAt: 'createdAt'
+  isActive: 'isActive'
 } as const
 
 export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof typeof MembershipScalarFieldEnum]
@@ -138,18 +134,13 @@ export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof
 export const InvitationScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
+  professionalId: 'professionalId',
   email: 'email',
-  name: 'name',
-  phoneCountryCode: 'phoneCountryCode',
-  phone: 'phone',
   role: 'role',
-  serviceIds: 'serviceIds',
   token: 'token',
-  status: 'status',
-  commissionType: 'commissionType',
-  commissionAmount: 'commissionAmount',
-  schedule: 'schedule',
   expiresAt: 'expiresAt',
+  acceptedAt: 'acceptedAt',
+  revokedAt: 'revokedAt',
   createdAt: 'createdAt'
 } as const
 
@@ -173,9 +164,10 @@ export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeo
 
 export const VerificationScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   type: 'type',
-  userId: 'userId',
-  address: 'address',
+  recipientId: 'recipientId',
+  recipientType: 'recipientType',
   tokenHash: 'tokenHash',
   codeHash: 'codeHash',
   attempts: 'attempts',
@@ -190,18 +182,6 @@ export const VerificationScalarFieldEnum = {
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
-export const VerificationLockScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  address: 'address',
-  lockedUntil: 'lockedUntil',
-  reason: 'reason',
-  createdAt: 'createdAt'
-} as const
-
-export type VerificationLockScalarFieldEnum = (typeof VerificationLockScalarFieldEnum)[keyof typeof VerificationLockScalarFieldEnum]
-
-
 export const TenantScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
@@ -213,7 +193,7 @@ export const TenantScalarFieldEnum = {
   isPublic: 'isPublic',
   isActive: 'isActive',
   onboardingStatus: 'onboardingStatus',
-  phone: 'phone',
+  phoneNumber: 'phoneNumber',
   addressLine1: 'addressLine1',
   addressLine2: 'addressLine2',
   city: 'city',
@@ -254,8 +234,6 @@ export const ServiceScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
-  imageUrl: 'imageUrl',
-  imagePublicId: 'imagePublicId',
   description: 'description',
   price: 'price',
   discountPercentage: 'discountPercentage',
@@ -265,7 +243,9 @@ export const ServiceScalarFieldEnum = {
   displayOrder: 'displayOrder',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  imagePublicId: 'imagePublicId',
+  imageUrl: 'imageUrl'
 } as const
 
 export type ServiceScalarFieldEnum = (typeof ServiceScalarFieldEnum)[keyof typeof ServiceScalarFieldEnum]
@@ -282,23 +262,24 @@ export type ServiceAssignmentScalarFieldEnum = (typeof ServiceAssignmentScalarFi
 
 export const ProfessionalScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
   tenantId: 'tenantId',
+  userId: 'userId',
   slotIntervalMinutes: 'slotIntervalMinutes',
   maxAdvancedDays: 'maxAdvancedDays',
   minAdvancedMinutes: 'minAdvancedMinutes',
+  name: 'name',
+  email: 'email',
+  phoneCountryCode: 'phoneCountryCode',
+  phoneNumber: 'phoneNumber',
+  profession: 'profession',
   bio: 'bio',
   avatarUrl: 'avatarUrl',
   avatarPublicId: 'avatarPublicId',
+  colorTheme: 'colorTheme',
   isActive: 'isActive',
-  displayName: 'displayName',
-  displayOrder: 'displayOrder',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt',
-  colorTheme: 'colorTheme',
-  commissionType: 'commissionType',
-  commissionAmount: 'commissionAmount'
+  deletedAt: 'deletedAt'
 } as const
 
 export type ProfessionalScalarFieldEnum = (typeof ProfessionalScalarFieldEnum)[keyof typeof ProfessionalScalarFieldEnum]
@@ -363,15 +344,11 @@ export const CustomerScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
-  phone: 'phone',
+  phoneNumber: 'phoneNumber',
   phoneCountryCode: 'phoneCountryCode',
-  phoneVerified: 'phoneVerified',
-  acceptsWhatsapp: 'acceptsWhatsapp',
+  phoneVerifiedAt: 'phoneVerifiedAt',
   email: 'email',
-  emailVerified: 'emailVerified',
-  emailBounced: 'emailBounced',
-  acceptsEmail: 'acceptsEmail',
-  preferredLanguage: 'preferredLanguage',
+  emailVerifiedAt: 'emailVerifiedAt',
   notes: 'notes',
   firstAppointmentAt: 'firstAppointmentAt',
   lastAppointmentAt: 'lastAppointmentAt',
@@ -380,8 +357,8 @@ export const CustomerScalarFieldEnum = {
   cancelledAppointments: 'cancelledAppointments',
   noShowCount: 'noShowCount',
   totalSpent: 'totalSpent',
-  blockedAt: 'blockedAt',
   blockedReason: 'blockedReason',
+  blockedAt: 'blockedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -397,8 +374,6 @@ export const AppointmentScalarFieldEnum = {
   customerId: 'customerId',
   professionalId: 'professionalId',
   status: 'status',
-  startsAt: 'startsAt',
-  endsAt: 'endsAt',
   customerName: 'customerName',
   customerPhone: 'customerPhone',
   customerEmail: 'customerEmail',
@@ -409,13 +384,16 @@ export const AppointmentScalarFieldEnum = {
   discountFixed: 'discountFixed',
   discountPercentage: 'discountPercentage',
   durationMinutes: 'durationMinutes',
-  manageToken: 'manageToken',
   cancelledAt: 'cancelledAt',
   cancellationReason: 'cancellationReason',
   rescheduleCount: 'rescheduleCount',
   rescheduleReason: 'rescheduleReason',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  manageToken: 'manageToken',
+  endsAt: 'endsAt',
+  startsAt: 'startsAt',
+  createdBy: 'createdBy'
 } as const
 
 export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[keyof typeof AppointmentScalarFieldEnum]
@@ -424,8 +402,8 @@ export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[key
 export const AppointmentBlockScalarFieldEnum = {
   id: 'id',
   appointmentId: 'appointmentId',
-  startsAt: 'startsAt',
-  endsAt: 'endsAt'
+  endsAt: 'endsAt',
+  startsAt: 'startsAt'
 } as const
 
 export type AppointmentBlockScalarFieldEnum = (typeof AppointmentBlockScalarFieldEnum)[keyof typeof AppointmentBlockScalarFieldEnum]
@@ -578,64 +556,21 @@ export const SubscriptionScalarFieldEnum = {
   billingCycle: 'billingCycle',
   currentPeriodStart: 'currentPeriodStart',
   currentPeriodEnd: 'currentPeriodEnd',
-  nextPaymentDate: 'nextPaymentDate',
-  trialEndsAt: 'trialEndsAt',
   trialStartedAt: 'trialStartedAt',
-  discountPercent: 'discountPercent',
-  discountAmount: 'discountAmount',
-  discountExpiresAt: 'discountExpiresAt',
-  cancelledAt: 'cancelledAt',
-  cancelReason: 'cancelReason',
+  trialEndsAt: 'trialEndsAt',
   paymentMethod: 'paymentMethod',
   paymentProvider: 'paymentProvider',
-  externalId: 'externalId',
+  lemonCustomerId: 'lemonCustomerId',
+  lemonSubscriptionId: 'lemonSubscriptionId',
+  cancelledAt: 'cancelledAt',
+  endsAt: 'endsAt',
+  cancelReason: 'cancelReason',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
 } as const
 
 export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
-
-
-export const PlanScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  tagline: 'tagline',
-  billingCycle: 'billingCycle',
-  trialDays: 'trialDays',
-  price: 'price',
-  compareAtPrice: 'compareAtPrice',
-  currency: 'currency',
-  isPublic: 'isPublic',
-  isFeatured: 'isFeatured',
-  sortOrder: 'sortOrder',
-  description: 'description',
-  features: 'features',
-  externalReference: 'externalReference',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  professionalLimit: 'professionalLimit',
-  appointmentLimit: 'appointmentLimit',
-  emailLimit: 'emailLimit',
-  whatsappLimit: 'whatsappLimit'
-} as const
-
-export type PlanScalarFieldEnum = (typeof PlanScalarFieldEnum)[keyof typeof PlanScalarFieldEnum]
-
-
-export const PlanStatsScalarFieldEnum = {
-  id: 'id',
-  planId: 'planId',
-  date: 'date',
-  newSubscribers: 'newSubscribers',
-  canceledToday: 'canceledToday',
-  revenueToday: 'revenueToday',
-  activeSubscribers: 'activeSubscribers',
-  totalRevenue: 'totalRevenue',
-  updatedAt: 'updatedAt'
-} as const
-
-export type PlanStatsScalarFieldEnum = (typeof PlanStatsScalarFieldEnum)[keyof typeof PlanStatsScalarFieldEnum]
 
 
 export const PaymentScalarFieldEnum = {
@@ -708,19 +643,19 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const NullableJsonNullValueInput = {
   DbNull: DbNull,
   JsonNull: JsonNull
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
-
-
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {

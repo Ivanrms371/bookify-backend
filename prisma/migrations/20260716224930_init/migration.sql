@@ -58,7 +58,7 @@ CREATE TABLE "users" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "email_verified_at" TIMESTAMP(3),
-    "phone" TEXT,
+    "phoneNumber" TEXT,
     "phone_verified_at" TIMESTAMP(3),
     "password" TEXT,
     "avatar_url" TEXT,
@@ -141,7 +141,7 @@ CREATE TABLE "tenants" (
     "is_public" BOOLEAN NOT NULL DEFAULT false,
     "is_active" BOOLEAN NOT NULL DEFAULT false,
     "onboarding_status" "OnboardingStatus" NOT NULL DEFAULT 'WORKSPACE_TYPE',
-    "phone" TEXT,
+    "phoneNumber" TEXT,
     "address_line_1" TEXT,
     "address_line_2" TEXT,
     "city" TEXT,
@@ -285,7 +285,7 @@ CREATE TABLE "schedule_exception_blocks" (
 CREATE TABLE "customers" (
     "id" UUID NOT NULL DEFAULT uuidv7(),
     "tenant_id" UUID NOT NULL,
-    "phone" TEXT NOT NULL,
+    "phoneNumber" TEXT NOT NULL,
     "phone_country_code" TEXT NOT NULL DEFAULT '+598',
     "phone_verified" BOOLEAN NOT NULL DEFAULT false,
     "email" TEXT,
@@ -636,7 +636,7 @@ CREATE UNIQUE INDEX "users_google_id_key" ON "users"("google_id");
 CREATE INDEX "users_email_idx" ON "users"("email");
 
 -- CreateIndex
-CREATE INDEX "users_phone_idx" ON "users"("phone");
+CREATE INDEX "users_phone_idx" ON "users"("phoneNumber");
 
 -- CreateIndex
 CREATE INDEX "users_google_id_idx" ON "users"("google_id");
@@ -723,7 +723,7 @@ CREATE INDEX "customers_email_idx" ON "customers"("email");
 CREATE INDEX "customers_last_appointment_at_idx" ON "customers"("last_appointment_at");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "customers_tenant_id_phone_key" ON "customers"("tenant_id", "phone");
+CREATE UNIQUE INDEX "customers_tenant_id_phone_key" ON "customers"("tenant_id", "phoneNumber");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "appointments_cancel_token_key" ON "appointments"("cancel_token");

@@ -1,7 +1,7 @@
 /*
   Warnings:
 
-  - A unique constraint covering the columns `[tenant_id,phone_country_code,phone]` on the table `customers` will be added. If there are existing duplicate values, this will fail.
+  - A unique constraint covering the columns `[tenant_id,phone_country_code,phoneNumber]` on the table `customers` will be added. If there are existing duplicate values, this will fail.
   - A unique constraint covering the columns `[tenant_id,email]` on the table `customers` will be added. If there are existing duplicate values, this will fail.
 
 */
@@ -24,7 +24,7 @@ CREATE INDEX "customers_tenant_id_blocked_at_idx" ON "customers"("tenant_id", "b
 CREATE INDEX "customers_tenant_id_deleted_at_idx" ON "customers"("tenant_id", "deleted_at");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "customers_tenant_id_phone_country_code_phone_key" ON "customers"("tenant_id", "phone_country_code", "phone");
+CREATE UNIQUE INDEX "customers_tenant_id_phone_country_code_phone_key" ON "customers"("tenant_id", "phone_country_code", "phoneNumber");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "customers_tenant_id_email_key" ON "customers"("tenant_id", "email");

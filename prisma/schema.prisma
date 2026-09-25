@@ -8,46 +8,40 @@ datasource db {
 }
 
 model User {
-  id                 String              @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  name               String
-  email              String              @unique
-  emailVerifiedAt    DateTime?           @map("email_verified_at")
-  phone              String?
-  phoneCountryCode   String              @default("598") @map("phone_country_code")
-  phoneVerifiedAt    DateTime?           @map("phone_verified_at")
-  
-  password           String?
-  avatarUrl          String?             @map("avatar_url")
-  googleId           String?             @unique @map("google_id")
-  lastLoginAt        DateTime?           @map("last_login_at")
-  tokenVersion       Int                 @default(0) @map("token_version")
-  createdAt          DateTime            @default(now()) @map("created_at")
-  updatedAt          DateTime            @updatedAt @map("updated_at")
+  id                  String              @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  name                String
+  email               String              @unique
+  emailVerifiedAt     DateTime?           @map("email_verified_at")
+  phoneNumber               String?
+  phoneCountryCode String?
+  phoneVerifiedAt     DateTime?           @map("phone_verified_at")
+  password            String?
+  avatarUrl           String?             @map("avatar_url")
+  googleId            String?             @unique @map("google_id")
+  lastLoginAt         DateTime?           @map("last_login_at")
+  tokenVersion        Int                 @default(0) @map("token_version")
+  createdAt           DateTime            @default(now()) @map("created_at")
+  updatedAt           DateTime            @updatedAt @map("updated_at")
+  inAppNotifications  InAppNotification[]
+  memberships         Membership[]
+  professional        Professional?
+  sessions            Session[]
 
-  memberships Membership[]
-  professionalProfile           Professional[]
-
-  inAppNotifications InAppNotification[]
-  sessions           Session[]
-  verificationLocks  VerificationLock?
-  verifications      Verification[]
-
+  @@unique([phoneCountryCode, phoneNumber])
   @@index([email])
-  @@unique([phoneCountryCode, phone])
   @@index([googleId])
   @@map("users")
 }
 
 model Membership {
-  id        String @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  userId    String @map("user_id") @db.Uuid
-  tenantId  String @map("tenant_id") @db.Uuid()
-  role      MembershipRole @default(ADMIN)
-  status    MembershipStatus @default(ACTIVE)
-  createdAt DateTime @default(now()) @map("created_at")
+  id        String           @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId    String           @map("user_id") @db.Uuid
+  tenantId  String           @map("tenant_id") @db.Uuid
+  role      MembershipRole   
+  isActive  Boolean @default(true) @map("is_active")
 
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tenant  Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant    Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, tenantId])
   @@index([tenantId])
@@ -55,36 +49,28 @@ model Membership {
 }
 
 model Invitation {
-  id                 String           @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenantId           String           @map("tenant_id") @db.Uuid
-  email              String
-  name               String?          
-  phoneCountryCode   String  @default("598") @map("phone_country_code")
-  phone              String?
-  role               MembershipRole   @default(PROFESSIONAL)
+  id             String @id @default(dbgenerated("uuidv7()")) @db.Uuid
 
-  serviceIds         String[]         @map("service_ids")
-  token              String           @unique
-  status             InvitationStatus @default(PENDING)
-  commissionType       CommissionType? @map("commission_type")
-  commissionAmount    Decimal?         @map("commission_amount")
+  tenantId       String @map("tenant_id") @db.Uuid
+  professionalId String? @map("professional_id") @db.Uuid
 
-  schedule           Json?
-  expiresAt          DateTime         @map("expires_at")
-  createdAt          DateTime         @default(now()) @map("created_at")
+  email             String
+  role              MembershipRole @default(STAFF)
 
-  tenant             Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  token       String   @unique
+  expiresAt   DateTime @map("expires_at")
+  acceptedAt  DateTime? @map("accepted_at")
+  revokedAt   DateTime? @map("revoked_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  tenant       Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  professional Professional? @relation(fields: [professionalId], references: [id], onDelete: Cascade)
 
   @@index([tenantId])
   @@index([email])
+  @@index([professionalId])
   @@map("invitations")
-}
-
-enum InvitationStatus {
-  PENDING
-  ACCEPTED
-  EXPIRED
-  CANCELLED
 }
 
 model Session {
@@ -97,6 +83,7 @@ model Session {
   expiresAt  DateTime  @map("expires_at")
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime  @updatedAt @map("updated_at")
+
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, deviceId])
@@ -107,91 +94,83 @@ model Session {
 }
 
 model Verification {
-  id          String           @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  type        VerificationType
-  userId      String           @map("user_id") @db.Uuid
-  address     String
-  tokenHash   String?          @unique @map("token_hash")
-  codeHash    String?          @map("code_hash")
-  attempts    Int              @default(0)
-  maxAttempts Int              @default(3) @map("max_attempts")
-  expiresAt   DateTime         @map("expires_at")
-  verifiedAt  DateTime?        @map("verified_at")
-  lockedAt    DateTime?        @map("locked_at")
-  createdAt   DateTime         @default(now()) @map("created_at")
-  sentCount   Int              @default(0) @map("sent_count")
-  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            String         @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenantId      String?        @db.Uuid
 
-  @@index([address])
+  type          VerificationType
+
+  recipientId   String         @map("recipient_id") @db.Uuid
+  recipientType RecipientType   @map("recipient_type")
+
+  tokenHash     String?        @unique @map("token_hash")
+  codeHash      String?        @map("code_hash")
+
+  attempts      Int            @default(0)
+  maxAttempts   Int            @default(3) @map("max_attempts")
+
+  expiresAt     DateTime       @map("expires_at")
+  verifiedAt    DateTime?      @map("verified_at")
+  lockedAt      DateTime?      @map("locked_at")
+
+  createdAt     DateTime       @default(now()) @map("created_at")
+
+  sentCount     Int            @default(0) @map("sent_count")
+
+  tenant        Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId, recipientType, type])
   @@index([tokenHash])
+
   @@map("verifications")
 }
 
-model VerificationLock {
-  id          String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  userId      String   @unique @map("user_id") @db.Uuid
-  address     String
-  lockedUntil DateTime @map("locked_until")
-  reason      String?  @map("reason")
-  createdAt   DateTime @default(now()) @map("created_at")
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([address])
-  @@map("verification_locks")
-}
-
 model Tenant {
-  id                    String                  @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  slug                  String?                 @unique
-  name                  String?
-  type                  TenantType?
-  description           String?
-  workspaceType         WorkspaceType? @map("workspace_type") 
-  colorTheme      String?                 @map("color_theme")
-
-  isPublic              Boolean                 @default(false) @map("is_public")
-  isActive              Boolean                 @default(false) @map("is_active")
-  onboardingStatus      OnboardingStatus        @default(WORKSPACE_TYPE) @map("onboarding_status")
+  id                        String                      @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  slug                      String?                     @unique
+  name                      String?
+  type                      TenantType?
+  description               String?
+  workspaceType             WorkspaceType?              @map("workspace_type")
+  colorTheme                String?                     @map("color_theme")
+  isPublic                  Boolean                     @default(false) @map("is_public")
+  isActive                  Boolean                     @default(false) @map("is_active")
+  onboardingStatus          OnboardingStatus            @default(WORKSPACE_TYPE) @map("onboarding_status")
+  phoneNumber                     String?
+  addressLine1              String?                     @map("address_line_1")
+  addressLine2              String?                     @map("address_line_2")
+  city                      String?
+  province                  String?
+  country                   String?                     @default("UY")
+  logoUrl                   String?                     @map("logo_url")
+  logoPublicId              String?                     @map("logo_public_id")
+  coverUrl                  String?                     @map("cover_url")
+  coverPublicId             String?                     @map("cover_public_id")
   
-  phone                 String?
-  addressLine1          String?                 @map("address_line_1")
-  addressLine2          String?                 @map("address_line_2")
-  city                  String?
-  province              String?
-  country               String?                 @default("UY")
+  createdAt                 DateTime                    @default(now()) @map("created_at")
+  updatedAt                 DateTime                    @updatedAt @map("updated_at")
+  deletedAt                 DateTime?                   @map("deleted_at")
 
-  logoUrl               String?                 @map("logo_url")
-  logoPublicId          String?                 @map("logo_public_id")
-  coverUrl              String?                 @map("cover_url")
-  coverPublicId         String?                 @map("cover_public_id")
+  verifications             Verification[]
+  appointments              Appointment[]
+  customers                 Customer[]
+  inAppNotifications        InAppNotification[]
+  invitations               Invitation[]
+  memberships               Membership[]
+  payments                  Payment[]
 
-  createdAt             DateTime                @default(now()) @map("created_at")
-  updatedAt             DateTime                @updatedAt @map("updated_at")
-  deletedAt             DateTime?               @map("deleted_at")
-
-  settings              TenantSettings?
-  subscription          Subscription?
-  lifetimeStats         TenantLifetimeStats?
-
-  memberships           Membership[]
-  professionals         Professional[]
-  invitations           Invitation[]
-
-  services              Service[]
-  appointments          Appointment[]
-  customers             Customer[]
-  tenantWorkingHours    TenantWorkingHours[]
-  professionalWorkingHours  ProfessionalWorkingHours[]
-  scheduleExceptions    ScheduleException[]
-
-  payments              Payment[]
-  usage                 TenantUsage[]
-
-  dailyStats            TenantDailyStats[]
+  professionals             Professional[]
   professionalLifetimeStats ProfessionalLifetimeStats[]
   professionalDailyStats    ProfessionalDailyStats[]
+  professionalWorkingHours  ProfessionalWorkingHours[]
 
-  inAppNotifications    InAppNotification[]
+  scheduleExceptions        ScheduleException[]
+  services                  Service[]
+  subscription              Subscription?
+  dailyStats                TenantDailyStats[]
+  lifetimeStats             TenantLifetimeStats?
+  settings                  TenantSettings?
+  usage                     TenantUsage[]
+  tenantWorkingHours        TenantWorkingHours[]
 
   @@map("tenants")
 }
@@ -219,8 +198,6 @@ model Service {
   id                 String              @id @default(dbgenerated("uuidv7()")) @db.Uuid
   tenantId           String              @map("tenant_id") @db.Uuid
   name               String
-  imageUrl           String? @map("image_url")
-  imagePublicId      String? @map("image_public_id")
   description        String?
   price              Decimal             @db.Decimal(10, 2)
   discountPercentage Int?                @default(0) @map("discount_percentage")
@@ -231,6 +208,8 @@ model Service {
   createdAt          DateTime            @default(now()) @map("created_at")
   updatedAt          DateTime            @updatedAt @map("updated_at")
   deletedAt          DateTime?           @map("deleted_at")
+  imagePublicId      String?             @map("image_public_id")
+  imageUrl           String?             @map("image_url")
   appointments       Appointment[]
   assignments        ServiceAssignment[]
   tenant             Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
@@ -240,11 +219,11 @@ model Service {
 }
 
 model ServiceAssignment {
-  professionalId String   @map("professional_id") @db.Uuid
-  serviceId  String   @map("service_id") @db.Uuid
-  isActive   Boolean  @default(true) @map("is_active")
+  professionalId String       @map("professional_id") @db.Uuid
+  serviceId      String       @map("service_id") @db.Uuid
+  isActive       Boolean      @default(true) @map("is_active")
   professional   Professional @relation(fields: [professionalId], references: [id], onDelete: Cascade)
-  service    Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  service        Service      @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 
   @@id([professionalId, serviceId])
   @@index([professionalId, isActive])
@@ -252,49 +231,61 @@ model ServiceAssignment {
 }
 
 model Professional {
-  id                  String                 @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  userId              String                 @map("user_id") @db.Uuid 
-  tenantId            String                 @map("tenant_id") @db.Uuid
-  slotIntervalMinutes Int                    @default(30) @map("slot_interval_minutes")
-  maxAdvancedDays     Int                    @default(30) @map("max_advanced_days")
-  minAdvancedMinutes  Int                    @default(30) @map("min_advanced_minutes")
-  bio                 String?
-  avatarUrl           String?                @map("avatar_url")
-  avatarPublicId      String?                @map("avatar_public_id")
-  isActive            Boolean                @default(true) @map("is_active")
-  displayName         String?                @map("display_name")
-  displayOrder        Int                    @default(0) @map("display_order")
-  createdAt           DateTime               @default(now()) @map("created_at")
-  updatedAt           DateTime               @updatedAt @map("updated_at")
-  deletedAt           DateTime?              @map("deleted_at")
-  colorTheme          String?                @map("color_theme")
-  commissionType      CommissionType?        @default(PERCENTAGE) @map("commission_type")
-  commissionAmount     Decimal?               @default(0) @map("commission_amount") @db.Decimal(10, 2)
-  appointments        Appointment[]
-  lifetimeStats       ProfessionalLifetimeStats?
-  stats               ProfessionalDailyStats[]
-  workingHours        ProfessionalWorkingHours[]
-  exceptions          ScheduleExceptionProfessional[]
-  assignments         ServiceAssignment[]
+  id       String @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenantId String @map("tenant_id") @db.Uuid
+  userId   String? @map("user_id") @db.Uuid
 
-  user                User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tenant              Tenant                 @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  // Scheduling
+  slotIntervalMinutes Int @default(30) @map("slot_interval_minutes")
+  maxAdvancedDays     Int @default(30) @map("max_advanced_days")
+  minAdvancedMinutes  Int @default(30) @map("min_advanced_minutes")
 
+  // Profile
+  name        String   
+  email       String
+  phoneCountryCode String @map("phone_country_code")
+  phoneNumber String @map("phone_number")
+  profession String?
+  bio         String?
+  avatarUrl   String? @map("avatar_url")
+  avatarPublicId String? @map("avatar_public_id")
+  colorTheme  String? @map("color_theme")
 
-  @@unique([userId, tenantId])
+  // Display
+  isActive     Boolean @default(true) @map("is_active")
+
+  // Timestamps
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  // Relations
+  tenant       Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user         User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invitations   Invitation[]
+
+  appointments Appointment[]
+  workingHours ProfessionalWorkingHours[]
+  exceptions   ScheduleExceptionProfessional[]
+  assignments  ServiceAssignment[]
+
+  lifetimeStats ProfessionalLifetimeStats?
+  stats         ProfessionalDailyStats[]
+
+  @@unique([userId])
   @@index([tenantId])
   @@map("professionals")
 }
 
 model ProfessionalWorkingHours {
-  id         String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenantId   String   @map("tenant_id") @db.Uuid
-  professionalId String   @map("professional_id") @db.Uuid
-  dayOfWeek  Int      @map("day_of_week") @db.SmallInt
-  opensAt    Int      @map("opens_at") @db.SmallInt
-  closesAt   Int      @map("closes_at") @db.SmallInt
+  id             String       @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenantId       String       @map("tenant_id") @db.Uuid
+  professionalId String       @map("professional_id") @db.Uuid
+  dayOfWeek      Int          @map("day_of_week") @db.SmallInt
+  opensAt        Int          @map("opens_at") @db.SmallInt
+  closesAt       Int          @map("closes_at") @db.SmallInt
   professional   Professional @relation(fields: [professionalId], references: [id], onDelete: Cascade)
-  tenant     Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant         Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@index([professionalId, dayOfWeek])
   @@index([tenantId, dayOfWeek])
@@ -315,29 +306,26 @@ model TenantWorkingHours {
 }
 
 model ScheduleException {
-  id        String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenantId  String   @map("tenant_id") @db.Uuid
-  isClosed  Boolean  @map("is_closed")
-  reason    String?
-  startDate DateTime @map("start_date")
-  endDate   DateTime @map("end_date")
-  createdAt DateTime @default(now()) @map("created_at")
-
-  blocks         ScheduleExceptionBlock[]
-  professionals  ScheduleExceptionProfessional[]
-  tenant         Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id            String                          @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenantId      String                          @map("tenant_id") @db.Uuid
+  isClosed      Boolean                         @map("is_closed")
+  reason        String?
+  startDate     DateTime                        @map("start_date")
+  endDate       DateTime                        @map("end_date")
+  createdAt     DateTime                        @default(now()) @map("created_at")
+  blocks        ScheduleExceptionBlock[]
+  professionals ScheduleExceptionProfessional[]
+  tenant        Tenant                          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@index([startDate, endDate])
   @@map("schedule_exceptions")
 }
 
 model ScheduleExceptionProfessional {
-  scheduleExceptionId String @map("schedule_exception_id") @db.Uuid
-  professionalId     String @map("professional_id") @db.Uuid
-
-  scheduleException ScheduleException @relation(fields: [scheduleExceptionId], references: [id], onDelete: Cascade)
-
-  professional Professional @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+  scheduleExceptionId String            @map("schedule_exception_id") @db.Uuid
+  professionalId      String            @map("professional_id") @db.Uuid
+  professional        Professional      @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+  scheduleException   ScheduleException @relation(fields: [scheduleExceptionId], references: [id], onDelete: Cascade)
 
   @@id([scheduleExceptionId, professionalId])
   @@index([professionalId])
@@ -357,93 +345,74 @@ model ScheduleExceptionBlock {
 }
 
 model Customer {
-  id       String @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenantId String @map("tenant_id") @db.Uuid
- 
-  name String
+  id                    String        @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenantId              String        @map("tenant_id") @db.Uuid
 
-  phone             String
-  phoneCountryCode  String  @default("598") @map("phone_country_code")
-  phoneVerified     Boolean @default(false) @map("phone_verified")
-  acceptsWhatsapp   Boolean @default(true) @map("accepts_whatsapp")
-
-  email           String?
-  emailVerified   Boolean @default(false) @map("email_verified")
-  emailBounced    Boolean @default(false) @map("email_bounced")
-  acceptsEmail    Boolean @default(true) @map("accepts_email")
-
-  preferredLanguage String @default("es") @map("preferred_language")
-
+  name                  String
+  phoneNumber                 String
+  phoneCountryCode      String        @default("598") @map("phone_country_code")
+  phoneVerifiedAt       DateTime?     @map("phone_verified_at")
+  email                 String?
+  emailVerifiedAt       DateTime?     @map("email_verified_at")
   notes String?
 
-  firstAppointmentAt    DateTime? @map("first_appointment_at")
-  lastAppointmentAt     DateTime? @map("last_appointment_at")
+  firstAppointmentAt    DateTime?     @map("first_appointment_at")
+  lastAppointmentAt     DateTime?     @map("last_appointment_at")
+  totalAppointments     Int           @default(0) @map("total_appointments")
+  completedAppointments Int           @default(0) @map("completed_appointments")
+  cancelledAppointments Int           @default(0) @map("cancelled_appointments")
+  noShowCount           Int           @default(0) @map("no_show_count")
+  totalSpent            Decimal       @default(0) @map("total_spent")
 
-  totalAppointments     Int     @default(0) @map("total_appointments")
-  completedAppointments Int     @default(0) @map("completed_appointments")
-  cancelledAppointments Int     @default(0) @map("cancelled_appointments")
-  noShowCount           Int     @default(0) @map("no_show_count")
+  blockedReason         String?       @map("blocked_reason")
+  blockedAt             DateTime?     @map("blocked_at")
 
-  totalSpent Decimal @default(0) @map("total_spent")
- 
-  blockedAt     DateTime? @map("blocked_at")
-  blockedReason String?   @map("blocked_reason")
- 
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
+  createdAt             DateTime      @default(now()) @map("created_at")
+  updatedAt             DateTime      @updatedAt @map("updated_at")
+  deletedAt             DateTime?     @map("deleted_at")
+  appointments          Appointment[]
+  tenant                Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-  
-  tenant       Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  appointments Appointment[]
-
-  @@unique([tenantId, phoneCountryCode, phone])
-
+  @@unique([tenantId, phoneCountryCode, phoneNumber])
   @@index([tenantId])
   @@index([tenantId, lastAppointmentAt])
   @@index([tenantId, blockedAt])
   @@index([tenantId, deletedAt])
-  
   @@map("customers")
 }
 
 model Appointment {
-  id                    String             @id @default(dbgenerated("uuidv7()")) @db.Uuid
-
-  tenantId              String             @map("tenant_id") @db.Uuid
-  serviceId             String             @map("service_id") @db.Uuid
-  customerId            String             @map("customer_id") @db.Uuid
-  professionalId        String             @map("professional_id") @db.Uuid
-
-  status                AppointmentStatus  @default(PENDING)
-  startsAt              DateTime           @map("starts_at")
-  endsAt                DateTime           @map("ends_at")
-
-  customerName          String             @map("customer_name")
-  customerPhone         String             @map("customer_phone")
-  customerEmail         String?            @map("customer_email")
-  notes                 String?
-  internalNotes         String?            @map("internal_notes")
-  
-  price                 Decimal            @db.Decimal(10, 2)
-  discountAmount        Decimal            @default(0) @map("discount_amount") @db.Decimal(10, 2)
-  discountFixed         Decimal?           @default(0) @map("discount_fixed") @db.Decimal(10, 2)
-  discountPercentage    Int?               @default(0) @map("discount_percentage")
-  durationMinutes       Int                @map("duration_minutes")
-
-  manageToken           String?             @unique @map("manage_token")
-  cancelledAt           DateTime?          @map("cancelled_at")
-  cancellationReason    String?            @map("cancellation_reason")
-  rescheduleCount       Int                @default(0) @map("reschedule_count")
-  rescheduleReason      String?            @map("reschedule_reason")
-
-  createdAt             DateTime           @default(now()) @map("created_at")
-  updatedAt             DateTime           @updatedAt @map("updated_at")
-  blocks                AppointmentBlock[]
-  customer              Customer           @relation(fields: [customerId], references: [id])
-  professional          Professional           @relation(fields: [professionalId], references: [id])
-  service               Service            @relation(fields: [serviceId], references: [id])
-  tenant                Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id                 String             @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenantId           String             @map("tenant_id") @db.Uuid
+  serviceId          String             @map("service_id") @db.Uuid
+  customerId         String?            @map("customer_id") @db.Uuid
+  professionalId     String             @map("professional_id") @db.Uuid
+  status             AppointmentStatus  @default(PENDING)
+  customerName       String?            @map("customer_name")
+  customerPhone      String?            @map("customer_phone")
+  customerEmail      String?            @map("customer_email")
+  notes              String?
+  internalNotes      String?            @map("internal_notes")
+  price              Decimal            @db.Decimal(10, 2)
+  discountAmount     Decimal            @default(0) @map("discount_amount") @db.Decimal(10, 2)
+  discountFixed      Decimal?           @default(0) @map("discount_fixed") @db.Decimal(10, 2)
+  discountPercentage Int?               @default(0) @map("discount_percentage")
+  durationMinutes    Int                @map("duration_minutes")
+  cancelledAt        DateTime?          @map("cancelled_at")
+  cancellationReason String?            @map("cancellation_reason")
+  rescheduleCount    Int                @default(0) @map("reschedule_count")
+  rescheduleReason   String?            @map("reschedule_reason")
+  createdAt          DateTime           @default(now()) @map("created_at")
+  updatedAt          DateTime           @updatedAt @map("updated_at")
+  manageToken        String?            @unique @map("manage_token")
+  endsAt             DateTime           @map("ends_at")
+  startsAt           DateTime           @map("starts_at")
+  createdBy          CreatedByType      @default(CUSTOMER) @map("created_by")
+  blocks             AppointmentBlock[]
+  customer           Customer?          @relation(fields: [customerId], references: [id])
+  professional       Professional       @relation(fields: [professionalId], references: [id])
+  service            Service            @relation(fields: [serviceId], references: [id])
+  tenant             Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@index([customerId])
   @@index([tenantId, status, startsAt])
@@ -454,8 +423,8 @@ model Appointment {
 model AppointmentBlock {
   id            String      @id @default(dbgenerated("uuidv7()")) @db.Uuid
   appointmentId String      @map("appointment_id") @db.Uuid
-  startsAt     DateTime    @map("starts_at")
-  endsAt       DateTime    @map("ends_at")
+  endsAt        DateTime    @map("ends_at")
+  startsAt      DateTime    @map("starts_at")
   appointment   Appointment @relation(fields: [appointmentId], references: [id])
 
   @@index([appointmentId])
@@ -494,18 +463,18 @@ model TenantLifetimeStats {
 }
 
 model ProfessionalDailyStats {
-  id           String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  professionalId   String   @map("professional_member_id") @db.Uuid
-  date         DateTime @db.Date
-  revenue      Decimal  @default(0) @db.Decimal(10, 2)
-  appointments Int      @default(0) @map("appointments")
-  cancelled    Int      @default(0) @map("cancelled")
-  completed    Int      @default(0) @map("completed")
-  newCustomers Int      @default(0) @map("new_customers")
-  noShow       Int      @default(0) @map("no_show")
-  tenantId     String   @map("tenant_id") @db.Uuid
-  professional     Professional @relation(fields: [professionalId], references: [id], onDelete: Cascade)
-  tenant       Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id             String       @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  professionalId String       @map("professional_member_id") @db.Uuid
+  date           DateTime     @db.Date
+  revenue        Decimal      @default(0) @db.Decimal(10, 2)
+  appointments   Int          @default(0) @map("appointments")
+  cancelled      Int          @default(0) @map("cancelled")
+  completed      Int          @default(0) @map("completed")
+  newCustomers   Int          @default(0) @map("new_customers")
+  noShow         Int          @default(0) @map("no_show")
+  tenantId       String       @map("tenant_id") @db.Uuid
+  professional   Professional @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+  tenant         Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@unique([professionalId, date])
   @@index([tenantId, date])
@@ -513,17 +482,17 @@ model ProfessionalDailyStats {
 }
 
 model ProfessionalLifetimeStats {
-  id                String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  professionalId        String   @unique @map("professional_member_id") @db.Uuid
-  totalRevenue      Decimal  @default(0) @map("total_revenue") @db.Decimal(12, 2)
-  totalAppointments Int      @default(0) @map("total_appointments")
-  totalCancelled    Int      @default(0) @map("total_cancelled")
-  totalCompleted    Int      @default(0) @map("total_completed")
-  totalNewCustomers Int      @default(0) @map("total_new_customers")
-  totalNoShow       Int      @default(0) @map("total_no_show")
-  tenantId          String   @map("tenant_id") @db.Uuid
-  professional          Professional @relation(fields: [professionalId], references: [id], onDelete: Cascade)
-  tenant            Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id                String       @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  professionalId    String       @unique @map("professional_member_id") @db.Uuid
+  totalRevenue      Decimal      @default(0) @map("total_revenue") @db.Decimal(12, 2)
+  totalAppointments Int          @default(0) @map("total_appointments")
+  totalCancelled    Int          @default(0) @map("total_cancelled")
+  totalCompleted    Int          @default(0) @map("total_completed")
+  totalNewCustomers Int          @default(0) @map("total_new_customers")
+  totalNoShow       Int          @default(0) @map("total_no_show")
+  tenantId          String       @map("tenant_id") @db.Uuid
+  professional      Professional @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+  tenant            Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@unique([tenantId, professionalId])
   @@index([tenantId])
@@ -618,81 +587,43 @@ model TenantUsage {
 }
 
 model Subscription {
-  id                 String             @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenantId           String             @unique @map("tenant_id") @db.Uuid
-  planId             String             @map("plan_id")
-  status             SubscriptionStatus @default(TRIAL)
-  amount             Decimal            @db.Decimal(10, 2)
-  currency           String             @default("USD")
-  billingCycle       BillingCycle?      @map("billing_cycle")
-  currentPeriodStart DateTime?          @map("current_period_start")
-  currentPeriodEnd   DateTime?          @map("current_period_end")
-  nextPaymentDate    DateTime?          @map("next_payment_date")
-  trialEndsAt        DateTime?          @map("trial_ends_at")
-  trialStartedAt     DateTime?          @map("trial_started_at")
-  discountPercent    Int                @default(0) @map("discount_percent")
-  discountAmount     Decimal            @default(0) @map("discount_amount")
-  discountExpiresAt  DateTime?          @map("discount_expires_at")
-  cancelledAt        DateTime?          @map("cancelled_at")
-  cancelReason       String?            @map("cancel_reason")
-  paymentMethod      String?            @map("payment_method")
-  paymentProvider    String?            @map("payment_provider")
-  externalId         String?            @map("external_id")
-  createdAt          DateTime           @default(now()) @map("created_at")
-  updatedAt          DateTime           @updatedAt @map("updated_at")
-  deletedAt          DateTime?          @map("deleted_at")
-  payments           Payment[]
-  plan               Plan               @relation(fields: [planId], references: [id])
-  tenant             Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id                  String             @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenantId            String             @unique @map("tenant_id") @db.Uuid
+  planId              String             @map("plan_id")
+
+  status              SubscriptionStatus @default(TRIAL)
+  amount              Decimal?           @default(0) @db.Decimal(10, 2)
+  currency            Currency           @default(USD)
+
+  billingCycle        BillingCycle?      @map("billing_cycle")
+  currentPeriodStart  DateTime?          @map("current_period_start")
+  currentPeriodEnd    DateTime?          @map("current_period_end")
+  
+  trialStartedAt      DateTime?          @default(now()) @map("trial_started_at")
+  trialEndsAt         DateTime?          @map("trial_ends_at")
+  
+  paymentMethod       String?            @map("payment_method")
+  paymentProvider     String?            @default("LEMON_SQUEEZY") @map("payment_provider")
+  
+  lemonCustomerId     String?            @map("lemon_customer_id")
+  lemonSubscriptionId String?            @unique @map("lemon_subscription_id")
+
+  cancelledAt         DateTime?          @map("cancelled_at")
+  endsAt              DateTime?          @map("ends_at")
+  cancelReason        String?            @map("cancel_reason")
+
+  createdAt           DateTime           @default(now()) @map("created_at")
+  updatedAt           DateTime           @updatedAt @map("updated_at")
+  deletedAt           DateTime?          @map("deleted_at")
+
+  payments            Payment[]
+  tenant              Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@index([tenantId, status])
   @@index([status, currentPeriodEnd])
   @@index([status, trialEndsAt])
+  @@index([lemonCustomerId])
   @@map("subscriptions")
-}
-
-model Plan {
-  id                String         @id
-  name              String
-  tagline           String?
-  billingCycle      BillingCycle?  @map("billing_cycle")
-  trialDays         Int            @default(0) @map("trial_days")
-  price             Decimal        @db.Decimal(10, 2)
-  compareAtPrice    Decimal?       @map("compare_at_price") @db.Decimal(10, 2)
-  currency          Currency       @default(USD)
-  isPublic          Boolean        @default(true) @map("is_public")
-  isFeatured        Boolean        @default(false) @map("is_featured")
-  sortOrder         Int            @default(0) @map("sort_order")
-  description       String?
-  features          Json?
-  externalReference String?        @unique @map("external_reference")
-  createdAt         DateTime       @default(now()) @map("created_at")
-  updatedAt         DateTime       @updatedAt @map("updated_at")
-  professionalLimit     Int            @default(1) @map("professional_limit")
-  appointmentLimit  Int            @default(-1) @map("appointment_limit")
-  emailLimit        Int            @default(0) @map("email_limit")
-  whatsappLimit     Int            @default(0) @map("whatsapp_limit")
-  stats             PlanStats[]
-  subscriptions     Subscription[]
-
-  @@map("plans")
-}
-
-model PlanStats {
-  id                String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  planId            String   @map("plan_id")
-  date              DateTime @db.Date
-  newSubscribers    Int      @default(0) @map("new_subscribers")
-  canceledToday     Int      @default(0) @map("canceled_today")
-  revenueToday      Decimal  @default(0) @map("revenue_today") @db.Decimal(12, 2)
-  activeSubscribers Int      @default(0) @map("active_subscribers")
-  totalRevenue      Decimal  @default(0) @map("total_revenue") @db.Decimal(12, 2)
-  updatedAt         DateTime @updatedAt
-  plan              Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
-
-  @@unique([planId, date])
-  @@index([date])
-  @@map("plan_stats")
 }
 
 model Payment {
@@ -742,8 +673,6 @@ model PlatformStats {
   @@map("platform_stats")
 }
 
-
-
 model WebhookLog {
   id          String        @id @default(dbgenerated("uuidv7()")) @db.Uuid
   provider    String
@@ -765,30 +694,35 @@ model WebhookLog {
   @@map("webhook_logs")
 }
 
+enum DiscountType {
+  PERCENTAGE
+  FIXED
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+  CANCELLED
+}
+
 enum AuthProvider {
   EMAIL
   GOOGLE
 }
 
 enum VerificationType {
-  APPOINTMENT
+  CUSTOMER_PHONE_VERIFICATION
+  CUSTOMER_EMAIL_VERIFICATION
+  USER_EMAIL_VERIFICATION
+  USER_PHONE_VERIFICATION
   PASSWORD_RESET
-  EMAIL_CONFIRM
-  PHONE_CONFIRM
-  MAGIC_LINK
-  AUTH_CODE
 }
 
 enum MembershipRole {
   OWNER
   ADMIN
-  PROFESSIONAL
-}
-
-enum MembershipStatus {
-  ACTIVE
-  INACTIVE
-  INVITED
+  STAFF
 }
 
 enum CommissionType {
@@ -797,8 +731,8 @@ enum CommissionType {
 }
 
 enum WorkspaceType {
-  INDEPENDENT
-  MULTI_STAFF
+  INDIVIDUAL
+  TEAM
 }
 
 enum TenantType {
@@ -823,12 +757,6 @@ enum OnboardingStatus {
   COMPLETED
 }
 
-enum PlanType {
-  FREE
-  PRO
-  TEAM
-}
-
 enum Currency {
   UYU
   USD
@@ -843,11 +771,11 @@ enum BillingCycle {
 enum SubscriptionStatus {
   TRIAL
   ACTIVE
+  PAUSED
   PAST_DUE
   CANCELLED
   EXPIRED
   SUSPENDED
-  PENDING_PAYMENT
 }
 
 enum PaymentStatus {
@@ -857,6 +785,11 @@ enum PaymentStatus {
   FAILED
   REFUNDED
   CANCELLED
+}
+
+enum CreatedByType {
+  CUSTOMER
+  STAFF
 }
 
 enum AppointmentStatus {

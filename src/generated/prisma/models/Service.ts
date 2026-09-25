@@ -46,8 +46,6 @@ export type ServiceMinAggregateOutputType = {
   id: string | null
   tenantId: string | null
   name: string | null
-  imageUrl: string | null
-  imagePublicId: string | null
   description: string | null
   price: runtime.Decimal | null
   discountPercentage: number | null
@@ -58,14 +56,14 @@ export type ServiceMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
+  imagePublicId: string | null
+  imageUrl: string | null
 }
 
 export type ServiceMaxAggregateOutputType = {
   id: string | null
   tenantId: string | null
   name: string | null
-  imageUrl: string | null
-  imagePublicId: string | null
   description: string | null
   price: runtime.Decimal | null
   discountPercentage: number | null
@@ -76,14 +74,14 @@ export type ServiceMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   deletedAt: Date | null
+  imagePublicId: string | null
+  imageUrl: string | null
 }
 
 export type ServiceCountAggregateOutputType = {
   id: number
   tenantId: number
   name: number
-  imageUrl: number
-  imagePublicId: number
   description: number
   price: number
   discountPercentage: number
@@ -94,6 +92,8 @@ export type ServiceCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   deletedAt: number
+  imagePublicId: number
+  imageUrl: number
   _all: number
 }
 
@@ -118,8 +118,6 @@ export type ServiceMinAggregateInputType = {
   id?: true
   tenantId?: true
   name?: true
-  imageUrl?: true
-  imagePublicId?: true
   description?: true
   price?: true
   discountPercentage?: true
@@ -130,14 +128,14 @@ export type ServiceMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
+  imagePublicId?: true
+  imageUrl?: true
 }
 
 export type ServiceMaxAggregateInputType = {
   id?: true
   tenantId?: true
   name?: true
-  imageUrl?: true
-  imagePublicId?: true
   description?: true
   price?: true
   discountPercentage?: true
@@ -148,14 +146,14 @@ export type ServiceMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
+  imagePublicId?: true
+  imageUrl?: true
 }
 
 export type ServiceCountAggregateInputType = {
   id?: true
   tenantId?: true
   name?: true
-  imageUrl?: true
-  imagePublicId?: true
   description?: true
   price?: true
   discountPercentage?: true
@@ -166,6 +164,8 @@ export type ServiceCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   deletedAt?: true
+  imagePublicId?: true
+  imageUrl?: true
   _all?: true
 }
 
@@ -259,8 +259,6 @@ export type ServiceGroupByOutputType = {
   id: string
   tenantId: string
   name: string
-  imageUrl: string | null
-  imagePublicId: string | null
   description: string | null
   price: runtime.Decimal
   discountPercentage: number | null
@@ -271,6 +269,8 @@ export type ServiceGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
+  imagePublicId: string | null
+  imageUrl: string | null
   _count: ServiceCountAggregateOutputType | null
   _avg: ServiceAvgAggregateOutputType | null
   _sum: ServiceSumAggregateOutputType | null
@@ -300,8 +300,6 @@ export type ServiceWhereInput = {
   id?: Prisma.UuidFilter<"Service"> | string
   tenantId?: Prisma.UuidFilter<"Service"> | string
   name?: Prisma.StringFilter<"Service"> | string
-  imageUrl?: Prisma.StringNullableFilter<"Service"> | string | null
-  imagePublicId?: Prisma.StringNullableFilter<"Service"> | string | null
   description?: Prisma.StringNullableFilter<"Service"> | string | null
   price?: Prisma.DecimalFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.IntNullableFilter<"Service"> | number | null
@@ -312,6 +310,8 @@ export type ServiceWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
+  imagePublicId?: Prisma.StringNullableFilter<"Service"> | string | null
+  imageUrl?: Prisma.StringNullableFilter<"Service"> | string | null
   appointments?: Prisma.AppointmentListRelationFilter
   assignments?: Prisma.ServiceAssignmentListRelationFilter
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
@@ -321,8 +321,6 @@ export type ServiceOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  imagePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrder
   discountPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -333,6 +331,8 @@ export type ServiceOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   appointments?: Prisma.AppointmentOrderByRelationAggregateInput
   assignments?: Prisma.ServiceAssignmentOrderByRelationAggregateInput
   tenant?: Prisma.TenantOrderByWithRelationInput
@@ -345,8 +345,6 @@ export type ServiceWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ServiceWhereInput | Prisma.ServiceWhereInput[]
   tenantId?: Prisma.UuidFilter<"Service"> | string
   name?: Prisma.StringFilter<"Service"> | string
-  imageUrl?: Prisma.StringNullableFilter<"Service"> | string | null
-  imagePublicId?: Prisma.StringNullableFilter<"Service"> | string | null
   description?: Prisma.StringNullableFilter<"Service"> | string | null
   price?: Prisma.DecimalFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.IntNullableFilter<"Service"> | number | null
@@ -357,6 +355,8 @@ export type ServiceWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
+  imagePublicId?: Prisma.StringNullableFilter<"Service"> | string | null
+  imageUrl?: Prisma.StringNullableFilter<"Service"> | string | null
   appointments?: Prisma.AppointmentListRelationFilter
   assignments?: Prisma.ServiceAssignmentListRelationFilter
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
@@ -366,8 +366,6 @@ export type ServiceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
-  imagePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrder
   discountPercentage?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -378,6 +376,8 @@ export type ServiceOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ServiceCountOrderByAggregateInput
   _avg?: Prisma.ServiceAvgOrderByAggregateInput
   _max?: Prisma.ServiceMaxOrderByAggregateInput
@@ -392,8 +392,6 @@ export type ServiceScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"Service"> | string
   tenantId?: Prisma.UuidWithAggregatesFilter<"Service"> | string
   name?: Prisma.StringWithAggregatesFilter<"Service"> | string
-  imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
-  imagePublicId?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
   description?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
   price?: Prisma.DecimalWithAggregatesFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.IntNullableWithAggregatesFilter<"Service"> | number | null
@@ -404,13 +402,13 @@ export type ServiceScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Service"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Service"> | Date | string
   deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Service"> | Date | string | null
+  imagePublicId?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
+  imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Service"> | string | null
 }
 
 export type ServiceCreateInput = {
   id?: string
   name: string
-  imageUrl?: string | null
-  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -421,6 +419,8 @@ export type ServiceCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  imagePublicId?: string | null
+  imageUrl?: string | null
   appointments?: Prisma.AppointmentCreateNestedManyWithoutServiceInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutServiceInput
   tenant: Prisma.TenantCreateNestedOneWithoutServicesInput
@@ -430,8 +430,6 @@ export type ServiceUncheckedCreateInput = {
   id?: string
   tenantId: string
   name: string
-  imageUrl?: string | null
-  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -442,6 +440,8 @@ export type ServiceUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  imagePublicId?: string | null
+  imageUrl?: string | null
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutServiceInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutServiceInput
 }
@@ -449,8 +449,6 @@ export type ServiceUncheckedCreateInput = {
 export type ServiceUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -461,6 +459,8 @@ export type ServiceUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   appointments?: Prisma.AppointmentUpdateManyWithoutServiceNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutServiceNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutServicesNestedInput
@@ -470,8 +470,6 @@ export type ServiceUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -482,6 +480,8 @@ export type ServiceUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutServiceNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutServiceNestedInput
 }
@@ -490,8 +490,6 @@ export type ServiceCreateManyInput = {
   id?: string
   tenantId: string
   name: string
-  imageUrl?: string | null
-  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -502,13 +500,13 @@ export type ServiceCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  imagePublicId?: string | null
+  imageUrl?: string | null
 }
 
 export type ServiceUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -519,14 +517,14 @@ export type ServiceUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ServiceUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -537,6 +535,8 @@ export type ServiceUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ServiceListRelationFilter = {
@@ -553,8 +553,6 @@ export type ServiceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  imageUrl?: Prisma.SortOrder
-  imagePublicId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
   discountPercentage?: Prisma.SortOrder
@@ -565,6 +563,8 @@ export type ServiceCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
 }
 
 export type ServiceAvgOrderByAggregateInput = {
@@ -579,8 +579,6 @@ export type ServiceMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  imageUrl?: Prisma.SortOrder
-  imagePublicId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
   discountPercentage?: Prisma.SortOrder
@@ -591,14 +589,14 @@ export type ServiceMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
 }
 
 export type ServiceMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  imageUrl?: Prisma.SortOrder
-  imagePublicId?: Prisma.SortOrder
   description?: Prisma.SortOrder
   price?: Prisma.SortOrder
   discountPercentage?: Prisma.SortOrder
@@ -609,6 +607,8 @@ export type ServiceMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   deletedAt?: Prisma.SortOrder
+  imagePublicId?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
 }
 
 export type ServiceSumOrderByAggregateInput = {
@@ -682,6 +682,14 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
 export type ServiceCreateNestedOneWithoutAssignmentsInput = {
   create?: Prisma.XOR<Prisma.ServiceCreateWithoutAssignmentsInput, Prisma.ServiceUncheckedCreateWithoutAssignmentsInput>
   connectOrCreate?: Prisma.ServiceCreateOrConnectWithoutAssignmentsInput
@@ -713,8 +721,6 @@ export type ServiceUpdateOneRequiredWithoutAppointmentsNestedInput = {
 export type ServiceCreateWithoutTenantInput = {
   id?: string
   name: string
-  imageUrl?: string | null
-  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -725,6 +731,8 @@ export type ServiceCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  imagePublicId?: string | null
+  imageUrl?: string | null
   appointments?: Prisma.AppointmentCreateNestedManyWithoutServiceInput
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutServiceInput
 }
@@ -732,8 +740,6 @@ export type ServiceCreateWithoutTenantInput = {
 export type ServiceUncheckedCreateWithoutTenantInput = {
   id?: string
   name: string
-  imageUrl?: string | null
-  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -744,6 +750,8 @@ export type ServiceUncheckedCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  imagePublicId?: string | null
+  imageUrl?: string | null
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutServiceInput
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutServiceInput
 }
@@ -781,8 +789,6 @@ export type ServiceScalarWhereInput = {
   id?: Prisma.UuidFilter<"Service"> | string
   tenantId?: Prisma.UuidFilter<"Service"> | string
   name?: Prisma.StringFilter<"Service"> | string
-  imageUrl?: Prisma.StringNullableFilter<"Service"> | string | null
-  imagePublicId?: Prisma.StringNullableFilter<"Service"> | string | null
   description?: Prisma.StringNullableFilter<"Service"> | string | null
   price?: Prisma.DecimalFilter<"Service"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.IntNullableFilter<"Service"> | number | null
@@ -793,13 +799,13 @@ export type ServiceScalarWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Service"> | Date | string
   deletedAt?: Prisma.DateTimeNullableFilter<"Service"> | Date | string | null
+  imagePublicId?: Prisma.StringNullableFilter<"Service"> | string | null
+  imageUrl?: Prisma.StringNullableFilter<"Service"> | string | null
 }
 
 export type ServiceCreateWithoutAssignmentsInput = {
   id?: string
   name: string
-  imageUrl?: string | null
-  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -810,6 +816,8 @@ export type ServiceCreateWithoutAssignmentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  imagePublicId?: string | null
+  imageUrl?: string | null
   appointments?: Prisma.AppointmentCreateNestedManyWithoutServiceInput
   tenant: Prisma.TenantCreateNestedOneWithoutServicesInput
 }
@@ -818,8 +826,6 @@ export type ServiceUncheckedCreateWithoutAssignmentsInput = {
   id?: string
   tenantId: string
   name: string
-  imageUrl?: string | null
-  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -830,6 +836,8 @@ export type ServiceUncheckedCreateWithoutAssignmentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  imagePublicId?: string | null
+  imageUrl?: string | null
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutServiceInput
 }
 
@@ -852,8 +860,6 @@ export type ServiceUpdateToOneWithWhereWithoutAssignmentsInput = {
 export type ServiceUpdateWithoutAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -864,6 +870,8 @@ export type ServiceUpdateWithoutAssignmentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   appointments?: Prisma.AppointmentUpdateManyWithoutServiceNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutServicesNestedInput
 }
@@ -872,8 +880,6 @@ export type ServiceUncheckedUpdateWithoutAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -884,14 +890,14 @@ export type ServiceUncheckedUpdateWithoutAssignmentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutServiceNestedInput
 }
 
 export type ServiceCreateWithoutAppointmentsInput = {
   id?: string
   name: string
-  imageUrl?: string | null
-  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -902,6 +908,8 @@ export type ServiceCreateWithoutAppointmentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  imagePublicId?: string | null
+  imageUrl?: string | null
   assignments?: Prisma.ServiceAssignmentCreateNestedManyWithoutServiceInput
   tenant: Prisma.TenantCreateNestedOneWithoutServicesInput
 }
@@ -910,8 +918,6 @@ export type ServiceUncheckedCreateWithoutAppointmentsInput = {
   id?: string
   tenantId: string
   name: string
-  imageUrl?: string | null
-  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -922,6 +928,8 @@ export type ServiceUncheckedCreateWithoutAppointmentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  imagePublicId?: string | null
+  imageUrl?: string | null
   assignments?: Prisma.ServiceAssignmentUncheckedCreateNestedManyWithoutServiceInput
 }
 
@@ -944,8 +952,6 @@ export type ServiceUpdateToOneWithWhereWithoutAppointmentsInput = {
 export type ServiceUpdateWithoutAppointmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -956,6 +962,8 @@ export type ServiceUpdateWithoutAppointmentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutServiceNestedInput
   tenant?: Prisma.TenantUpdateOneRequiredWithoutServicesNestedInput
 }
@@ -964,8 +972,6 @@ export type ServiceUncheckedUpdateWithoutAppointmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenantId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -976,14 +982,14 @@ export type ServiceUncheckedUpdateWithoutAppointmentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutServiceNestedInput
 }
 
 export type ServiceCreateManyTenantInput = {
   id?: string
   name: string
-  imageUrl?: string | null
-  imagePublicId?: string | null
   description?: string | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: number | null
@@ -994,13 +1000,13 @@ export type ServiceCreateManyTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   deletedAt?: Date | string | null
+  imagePublicId?: string | null
+  imageUrl?: string | null
 }
 
 export type ServiceUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1011,6 +1017,8 @@ export type ServiceUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   appointments?: Prisma.AppointmentUpdateManyWithoutServiceNestedInput
   assignments?: Prisma.ServiceAssignmentUpdateManyWithoutServiceNestedInput
 }
@@ -1018,8 +1026,6 @@ export type ServiceUpdateWithoutTenantInput = {
 export type ServiceUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1030,6 +1036,8 @@ export type ServiceUncheckedUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutServiceNestedInput
   assignments?: Prisma.ServiceAssignmentUncheckedUpdateManyWithoutServiceNestedInput
 }
@@ -1037,8 +1045,6 @@ export type ServiceUncheckedUpdateWithoutTenantInput = {
 export type ServiceUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   discountPercentage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1049,6 +1055,8 @@ export type ServiceUncheckedUpdateManyWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  imagePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1095,8 +1103,6 @@ export type ServiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   tenantId?: boolean
   name?: boolean
-  imageUrl?: boolean
-  imagePublicId?: boolean
   description?: boolean
   price?: boolean
   discountPercentage?: boolean
@@ -1107,6 +1113,8 @@ export type ServiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
+  imagePublicId?: boolean
+  imageUrl?: boolean
   appointments?: boolean | Prisma.Service$appointmentsArgs<ExtArgs>
   assignments?: boolean | Prisma.Service$assignmentsArgs<ExtArgs>
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
@@ -1117,8 +1125,6 @@ export type ServiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   tenantId?: boolean
   name?: boolean
-  imageUrl?: boolean
-  imagePublicId?: boolean
   description?: boolean
   price?: boolean
   discountPercentage?: boolean
@@ -1129,6 +1135,8 @@ export type ServiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
+  imagePublicId?: boolean
+  imageUrl?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["service"]>
 
@@ -1136,8 +1144,6 @@ export type ServiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   tenantId?: boolean
   name?: boolean
-  imageUrl?: boolean
-  imagePublicId?: boolean
   description?: boolean
   price?: boolean
   discountPercentage?: boolean
@@ -1148,6 +1154,8 @@ export type ServiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
+  imagePublicId?: boolean
+  imageUrl?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["service"]>
 
@@ -1155,8 +1163,6 @@ export type ServiceSelectScalar = {
   id?: boolean
   tenantId?: boolean
   name?: boolean
-  imageUrl?: boolean
-  imagePublicId?: boolean
   description?: boolean
   price?: boolean
   discountPercentage?: boolean
@@ -1167,9 +1173,11 @@ export type ServiceSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   deletedAt?: boolean
+  imagePublicId?: boolean
+  imageUrl?: boolean
 }
 
-export type ServiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "imageUrl" | "imagePublicId" | "description" | "price" | "discountPercentage" | "discountFixed" | "durationMinutes" | "isActive" | "displayOrder" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["service"]>
+export type ServiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenantId" | "name" | "description" | "price" | "discountPercentage" | "discountFixed" | "durationMinutes" | "isActive" | "displayOrder" | "createdAt" | "updatedAt" | "deletedAt" | "imagePublicId" | "imageUrl", ExtArgs["result"]["service"]>
 export type ServiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   appointments?: boolean | Prisma.Service$appointmentsArgs<ExtArgs>
   assignments?: boolean | Prisma.Service$assignmentsArgs<ExtArgs>
@@ -1194,8 +1202,6 @@ export type $ServicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     id: string
     tenantId: string
     name: string
-    imageUrl: string | null
-    imagePublicId: string | null
     description: string | null
     price: runtime.Decimal
     discountPercentage: number | null
@@ -1206,6 +1212,8 @@ export type $ServicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
+    imagePublicId: string | null
+    imageUrl: string | null
   }, ExtArgs["result"]["service"]>
   composites: {}
 }
@@ -1635,8 +1643,6 @@ export interface ServiceFieldRefs {
   readonly id: Prisma.FieldRef<"Service", 'String'>
   readonly tenantId: Prisma.FieldRef<"Service", 'String'>
   readonly name: Prisma.FieldRef<"Service", 'String'>
-  readonly imageUrl: Prisma.FieldRef<"Service", 'String'>
-  readonly imagePublicId: Prisma.FieldRef<"Service", 'String'>
   readonly description: Prisma.FieldRef<"Service", 'String'>
   readonly price: Prisma.FieldRef<"Service", 'Decimal'>
   readonly discountPercentage: Prisma.FieldRef<"Service", 'Int'>
@@ -1647,6 +1653,8 @@ export interface ServiceFieldRefs {
   readonly createdAt: Prisma.FieldRef<"Service", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Service", 'DateTime'>
   readonly deletedAt: Prisma.FieldRef<"Service", 'DateTime'>
+  readonly imagePublicId: Prisma.FieldRef<"Service", 'String'>
+  readonly imageUrl: Prisma.FieldRef<"Service", 'String'>
 }
     
 

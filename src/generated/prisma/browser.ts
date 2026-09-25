@@ -43,11 +43,6 @@ export type Session = Prisma.SessionModel
  */
 export type Verification = Prisma.VerificationModel
 /**
- * Model VerificationLock
- * 
- */
-export type VerificationLock = Prisma.VerificationLockModel
-/**
  * Model Tenant
  * 
  */
@@ -162,16 +157,6 @@ export type TenantUsage = Prisma.TenantUsageModel
  * 
  */
 export type Subscription = Prisma.SubscriptionModel
-/**
- * Model Plan
- * 
- */
-export type Plan = Prisma.PlanModel
-/**
- * Model PlanStats
- * 
- */
-export type PlanStats = Prisma.PlanStatsModel
 /**
  * Model Payment
  * 

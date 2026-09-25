@@ -402,7 +402,6 @@ export const ModelName = {
   Invitation: 'Invitation',
   Session: 'Session',
   Verification: 'Verification',
-  VerificationLock: 'VerificationLock',
   Tenant: 'Tenant',
   TenantSettings: 'TenantSettings',
   Service: 'Service',
@@ -426,8 +425,6 @@ export const ModelName = {
   NotificationLog: 'NotificationLog',
   TenantUsage: 'TenantUsage',
   Subscription: 'Subscription',
-  Plan: 'Plan',
-  PlanStats: 'PlanStats',
   Payment: 'Payment',
   PlatformStats: 'PlatformStats',
   WebhookLog: 'WebhookLog'
@@ -446,7 +443,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "membership" | "invitation" | "session" | "verification" | "verificationLock" | "tenant" | "tenantSettings" | "service" | "serviceAssignment" | "professional" | "professionalWorkingHours" | "tenantWorkingHours" | "scheduleException" | "scheduleExceptionProfessional" | "scheduleExceptionBlock" | "customer" | "appointment" | "appointmentBlock" | "tenantDailyStats" | "tenantLifetimeStats" | "professionalDailyStats" | "professionalLifetimeStats" | "notification" | "notificationDelivery" | "inAppNotification" | "notificationLog" | "tenantUsage" | "subscription" | "plan" | "planStats" | "payment" | "platformStats" | "webhookLog"
+    modelProps: "user" | "membership" | "invitation" | "session" | "verification" | "tenant" | "tenantSettings" | "service" | "serviceAssignment" | "professional" | "professionalWorkingHours" | "tenantWorkingHours" | "scheduleException" | "scheduleExceptionProfessional" | "scheduleExceptionBlock" | "customer" | "appointment" | "appointmentBlock" | "tenantDailyStats" | "tenantLifetimeStats" | "professionalDailyStats" | "professionalLifetimeStats" | "notification" | "notificationDelivery" | "inAppNotification" | "notificationLog" | "tenantUsage" | "subscription" | "payment" | "platformStats" | "webhookLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -817,80 +814,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.VerificationCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.VerificationCountAggregateOutputType> | number
-        }
-      }
-    }
-    VerificationLock: {
-      payload: Prisma.$VerificationLockPayload<ExtArgs>
-      fields: Prisma.VerificationLockFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.VerificationLockFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationLockPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.VerificationLockFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationLockPayload>
-        }
-        findFirst: {
-          args: Prisma.VerificationLockFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationLockPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.VerificationLockFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationLockPayload>
-        }
-        findMany: {
-          args: Prisma.VerificationLockFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationLockPayload>[]
-        }
-        create: {
-          args: Prisma.VerificationLockCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationLockPayload>
-        }
-        createMany: {
-          args: Prisma.VerificationLockCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.VerificationLockCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationLockPayload>[]
-        }
-        delete: {
-          args: Prisma.VerificationLockDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationLockPayload>
-        }
-        update: {
-          args: Prisma.VerificationLockUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationLockPayload>
-        }
-        deleteMany: {
-          args: Prisma.VerificationLockDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.VerificationLockUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.VerificationLockUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationLockPayload>[]
-        }
-        upsert: {
-          args: Prisma.VerificationLockUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationLockPayload>
-        }
-        aggregate: {
-          args: Prisma.VerificationLockAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateVerificationLock>
-        }
-        groupBy: {
-          args: Prisma.VerificationLockGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.VerificationLockGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.VerificationLockCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.VerificationLockCountAggregateOutputType> | number
         }
       }
     }
@@ -2596,154 +2519,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Plan: {
-      payload: Prisma.$PlanPayload<ExtArgs>
-      fields: Prisma.PlanFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.PlanFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.PlanFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPayload>
-        }
-        findFirst: {
-          args: Prisma.PlanFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.PlanFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPayload>
-        }
-        findMany: {
-          args: Prisma.PlanFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPayload>[]
-        }
-        create: {
-          args: Prisma.PlanCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPayload>
-        }
-        createMany: {
-          args: Prisma.PlanCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.PlanCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPayload>[]
-        }
-        delete: {
-          args: Prisma.PlanDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPayload>
-        }
-        update: {
-          args: Prisma.PlanUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPayload>
-        }
-        deleteMany: {
-          args: Prisma.PlanDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.PlanUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.PlanUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPayload>[]
-        }
-        upsert: {
-          args: Prisma.PlanUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanPayload>
-        }
-        aggregate: {
-          args: Prisma.PlanAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePlan>
-        }
-        groupBy: {
-          args: Prisma.PlanGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PlanGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.PlanCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PlanCountAggregateOutputType> | number
-        }
-      }
-    }
-    PlanStats: {
-      payload: Prisma.$PlanStatsPayload<ExtArgs>
-      fields: Prisma.PlanStatsFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.PlanStatsFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanStatsPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.PlanStatsFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanStatsPayload>
-        }
-        findFirst: {
-          args: Prisma.PlanStatsFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanStatsPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.PlanStatsFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanStatsPayload>
-        }
-        findMany: {
-          args: Prisma.PlanStatsFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanStatsPayload>[]
-        }
-        create: {
-          args: Prisma.PlanStatsCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanStatsPayload>
-        }
-        createMany: {
-          args: Prisma.PlanStatsCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.PlanStatsCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanStatsPayload>[]
-        }
-        delete: {
-          args: Prisma.PlanStatsDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanStatsPayload>
-        }
-        update: {
-          args: Prisma.PlanStatsUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanStatsPayload>
-        }
-        deleteMany: {
-          args: Prisma.PlanStatsDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.PlanStatsUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.PlanStatsUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanStatsPayload>[]
-        }
-        upsert: {
-          args: Prisma.PlanStatsUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$PlanStatsPayload>
-        }
-        aggregate: {
-          args: Prisma.PlanStatsAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePlanStats>
-        }
-        groupBy: {
-          args: Prisma.PlanStatsGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PlanStatsGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.PlanStatsCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PlanStatsCountAggregateOutputType> | number
-        }
-      }
-    }
     Payment: {
       payload: Prisma.$PaymentPayload<ExtArgs>
       fields: Prisma.PaymentFieldRefs
@@ -3010,7 +2785,7 @@ export const UserScalarFieldEnum = {
   name: 'name',
   email: 'email',
   emailVerifiedAt: 'emailVerifiedAt',
-  phone: 'phone',
+  phoneNumber: 'phoneNumber',
   phoneCountryCode: 'phoneCountryCode',
   phoneVerifiedAt: 'phoneVerifiedAt',
   password: 'password',
@@ -3030,8 +2805,7 @@ export const MembershipScalarFieldEnum = {
   userId: 'userId',
   tenantId: 'tenantId',
   role: 'role',
-  status: 'status',
-  createdAt: 'createdAt'
+  isActive: 'isActive'
 } as const
 
 export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof typeof MembershipScalarFieldEnum]
@@ -3040,18 +2814,13 @@ export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof
 export const InvitationScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
+  professionalId: 'professionalId',
   email: 'email',
-  name: 'name',
-  phoneCountryCode: 'phoneCountryCode',
-  phone: 'phone',
   role: 'role',
-  serviceIds: 'serviceIds',
   token: 'token',
-  status: 'status',
-  commissionType: 'commissionType',
-  commissionAmount: 'commissionAmount',
-  schedule: 'schedule',
   expiresAt: 'expiresAt',
+  acceptedAt: 'acceptedAt',
+  revokedAt: 'revokedAt',
   createdAt: 'createdAt'
 } as const
 
@@ -3075,9 +2844,10 @@ export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeo
 
 export const VerificationScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   type: 'type',
-  userId: 'userId',
-  address: 'address',
+  recipientId: 'recipientId',
+  recipientType: 'recipientType',
   tokenHash: 'tokenHash',
   codeHash: 'codeHash',
   attempts: 'attempts',
@@ -3092,18 +2862,6 @@ export const VerificationScalarFieldEnum = {
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
-export const VerificationLockScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  address: 'address',
-  lockedUntil: 'lockedUntil',
-  reason: 'reason',
-  createdAt: 'createdAt'
-} as const
-
-export type VerificationLockScalarFieldEnum = (typeof VerificationLockScalarFieldEnum)[keyof typeof VerificationLockScalarFieldEnum]
-
-
 export const TenantScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
@@ -3115,7 +2873,7 @@ export const TenantScalarFieldEnum = {
   isPublic: 'isPublic',
   isActive: 'isActive',
   onboardingStatus: 'onboardingStatus',
-  phone: 'phone',
+  phoneNumber: 'phoneNumber',
   addressLine1: 'addressLine1',
   addressLine2: 'addressLine2',
   city: 'city',
@@ -3156,8 +2914,6 @@ export const ServiceScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
-  imageUrl: 'imageUrl',
-  imagePublicId: 'imagePublicId',
   description: 'description',
   price: 'price',
   discountPercentage: 'discountPercentage',
@@ -3167,7 +2923,9 @@ export const ServiceScalarFieldEnum = {
   displayOrder: 'displayOrder',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  imagePublicId: 'imagePublicId',
+  imageUrl: 'imageUrl'
 } as const
 
 export type ServiceScalarFieldEnum = (typeof ServiceScalarFieldEnum)[keyof typeof ServiceScalarFieldEnum]
@@ -3184,23 +2942,24 @@ export type ServiceAssignmentScalarFieldEnum = (typeof ServiceAssignmentScalarFi
 
 export const ProfessionalScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
   tenantId: 'tenantId',
+  userId: 'userId',
   slotIntervalMinutes: 'slotIntervalMinutes',
   maxAdvancedDays: 'maxAdvancedDays',
   minAdvancedMinutes: 'minAdvancedMinutes',
+  name: 'name',
+  email: 'email',
+  phoneCountryCode: 'phoneCountryCode',
+  phoneNumber: 'phoneNumber',
+  profession: 'profession',
   bio: 'bio',
   avatarUrl: 'avatarUrl',
   avatarPublicId: 'avatarPublicId',
+  colorTheme: 'colorTheme',
   isActive: 'isActive',
-  displayName: 'displayName',
-  displayOrder: 'displayOrder',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt',
-  colorTheme: 'colorTheme',
-  commissionType: 'commissionType',
-  commissionAmount: 'commissionAmount'
+  deletedAt: 'deletedAt'
 } as const
 
 export type ProfessionalScalarFieldEnum = (typeof ProfessionalScalarFieldEnum)[keyof typeof ProfessionalScalarFieldEnum]
@@ -3265,15 +3024,11 @@ export const CustomerScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
-  phone: 'phone',
+  phoneNumber: 'phoneNumber',
   phoneCountryCode: 'phoneCountryCode',
-  phoneVerified: 'phoneVerified',
-  acceptsWhatsapp: 'acceptsWhatsapp',
+  phoneVerifiedAt: 'phoneVerifiedAt',
   email: 'email',
-  emailVerified: 'emailVerified',
-  emailBounced: 'emailBounced',
-  acceptsEmail: 'acceptsEmail',
-  preferredLanguage: 'preferredLanguage',
+  emailVerifiedAt: 'emailVerifiedAt',
   notes: 'notes',
   firstAppointmentAt: 'firstAppointmentAt',
   lastAppointmentAt: 'lastAppointmentAt',
@@ -3282,8 +3037,8 @@ export const CustomerScalarFieldEnum = {
   cancelledAppointments: 'cancelledAppointments',
   noShowCount: 'noShowCount',
   totalSpent: 'totalSpent',
-  blockedAt: 'blockedAt',
   blockedReason: 'blockedReason',
+  blockedAt: 'blockedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -3299,8 +3054,6 @@ export const AppointmentScalarFieldEnum = {
   customerId: 'customerId',
   professionalId: 'professionalId',
   status: 'status',
-  startsAt: 'startsAt',
-  endsAt: 'endsAt',
   customerName: 'customerName',
   customerPhone: 'customerPhone',
   customerEmail: 'customerEmail',
@@ -3311,13 +3064,16 @@ export const AppointmentScalarFieldEnum = {
   discountFixed: 'discountFixed',
   discountPercentage: 'discountPercentage',
   durationMinutes: 'durationMinutes',
-  manageToken: 'manageToken',
   cancelledAt: 'cancelledAt',
   cancellationReason: 'cancellationReason',
   rescheduleCount: 'rescheduleCount',
   rescheduleReason: 'rescheduleReason',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  manageToken: 'manageToken',
+  endsAt: 'endsAt',
+  startsAt: 'startsAt',
+  createdBy: 'createdBy'
 } as const
 
 export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[keyof typeof AppointmentScalarFieldEnum]
@@ -3326,8 +3082,8 @@ export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[key
 export const AppointmentBlockScalarFieldEnum = {
   id: 'id',
   appointmentId: 'appointmentId',
-  startsAt: 'startsAt',
-  endsAt: 'endsAt'
+  endsAt: 'endsAt',
+  startsAt: 'startsAt'
 } as const
 
 export type AppointmentBlockScalarFieldEnum = (typeof AppointmentBlockScalarFieldEnum)[keyof typeof AppointmentBlockScalarFieldEnum]
@@ -3480,64 +3236,21 @@ export const SubscriptionScalarFieldEnum = {
   billingCycle: 'billingCycle',
   currentPeriodStart: 'currentPeriodStart',
   currentPeriodEnd: 'currentPeriodEnd',
-  nextPaymentDate: 'nextPaymentDate',
-  trialEndsAt: 'trialEndsAt',
   trialStartedAt: 'trialStartedAt',
-  discountPercent: 'discountPercent',
-  discountAmount: 'discountAmount',
-  discountExpiresAt: 'discountExpiresAt',
-  cancelledAt: 'cancelledAt',
-  cancelReason: 'cancelReason',
+  trialEndsAt: 'trialEndsAt',
   paymentMethod: 'paymentMethod',
   paymentProvider: 'paymentProvider',
-  externalId: 'externalId',
+  lemonCustomerId: 'lemonCustomerId',
+  lemonSubscriptionId: 'lemonSubscriptionId',
+  cancelledAt: 'cancelledAt',
+  endsAt: 'endsAt',
+  cancelReason: 'cancelReason',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
 } as const
 
 export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
-
-
-export const PlanScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  tagline: 'tagline',
-  billingCycle: 'billingCycle',
-  trialDays: 'trialDays',
-  price: 'price',
-  compareAtPrice: 'compareAtPrice',
-  currency: 'currency',
-  isPublic: 'isPublic',
-  isFeatured: 'isFeatured',
-  sortOrder: 'sortOrder',
-  description: 'description',
-  features: 'features',
-  externalReference: 'externalReference',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  professionalLimit: 'professionalLimit',
-  appointmentLimit: 'appointmentLimit',
-  emailLimit: 'emailLimit',
-  whatsappLimit: 'whatsappLimit'
-} as const
-
-export type PlanScalarFieldEnum = (typeof PlanScalarFieldEnum)[keyof typeof PlanScalarFieldEnum]
-
-
-export const PlanStatsScalarFieldEnum = {
-  id: 'id',
-  planId: 'planId',
-  date: 'date',
-  newSubscribers: 'newSubscribers',
-  canceledToday: 'canceledToday',
-  revenueToday: 'revenueToday',
-  activeSubscribers: 'activeSubscribers',
-  totalRevenue: 'totalRevenue',
-  updatedAt: 'updatedAt'
-} as const
-
-export type PlanStatsScalarFieldEnum = (typeof PlanStatsScalarFieldEnum)[keyof typeof PlanStatsScalarFieldEnum]
 
 
 export const PaymentScalarFieldEnum = {
@@ -3610,19 +3323,19 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
 export const NullableJsonNullValueInput = {
   DbNull: DbNull,
   JsonNull: JsonNull
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
-
-
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -3713,72 +3426,9 @@ export type ListEnumMembershipRoleFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
- * Reference to a field of type 'MembershipStatus'
+ * Reference to a field of type 'Boolean'
  */
-export type EnumMembershipStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MembershipStatus'>
-    
-
-
-/**
- * Reference to a field of type 'MembershipStatus[]'
- */
-export type ListEnumMembershipStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MembershipStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'InvitationStatus'
- */
-export type EnumInvitationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvitationStatus'>
-    
-
-
-/**
- * Reference to a field of type 'InvitationStatus[]'
- */
-export type ListEnumInvitationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InvitationStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'CommissionType'
- */
-export type EnumCommissionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommissionType'>
-    
-
-
-/**
- * Reference to a field of type 'CommissionType[]'
- */
-export type ListEnumCommissionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommissionType[]'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-/**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -3793,6 +3443,20 @@ export type EnumVerificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'VerificationType[]'
  */
 export type ListEnumVerificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VerificationType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RecipientType'
+ */
+export type EnumRecipientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecipientType'>
+    
+
+
+/**
+ * Reference to a field of type 'RecipientType[]'
+ */
+export type ListEnumRecipientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecipientType[]'>
     
 
 
@@ -3825,13 +3489,6 @@ export type ListEnumWorkspaceTypeFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-/**
  * Reference to a field of type 'OnboardingStatus'
  */
 export type EnumOnboardingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OnboardingStatus'>
@@ -3842,6 +3499,20 @@ export type EnumOnboardingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'OnboardingStatus[]'
  */
 export type ListEnumOnboardingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OnboardingStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -3860,16 +3531,30 @@ export type ListEnumAppointmentStatusFieldRefInput<$PrismaModel> = FieldRefInput
 
 
 /**
- * Reference to a field of type 'RecipientType'
+ * Reference to a field of type 'CreatedByType'
  */
-export type EnumRecipientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecipientType'>
+export type EnumCreatedByTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CreatedByType'>
     
 
 
 /**
- * Reference to a field of type 'RecipientType[]'
+ * Reference to a field of type 'CreatedByType[]'
  */
-export type ListEnumRecipientTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RecipientType[]'>
+export type ListEnumCreatedByTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CreatedByType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -3916,20 +3601,6 @@ export type ListEnumSubscriptionStatusFieldRefInput<$PrismaModel> = FieldRefInpu
 
 
 /**
- * Reference to a field of type 'BillingCycle'
- */
-export type EnumBillingCycleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingCycle'>
-    
-
-
-/**
- * Reference to a field of type 'BillingCycle[]'
- */
-export type ListEnumBillingCycleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingCycle[]'>
-    
-
-
-/**
  * Reference to a field of type 'Currency'
  */
 export type EnumCurrencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Currency'>
@@ -3940,6 +3611,20 @@ export type EnumCurrencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
  * Reference to a field of type 'Currency[]'
  */
 export type ListEnumCurrencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Currency[]'>
+    
+
+
+/**
+ * Reference to a field of type 'BillingCycle'
+ */
+export type EnumBillingCycleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingCycle'>
+    
+
+
+/**
+ * Reference to a field of type 'BillingCycle[]'
+ */
+export type ListEnumBillingCycleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BillingCycle[]'>
     
 
 
@@ -4140,7 +3825,6 @@ export type GlobalOmitConfig = {
   invitation?: Prisma.InvitationOmit
   session?: Prisma.SessionOmit
   verification?: Prisma.VerificationOmit
-  verificationLock?: Prisma.VerificationLockOmit
   tenant?: Prisma.TenantOmit
   tenantSettings?: Prisma.TenantSettingsOmit
   service?: Prisma.ServiceOmit
@@ -4164,8 +3848,6 @@ export type GlobalOmitConfig = {
   notificationLog?: Prisma.NotificationLogOmit
   tenantUsage?: Prisma.TenantUsageOmit
   subscription?: Prisma.SubscriptionOmit
-  plan?: Prisma.PlanOmit
-  planStats?: Prisma.PlanStatsOmit
   payment?: Prisma.PaymentOmit
   platformStats?: Prisma.PlatformStatsOmit
   webhookLog?: Prisma.WebhookLogOmit
