@@ -1,17 +1,12 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '../../auth/infrastructure/jwt/jwt.service';
+import { JwtService } from 'src/auth/infrastructure/jwt/jwt.service';
 import { CookieService } from 'src/shared/cookies/cookie.service';
 import { COOKIE_KEYS } from 'src/shared/cookies/cookie.key';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { AuthenticatedRequest } from 'src/auth/types/express-request.type';
-import { SessionsService } from '../sessions/sessions.service';
-
-interface AuthenticatedUser {
-  id: string;
-  name: string;
-  jti: string;
-}
-
+import { AuthenticatedRequest, AuthenticatedUser } from 'src/common/security/types/authenticated-request.type';
+import { SessionsService } from 'src/auth/sessions/sessions.service';
+import { Reflector } from '@nestjs/core';
+import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
   private sessionCache = new Map<string, { user: AuthenticatedUser; expires: number }>();
@@ -22,8 +17,14 @@ export class JwtAuthGuard implements CanActivate {
     private readonly cookieService: CookieService,
     private readonly jwtService: JwtService,
     private readonly sessionsService: SessionsService,
+    private readonly reflector: Reflector,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [context.getHandler(), context.getClass()]);
+    if (isPublic) {
+      return true;
+    }
+
     const req = context.switchToHttp().getRequest<AuthenticatedRequest>();
     const token = this.cookieService.getOrFail(req, COOKIE_KEYS.ACCESS_TOKEN);
 
@@ -45,6 +46,7 @@ export class JwtAuthGuard implements CanActivate {
           select: {
             id: true,
             name: true,
+            email: true,
             tokenVersion: true,
           },
         });
@@ -60,7 +62,7 @@ export class JwtAuthGuard implements CanActivate {
         }
 
         if (dbUser) {
-          user = { id: dbUser.id, name: dbUser.name, jti: payload.jti };
+          user = { id: dbUser.id, name: dbUser.name, email: dbUser.email, jti: payload.jti };
           this.sessionCache.set(payload.sub, { user, expires: now + this.TTL });
         }
       }
@@ -70,18 +72,9 @@ export class JwtAuthGuard implements CanActivate {
 
       req.user = {
         id: user.id,
+        email: user.email,
         name: user.name,
         jti: user.jti,
-      };
-
-      const rawTenantId = req.headers['x-tenant-id'];
-      const rawTenantSlug = req.headers['x-tenant-slug'];
-
-      req.tenantContext = {
-        tenantId: Array.isArray(rawTenantId) ? rawTenantId[0] : (rawTenantId as string | null),
-        tenantSlug: Array.isArray(rawTenantSlug) ? rawTenantSlug[0] : (rawTenantSlug as string | null),
-        role: null,
-        permissions: [],
       };
       return true;
     } catch (error) {

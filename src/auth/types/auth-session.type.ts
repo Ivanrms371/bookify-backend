@@ -1,6 +1,5 @@
-
 export type GenerateSessionPayload = {
-    userId: string;
-    tokenVersion: number;
-    deviceId?: string;
-}
+  userId: string;
+  tokenVersion: number;
+  deviceId?: string;
+};

@@ -14,7 +14,7 @@ export class GoogleService {
     this.clientSecret = config.getOrThrow('GOOGLE_CLIENT_SECRET');
     this.redirectUri = config.getOrThrow('GOOGLE_REDIRECT_URI');
   }
-  getAuthorizationUrl(deviceId?: string) {
+  getAuthorizationUrl(options: { deviceId?: string; invitationToken?: string }) {
     const params = {
       client_id: this.clientId,
       redirect_uri: this.redirectUri,
@@ -22,7 +22,7 @@ export class GoogleService {
       scope: 'openid email profile',
       access_type: 'offline',
       prompt: 'consent',
-      ...(deviceId && { state: deviceId }),
+      state: JSON.stringify(options),
     };
 
     return `https://accounts.google.com/o/oauth2/v2/auth?${stringify(params)}`;

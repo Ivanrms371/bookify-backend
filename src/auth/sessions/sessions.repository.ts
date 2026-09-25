@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from 'src/common/database/base.repository';
-import { SessionCreateInput, SessionUpdateInput } from 'src/generated/prisma/models';
+import { SessionCreateInput, SessionUpdateInput, SessionUpsertArgs } from 'src/generated/prisma/models';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { v7 as uuidv7 } from 'uuid';
@@ -84,12 +84,8 @@ export class SessionsRepository extends BaseRepository {
   /**
    * Upsert de sesión (opcional: usar si querés reusar sesiones por deviceId)
    */
-  async upsert(dto: SessionCreateDto, tx?: TransactionClient) {
-    const jti = uuidv7();
-    const deviceId = dto.deviceId || uuidv7();
-    const expiresAt = addDays(new Date(), 30);
-    const { userId } = dto;
-
+  async upsert(data: { userId: string; deviceId: string; jti: string; expiresAt: Date }, tx?: TransactionClient) {
+    const { userId, deviceId, expiresAt, jti } = data;
     return this.db(tx).session.upsert({
       where: { userId_deviceId: { userId, deviceId } }, // clave compuesta
       update: { lastUsedAt: new Date(), expiresAt, revokedAt: null },

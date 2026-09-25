@@ -1,7 +1,7 @@
 export const BACKEND_ROUTES = {
   auth: {
     verifyEmail: '/api/auth/verify/email',
-    verifyPhone: '/api/auth/verify/phone',
+    verifyPhone: '/api/auth/verify/phoneNumber',
     resetPassword: '/api/auth/reset/password',
   },
 } as const;

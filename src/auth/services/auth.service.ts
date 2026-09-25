@@ -1,4 +1,4 @@
-import { ConflictException, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { SignupDto } from '../dto/signup.dto';
 import { SessionsService } from 'src/auth/sessions/sessions.service';
@@ -7,26 +7,35 @@ import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { LoginDto } from '../dto/login.dto';
 import { JwtService } from '../infrastructure/jwt/jwt.service';
 import { GoogleUserInfo } from '../types/google-domain';
-import { EmailVerificationStrategy } from 'src/modules/verifications/strategies/email-verification.strategy';
 import { PasswordService } from './password.service';
 import { GenerateSessionPayload } from '../types/auth-session.type';
+import { InvitationsService } from 'src/modules/invitations/invitations.service';
+import { VerificationsService } from 'src/modules/verifications/core/verifications.service';
+import { RecipientType, VerificationType } from 'src/generated/prisma/enums';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly eventEmitter: EventEmitter2,
     private readonly usersService: UsersService,
     private readonly sessionsService: SessionsService,
     private readonly jwtService: JwtService,
     private readonly passwordService: PasswordService,
-    private readonly emailVerificationStrategy: EmailVerificationStrategy,
+    private readonly verificationsService: VerificationsService,
+    private readonly invitationsService: InvitationsService,
   ) {}
 
   async login(dto: LoginDto, deviceId?: string) {
     const user = await this.usersService.findByEmailOrFail(dto.email);
 
-    if (!user.emailVerifiedAt) throw new ForbiddenException('Debés verificar tu correo antes de iniciar sesión.');
+    if (!user.emailVerifiedAt) {
+      await this.verificationsService.requestVerification({
+        recipientId: user.id,
+        recipientType: RecipientType.USER,
+        type: VerificationType.USER_EMAIL_VERIFICATION,
+      });
+      throw new ForbiddenException('Hemos enviado un email para que verifiques tu email.');
+    }
 
     if (!user.password) throw new ForbiddenException('Esta cuenta usa otro método de inicio de sesión.');
 
@@ -35,7 +44,7 @@ export class AuthService {
 
     await this.usersService.updateLastLogin(user.id);
 
-    return await this.generateNewSession({
+    return await this.createAuthenticatedSession({
       deviceId,
       userId: user.id,
       tokenVersion: user.tokenVersion,
@@ -47,31 +56,63 @@ export class AuthService {
     if (user) {
       throw new ConflictException('El correo electrónico ya está registrado.');
     }
-    const hash = await this.passwordService.hash(dto.password);
-    const newUser = await this.usersService.create({
-      ...dto,
-      password: hash,
-    });
-    const { id, email, name } = newUser;
 
-    this.eventEmitter.emit('user.created', {
-      userId: id,
-      name,
-      email,
+    const invitation = dto.token ? await this.invitationsService.findValidInvitationOrThrow(dto.token) : null;
+
+    if (invitation && invitation.email.toLowerCase() !== dto.email) {
+      throw new BadRequestException('El correo electrónico no coincide con el destinatario de la invitación.');
+    }
+
+    const hash = await this.passwordService.hash(dto.password);
+    const isInvited = Boolean(invitation);
+    const emailVerifiedAt = isInvited ? new Date() : null;
+
+    const { token, ...userData } = dto;
+
+    const newUser = await this.prisma.$transaction(async (tx) => {
+      const createdUser = await this.usersService.create(
+        {
+          ...userData,
+          password: hash,
+          emailVerifiedAt,
+        },
+        tx,
+      );
+
+      if (invitation && dto.token) {
+        await this.invitationsService.acceptWithTx(tx, invitation, createdUser.id);
+      }
+
+      return createdUser;
+    });
+
+    if (emailVerifiedAt) {
+      const session = await this.createAuthenticatedSession({ userId: newUser.id, tokenVersion: newUser.tokenVersion });
+      return {
+        requiresEmailVerification: false as const,
+        session,
+      };
+    }
+
+    await this.verificationsService.requestVerification({
+      recipientId: newUser.id,
+      recipientType: RecipientType.USER,
+      type: VerificationType.USER_EMAIL_VERIFICATION,
     });
 
     return {
-      name,
-      email,
-      success: true,
+      requiresEmailVerification: true as const,
+      user: { id: newUser.id, name: newUser.name, email: newUser.email, avatarUrl: newUser.avatarUrl },
+      activeTenant: null,
+      hasMultipleTenants: false,
     };
   }
 
-  async getMe(userId: string, tenantSlug?: string) {
-    return await this.usersService.findMeById(userId, tenantSlug);
+  async getMe(userId: string, tenantId?: string) {
+    return await this.usersService.findMeById(userId, tenantId);
   }
 
-  async loginOrCreateFromGoogle(userInfo: GoogleUserInfo, deviceId?: string) {
+  async loginOrCreateFromGoogle(userInfo: GoogleUserInfo, deviceId: string) {
     let user = await this.usersService.findByGoogleId(userInfo.googleId);
     if (!user) {
       user = await this.usersService.findByEmail(userInfo.email);
@@ -82,8 +123,7 @@ export class AuthService {
       }
     }
     await this.usersService.updateLastLogin(user.id);
-
-    return await this.generateNewSession({
+    return await this.createAuthenticatedSession({
       deviceId,
       userId: user.id,
       tokenVersion: user.tokenVersion,
@@ -129,22 +169,32 @@ export class AuthService {
     });
   }
 
-  async confirmEmail(token: string, deviceId?: string) {
-    const user = await this.emailVerificationStrategy.confirmEmail(token);
-    const {
-      accessToken,
-      refreshToken,
-      deviceId: newDeviceId,
-    } = await this.generateNewSession({
-      deviceId,
-      userId: user.id,
-      tokenVersion: user.tokenVersion,
+  async forgotPassword(email: string) {
+    const user = await this.usersService.findByEmailOrFail(email);
+    await this.verificationsService.requestVerification({
+      recipientId: user.id,
+      recipientType: RecipientType.USER,
+      type: VerificationType.PASSWORD_RESET,
     });
-    return { user, accessToken, refreshToken, newDeviceId };
   }
 
-  private async generateNewSession({ userId, deviceId, tokenVersion }: GenerateSessionPayload) {
-    const session = await this.sessionsService.upsert({
+  async resetPassword(token: string, newPassword: string) {
+    const { recipientId } = await this.verificationsService.verifyToken({
+      token,
+      type: VerificationType.PASSWORD_RESET,
+    });
+
+    const hash = await this.passwordService.hash(newPassword);
+
+    await this.prisma.$transaction(async (tx) => {
+      await this.usersService.update(recipientId, { password: hash }, tx);
+      await this.sessionsService.revokeAll(recipientId, tx);
+      await this.usersService.incrementTokenVersion(recipientId, tx);
+    });
+  }
+
+  private async createAuthenticatedSession({ userId, deviceId, tokenVersion }: GenerateSessionPayload) {
+    const session = await this.sessionsService.createOrRefreshSession({
       userId,
       deviceId,
     });

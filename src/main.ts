@@ -8,7 +8,9 @@ import { corsOptions } from './config/cors.config';
 const allowedOrigins = [process.env.APP_URL].filter(Boolean) as string[];
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    rawBody: true,
+  });
   app.setGlobalPrefix('api');
   app.use(cookieParser());
   app.useGlobalPipes(validationPipe);

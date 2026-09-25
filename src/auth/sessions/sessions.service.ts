@@ -13,8 +13,16 @@ export class SessionsService {
     return this.sessionsRepository.findByUserIdAndDeviceId(userId, deviceId);
   }
 
-  async upsert(dto: SessionCreateDto) {
-    return this.sessionsRepository.upsert(dto);
+  async createOrRefreshSession(dto: SessionCreateDto) {
+    const { userId, deviceId } = dto;
+    const expiresAt = addDays(new Date(), 30);
+
+    return this.sessionsRepository.upsert({
+      deviceId: deviceId || uuidv7(),
+      jti: uuidv7(),
+      expiresAt,
+      userId,
+    });
   }
 
   async findByJti(jti: string) {

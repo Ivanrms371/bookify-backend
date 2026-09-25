@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext, BadRequestException } from '@nestjs/common';
-import { AuthenticatedRequest } from 'src/auth/types/express-request.type';
+import { AuthenticatedRequest, TenantContext } from 'src/common/security/types/authenticated-request.type';
 
 export const GetTenantId = createParamDecorator((data: unknown, ctx: ExecutionContext): string => {
   const request = ctx.switchToHttp().getRequest<AuthenticatedRequest>();
@@ -10,4 +10,11 @@ export const GetTenantId = createParamDecorator((data: unknown, ctx: ExecutionCo
   }
 
   return tenantId;
+});
+
+export const CurrentTenant = createParamDecorator((data: keyof TenantContext | undefined, ctx: ExecutionContext) => {
+  const request = ctx.switchToHttp().getRequest<AuthenticatedRequest>();
+  const tenantContext = request.tenantContext;
+
+  return data ? tenantContext?.[data] : tenantContext;
 });
