@@ -87,3 +87,31 @@ export class MeUserMapper {
     };
   }
 }
+
+export class ProfileMapper {
+  static toProfileDto(user: any) {
+    const professional = user.professional || null;
+    return {
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatarUrl: user.avatarUrl,
+        phoneCountryCode: user.phoneCountryCode,
+        phoneNumber: user.phoneNumber,
+        birthDate: user.birthDate,
+        bio: user.bio,
+      },
+      professional: professional ? {
+        id: professional.id,
+        name: professional.name,
+        email: professional.email,
+        profession: professional.profession,
+        bio: professional.bio,
+        avatarUrl: professional.avatarUrl,
+        colorTheme: professional.colorTheme,
+        slotIntervalMinutes: professional.slotIntervalMinutes,
+      } : null,
+    };
+  }
+}

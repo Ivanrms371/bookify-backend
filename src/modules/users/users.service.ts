@@ -5,7 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { Prisma } from 'src/generated/prisma/client';
 import { CreateFromInvitationDto } from './dto/create-from-invitation.dto';
 import { UserCreateInput, UserUpdateInput } from 'src/generated/prisma/models';
-import { MeUserMapper } from './mappers/user-mapper';
+import { MeUserMapper, ProfileMapper } from './mappers/user-mapper';
 
 @Injectable()
 export class UsersService {
@@ -39,6 +39,13 @@ export class UsersService {
     }
 
     return MeUserMapper.toDomain(rawData, preferredTenant);
+  }
+
+  
+  async getProfile(userId: string, tenantId: string) {
+    const userWithProf = await this.usersRepository.findProfileWithProfessional(userId, tenantId);
+    if (!userWithProf) throw new NotFoundException('User not found');
+    return ProfileMapper.toProfileDto(userWithProf);
   }
 
   async update(id: string, data: UserUpdateInput, tx?: Prisma.TransactionClient) {
