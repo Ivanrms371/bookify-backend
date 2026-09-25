@@ -1,5 +1,5 @@
 import { dayOfWeekToInt } from 'src/common/utils/day-of-week.util';
-import { timeToMinutes } from 'src/common/utils/time/time.util';
+import { timeToMinutes } from 'src/common/utils/time.util';
 import { WorkingHourInterval } from '../types/working-hours.types';
 
 export function mapWorkingHoursToIntervals(workingHours: any, tenantId: string): WorkingHourInterval[] {

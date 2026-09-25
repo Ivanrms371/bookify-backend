@@ -1,4 +1,4 @@
-import { minutesToTime } from 'src/common/utils/time/time.util';
+import { minutesToTime } from 'src/common/utils/time.util';
 import { RawScheduleException, ScheduleExceptionResponse } from '../types/schedule-exception-response.types';
 
 export function toScheduleExceptionResponse(raw: RawScheduleException): ScheduleExceptionResponse {
@@ -14,7 +14,7 @@ export function toScheduleExceptionResponse(raw: RawScheduleException): Schedule
     })),
     professionals: raw.professionals.map((p) => ({
       professionalId: p.professionalId,
-      displayName: p.professional.displayName,
+      name: p.professional.name,
     })),
   };
 }

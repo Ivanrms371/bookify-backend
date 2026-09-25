@@ -1,12 +1,7 @@
 import { Decimal } from '@prisma/client/runtime/client';
 
 function isDecimalLike(value: unknown): value is { toNumber: () => number } {
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    'toNumber' in value &&
-    typeof (value as { toNumber: unknown }).toNumber === 'function'
-  );
+  return typeof value === 'object' && value !== null && 'toNumber' in value && typeof value.toNumber === 'function';
 }
 
 export function coerceToDecimal(value: unknown): Decimal | undefined {

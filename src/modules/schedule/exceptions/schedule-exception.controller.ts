@@ -1,13 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { TenantGuard } from 'src/auth/guards/tenant.guard';
-import { GetTenantId } from 'src/common/decorators/get-tenant-id.decorator';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { ParseUUIDv7Pipe } from 'src/common/pipes/validate-uuidv7.pipe';
 import { ScheduleExceptionService } from './schedule-exception.service';
 import { CreateScheduleExceptionDto } from '../dto/create-schedule-exception.dto';
 import { UpdateScheduleExceptionDto } from '../dto/update-schedule-exception.dto';
 
-@UseGuards(JwtAuthGuard, TenantGuard)
 @Controller('schedule/exceptions')
 export class ScheduleExceptionController {
   constructor(private readonly scheduleExceptionService: ScheduleExceptionService) {}

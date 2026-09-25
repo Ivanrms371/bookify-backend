@@ -1,21 +1,15 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { FindAllAppointmentsParamsDto } from './dto/find-all-appointments.dto';
 import { AppointmentsService } from './appointments.service';
-import { GetTenantId } from 'src/common/decorators/get-tenant-id.decorator';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { TenantGuard } from 'src/auth/guards/tenant.guard';
+import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 
-@UseGuards(JwtAuthGuard, TenantGuard)
 @Controller('appointments')
 export class AppointmentsController {
   constructor(private readonly appointmentsService: AppointmentsService) {}
 
   @Get('')
-  async findAll(
-    @GetTenantId() tenantId: string,
-    @Query() params: FindAllAppointmentsParamsDto,
-  ) {
+  async findAll(@GetTenantId() tenantId: string, @Query() params: FindAllAppointmentsParamsDto) {
     return this.appointmentsService.findAll(tenantId, params);
   }
 

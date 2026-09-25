@@ -1,10 +1,10 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
-import { GetTenantId } from 'src/common/decorators/get-tenant-id.decorator';
+import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { AvailabilityService } from './availability.service';
 import { GetDayAvailabilityQueryDto } from './dto/get-day-availability-query.dto';
 import { GetAvailabilityOverviewQueryDto } from './dto/get-availability-overview-query.dto';
 import { ValidateSlotQueryDto } from './dto/validate-slot-query.dto';
-import { AvailabilityOverviewResponse, DayAvailabilityResponse } from './types/availability.types';
+import { AvailabilityOverviewResponse, DayAvailabilityResponse, ValidateSlotResponse } from './types/availability.types';
 
 @Controller('availability')
 export class AvailabilityController {
@@ -17,13 +17,8 @@ export class AvailabilityController {
    * GET /availability/slots?professionalId=...&serviceId=...&date=YYYY-MM-DD
    */
   @Get('slots')
-  async getSlotsByDay(@GetTenantId() tenantId: string, @Query() query: GetDayAvailabilityQueryDto): Promise<DayAvailabilityResponse> {
-    return this.availabilityService.getAvailableSlotsByDay({
-      tenantId,
-      professionalId: query.professionalId,
-      serviceId: query.serviceId,
-      date: query.date,
-    });
+  async getSlotsByDay(@Query() query: GetDayAvailabilityQueryDto): Promise<DayAvailabilityResponse> {
+    return this.availabilityService.getAvailableSlotsByDay(query);
   }
 
   /**
@@ -33,18 +28,8 @@ export class AvailabilityController {
    * GET /availability/overview?professionalId=...&serviceId=...&startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
    */
   @Get('overview')
-  async getOverview(
-    @GetTenantId() tenantId: string,
-    @Query() query: GetAvailabilityOverviewQueryDto,
-  ): Promise<AvailabilityOverviewResponse> {
-    return this.availabilityService.getAvailableOverview({
-      tenantId,
-      professionalId: query.professionalId,
-      serviceId: query.serviceId,
-      startDate: query.startDate,
-      endDate: query.endDate,
-      saturationThreshold: query.saturationThreshold,
-    });
+  async getOverview(@Query() query: GetAvailabilityOverviewQueryDto): Promise<AvailabilityOverviewResponse> {
+    return this.availabilityService.getAvailableOverview(query);
   }
 
   /**
@@ -53,15 +38,8 @@ export class AvailabilityController {
    * GET /availability/validate?professionalId=...&serviceId=...&startTime=ISO8601
    */
   @Get('validate')
-  async validateSlot(@Query() query: ValidateSlotQueryDto): Promise<{ available: boolean }> {
-    const available = await this.availabilityService.isSlotAvailable({
-      tenantId: query.tenantId,
-      professionalId: query.professionalId,
-      serviceId: query.serviceId,
-      startTime: query.startTime,
-      ignoreMinAdvanced: false,
-    });
-
+  async validateSlot(@Query() query: ValidateSlotQueryDto): Promise<ValidateSlotResponse> {
+    const available = await this.availabilityService.isSlotAvailable(query);
     return { available };
   }
 }

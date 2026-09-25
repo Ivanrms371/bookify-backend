@@ -1,4 +1,6 @@
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsISO8601, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { parseISO } from 'date-fns';
 
 export class ValidateSlotQueryDto {
   @IsUUID('7', { message: 'tenantId debe ser un UUID válido.' })
@@ -13,7 +15,7 @@ export class ValidateSlotQueryDto {
   @IsNotEmpty({ message: 'serviceId es obligatorio.' })
   serviceId: string;
 
-  @IsString({ message: 'startTime debe ser un string ISO 8601 válido.' })
-  @IsNotEmpty({ message: 'startTime es obligatorio.' })
-  startTime: string;
+  @IsISO8601()
+  @IsNotEmpty()
+  startsAt: string;
 }

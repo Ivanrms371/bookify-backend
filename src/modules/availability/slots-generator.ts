@@ -8,19 +8,19 @@ import { hasConflict, isWithinOperationalRanges } from './utils/date-intervals.u
 @Injectable()
 export class SlotsGenerator {
   generate(ctx: GenerateSlotsContext): AvailableSlot[] {
-    // 1. Si hay una excepción de cierre total del local o profesional
+    // 1. If there is a total closure exception for the venue or professional
     if (ctx.isFullyClosed) {
       return [];
     }
 
-    // 2. Determinar ventanas operativas base
+    // 2. Determine base operational windows
     let operationalRanges: TimeRange[] = [];
 
     if (ctx.exceptionBlocks.length > 0) {
-      // Si hay bloques de excepción configurados, estos reemplazan las horas estándar
+      // If exception blocks are configured, these replace standard working hours
       operationalRanges = this.normalizeRanges(ctx.exceptionBlocks);
     } else {
-      // Intersección entre horario del local y horario del profesional
+      // Intersection between venue schedule and professional schedule
       operationalRanges = this.normalizeRanges(ctx.workingHours);
     }
 
@@ -28,13 +28,13 @@ export class SlotsGenerator {
       return [];
     }
 
-    // 3. Convertir citas y bloqueos a minutos locales del targetDate
+    // 3. Convert appointments and blocks to local minutes of targetDate
     const busyRangesLocal = this.convertUtcToLocalMinutes(ctx.busyIntervalsUtc, ctx.targetDate, ctx.timeZone, ctx.bufferMinutes);
 
-    // 4. Restar ocupaciones (citas + buffers) de los horarios operativos
+    // 4. Subtract busy intervals (appointments + buffers) from operational schedules
     // const freeRanges = this.subtractRanges(operationalRanges, busyRangesLocal);
 
-    // 5. Segmentar los rangos libres en slots según duración e intervalo
+    // 5. Slice free ranges into slots based on duration and interval
     // const rawSlots = this.sliceIntoSlots(freeRanges, ctx.serviceDuration, ctx.slotInterval, ctx.targetDate, ctx.timeZone);
 
     const rawSlots = this.generateAvailableSlots(
@@ -46,7 +46,7 @@ export class SlotsGenerator {
       ctx.timeZone,
     );
 
-    // 6. Filtrar por límites de antelación (minAdvancedMinutes y maxAdvancedDays)
+    // 6. Filter by advance booking limits (minAdvancedMinutes and maxAdvancedDays)
     return this.filterByAdvancedLimits(rawSlots, ctx.timeZone, ctx.minAdvancedMinutes, ctx.maxAdvancedDays);
   }
 
@@ -55,13 +55,13 @@ export class SlotsGenerator {
       return false;
     }
 
-    // 1. Validar límites de antelación
+    // 1. Validate advance booking limits
     const candidateDate = parseISO(startTimeUtc);
     if (!this.isWithinAdvancedLimits(candidateDate, ctx.timeZone, ctx.minAdvancedMinutes, ctx.maxAdvancedDays)) {
       return false;
     }
 
-    // 2. Convertir el candidato a minutos del día local
+    // 2. Convert candidate slot to minutes of the local day
     const [year, month, day] = ctx.targetDate.split('-').map(Number);
     const dayStart = startOfDay(new TZDate(year, month - 1, day, ctx.timeZone));
     const candidateStartTz = new TZDate(candidateDate, ctx.timeZone);
@@ -70,13 +70,13 @@ export class SlotsGenerator {
     const closesAt = opensAt + ctx.serviceDuration;
     const candidateRange: TimeRange = { opensAt, closesAt };
 
-    // 3. Validar horario operativo
+    // 3. Validate operational hours
     const operationalRanges = this.resolveOperationalRanges(ctx);
     if (!isWithinOperationalRanges(candidateRange, operationalRanges)) {
       return false;
     }
 
-    // 4. Validar colisiones con reservas y buffers
+    // 4. Validate conflicts with bookings and buffers
     const busyRangesLocal = this.convertUtcToLocalMinutes(ctx.busyIntervalsUtc, ctx.targetDate, ctx.timeZone, ctx.bufferMinutes);
 
     if (hasConflict(candidateRange, busyRangesLocal)) {
@@ -101,7 +101,7 @@ export class SlotsGenerator {
   }
 
   /**
-   * Resta los rangos ocupados a las ventanas disponibles
+   * Subtracts busy ranges from available time windows
    */
   private subtractRanges(available: TimeRange[], busy: TimeRange[]): TimeRange[] {
     let current = [...available];
@@ -109,16 +109,16 @@ export class SlotsGenerator {
     for (const b of busy) {
       const next: TimeRange[] = [];
       for (const a of current) {
-        // No hay solapamiento
+        // No overlap
         if (b.closesAt <= a.opensAt || b.opensAt >= a.closesAt) {
           next.push(a);
           continue;
         }
-        // Queda fragmento a la izquierda
+        // Left fragment remains
         if (b.opensAt > a.opensAt) {
           next.push({ opensAt: a.opensAt, closesAt: b.opensAt });
         }
-        // Queda fragmento a la derecha
+        // Right fragment remains
         if (b.closesAt < a.closesAt) {
           next.push({ opensAt: b.closesAt, closesAt: a.closesAt });
         }
@@ -130,7 +130,7 @@ export class SlotsGenerator {
   }
 
   /**
-   * Divide franjas continuas de tiempo libre en slots según la duración del servicio
+   * Splits continuous free time windows into slots based on service duration and interval
    */
   private sliceIntoSlots(ranges: TimeRange[], duration: number, interval: number, targetDate: string, timeZone: string): AvailableSlot[] {
     const slots: AvailableSlot[] = [];
@@ -157,7 +157,7 @@ export class SlotsGenerator {
   }
 
   /**
-   * Itera los horarios operativos y emite slots que no colisionan con ninguna ocupación
+   * Iterates through operational schedules and generates slots that do not conflict with any busy period
    */
   private generateAvailableSlots(
     operationalRanges: TimeRange[],
@@ -180,7 +180,7 @@ export class SlotsGenerator {
           closesAt: cursor + duration,
         };
 
-        // Si NO colisiona con ninguna cita o bloqueo, es un slot válido
+        // If it does NOT conflict with any appointment or block, it is a valid slot
         if (!hasConflict(candidate, busyRanges)) {
           const slotStart = addMinutes(dayStart, candidate.opensAt);
           const slotEnd = addMinutes(dayStart, candidate.closesAt);
@@ -200,7 +200,7 @@ export class SlotsGenerator {
   }
 
   /**
-   * Convierte fechas absolutas UTC de DB a minutos desde la medianoche local
+   * Converts absolute UTC dates from DB to minutes from local midnight
    */
   private convertUtcToLocalMinutes(
     busyList: Array<{ startsAt: Date; endsAt: Date }>,
@@ -218,11 +218,11 @@ export class SlotsGenerator {
     const ranges: TimeRange[] = [];
 
     for (const item of busyList) {
-      // Convertir fechas UTC a instancias TZDate en la zona horaria del tenant
+      // Convert UTC dates to TZDate instances in the tenant's timezone
       const busyStart = new TZDate(item.startsAt, timeZone);
       const busyEnd = addMinutes(new TZDate(item.endsAt, timeZone), bufferMinutes);
 
-      // Validar si intersecta con el día en cuestión
+      // Check if it intersects with the target day
       if (busyEnd <= dayStart || busyStart >= dayEnd) {
         continue;
       }
@@ -239,7 +239,7 @@ export class SlotsGenerator {
   }
 
   /**
-   * Filtra slots en tiempo real contra ahora (min/max anticipación)
+   * Filters slots in real time relative to now (min/max advance booking limits)
    */
   private filterByAdvancedLimits(slots: AvailableSlot[], timeZone: string, minMinutes: number, maxDays: number): AvailableSlot[] {
     const now = new TZDate(new Date(), timeZone);
@@ -253,7 +253,7 @@ export class SlotsGenerator {
   }
 
   /**
-   * Ordena y fusiona intervalos contiguos o solapados
+   * Sorts and merges contiguous or overlapping intervals
    */
   private normalizeRanges(ranges: TimeRange[]): TimeRange[] {
     if (ranges.length <= 1) return ranges;

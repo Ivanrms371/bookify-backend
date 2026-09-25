@@ -5,5 +5,5 @@ export function dayOfWeekToInt(day: DayOfWeek): DayOfWeekNumber {
 }
 
 export function intToDayOfWeek(day: DayOfWeekNumber): DayOfWeek {
-  return INT_TO_DAY_OF_WEEK[day as keyof typeof INT_TO_DAY_OF_WEEK];
+  return INT_TO_DAY_OF_WEEK[day];
 }

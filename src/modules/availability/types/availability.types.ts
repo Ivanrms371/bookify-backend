@@ -72,6 +72,10 @@ export interface ValidateSlotAvailabilityParams {
   tenantId: string;
   professionalId: string;
   serviceId: string;
-  startTime: string;
+  startsAt: string;
   ignoreMinAdvanced?: boolean;
+}
+
+export interface ValidateSlotResponse {
+  available: boolean;
 }

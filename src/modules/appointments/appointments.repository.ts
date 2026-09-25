@@ -5,10 +5,14 @@ import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { FindAllAppointmentsParamsDto } from './dto/find-all-appointments.dto';
 
 import { startOfDay, endOfDay } from 'date-fns';
+import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
+import { BaseRepository } from 'src/common/database/base.repository';
 
 @Injectable()
-export class AppointmentsRepository {
-  constructor(private readonly prisma: PrismaService) {}
+export class AppointmentsRepository extends BaseRepository {
+  constructor(prisma: PrismaService) {
+    super(prisma);
+  }
 
   async findMany(tenantId: string, params: FindAllAppointmentsParamsDto) {
     const { orderBy, order, skip = 0, take = 10, professionalId, date } = params;
@@ -47,7 +51,7 @@ export class AppointmentsRepository {
           professional: {
             select: {
               id: true,
-              displayName: true,
+              name: true,
               avatarUrl: true,
               bio: true,
               user: {
@@ -72,7 +76,7 @@ export class AppointmentsRepository {
               id: true,
               name: true,
               email: true,
-              phone: true,
+              phoneNumber: true,
             },
           },
         },
@@ -92,11 +96,15 @@ export class AppointmentsRepository {
 
   async findById() {}
 
-  async create(data: AppointmentCreateInput) {
-    return this.prisma.appointment.create({ data });
+  async create(data: AppointmentCreateInput, tx?: TransactionClient) {
+    return this.db(tx).appointment.create({ data });
   }
 
   async update() {}
 
   async cancel() {}
+
+  async count(tenantId: string, where: AppointmentWhereInput) {
+    return this.prisma.appointment.count({ where: { ...where, tenantId } });
+  }
 }

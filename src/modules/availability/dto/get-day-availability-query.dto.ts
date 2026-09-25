@@ -1,6 +1,10 @@
 import { IsDateString, IsNotEmpty, IsUUID } from 'class-validator';
 
 export class GetDayAvailabilityQueryDto {
+  @IsUUID('7', { message: 'tenantId debe ser un UUID válido.' })
+  @IsNotEmpty({ message: 'tenantId es obligatorio.' })
+  tenantId: string;
+
   @IsUUID('7', { message: 'professionalId debe ser un UUID válido.' })
   @IsNotEmpty({ message: 'professionalId es obligatorio.' })
   professionalId: string;

@@ -2,6 +2,10 @@ import { IsDateString, IsInt, IsNotEmpty, IsOptional, IsUUID, Max, Min } from 'c
 import { Type } from 'class-transformer';
 
 export class GetAvailabilityOverviewQueryDto {
+  @IsUUID('7', { message: 'tenantId debe ser un UUID válido.' })
+  @IsNotEmpty({ message: 'tenantId es obligatorio.' })
+  tenantId: string;
+
   @IsUUID('7', { message: 'professionalId debe ser un UUID válido.' })
   @IsNotEmpty({ message: 'professionalId es obligatorio.' })
   professionalId: string;

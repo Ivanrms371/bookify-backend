@@ -1,5 +1,5 @@
 import { Interval } from 'src/common/types/schedule.types';
-import { timeToMinutes } from 'src/common/utils/time/time.util';
+import { timeToMinutes } from 'src/common/utils/time.util';
 import { TimeIntervalDto } from '../dto/interval-dto';
 
 export const mapTimeInterval = (interval: TimeIntervalDto): Interval => ({

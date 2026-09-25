@@ -37,6 +37,16 @@ export class AvailabilityService {
 
   private readonly MAX_DAYS_SCAN = 30;
 
+  /**
+   * Retrieves available time slots for a specific day.
+   *
+   * If the requested date has availability, returns the calculated slots.
+   * If the day is unavailable (closed, professional off, or fully booked),
+   * scans forward (within the allowed range) to suggest the next available date (`nextAvailable`).
+   *
+   * @param params Query parameters (tenantId, professionalId, serviceId, date).
+   * @returns Day availability details (`isAvailable`), slots array, and next available date if applicable.
+   */
   async getAvailableSlotsByDay(params: GetDayAvailabilityParams): Promise<DayAvailabilityResponse> {
     const { days } = await this.resolveSlotsForDateRange({
       tenantId: params.tenantId,
@@ -72,6 +82,19 @@ export class AvailabilityService {
     };
   }
 
+  /**
+   * Generates an availability overview/summary across a given date range.
+   *
+   * Intended for calendar views and heatmaps.
+   * Categorizes each day in the range into status values:
+   * - `AVAILABLE`: Slots available and above the saturation threshold.
+   * - `SATURATED`: Slots available but count <= `saturationThreshold`.
+   * - `EMPTY`: Has working hours but all slots are booked.
+   * - `CLOSED`: Business closed, professional off, or fully closed by exception.
+   *
+   * @param params Query parameters (date range, tenant/professional/service IDs, optional saturation threshold).
+   * @returns Date-indexed dictionary ('YYYY-MM-DD') with status, available count, and status reason.
+   */
   async getAvailableOverview(params: GetAvailabilityOverviewParams): Promise<AvailabilityOverviewResponse> {
     const { tenantId, professionalId, serviceId, startDate, endDate, saturationThreshold = 3 } = params;
 
@@ -113,11 +136,20 @@ export class AvailabilityService {
   }
 
   /**
-   * Valida si un slot puntual está disponible (ej. al reservar o cambiar horario)
-   * Consultando únicamente el rango del día en cuestión.
+   * Validates whether a specific time slot is available for booking or rescheduling.
+   *
+   * Checks that:
+   * 1. The start time meets the minimum advance booking notice (`minAdvancedMinutes`).
+   * 2. The entire duration falls within effective working hours (custom or business).
+   * 3. The time slot does not intersect with any schedule exceptions or full closures.
+   * 4. The time slot does not overlap with existing appointments or their buffer times.
+   *
+   * @param params Validation parameters (tenant, professional, service, start time, optional ignoreMinAdvanced flag).
+   * @returns `true` if the slot is open and available to book; otherwise `false`.
+   * @throws BadRequestException If the startTime format is invalid.
    */
   async isSlotAvailable(params: ValidateSlotAvailabilityParams): Promise<boolean> {
-    const { tenantId, professionalId, serviceId, startTime, ignoreMinAdvanced = false } = params;
+    const { tenantId, professionalId, serviceId, startsAt, ignoreMinAdvanced = false } = params;
 
     const { settings, professional, service } = await this.loadConfiguration(tenantId, professionalId, serviceId);
 
@@ -125,10 +157,9 @@ export class AvailabilityService {
     const bufferMinutes = settings.bufferTimeMinutes;
     const minAdvancedMinutes = professional.minAdvancedMinutes ?? settings.minAdvancedMinutes;
 
-    const slotDate = parseISO(startTime);
-
+    const slotDate = parseISO(startsAt);
     if (!isValid(slotDate)) {
-      throw new BadRequestException('Formato de fecha inválido para startTime.');
+      throw new BadRequestException('Formato de fecha inválido para startsAt.');
     }
 
     const minStartTime = addMinutes(new Date(), ignoreMinAdvanced ? 0 : minAdvancedMinutes);
@@ -182,6 +213,10 @@ export class AvailabilityService {
     return true;
   }
 
+  /**
+   * Checks whether a given time interval (start to end) is completely contained
+   * within any of the active working hour ranges for the day.
+   */
   private isWithinWorkingHours(startTime: Date, endTime: Date, workingHours: TimeRange[], timeZone: string): boolean {
     const start = new TZDate(startTime, timeZone);
     const end = new TZDate(endTime, timeZone);
@@ -192,11 +227,26 @@ export class AvailabilityService {
     return workingHours.some(({ opensAt, closesAt }) => startMinutes >= opensAt && endMinutes <= closesAt);
   }
 
+  /**
+   * Resolves and calculates available slots across a date range day by day.
+   *
+   * Core orchestrator method that:
+   * 1. Loads configuration for the business, professional, and service.
+   * 2. Fetches timeline data (appointments, exceptions, working hours) in UTC for the entire range.
+   * 3. Iterates day by day in the local timezone, applying exceptions and working hour rules.
+   * 4. Delegates slot mathematical generation and overlap filtering to `SlotsGenerator`.
+   * 5. Supports early termination (`stopOnFirstFound`) when scanning for the next available day.
+   *
+   * @param params Date range configuration, entity IDs, and early exit flag.
+   * @returns Summary of each day's availability and the resolved timezone.
+   * @throws NotFoundException If settings, service, or professional cannot be found.
+   * @throws BadRequestException If date parameters are invalid.
+   */
   private async resolveSlotsForDateRange(params: {
     tenantId: string;
     professionalId: string;
     serviceId: string;
-    startDateStr: string; // 'YYYY-MM-DD'
+    startDateStr: string;
     endDateStr?: string;
     stopOnFirstFound?: boolean;
   }): Promise<DateRangeResolutionResult> {
@@ -340,6 +390,11 @@ export class AvailabilityService {
     };
   }
 
+  /**
+   * Loads and validates the required base configuration for tenant, professional, and service.
+   *
+   * @throws NotFoundException If business settings, service, or professional association are not found.
+   */
   private async loadConfiguration(tenantId: string, professionalId: string, serviceId: string) {
     const { settings, professional, service } = await this.availabilityRepository.getConfigurationContext(
       tenantId,
@@ -354,6 +409,9 @@ export class AvailabilityService {
     return { settings, professional, service };
   }
 
+  /**
+   * Extracts and normalizes busy intervals from appointments and internal blocks into a flat UTC range list.
+   */
   private extractBusyIntervals(
     appointments: Array<{ startsAt: Date; endsAt: Date; blocks?: Array<{ startsAt: Date; endsAt: Date }> }>,
   ): BusyIntervalUtc[] {
@@ -371,6 +429,11 @@ export class AvailabilityService {
     return intervals;
   }
 
+  /**
+   * Prepares the day-specific context required for slot generation,
+   * determining applicable working hours (custom vs business default)
+   * and evaluating active exceptions or full closures.
+   */
   private buildDayContext(params: {
     currentDayLocal: TZDate;
     timeZone: string;

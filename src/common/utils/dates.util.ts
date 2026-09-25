@@ -37,4 +37,3 @@ export function formatToDayKey(date: Date): string {
   // Use toISOString to always get the UTC date part consistently
   return date.toISOString().split('T')[0];
 }
-

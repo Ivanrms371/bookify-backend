@@ -80,11 +80,10 @@ export class AvailabilityQuery extends BaseRepository {
     });
   }
 
-  getAvailabilityConfig(tenantId: string, professionalId: string, tx?: TransactionClient) {
+  getAvailabilityConfig(professionalId: string, tx?: TransactionClient) {
     return this.db(tx).professional.findUnique({
       where: {
         id: professionalId,
-        tenantId,
       },
       select: {
         slotIntervalMinutes: true,

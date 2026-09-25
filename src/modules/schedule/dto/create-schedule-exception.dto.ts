@@ -17,8 +17,6 @@ import { DAY_OF_WEEK_VALUES, DayOfWeek } from 'src/common/constants/day-of-week.
 import { IntervalDto } from 'src/common/dto/create-schedule.dto';
 
 export class CreateScheduleExceptionDto {
-
-
   @IsDateString()
   startDate: string;
 

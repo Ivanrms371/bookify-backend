@@ -11,14 +11,19 @@ export function timeToMinutes(time: string): number {
 }
 
 export function minutesToTime(minutes: number): string {
+  if (!Number.isInteger(minutes) || minutes < 0 || minutes > 1439) {
+    throw new Error(`Invalid minutes: ${minutes}`);
+  }
+
   const h = Math.floor(minutes / 60)
     .toString()
     .padStart(2, '0');
   const m = (minutes % 60).toString().padStart(2, '0');
+
   return `${h}:${m}`;
 }
 
-export function dateToMinutes(date: Date, timeZone: string): number {
+export function dateToMinutesTz(date: Date, timeZone: string): number {
   const hours = parseInt(format(date, 'H', { timeZone }), 10);
   const minutes = parseInt(format(date, 'm', { timeZone }), 10);
 

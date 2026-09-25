@@ -13,7 +13,7 @@ export const scheduleExceptionSelect = {
   professionals: {
     select: {
       professionalId: true,
-      professional: { select: { displayName: true } },
+      professional: { select: { name: true } },
     },
   },
 } as const;
@@ -31,7 +31,7 @@ export interface ScheduleExceptionBlockResponse {
 
 export interface ScheduleExceptionProfessional {
   professionalId: string;
-  displayName: string | null;
+  name: string | null;
 }
 
 // ─── Unified response (findAll / findById / create / update) ─────────────────
