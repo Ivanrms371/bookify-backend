@@ -1,6 +1,6 @@
 import { dayOfWeekToInt } from 'src/common/utils/day-of-week.util';
 import { timeToMinutes } from 'src/common/utils/time.util';
-import { WorkingHourInterval } from '../types/working-hours.types';
+import { WorkingHourInterval } from 'src/shared/schedule/working-hours.types';
 
 export function mapWorkingHoursToIntervals(workingHours: any, tenantId: string): WorkingHourInterval[] {
   const dayOfWeek = dayOfWeekToInt(workingHours.dayOfWeek);

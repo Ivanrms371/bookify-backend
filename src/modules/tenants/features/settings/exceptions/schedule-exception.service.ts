@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { ScheduleExceptionRepository } from '../repositories/schedule-exception.repository';
-import { CreateScheduleExceptionDto } from '../dto/create-schedule-exception.dto';
-import { UpdateScheduleExceptionDto } from '../dto/update-schedule-exception.dto';
+import { ScheduleExceptionRepository } from './schedule-exception.repository';
+import { CreateScheduleExceptionDto } from './dto/create-schedule-exception.dto';
+import { UpdateScheduleExceptionDto } from './dto/update-schedule-exception.dto';
 import { isAfter } from 'date-fns';
-import { mapTimeIntervals } from '../mappers/map-time-interval.mapper';
-import { toScheduleExceptionResponse } from '../mappers/schedule-exception.mapper';
+import { mapTimeIntervals } from 'src/shared/schedule/map-time-interval.mapper';
+import { toScheduleExceptionResponse } from './mappers/schedule-exception.mapper';
 
 @Injectable()
 export class ScheduleExceptionService {

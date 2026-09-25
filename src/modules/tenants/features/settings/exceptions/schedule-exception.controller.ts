@@ -4,10 +4,10 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { ParseUUIDv7Pipe } from 'src/common/pipes/validate-uuidv7.pipe';
 import { ScheduleExceptionService } from './schedule-exception.service';
-import { CreateScheduleExceptionDto } from '../dto/create-schedule-exception.dto';
-import { UpdateScheduleExceptionDto } from '../dto/update-schedule-exception.dto';
+import { CreateScheduleExceptionDto } from './dto/create-schedule-exception.dto';
+import { UpdateScheduleExceptionDto } from './dto/update-schedule-exception.dto';
 
-@Controller('schedule/exceptions')
+@Controller('settings/exceptions')
 export class ScheduleExceptionController {
   constructor(private readonly scheduleExceptionService: ScheduleExceptionService) {}
 

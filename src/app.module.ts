@@ -29,7 +29,6 @@ import { AppointmentsModule } from './modules/appointments/appointments.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { InvitationsModule } from './modules/invitations/invitations.module';
 import { MembershipsModule } from './modules/memberships/memberships.module';
-import { ScheduleModule } from './modules/schedule/schedule.module';
 import { PublicModule } from './modules/public/public.module';
 import { LemonSqueezyModule } from './shared/integrations/lemon-squeezy/lemon-squeezy.module';
 import { APP_GUARD } from '@nestjs/core';
@@ -76,7 +75,7 @@ import { TeamModule } from './modules/team/team.module';
     VerificationsModule,
     WebhookModule,
     MembershipsModule,
-    ScheduleModule,
+    
     PublicModule,
   ],
   providers: [

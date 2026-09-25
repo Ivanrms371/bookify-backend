@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { ScheduleExceptionCreateInput, ScheduleExceptionUpdateInput } from 'src/generated/prisma/models';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
-import { scheduleExceptionSelect, type RawScheduleException } from '../types/schedule-exception-response.types';
+import { scheduleExceptionSelect, type RawScheduleException } from './types/schedule-exception-response.types';
 
 interface FindManyParams {
   startDate?: Date;
