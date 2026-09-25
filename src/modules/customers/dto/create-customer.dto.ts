@@ -11,7 +11,7 @@ export class CreateCustomerDto {
 
   @IsString()
   @IsNotEmpty({ message: 'El teléfono es requerido' })
-  phone: string;
+  phoneNumber: string;
 
   @IsEmail({}, { message: 'El email no es válido' })
   @IsNotEmpty({ message: 'El email es requerido' })

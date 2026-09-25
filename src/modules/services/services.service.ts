@@ -66,8 +66,19 @@ export class ServicesService {
     return this.servicesRepository.softDelete(tenantId, id);
   }
 
+  async findByIdAndProfessional(tenantId: string, id: string, proefssionalId: string) {
+    return this.servicesRepository.findByIdAndProfessional(tenantId, id, proefssionalId);
+  }
+
   async findAllProfessionals(tenantId: string, id: string) {
-    await this.findById(tenantId, id);
     return this.servicesRepository.findAllProfessionals(tenantId, id);
+  }
+
+  async findAllPublic(tenantId: string) {
+    return this.servicesRepository.findAllPublic(tenantId);
+  }
+
+  async findAllPublicByProfessional(professionalId: string) {
+    return this.servicesRepository.findAllPublicByProfessional(professionalId);
   }
 }

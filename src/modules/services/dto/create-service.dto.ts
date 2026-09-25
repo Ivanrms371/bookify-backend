@@ -1,18 +1,6 @@
 import { Decimal } from '@prisma/client/runtime/client';
 import { Transform, Type } from 'class-transformer';
-import {
-  IsArray,
-  IsBoolean,
-  IsDefined,
-  IsInt,
-  IsNumber,
-  IsOptional,
-  IsString,
-  IsUrl,
-  Max,
-  Min,
-  Validate,
-} from 'class-validator';
+import { IsArray, IsBoolean, IsDefined, IsInt, IsNumber, IsOptional, IsString, IsUrl, Max, Min, Validate } from 'class-validator';
 import { coerceToDecimal, coerceToInt } from 'src/common/utils/to-decimal.util';
 import { IsMutuallyExclusiveDiscountConstraint, toBool } from './service.constraints';
 

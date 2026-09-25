@@ -25,6 +25,7 @@
     "email:dev": "email dev --dir src/modules/notifications/application/templates"
   },
   "dependencies": {
+    "@date-fns/tz": "^1.5.0",
     "@nestjs/common": "11.0.1",
     "@nestjs/config": "4.0.2",
     "@nestjs/core": "11.0.1",

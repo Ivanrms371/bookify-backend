@@ -5,7 +5,7 @@ export class CustomerPhoneAlreadyExistsException extends ConflictException {
     super({
       code: 'CUSTOMER_PHONE_ALREADY_EXISTS',
       message: 'No hemos podido crear el cliente.',
-      fields: { phone: 'El número de teléfono ya está en uso' },
+      fields: { phoneNumber: 'El número de teléfono ya está en uso' },
     });
   }
 }

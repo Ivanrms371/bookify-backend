@@ -57,7 +57,7 @@ export class DashboardRepository {
         professional: {
           select: {
             id: true,
-            displayName: true,
+            name: true,
             avatarUrl: true,
             colorTheme: true,
           },

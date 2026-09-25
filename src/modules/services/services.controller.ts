@@ -3,15 +3,11 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
-import { AuthenticatedRequest } from 'src/auth/types/express-request.type';
-import { UseGuards } from '@nestjs/common';
+import { AuthenticatedRequest } from 'src/common/security/types/authenticated-request.type';
 import { ParseUUIDv7Pipe } from 'src/common/pipes/validate-uuidv7.pipe';
 import { GetServicesQueryDto } from './dto/get-services-query.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { TenantGuard } from 'src/auth/guards/tenant.guard';
-import { GetTenantId } from 'src/common/decorators/get-tenant-id.decorator';
+import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 
-@UseGuards(JwtAuthGuard, TenantGuard)
 @Controller('services')
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}

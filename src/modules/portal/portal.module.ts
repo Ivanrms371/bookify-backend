@@ -5,10 +5,10 @@
 // import { LayoutPortalService } from './application/layout-portal.service';
 // import { TenantStatsModule } from '../tenants/features/stats/tenant-stats.module';
 // import { TenantUsageModule } from '../tenants/features/usage/tenant-usage.module';
-// import { AuthModule } from 'src/auth/auth.module';
+// import { SecurityModule } from 'src/common/security/security.module';
 
 // @Module({
-//   imports: [AuthModule, TenantStatsModule, TenantUsageModule],
+//   imports: [SecurityModule, TenantStatsModule, TenantUsageModule],
 //   controllers: [DashboardPortalController, LayoutPortalController],
 //   providers: [DashboardPortalService, LayoutPortalService],
 // })

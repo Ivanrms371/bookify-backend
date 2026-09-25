@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
 import { PublicController } from './public.controller';
 import { PublicService } from './public.service';
-import { PublicRepository } from './public.repository';
 import { AvailabilityModule } from '../availability/availability.module';
+import { TenantsModule } from '../tenants/tenants.module';
+import { ServicesModule } from '../services/services.module';
+import { ProfessionalsModule } from '../professionals/professionals.module';
+import { AppointmentsModule } from '../appointments/appointments.module';
 
 @Module({
-  imports: [AvailabilityModule],
+  imports: [TenantsModule, ServicesModule, ProfessionalsModule, AvailabilityModule, AppointmentsModule],
   controllers: [PublicController],
-  providers: [PublicService, PublicRepository],
+  providers: [PublicService],
+  exports: [PublicService],
 })
 export class PublicModule {}

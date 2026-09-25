@@ -1,6 +1,6 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { LayoutPortalService } from '../../application/layout-portal.service';
-import { AuthenticatedRequest } from 'src/auth/types/express-request.type';
+import { AuthenticatedRequest } from 'src/common/security/types/authenticated-request.type';
 
 @Controller('portal/layout')
 export class LayoutPortalController {

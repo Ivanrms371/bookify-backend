@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from 'src/common/database/base.repository';
-import { CustomerUpdateInput } from 'src/generated/prisma/models';
+import { CustomerCreateInput, CustomerUpdateInput } from 'src/generated/prisma/models';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { FindAllCustomersParams } from './types/customer-find-all.params';
-import { CreateCustomerDto } from './dto/create-customer.dto';
+import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 
 @Injectable()
 export class CustomersRepository extends BaseRepository {
@@ -11,76 +11,71 @@ export class CustomersRepository extends BaseRepository {
     super(prisma);
   }
 
-  async findByPhone(tenantId: string, phoneCountryCode: string, phone: string) {
-    return this.db().customer.findUnique({
-      where: { tenantId_phoneCountryCode_phone: { tenantId, phoneCountryCode, phone } },
+  async findByPhone(tenantId: string, phoneCountryCode: string, phoneNumber: string, tx?: TransactionClient) {
+    return this.db(tx).customer.findUnique({
+      where: { tenantId_phoneCountryCode_phoneNumber: { tenantId, phoneCountryCode, phoneNumber } },
     });
   }
 
-  async findByEmail(tenantId: string, email: string) {
-    return this.db().customer.findFirst({ where: { tenantId, email, deletedAt: null } });
+  async findByEmail(tenantId: string, email: string, tx?: TransactionClient) {
+    return this.db(tx).customer.findFirst({ where: { tenantId, email, deletedAt: null } });
   }
 
-  async findById(tenantId: string, id: string) {
-    return this.db().customer.findUnique({ where: { id, tenantId, deletedAt: null } });
+  async findById(tenantId: string, id: string, tx?: TransactionClient) {
+    return this.db(tx).customer.findUnique({ where: { id, tenantId, deletedAt: null } });
   }
 
-  async upsert(tenantId: string, data: CreateCustomerDto) {
-    return this.prisma.customer.upsert({
-      where: { tenantId_phoneCountryCode_phone: { tenantId, phoneCountryCode: data.phoneCountryCode, phone: data.phone } },
-      update: {
-        ...data,
-        deletedAt: null,
-      },
-      create: {
-        ...data,
-        tenant: { connect: { id: tenantId } },
-      },
+  async findByIdGlobal(id: string, tx?: TransactionClient) {
+    return this.db(tx).customer.findUnique({ where: { id, deletedAt: null } });
+  }
+
+  async create(data: CustomerCreateInput, tx?: TransactionClient) {
+    return this.db(tx).customer.create({
+      data,
     });
   }
 
-  async update(tenantId: string, id: string, data: CustomerUpdateInput) {
-    return this.db().customer.update({
+  async update(tenantId: string, id: string, data: CustomerUpdateInput, tx?: TransactionClient) {
+    return this.db(tx).customer.update({
       where: { id, tenantId, deletedAt: null },
       data,
     });
   }
 
-  async softDelete(tenantId: string, id: string) {
-    return this.db().customer.update({
+  async softDelete(tenantId: string, id: string, tx?: TransactionClient) {
+    return this.db(tx).customer.update({
       where: { id, tenantId, deletedAt: null },
       data: { deletedAt: new Date() },
     });
   }
 
-  async block(tenantId: string, id: string) {
-    return this.db().customer.update({
+  async block(tenantId: string, id: string, tx?: TransactionClient) {
+    return this.db(tx).customer.update({
       where: { id, tenantId, deletedAt: null },
       data: { blockedAt: new Date() },
     });
   }
 
-  async unblock(tenantId: string, id: string) {
-    return this.db().customer.update({
+  async unblock(tenantId: string, id: string, tx?: TransactionClient) {
+    return this.db(tx).customer.update({
       where: { id, tenantId, deletedAt: null },
       data: { blockedAt: null },
     });
   }
 
-  async findMany(params: FindAllCustomersParams) {
+  async findMany(params: FindAllCustomersParams, tx?: TransactionClient) {
     const { tenantId, take = 10, skip = 0, orderBy = 'name', order = 'asc' } = params;
 
     const [customers, total] = await Promise.all([
-      this.db().customer.findMany({
+      this.db(tx).customer.findMany({
         where: { tenantId, deletedAt: null },
         orderBy: { [orderBy]: order },
         select: {
           id: true,
           name: true,
-          phone: true,
+          phoneNumber: true,
           phoneCountryCode: true,
           email: true,
-          preferredLanguage: true,
           notes: true,
           blockedAt: true,
           firstAppointmentAt: true,
@@ -89,7 +84,7 @@ export class CustomersRepository extends BaseRepository {
         take: Number(take),
         skip: Number(skip),
       }),
-      this.db().customer.count({
+      this.db(tx).customer.count({
         where: { tenantId, deletedAt: null },
       }),
     ]);
@@ -104,11 +99,11 @@ export class CustomersRepository extends BaseRepository {
     };
   }
 
-  async search(tenantId: string, query: string) {
+  async search(tenantId: string, query: string, tx?: TransactionClient) {
     const search = `%${query}%`;
 
-    return this.db().$queryRaw<any[]>`
-    SELECT id, name, phone, email, phoneCountryCode, preferredLanguage, notes, blockedAt, firstAppointmentAt, lastAppointmentAt, totalSpent,
+    return this.db(tx).$queryRaw<any[]>`
+    SELECT id, name, phoneNumber, email, phoneCountryCode, preferredLanguage, notes, blockedAt, firstAppointmentAt, lastAppointmentAt, totalSpent,
       similarity(unaccent(${query}), unaccent(name)) AS score
     FROM customers
     WHERE "tenant_id" = ${tenantId}::uuid
@@ -116,10 +111,18 @@ export class CustomersRepository extends BaseRepository {
     AND (
       similarity(unaccent(${query}), unaccent(name)) > 0.1
       OR email ILIKE ${search}
-      OR phone ILIKE ${search}
+      OR phoneNumber ILIKE ${search}
     )
     ORDER BY score DESC
     LIMIT 10;
   `;
+  }
+
+  async markPhoneAsVerified(id: string, tx?: TransactionClient) {
+    return this.db(tx).customer.update({ where: { id }, data: { phoneVerifiedAt: new Date() } });
+  }
+
+  async markEmailAsVerified(id: string, tx?: TransactionClient) {
+    return this.db(tx).customer.update({ where: { id }, data: { emailVerifiedAt: new Date() } });
   }
 }

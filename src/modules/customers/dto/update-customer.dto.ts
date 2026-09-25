@@ -7,7 +7,7 @@ export class UpdateCustomerDto {
 
   @IsString()
   @IsOptional()
-  phone?: string;
+  phoneNumber?: string;
 
   @IsString()
   @IsOptional()

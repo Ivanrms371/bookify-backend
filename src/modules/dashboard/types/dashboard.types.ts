@@ -26,7 +26,7 @@ export interface DashboardStats {
 export interface DashboardAppointmentProfessional {
   id: string;
   avatarUrl: string | null;
-  displayName: string | null;
+  name: string | null;
   colorTheme: string | null;
 }
 
@@ -35,7 +35,7 @@ export interface DashboardUpcomingAppointment {
   status: AppointmentStatus;
   startsAt: string;
   endsAt: string;
-  customerName: string;
+  customerName: string | null;
   confirmationCode: string;
   durationMinutes: number;
   professional: DashboardAppointmentProfessional;

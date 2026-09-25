@@ -1,12 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { startOfDay, endOfDay, startOfMonth, endOfMonth, subDays } from 'date-fns';
 import { DashboardRepository } from './dashboard.repository';
-import type {
-  DashboardChartEntry,
-  DashboardOverviewResponse,
-  DashboardStats,
-  DashboardUpcomingAppointment,
-} from './types/dashboard.types';
+import type { DashboardChartEntry, DashboardOverviewResponse, DashboardStats, DashboardUpcomingAppointment } from './types/dashboard.types';
 
 @Injectable()
 export class DashboardService {
@@ -75,7 +70,7 @@ export class DashboardService {
       durationMinutes: appt.durationMinutes,
       professional: {
         id: appt.professional.id,
-        displayName: appt.professional.displayName,
+        name: appt.professional.name,
         avatarUrl: appt.professional.avatarUrl,
         colorTheme: appt.professional.colorTheme,
       },

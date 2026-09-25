@@ -1,20 +1,18 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { PublicService } from './public.service';
 import { GetSlotsQueryDto } from './dto/get-slots-query.dto';
-import { AvailabilityService } from '../availability/availability.service';
 import { GetAvailabilityOverviewDto } from './dto/get-availability-overview.dto';
-import { CreatePublicBookingDto } from './dto/create-public-booking.dto';
+import { CreatePublicAppointmentDto } from './dto/create-public-appointment.dto';
+import { ValidateSlotAvailabilityDto } from './dto/validate-slot.dto';
+import { ReschedulePublicAppointmentDto } from './dto/reschedule-public-appointment.dto';
+import { CancelPublicAppointmentDto } from './dto/cancel-public-appointment.dto';
+import { Public } from 'src/common/security/decorators/public.decorator';
 
+@Public()
 @Controller('public')
 export class PublicController {
-  constructor(
-    private readonly publicService: PublicService,
-    private readonly availabilityService: AvailabilityService,
-  ) {}
+  constructor(private readonly publicService: PublicService) {}
 
-  /**
-   * Return a Tenant data with their services and professionals
-   */
   @Get('tenants/:slug')
   async getTenantBySlug(@Param('slug') slug: string) {
     return this.publicService.getTenantBySlug(slug);
@@ -42,14 +40,36 @@ export class PublicController {
 
   @Get('availability/slots')
   async getProfessionalAvailabilitySlots(@Query() dto: GetSlotsQueryDto) {
-    return this.availabilityService.getAvailableSlotsByDay(dto);
+    return this.publicService.getProfessionalAvailabilitySlots(dto);
   }
 
   @Get('availability/overview')
   async getProfessionalAvailabilityOverview(@Query() dto: GetAvailabilityOverviewDto) {
-    return this.availabilityService.getAvailableOverview(dto);
+    return this.publicService.getProfessionalAvailabilityOverview(dto);
   }
 
-  @Post('booking')
-  async createBooking(@Body() dto: CreatePublicBookingDto) {}
+  @Get('availability/validate')
+  async checkSlotAvailability(@Query() dto: ValidateSlotAvailabilityDto) {
+    return this.publicService.checkSlotAvailability(dto);
+  }
+
+  @Get('appointment/:token')
+  async getAppointment(@Param('token') token: string) {
+    return this.publicService.getAppointmentByToken(token);
+  }
+
+  @Post('appointment')
+  async createAppointment(@Body() dto: CreatePublicAppointmentDto) {
+    return this.publicService.createAppointment(dto);
+  }
+
+  @Put('appointment/:token')
+  async rescheduleAppointment(@Param('token') token: string, @Body() dto: ReschedulePublicAppointmentDto) {
+    return this.publicService.rescheduleAppointment(token, dto);
+  }
+
+  @Delete('appointment/:token')
+  async cancelAppointment(@Param('token') token: string, @Body() dto: CancelPublicAppointmentDto) {
+    return this.publicService.cancelAppointment(token, dto);
+  }
 }

@@ -1,21 +1,9 @@
-import {
-  Controller,
-  Post,
-  Delete,
-  Param,
-  UseGuards,
-  UseInterceptors,
-  UploadedFile,
-  Query,
-} from '@nestjs/common';
+import { Controller, Post, Delete, Param, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { TenantGuard } from 'src/auth/guards/tenant.guard';
-import { GetTenantId } from 'src/common/decorators/get-tenant-id.decorator';
+import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { MediaService } from './media.service';
 import { ImageType, UploadResult, DeleteResult } from './types';
 
-@UseGuards(JwtAuthGuard, TenantGuard)
 @Controller('media')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
@@ -31,9 +19,7 @@ export class MediaController {
   }
 
   @Delete(':publicId')
-  async delete(
-    @Param('publicId') publicId: string,
-  ): Promise<DeleteResult> {
+  async delete(@Param('publicId') publicId: string): Promise<DeleteResult> {
     return this.mediaService.delete(publicId);
   }
 }

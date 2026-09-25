@@ -1,14 +1,11 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards, ParseUUIDPipe, Put, Req } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, ParseUUIDPipe, Put } from '@nestjs/common';
 import { CustomersService } from './customers.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { TenantGuard } from 'src/auth/guards/tenant.guard';
-import { GetTenantId } from 'src/common/decorators/get-tenant-id.decorator';
+import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { FindAllCustomersParams } from './dto/find-all-customers-params.dto';
 
 @Controller('customers')
-@UseGuards(JwtAuthGuard, TenantGuard)
 export class CustomersController {
   constructor(private readonly customersService: CustomersService) {}
 
@@ -29,7 +26,7 @@ export class CustomersController {
 
   @Post()
   async create(@GetTenantId() tenantId: string, @Body() data: CreateCustomerDto) {
-    return this.customersService.upsert(tenantId, data);
+    return this.customersService.create(tenantId, data);
   }
 
   @Put(':id')

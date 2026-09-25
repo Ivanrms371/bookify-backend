@@ -94,15 +94,55 @@ export class ServicesRepository {
     return this.prisma.service.update({ where: { id, tenantId }, data: { deletedAt: new Date() } });
   }
 
+  findByIdAndProfessional(tenantId: string, id: string, professionalId: string) {
+    return this.prisma.service.findFirst({ where: { id, tenantId, assignments: { some: { professionalId } } } });
+  }
+
   findAllProfessionals(tenantId: string, id: string) {
     return this.prisma.professional.findMany({
       where: { tenantId, deletedAt: null, assignments: { some: { serviceId: id } } },
       select: {
         id: true,
         avatarUrl: true,
-        displayName: true,
+        name: true,
         colorTheme: true,
         bio: true,
+      },
+    });
+  }
+
+  findAllPublic(tenantId: string) {
+    return this.prisma.service.findMany({
+      where: { tenantId, isActive: true, deletedAt: null },
+      select: {
+        id: true,
+        name: true,
+        imageUrl: true,
+        description: true,
+        durationMinutes: true,
+        price: true,
+        discountPercentage: true,
+        discountFixed: true,
+      },
+    });
+  }
+
+  findAllPublicByProfessional(professionalId: string) {
+    return this.prisma.service.findMany({
+      where: {
+        isActive: true,
+        deletedAt: null,
+        assignments: { some: { professionalId, isActive: true } },
+      },
+      select: {
+        id: true,
+        name: true,
+        imageUrl: true,
+        description: true,
+        durationMinutes: true,
+        price: true,
+        discountPercentage: true,
+        discountFixed: true,
       },
     });
   }

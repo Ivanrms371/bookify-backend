@@ -1,11 +1,8 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req } from '@nestjs/common';
 import { DashboardPortalService } from '../../application/dashboard-portal.service';
-import { AuthenticatedRequest } from 'src/auth/types/express-request.type';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { TenantGuard } from 'src/auth/guards/tenant.guard';
-import { GetTenantId } from 'src/common/decorators/get-tenant-id.decorator';
+import { AuthenticatedRequest } from 'src/common/security/types/authenticated-request.type';
+import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 
-@UseGuards(JwtAuthGuard, TenantGuard)
 @Controller('portal/dashboard')
 export class DashboardPortalController {
   constructor(private readonly dashboardService: DashboardPortalService) {}
