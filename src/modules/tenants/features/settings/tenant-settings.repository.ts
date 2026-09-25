@@ -3,6 +3,7 @@ import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { BaseRepository } from 'src/common/database/base.repository';
 import { UpdateGeneralSettingsDto } from './dto/update-general-settings.dto';
 import { UpdateAppointmentSettingsDto } from './dto/update-appointment-settings.dto';
+import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 import {
   RawTenantSettingsResponse,
   TenantAppointmentConfigResponse,
@@ -79,6 +80,14 @@ export class TenantSettingsRepository extends BaseRepository {
         }),
       },
     });
+  }
+
+  
+  async replaceWorkingHours(tenantId: string, data: { tenantId: string; dayOfWeek: number; opensAt: number; closesAt: number }[], tx?: TransactionClient): Promise<void> {
+    await this.db(tx).tenantWorkingHours.deleteMany({ where: { tenantId } });
+    if (data.length > 0) {
+      await this.db(tx).tenantWorkingHours.createMany({ data });
+    }
   }
 
   async updateAppointmentSettings(tenantId: string, data: UpdateAppointmentSettingsDto): Promise<UpdateTenantAppointmentSettingsResponse> {
