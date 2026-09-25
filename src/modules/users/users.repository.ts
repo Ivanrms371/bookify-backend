@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { BaseRepository } from 'src/common/database/base.repository';
-import { UserUpdateInput } from 'src/generated/prisma/models';
+import { UserCreateInput, UserUpdateInput } from 'src/generated/prisma/models';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
-import { MembershipStatus } from 'src/generated/prisma/enums';
 
 @Injectable()
 export class UsersRepository extends BaseRepository {
@@ -12,7 +10,7 @@ export class UsersRepository extends BaseRepository {
     super(prisma);
   }
 
-  async create(data: CreateUserDto, tx?: TransactionClient) {
+  async create(data: UserCreateInput, tx?: TransactionClient) {
     return this.db(tx).user.create({ data });
   }
 
@@ -42,7 +40,7 @@ export class UsersRepository extends BaseRepository {
         avatarUrl: true,
         memberships: {
           where: {
-            status: MembershipStatus.ACTIVE,
+            isActive: true,
           },
           select: {
             role: true,
@@ -65,11 +63,8 @@ export class UsersRepository extends BaseRepository {
                 subscription: {
                   select: {
                     status: true,
-                    plan: {
-                      select: {
-                        name: true,
-                      },
-                    },
+                    currentPeriodEnd: true,
+                    trialEndsAt: true,
                   },
                 },
               },

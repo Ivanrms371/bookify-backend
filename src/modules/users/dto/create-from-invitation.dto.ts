@@ -8,7 +8,7 @@ export class CreateFromInvitationDto {
   email: string;
 
   @IsString()
-  phone: string;
+  phoneNumber: string;
 
   @IsString()
   password: string;

@@ -16,7 +16,8 @@ export interface RawUserContextResponse {
       professionals: Array<{ id: string }>;
       subscription: {
         status: SubscriptionStatus;
-        plan: { name: string };
+        currentPeriodEnd: Date | null;
+        trialEndsAt: Date | null;
       } | null;
     };
   }>;
@@ -32,7 +33,8 @@ export interface ActiveTenant {
   professionalId: string | null;
   subscription: {
     status: SubscriptionStatus;
-    planName: string;
+    currentPeriodEnd: string | null;
+    trialEndsAt: string | null;
   } | null;
 }
 
@@ -46,12 +48,10 @@ export interface UserSessionContext {
 }
 
 export class MeUserMapper {
-  static toDomain(raw: RawUserContextResponse, preferredTenantSlug?: string): UserSessionContext {
+  static toDomain(raw: RawUserContextResponse, tenantId?: string): UserSessionContext {
     const memberships = raw.memberships || [];
 
-    const activeMembership = preferredTenantSlug
-      ? memberships.find((m) => m.tenant.slug === preferredTenantSlug) || memberships[0]
-      : memberships[0];
+    const activeMembership = tenantId ? memberships.find((m) => m.tenant.id === tenantId) || memberships[0] : memberships[0];
 
     let activeTenant: ActiveTenant | null = null;
 
@@ -70,7 +70,8 @@ export class MeUserMapper {
         subscription: tenant.subscription
           ? {
               status: tenant.subscription.status,
-              planName: tenant.subscription.plan.name,
+              trialEndsAt: tenant.subscription?.trialEndsAt?.toISOString() ?? null,
+              currentPeriodEnd: tenant.subscription?.currentPeriodEnd?.toISOString() ?? null,
             }
           : null,
       };

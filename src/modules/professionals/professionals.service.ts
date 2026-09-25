@@ -1,16 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { GetProfessionalsQueryDto } from './dto/get-professionals-query.dto';
 import { ProfessionalsRepository } from './professionals.repository';
 import { AddServiceDto } from './dto/add-service.dto';
 import { RemoveServiceDto } from './dto/remove-service.dto';
 import { ProfessionalsMapper } from './professionals.mapper';
 import { UpdateProfessionalDto } from './dto/update-professional.dto';
-import { DAY_OF_WEEK_TO_INT } from 'src/common/constants/day-of-week.constants';
-import { timeToMinutes } from 'src/common/utils/time/time.util';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { MembershipsService } from '../memberships/memberships.service';
 import { ServiceAssignmentCreateManyInput } from 'src/generated/prisma/models';
 import { ProfessionalWorkingHoursService } from './features/working-hours/working-hours.service';
+import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
+import { CreateProfessionalDto } from './dto/create-professional.dto';
 import { MembershipRole } from 'src/generated/prisma/enums';
 
 @Injectable()
@@ -18,7 +18,6 @@ export class ProfessionalsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly professionalsRepository: ProfessionalsRepository,
-    private readonly membershipService: MembershipsService,
     private readonly workingHoursService: ProfessionalWorkingHoursService,
   ) {}
 
@@ -27,25 +26,18 @@ export class ProfessionalsService {
     return professionals.map((prof) => ({
       id: prof.id,
       avatarUrl: prof.avatarUrl,
-      displayName: prof.displayName,
+      name: prof.name,
       colorTheme: (prof as any).colorTheme ?? null,
       bio: (prof as any).bio ?? null,
       email: prof.user?.email || null,
-      phone: prof.user?.phone || null,
+      phoneNumber: prof.user?.phoneNumber || null,
       phoneCountryCode: prof.user?.phoneCountryCode || null,
     }));
   }
 
-  async findEntityOrFail(tenantId: string, professionalId: string) {
-    const professional = await this.findById(tenantId, professionalId);
-    if (!professional) {
-      throw new NotFoundException('Empleado no encontrado');
-    }
+  async findById(tenantId: string, id: string, tx?: TransactionClient) {
+    const professional = await this.professionalsRepository.findById(tenantId, id, tx);
     return professional;
-  }
-
-  async findById(tenantId: string, id: string) {
-    return this.professionalsRepository.findById(tenantId, id);
   }
 
   async getByIdWithDetails(tenantId: string, id: string) {
@@ -57,65 +49,57 @@ export class ProfessionalsService {
     return ProfessionalsMapper.toDetailsDto(prof);
   }
 
-  async update(tenantId: string, id: string, dto: UpdateProfessionalDto) {
+  async create(tenantId: string, dto: CreateProfessionalDto, tx?: TransactionClient) {
+    const professional = await this.professionalsRepository.create(
+      {
+        tenant: { connect: { id: tenantId } },
+        name: dto.name,
+        phoneNumber: dto.phoneNumber,
+        email: dto.email,
+        phoneCountryCode: dto.phoneCountryCode,
+        profession: dto.profession,
+        bio: dto.bio,
+        avatarUrl: dto.avatarUrl,
+        avatarPublicId: dto.avatarPublicId,
+      },
+      tx,
+    );
+
+    if (dto.serviceIds && dto.serviceIds.length > 0) {
+      const servicesData = dto.serviceIds.map((serviceId) => ({
+        professionalId: professional.id,
+        serviceId,
+        isActive: true,
+      }));
+      await this.professionalsRepository.replaceServices(professional.id, servicesData, tx);
+    }
+
+    return professional;
+  }
+
+  async update(tenantId: string, id: string, dto: UpdateProfessionalDto, externalTx?: TransactionClient) {
     const professional = await this.professionalsRepository.findById(tenantId, id);
     if (!professional) {
       throw new NotFoundException('Profesional no encontrado');
     }
 
-    const {
-      displayName,
-      phone,
-      phoneCountryCode,
-      avatarUrl,
-      avatarPublicId,
-      bio,
-      commissionType,
-      commissionAmount,
-      maxAdvancedDays,
-      minAdvancedMinutes,
-      slotIntervalMinutes,
-      role,
-      schedule,
-      serviceIds,
-    } = dto;
+    const { name, phoneNumber, phoneCountryCode, avatarUrl, avatarPublicId, bio, serviceIds, giveAccess } = dto;
 
-    await this.prisma.$transaction(async (tx) => {
+    const executeUpdate = async (tx: TransactionClient) => {
       await this.professionalsRepository.update(
         tenantId,
         id,
         {
-          displayName,
+          name,
+          phoneNumber,
+          phoneCountryCode,
           avatarUrl,
           avatarPublicId,
           bio,
-          commissionType,
-          commissionAmount,
-          maxAdvancedDays,
-          minAdvancedMinutes,
-          slotIntervalMinutes,
+          ...(giveAccess && professional.userId && { user: { disconnect: { id } } }),
         },
         tx,
       );
-      if (phone !== undefined || phoneCountryCode !== undefined) {
-        await tx.user.update({
-          where: { id: professional.userId },
-          data: {
-            ...(phone !== undefined && { phone }),
-            ...(phoneCountryCode !== undefined && { phoneCountryCode }),
-          },
-        });
-      }
-
-      if (role) {
-        const membership = await this.membershipService.findByUserId(tenantId, professional.userId, tx);
-        if (!membership) {
-          throw new NotFoundException('Un error ha ocurrido al actualizar');
-        }
-        if (membership.role !== MembershipRole.OWNER) {
-          await this.membershipService.update(tenantId, membership?.id, { role }, tx);
-        }
-      }
       if (serviceIds) {
         const servicesData: ServiceAssignmentCreateManyInput[] = serviceIds.map((serviceId) => ({
           professionalId: id,
@@ -124,16 +108,27 @@ export class ProfessionalsService {
         }));
         await this.professionalsRepository.replaceServices(professional.id, servicesData, tx);
       }
-      if (schedule?.workingHours) {
-        await this.workingHoursService.replaceAll(tenantId, professional.id, schedule, tx);
-      }
-    });
+    };
+
+    if (externalTx) {
+      await executeUpdate(externalTx);
+    } else {
+      await this.prisma.$transaction(executeUpdate);
+    }
 
     return { success: true };
   }
 
-  async delete(tenantId: string, id: string) {
-    return this.professionalsRepository.softDelete(tenantId, id);
+  async linkToUser(tenantId: string, id: string, userId: string, tx?: TransactionClient) {
+    return this.professionalsRepository.update(tenantId, id, { user: { connect: { id: userId } } }, tx);
+  }
+
+  async unlinkFromUser(tenantId: string, id: string, userId: string, tx?: TransactionClient) {
+    return this.professionalsRepository.update(tenantId, id, { user: { disconnect: { id: userId } } }, tx);
+  }
+
+  async delete(tenantId: string, id: string, tx?: TransactionClient) {
+    return this.professionalsRepository.softDelete(tenantId, id, tx);
   }
 
   async addService(dto: AddServiceDto) {
@@ -142,5 +137,13 @@ export class ProfessionalsService {
 
   async removeService(dto: RemoveServiceDto) {
     return this.professionalsRepository.removeService(dto.professionalId, dto.serviceId);
+  }
+
+  async findAllPublic(tenantId: string) {
+    return this.professionalsRepository.findAllPublic(tenantId);
+  }
+
+  async findAllPublicByService(serviceId: string) {
+    return this.professionalsRepository.findAllPublicByService(serviceId);
   }
 }

@@ -11,11 +11,15 @@ import {
   ServiceAssignmentCreateManyInput,
 } from 'src/generated/prisma/models';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
+import { BaseRepository } from 'src/common/database/base.repository';
 
 @Injectable()
-export class ProfessionalsRepository {
-  constructor(private readonly prisma: PrismaService) {}
-  async findMany(tenantId: string, query: GetProfessionalsQueryDto) {
+export class ProfessionalsRepository extends BaseRepository {
+  constructor(prisma: PrismaService) {
+    super(prisma);
+  }
+
+  async findMany(tenantId: string, query: GetProfessionalsQueryDto, tx?: TransactionClient) {
     const { serviceId, skip, take } = query;
 
     const where: ProfessionalWhereInput = {
@@ -25,7 +29,7 @@ export class ProfessionalsRepository {
 
     const select: ProfessionalSelect = {
       id: true,
-      displayName: true,
+      name: true,
       avatarUrl: true,
       colorTheme: true,
       bio: true,
@@ -33,7 +37,7 @@ export class ProfessionalsRepository {
       user: {
         select: {
           email: true,
-          phone: true,
+          phoneNumber: true,
           phoneCountryCode: true,
         },
       },
@@ -48,7 +52,7 @@ export class ProfessionalsRepository {
       };
     }
 
-    return this.prisma.professional.findMany({
+    return this.db(tx).professional.findMany({
       where,
       skip,
       take,
@@ -56,12 +60,16 @@ export class ProfessionalsRepository {
     });
   }
 
-  async findById(tenantId: string, id: string) {
-    return this.prisma.professional.findUnique({ where: { id, tenantId, deletedAt: null } });
+  async findById(tenantId: string, id: string, tx?: TransactionClient) {
+    return this.db(tx).professional.findUnique({ where: { id, tenantId, deletedAt: null } });
   }
 
-  async findByIdWithDetails(tenantId: string, id: string) {
-    return this.prisma.professional.findUnique({
+  async findByEmail(tenantId: string, email: string, tx?: TransactionClient) {
+    return this.db(tx).professional.findFirst({ where: { email, tenantId, deletedAt: null } });
+  }
+
+  async findByIdWithDetails(tenantId: string, id: string, tx?: TransactionClient) {
+    return this.db(tx).professional.findUnique({
       where: { id, tenantId, deletedAt: null },
       include: {
         user: {
@@ -77,27 +85,25 @@ export class ProfessionalsRepository {
     });
   }
 
-  async create(data: ProfessionalCreateInput) {
-    return this.prisma.professional.create({ data });
+  async create(data: ProfessionalCreateInput, tx?: TransactionClient) {
+    return this.db(tx).professional.create({ data });
   }
 
   async update(tenantId: string, id: string, data: ProfessionalUpdateInput, tx?: TransactionClient) {
-    const client = tx || this.prisma;
-    return client.professional.update({ where: { id, tenantId }, data });
+    return this.db(tx).professional.update({ where: { id, tenantId }, data });
   }
 
-  async softDelete(tenantId: string, id: string) {
-    return this.prisma.professional.update({ where: { id, tenantId }, data: { deletedAt: new Date() } });
+  async softDelete(tenantId: string, id: string, tx?: TransactionClient) {
+    return this.db(tx).professional.update({ where: { id, tenantId }, data: { deletedAt: new Date() } });
   }
 
   async replaceServices(professionalId: string, data: ServiceAssignmentCreateManyInput[], tx?: TransactionClient) {
-    const client = tx || this.prisma;
-    await client.serviceAssignment.deleteMany({ where: { professionalId } });
-    return await client.serviceAssignment.createMany({ data });
+    this.db(tx).serviceAssignment.deleteMany({ where: { professionalId } });
+    return await this.db(tx).serviceAssignment.createMany({ data });
   }
 
-  async addService(professionalId: string, servicId: string) {
-    return this.prisma.serviceAssignment.create({
+  async addService(professionalId: string, servicId: string, tx?: TransactionClient) {
+    return this.db(tx).serviceAssignment.create({
       data: {
         professional: {
           connect: {
@@ -113,10 +119,34 @@ export class ProfessionalsRepository {
     });
   }
 
-  async removeService(professionalId: string, serviceId: string) {
-    return this.prisma.serviceAssignment.delete({
+  async removeService(professionalId: string, serviceId: string, tx?: TransactionClient) {
+    return this.db(tx).serviceAssignment.delete({
       where: {
         professionalId_serviceId: { professionalId, serviceId },
+      },
+    });
+  }
+
+  async findAllPublic(tenantId: string, tx?: TransactionClient) {
+    return this.db(tx).professional.findMany({
+      where: { deletedAt: null, isActive: true, tenantId },
+      select: {
+        id: true,
+        name: true,
+        avatarUrl: true,
+        bio: true,
+      },
+    });
+  }
+
+  async findAllPublicByService(serviceId: string, tx?: TransactionClient) {
+    return this.db(tx).professional.findMany({
+      where: { deletedAt: null, isActive: true, assignments: { some: { serviceId } } },
+      select: {
+        id: true,
+        name: true,
+        avatarUrl: true,
+        bio: true,
       },
     });
   }

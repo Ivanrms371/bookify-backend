@@ -6,11 +6,10 @@ import { StatsModule } from 'src/common/stats/stats.module';
 import { ProfessionalWorkingHoursService } from './features/working-hours/working-hours.service';
 import { ProfessionalWorkingHoursRepository } from './features/working-hours/working-hours.repository';
 import { ProfessionalsController } from './professionals.controller';
-import { AuthModule } from 'src/auth/auth.module';
-import { MembershipsModule } from '../memberships/memberships.module';
+import { InvitationsModule } from '../invitations/invitations.module';
 
 @Module({
-  imports: [AuthModule, StatsModule, MembershipsModule],
+  imports: [StatsModule],
   controllers: [ProfessionalsController],
   providers: [ProfessionalsService, ProfessionalsRepository, ProfessionalWorkingHoursService, ProfessionalWorkingHoursRepository],
   exports: [ProfessionalsService, StatsModule, ProfessionalWorkingHoursService],

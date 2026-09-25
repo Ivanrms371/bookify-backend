@@ -1,6 +1,6 @@
 import { INT_TO_DAY_OF_WEEK } from 'src/common/constants/day-of-week.constants';
 import { Schedule, WeeklySchedule } from 'src/common/types/schedule.types';
-import { minutesToTime } from 'src/common/utils/time/time.util';
+import { minutesToTime } from 'src/common/utils/time.util';
 
 export class ProfessionalsMapper {
   static toDetailsDto(prof: any) {
@@ -8,11 +8,11 @@ export class ProfessionalsMapper {
       id: prof.id,
       userId: prof.userId,
       avatarUrl: prof.avatarUrl || '',
-      displayName: prof.displayName || '',
+      name: prof.name || '',
       email: prof.user?.email || '',
-      phone: prof.user?.phone || '',
+      phoneNumber: prof.user?.phoneNumber || '',
       phoneCountryCode: prof.user?.phoneCountryCode || '598',
-      role: prof.user?.memberships?.[0]?.role || 'PROFESSIONAL',
+      role: prof.user?.memberships?.[0]?.role || 'STAFF',
       bio: prof.bio || null,
       commissionType: prof.commissionType || 'PERCENTAGE',
       commissionAmount: Number(prof.commissionType === 'PERCENTAGE' ? prof.commissionPercent : prof.commissionFixed) || 0,

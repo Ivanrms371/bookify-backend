@@ -1,13 +1,10 @@
-import { Controller, Get, Query, UseGuards, Req, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Query, Req, Post, Put, Delete, Param, Body } from '@nestjs/common';
 import { ProfessionalsService } from './professionals.service';
-import { AuthenticatedRequest } from 'src/auth/types/express-request.type';
+import { AuthenticatedRequest } from 'src/common/security/types/authenticated-request.type';
 import { GetProfessionalsQueryDto } from './dto/get-professionals-query.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { TenantGuard } from 'src/auth/guards/tenant.guard';
-import { GetTenantId } from 'src/common/decorators/get-tenant-id.decorator';
+import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { UpdateProfessionalDto } from './dto/update-professional.dto';
 
-@UseGuards(JwtAuthGuard, TenantGuard)
 @Controller('professionals')
 export class ProfessionalsController {
   constructor(private readonly professionalsService: ProfessionalsService) {}
@@ -27,8 +24,6 @@ export class ProfessionalsController {
     return this.professionalsService.getByIdWithDetails(tenantId, id);
   }
 
-  @Post('')
-  async create() {}
 
   @Put(':id')
   async update(@GetTenantId() tenantId: string, @Param('id') id: string, @Body() dto: UpdateProfessionalDto) {

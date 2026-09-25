@@ -1,65 +1,35 @@
-import { Body, Controller, Get, Param, Post, UseGuards, Put, Patch, ParseUUIDPipe } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { TenantGuard } from 'src/auth/guards/tenant.guard';
-import { GetTenantId } from 'src/common/decorators/get-tenant-id.decorator';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Req, Res } from '@nestjs/common';
+
+import { CurrentTenant } from 'src/common/security/decorators/current-tenant.decorator';
+
 import { InvitationsService } from './invitations.service';
 import { CreateInviteDto } from './dto/create-invite.dto';
+import { CurrentUser } from 'src/common/security/decorators/current-user.decorator';
+import { AuthenticatedUser } from 'src/common/security/types/authenticated-request.type';
+import { Response } from 'express';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('invitations')
 export class InvitationsController {
   constructor(private readonly invitationsService: InvitationsService) {}
 
-  /**
-   * GET /invitations
-   * Returns all invitations for the current tenant.
-   */
-  @UseGuards(JwtAuthGuard, TenantGuard)
-  @Get()
-  getAll(@GetTenantId() tenantId: string) {
-    return this.invitationsService.getAll(tenantId);
+  @Post()
+  create(@CurrentTenant() tenantId: string, @Body() dto: CreateInviteDto) {
+    return this.invitationsService.create(tenantId, dto);
   }
 
-  /**
-   * POST /invitations/invite
-   * Requires authentication + tenant context.
-   * Creates an invitation record and triggers the email send.
-   */
-  @UseGuards(JwtAuthGuard, TenantGuard)
-  @Post('invite')
-  invite(@GetTenantId() tenantId: string, @Body() dto: CreateInviteDto) {
-    return this.invitationsService.invite(tenantId, dto);
+  @Delete(':id')
+  revoke(@CurrentTenant() tenantId: string, @Param('id', ParseUUIDPipe) invitationId: string) {
+    return this.invitationsService.revoke(tenantId, invitationId);
   }
 
-  /**
-   * PUT /invitations/:id
-   * Requires authentication + tenant context.
-   * Updates an invitation record.
-   */
-  @UseGuards(JwtAuthGuard, TenantGuard)
-  @Put(':id')
-  update(@GetTenantId() tenantId: string, @Param('id', ParseUUIDPipe) id: string, @Body() dto: CreateInviteDto) {
-    return this.invitationsService.update(tenantId, id, dto);
+  @Get('validate/:token')
+  async validate(@Param('token') token: string) {
+    return this.invitationsService.verify(token);
   }
 
-  /**
-   * PATCH /invitations/:id/cancel
-   * Requires authentication + tenant context.
-   * Cancels an invitation.
-   */
-  @UseGuards(JwtAuthGuard, TenantGuard)
-  @Patch(':id/cancel')
-  cancel(@GetTenantId() tenantId: string, @Param('id', ParseUUIDPipe) id: string) {
-    return this.invitationsService.cancel(tenantId, id);
-  }
-
-
-  /**
-   * GET /invitations/accept/:token
-   * Public endpoint — the invited professional clicks the link in their email.
-   * Validates the token and marks the invitation as accepted.
-   */
-  @Get('accept/:token')
-  accept(@Param('token') token: string) {
-    return this.invitationsService.accept(token);
+  @Post('accept/:token')
+  accept(@Param('token') token: string, @CurrentUser() currentUser: AuthenticatedUser) {
+    return this.invitationsService.accept(token, currentUser.id, currentUser.email);
   }
 }

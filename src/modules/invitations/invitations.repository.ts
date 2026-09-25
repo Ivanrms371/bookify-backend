@@ -1,64 +1,121 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import type { MembershipRole } from 'src/generated/prisma/enums';
-import { InvitationStatus } from 'src/generated/prisma/enums';
 import { InvitationCreateInput } from 'src/generated/prisma/models';
+import { BaseRepository } from 'src/common/database/base.repository';
+import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 
 @Injectable()
-export class InvitationsRepository {
-  constructor(private readonly prisma: PrismaService) {}
-
-  async create(data: InvitationCreateInput) {
-    return this.prisma.invitation.create({ data });
+export class InvitationsRepository extends BaseRepository {
+  constructor(prisma: PrismaService) {
+    super(prisma);
   }
 
-  async findByToken(token: string) {
-    return this.prisma.invitation.findUnique({ where: { token, status: InvitationStatus.PENDING } });
+  async findByEmail(tenantId: string, email: string, tx?: TransactionClient) {
+    return this.db(tx).invitation.findFirst({
+      where: {
+        tenantId,
+        email,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
-  async findById(id: string) {
-    return this.prisma.invitation.findUnique({ where: { id, status: InvitationStatus.PENDING } });
+  async findById(tenantId: string, id: string, tx?: TransactionClient) {
+    return this.db(tx).invitation.findUnique({
+      where: {
+        id,
+        tenantId,
+      },
+    });
   }
 
-  async update(id: string, data: any) {
-    return this.prisma.invitation.update({
+  async findByToken(token: string, tx?: TransactionClient) {
+    return this.db(tx).invitation.findUnique({
+      where: { token },
+      include: {
+        tenant: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+  }
+
+  async create(data: InvitationCreateInput, tx?: TransactionClient) {
+    return this.db(tx).invitation.create({
+      data,
+    });
+  }
+
+  async revoke(tenantId: string, id: string, tx?: TransactionClient) {
+    return this.db(tx).invitation.update({
+      where: {
+        id,
+        tenantId,
+      },
+      data: {
+        revokedAt: new Date(),
+      },
+    });
+  }
+
+  async accept(id: string, tx?: TransactionClient) {
+    return this.db(tx).invitation.update({
+      where: { id },
+      data: {
+        acceptedAt: new Date(),
+      },
+    });
+  }
+
+  async revokeByProfessionalId(tenantId: string, professionalId: string, tx?: TransactionClient) {
+    return this.db(tx).invitation.updateMany({
+      where: {
+        tenantId,
+        professionalId,
+        acceptedAt: null,
+        revokedAt: null,
+      },
+      data: {
+        revokedAt: new Date(),
+      },
+    });
+  }
+
+  async findPendingByProfessionalId(tenantId: string, professionalId: string, tx?: TransactionClient) {
+    return this.db(tx).invitation.findFirst({
+      where: {
+        tenantId,
+        professionalId,
+        acceptedAt: null,
+        revokedAt: null,
+        expiresAt: { gt: new Date() },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async update(id: string, data: any, tx?: TransactionClient) {
+    return this.db(tx).invitation.update({
       where: { id },
       data,
     });
   }
 
-  async updateStatus(token: string, status: InvitationStatus) {
-    return this.prisma.invitation.update({
-      where: { token },
-      data: { status },
-    });
-  }
-
-  async findByEmail(tenantId: string, email: string) {
-    return this.prisma.invitation.findFirst({
-      where: { tenantId, email, status: { in: [InvitationStatus.PENDING, InvitationStatus.ACCEPTED] } },
+  async findPending(tenantId: string, tx?: TransactionClient) {
+    return this.db(tx).invitation.findMany({
+      where: {
+        tenantId,
+        acceptedAt: null,
+        revokedAt: null,
+      },
       orderBy: { createdAt: 'desc' },
-    });
-  }
-
-  async findMany(tenantId: string) {
-    return this.prisma.invitation.findMany({
-      where: { tenantId, status: InvitationStatus.PENDING },
-      orderBy: { createdAt: 'desc' },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        phoneCountryCode: true,
-        phone: true,
-        role: true,
-        status: true,
-        commissionType: true,
-        commissionAmount: true,
-        serviceIds: true,
-        schedule: true,
-        createdAt: true,
-        expiresAt: true,
+      include: {
+        professional: {
+          select: { name: true },
+        },
       },
     });
   }

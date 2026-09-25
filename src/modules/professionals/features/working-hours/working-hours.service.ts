@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ProfessionalWorkingHoursRepository } from './working-hours.repository';
 import { dayOfWeekToInt } from 'src/common/utils/day-of-week.util';
-import { timeToMinutes } from 'src/common/utils/time/time.util';
+import { timeToMinutes } from 'src/common/utils/time.util';
 import { validateOverlaps } from 'src/common/utils/validate-overlap';
 import { CreateWorkingHoursBulkDto } from './dto/create-working-hour.dto';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
