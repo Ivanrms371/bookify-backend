@@ -110,6 +110,8 @@ export class ProfileMapper {
           avatarUrl: professional.avatarUrl,
           colorTheme: professional.colorTheme,
           slotIntervalMinutes: professional.slotIntervalMinutes,
+          maxAdvancedDays: professional.maxAdvancedDays,
+          minAdvancedMinutes: professional.minAdvancedMinutes,
         } : null,
       }
     };
