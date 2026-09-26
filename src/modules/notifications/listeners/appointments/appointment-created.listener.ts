@@ -1,38 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { AppointmentCancelledEvent } from 'src/modules/appointments/domain/events/appointment-cancelled.event';
 import { NotificationsService } from '../../application/services/notifications.service';
 import { RecipientType } from 'src/generated/prisma/enums';
 import { AppointmentCancelledVariables } from '../../application/templates/appointment-cancelled/appointment-cancelled.type';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { AppointmentCreatedEvent } from 'src/modules/appointments/domain/events/appointment-created.event';
 
 @Injectable()
 export class AppointmentCancelledListener {
   constructor(private readonly notificationsService: NotificationsService) {}
 
-  @OnEvent('appointment.cancelled', { async: true })
-  async handle(event: AppointmentCancelledEvent) {
+  @OnEvent('appointment.created', { async: true })
+  async handle(event: AppointmentCreatedEvent) {
     const payload = {
       appointmentId: event.appointmentId,
       professionalName: event.professionalName,
+      serviceName: event.serviceName,
       customerName: event.customerName,
-      date: format(event.startsAt, "dd 'de' MMMM 'de' yyyy", { locale: es }),
-      time: format(event.startsAt, 'HH:mm'),
-      cancelledBy: event.cancelledBy,
-      cancelledByName: event.cancelledByName,
-      cancellationReason: event.cancellationReason,
+      cancelUrl: event.cancelUrl,
+      rescheduleUrl: event.rescheduleUrl,
+      startAppointmentDate: event.startAppointmentDate,
     };
 
-    if (event.cancelledBy === RecipientType.CUSTOMER) {
-      // Professional xxx your customer has cancelled your appointment.
-      // In this case we send the notification to the professional
+    if (event.createdBy === RecipientType.CUSTOMER) {
+      // Schedule notifications
       await this.notificationsService.create({
         tenantId: event.tenantId,
         payload,
         recipientId: event.userId,
         recipientType: RecipientType.USER,
-        type: 'appointment.cancelled',
+        type: 'appointment.created',
       });
     } else {
       // Customer xxx your professional has cancelled your appointent.
@@ -42,7 +40,7 @@ export class AppointmentCancelledListener {
         payload,
         recipientId: event.customerId,
         recipientType: RecipientType.CUSTOMER,
-        type: 'appointment.cancelled',
+        type: 'appointment.created',
       });
     }
   }

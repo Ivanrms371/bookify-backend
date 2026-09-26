@@ -34,6 +34,7 @@ export class NotificationsService {
     recipientId: string;
     recipientType: RecipientType;
     payload: Record<string, any>;
+    referenceId?: string;
     executeAt?: Date;
   }) {
     const notification = await this.notificationRepository.create({
@@ -41,6 +42,7 @@ export class NotificationsService {
       recipientId: params.recipientId,
       recipientType: params.recipientType,
       payload: params.payload,
+      referenceId: params.referenceId,
       tenantId: params.tenantId,
     });
 
@@ -60,6 +62,11 @@ export class NotificationsService {
 
     return notification;
   }
+  
+  async cancelScheduledDeliveries(referenceId: string) {
+    await this.deliveryRepository.cancelByReference(referenceId);
+  }
+
   async sendDirectlyEmail(params: { to: string; type: string; payload: Record<string, any> }) {
     const { to, type, payload } = params;
     try {

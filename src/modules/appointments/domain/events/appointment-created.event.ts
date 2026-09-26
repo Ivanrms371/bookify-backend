@@ -1,3 +1,5 @@
+import { RecipientType } from 'src/generated/prisma/enums';
+
 export interface AppointmentCreatedEvent {
   tenantId: string;
   userId: string;
@@ -12,5 +14,5 @@ export interface AppointmentCreatedEvent {
   startAppointmentDate: Date;
   endAppointmentDate: Date;
   appointmentId: string;
-  createdBy: 'EMPLOYEE' | 'CUSTOMER';
+  createdBy: RecipientType;
 }

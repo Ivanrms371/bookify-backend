@@ -58,10 +58,26 @@ export class NotificationDeliveryRepository {
     return this.prisma.notificationDelivery.createMany({ data });
   }
 
+  
+  async cancelByReference(referenceId: string) {
+    return this.prisma.notificationDelivery.updateMany({
+      where: {
+        status: 'PENDING',
+        notification: {
+          referenceId: referenceId
+        }
+      },
+      data: {
+        status: 'CANCELLED'
+      }
+    });
+  }
+
+
   async markAsSent(id: string, referenceId: string) {
     return this.prisma.notificationDelivery.update({
       where: { id },
-      data: { status: 'SENT', sentAt: new Date(), ...(referenceId && { referenceId }) },
+      data: { status: 'SENT', sentAt: new Date(), ...(referenceId && { externalReferenceId: referenceId }) },
     });
   }
 

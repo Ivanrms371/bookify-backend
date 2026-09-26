@@ -8,24 +8,24 @@ datasource db {
 }
 
 model User {
-  id                  String              @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  name                String
-  email               String              @unique
-  emailVerifiedAt     DateTime?           @map("email_verified_at")
-  phoneNumber               String?
-  phoneCountryCode String?
-  phoneVerifiedAt     DateTime?           @map("phone_verified_at")
-  password            String?
-  avatarUrl           String?             @map("avatar_url")
-  googleId            String?             @unique @map("google_id")
-  lastLoginAt         DateTime?           @map("last_login_at")
-  tokenVersion        Int                 @default(0) @map("token_version")
-  createdAt           DateTime            @default(now()) @map("created_at")
-  updatedAt           DateTime            @updatedAt @map("updated_at")
-  inAppNotifications  InAppNotification[]
-  memberships         Membership[]
-  professional        Professional?
-  sessions            Session[]
+  id                 String              @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  name               String
+  email              String              @unique
+  emailVerifiedAt    DateTime?           @map("email_verified_at")
+  phoneNumber        String?
+  phoneCountryCode   String?
+  phoneVerifiedAt    DateTime?           @map("phone_verified_at")
+  password           String?
+  avatarUrl          String?             @map("avatar_url")
+  googleId           String?             @unique @map("google_id")
+  lastLoginAt        DateTime?           @map("last_login_at")
+  tokenVersion       Int                 @default(0) @map("token_version")
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  inAppNotifications InAppNotification[]
+  memberships        Membership[]
+  professional       Professional?
+  sessions           Session[]
 
   @@unique([phoneCountryCode, phoneNumber])
   @@index([email])
@@ -34,14 +34,14 @@ model User {
 }
 
 model Membership {
-  id        String           @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  userId    String           @map("user_id") @db.Uuid
-  tenantId  String           @map("tenant_id") @db.Uuid
-  role      MembershipRole   
-  isActive  Boolean @default(true) @map("is_active")
+  id       String         @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  userId   String         @map("user_id") @db.Uuid
+  tenantId String         @map("tenant_id") @db.Uuid
+  role     MembershipRole
+  isActive Boolean        @default(true) @map("is_active")
 
-  tenant    Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, tenantId])
   @@index([tenantId])
@@ -49,18 +49,18 @@ model Membership {
 }
 
 model Invitation {
-  id             String @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id String @id @default(dbgenerated("uuidv7()")) @db.Uuid
 
-  tenantId       String @map("tenant_id") @db.Uuid
+  tenantId       String  @map("tenant_id") @db.Uuid
   professionalId String? @map("professional_id") @db.Uuid
 
-  email             String
-  role              MembershipRole @default(STAFF)
+  email String
+  role  MembershipRole @default(STAFF)
 
-  token       String   @unique
-  expiresAt   DateTime @map("expires_at")
-  acceptedAt  DateTime? @map("accepted_at")
-  revokedAt   DateTime? @map("revoked_at")
+  token      String    @unique
+  expiresAt  DateTime  @map("expires_at")
+  acceptedAt DateTime? @map("accepted_at")
+  revokedAt  DateTime? @map("revoked_at")
 
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -84,7 +84,7 @@ model Session {
   createdAt  DateTime  @default(now()) @map("created_at")
   updatedAt  DateTime  @updatedAt @map("updated_at")
 
-  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, deviceId])
   @@index([revokedAt])
@@ -94,83 +94,82 @@ model Session {
 }
 
 model Verification {
-  id            String         @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenantId      String?        @db.Uuid
+  id       String  @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenantId String? @db.Uuid
 
-  type          VerificationType
+  type VerificationType
 
-  recipientId   String         @map("recipient_id") @db.Uuid
-  recipientType RecipientType   @map("recipient_type")
+  recipientId   String        @map("recipient_id") @db.Uuid
+  recipientType RecipientType @map("recipient_type")
 
-  tokenHash     String?        @unique @map("token_hash")
-  codeHash      String?        @map("code_hash")
+  tokenHash String? @unique @map("token_hash")
+  codeHash  String? @map("code_hash")
 
-  attempts      Int            @default(0)
-  maxAttempts   Int            @default(3) @map("max_attempts")
+  attempts    Int @default(0)
+  maxAttempts Int @default(3) @map("max_attempts")
 
-  expiresAt     DateTime       @map("expires_at")
-  verifiedAt    DateTime?      @map("verified_at")
-  lockedAt      DateTime?      @map("locked_at")
+  expiresAt  DateTime  @map("expires_at")
+  verifiedAt DateTime? @map("verified_at")
+  lockedAt   DateTime? @map("locked_at")
 
-  createdAt     DateTime       @default(now()) @map("created_at")
+  createdAt DateTime @default(now()) @map("created_at")
 
-  sentCount     Int            @default(0) @map("sent_count")
+  sentCount Int @default(0) @map("sent_count")
 
-  tenant        Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@index([recipientId, recipientType, type])
   @@index([tokenHash])
-
   @@map("verifications")
 }
 
 model Tenant {
-  id                        String                      @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  slug                      String?                     @unique
-  name                      String?
-  type                      TenantType?
-  description               String?
-  workspaceType             WorkspaceType?              @map("workspace_type")
-  colorTheme                String?                     @map("color_theme")
-  isPublic                  Boolean                     @default(false) @map("is_public")
-  isActive                  Boolean                     @default(false) @map("is_active")
-  onboardingStatus          OnboardingStatus            @default(WORKSPACE_TYPE) @map("onboarding_status")
-  phoneNumber                     String?
-  addressLine1              String?                     @map("address_line_1")
-  addressLine2              String?                     @map("address_line_2")
-  city                      String?
-  province                  String?
-  country                   String?                     @default("UY")
-  logoUrl                   String?                     @map("logo_url")
-  logoPublicId              String?                     @map("logo_public_id")
-  coverUrl                  String?                     @map("cover_url")
-  coverPublicId             String?                     @map("cover_public_id")
-  
-  createdAt                 DateTime                    @default(now()) @map("created_at")
-  updatedAt                 DateTime                    @updatedAt @map("updated_at")
-  deletedAt                 DateTime?                   @map("deleted_at")
+  id               String           @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  slug             String?          @unique
+  name             String?
+  type             TenantType?
+  description      String?
+  workspaceType    WorkspaceType?   @map("workspace_type")
+  colorTheme       String?          @map("color_theme")
+  isPublic         Boolean          @default(false) @map("is_public")
+  isActive         Boolean          @default(false) @map("is_active")
+  onboardingStatus OnboardingStatus @default(WORKSPACE_TYPE) @map("onboarding_status")
+  phoneNumber      String?
+  addressLine1     String?          @map("address_line_1")
+  addressLine2     String?          @map("address_line_2")
+  city             String?
+  province         String?
+  country          String?          @default("UY")
+  logoUrl          String?          @map("logo_url")
+  logoPublicId     String?          @map("logo_public_id")
+  coverUrl         String?          @map("cover_url")
+  coverPublicId    String?          @map("cover_public_id")
 
-  verifications             Verification[]
-  appointments              Appointment[]
-  customers                 Customer[]
-  inAppNotifications        InAppNotification[]
-  invitations               Invitation[]
-  memberships               Membership[]
-  payments                  Payment[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  verifications      Verification[]
+  appointments       Appointment[]
+  customers          Customer[]
+  inAppNotifications InAppNotification[]
+  invitations        Invitation[]
+  memberships        Membership[]
+  payments           Payment[]
 
   professionals             Professional[]
   professionalLifetimeStats ProfessionalLifetimeStats[]
   professionalDailyStats    ProfessionalDailyStats[]
   professionalWorkingHours  ProfessionalWorkingHours[]
 
-  scheduleExceptions        ScheduleException[]
-  services                  Service[]
-  subscription              Subscription?
-  dailyStats                TenantDailyStats[]
-  lifetimeStats             TenantLifetimeStats?
-  settings                  TenantSettings?
-  usage                     TenantUsage[]
-  tenantWorkingHours        TenantWorkingHours[]
+  scheduleExceptions ScheduleException[]
+  services           Service[]
+  subscription       Subscription?
+  dailyStats         TenantDailyStats[]
+  lifetimeStats      TenantLifetimeStats?
+  settings           TenantSettings?
+  usage              TenantUsage[]
+  tenantWorkingHours TenantWorkingHours[]
 
   @@map("tenants")
 }
@@ -231,8 +230,8 @@ model ServiceAssignment {
 }
 
 model Professional {
-  id       String @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenantId String @map("tenant_id") @db.Uuid
+  id       String  @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenantId String  @map("tenant_id") @db.Uuid
   userId   String? @map("user_id") @db.Uuid
 
   // Scheduling
@@ -241,18 +240,18 @@ model Professional {
   minAdvancedMinutes  Int @default(30) @map("min_advanced_minutes")
 
   // Profile
-  name        String   
-  email       String
-  phoneCountryCode String @map("phone_country_code")
-  phoneNumber String @map("phone_number")
-  profession String?
-  bio         String?
-  avatarUrl   String? @map("avatar_url")
-  avatarPublicId String? @map("avatar_public_id")
-  colorTheme  String? @map("color_theme")
+  name             String
+  email            String
+  phoneCountryCode String  @map("phone_country_code")
+  phoneNumber      String  @map("phone_number")
+  profession       String?
+  bio              String?
+  avatarUrl        String? @map("avatar_url")
+  avatarPublicId   String? @map("avatar_public_id")
+  colorTheme       String? @map("color_theme")
 
   // Display
-  isActive     Boolean @default(true) @map("is_active")
+  isActive Boolean @default(true) @map("is_active")
 
   // Timestamps
   createdAt DateTime  @default(now()) @map("created_at")
@@ -260,9 +259,9 @@ model Professional {
   deletedAt DateTime? @map("deleted_at")
 
   // Relations
-  tenant       Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  user         User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  invitations   Invitation[]
+  tenant      Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user        User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invitations Invitation[]
 
   appointments Appointment[]
   workingHours ProfessionalWorkingHours[]
@@ -345,33 +344,33 @@ model ScheduleExceptionBlock {
 }
 
 model Customer {
-  id                    String        @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenantId              String        @map("tenant_id") @db.Uuid
+  id       String @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenantId String @map("tenant_id") @db.Uuid
 
-  name                  String
-  phoneNumber                 String
-  phoneCountryCode      String        @default("598") @map("phone_country_code")
-  phoneVerifiedAt       DateTime?     @map("phone_verified_at")
-  email                 String?
-  emailVerifiedAt       DateTime?     @map("email_verified_at")
-  notes String?
+  name             String
+  phoneNumber      String
+  phoneCountryCode String    @default("598") @map("phone_country_code")
+  phoneVerifiedAt  DateTime? @map("phone_verified_at")
+  email            String?
+  emailVerifiedAt  DateTime? @map("email_verified_at")
+  notes            String?
 
-  firstAppointmentAt    DateTime?     @map("first_appointment_at")
-  lastAppointmentAt     DateTime?     @map("last_appointment_at")
-  totalAppointments     Int           @default(0) @map("total_appointments")
-  completedAppointments Int           @default(0) @map("completed_appointments")
-  cancelledAppointments Int           @default(0) @map("cancelled_appointments")
-  noShowCount           Int           @default(0) @map("no_show_count")
-  totalSpent            Decimal       @default(0) @map("total_spent")
+  firstAppointmentAt    DateTime? @map("first_appointment_at")
+  lastAppointmentAt     DateTime? @map("last_appointment_at")
+  totalAppointments     Int       @default(0) @map("total_appointments")
+  completedAppointments Int       @default(0) @map("completed_appointments")
+  cancelledAppointments Int       @default(0) @map("cancelled_appointments")
+  noShowCount           Int       @default(0) @map("no_show_count")
+  totalSpent            Decimal   @default(0) @map("total_spent")
 
-  blockedReason         String?       @map("blocked_reason")
-  blockedAt             DateTime?     @map("blocked_at")
+  blockedReason String?   @map("blocked_reason")
+  blockedAt     DateTime? @map("blocked_at")
 
-  createdAt             DateTime      @default(now()) @map("created_at")
-  updatedAt             DateTime      @updatedAt @map("updated_at")
-  deletedAt             DateTime?     @map("deleted_at")
-  appointments          Appointment[]
-  tenant                Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  deletedAt    DateTime?     @map("deleted_at")
+  appointments Appointment[]
+  tenant       Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@unique([tenantId, phoneCountryCode, phoneNumber])
   @@index([tenantId])
@@ -506,6 +505,7 @@ model Notification {
   recipientType RecipientType          @map("recipient_type")
   type          String
   payload       Json
+  referenceId   String?                @map("reference_id")
   createdAt     DateTime               @default(now()) @map("created_at")
   updatedAt     DateTime               @updatedAt @map("updated_at")
   inApp         InAppNotification?
@@ -513,21 +513,22 @@ model Notification {
 
   @@index([recipientId])
   @@index([tenantId])
+  @@index([referenceId])
   @@map("notifications")
 }
 
 model NotificationDelivery {
-  id             String              @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  notificationId String              @map("notification_id") @db.Uuid
-  referenceId    String?             @map("reference_id")
-  channel        NotificationChannel
-  status         NotificationStatus  @default(PENDING)
-  errorMessage   String?             @map("error_message")
-  sentAt         DateTime?           @map("sent_at")
-  runAt          DateTime?           @map("run_at")
-  retryCount     Int                 @default(0) @map("retry_count")
-  notification   Notification        @relation(fields: [notificationId], references: [id])
-  logs           NotificationLog[]
+  id                  String              @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  notificationId      String              @map("notification_id") @db.Uuid
+  externalReferenceId String?             @map("external_reference_id")
+  channel             NotificationChannel
+  status              NotificationStatus  @default(PENDING)
+  errorMessage        String?             @map("error_message")
+  sentAt              DateTime?           @map("sent_at")
+  runAt               DateTime?           @map("run_at")
+  retryCount          Int                 @default(0) @map("retry_count")
+  notification        Notification        @relation(fields: [notificationId], references: [id])
+  logs                NotificationLog[]
 
   @@unique([notificationId, channel])
   @@index([notificationId])
@@ -587,37 +588,37 @@ model TenantUsage {
 }
 
 model Subscription {
-  id                  String             @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenantId            String             @unique @map("tenant_id") @db.Uuid
-  planId              String             @map("plan_id")
+  id       String @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenantId String @unique @map("tenant_id") @db.Uuid
+  planId   String @map("plan_id")
 
-  status              SubscriptionStatus @default(TRIAL)
-  amount              Decimal?           @default(0) @db.Decimal(10, 2)
-  currency            Currency           @default(USD)
+  status   SubscriptionStatus @default(TRIAL)
+  amount   Decimal?           @default(0) @db.Decimal(10, 2)
+  currency Currency           @default(USD)
 
-  billingCycle        BillingCycle?      @map("billing_cycle")
-  currentPeriodStart  DateTime?          @map("current_period_start")
-  currentPeriodEnd    DateTime?          @map("current_period_end")
-  
-  trialStartedAt      DateTime?          @default(now()) @map("trial_started_at")
-  trialEndsAt         DateTime?          @map("trial_ends_at")
-  
-  paymentMethod       String?            @map("payment_method")
-  paymentProvider     String?            @default("LEMON_SQUEEZY") @map("payment_provider")
-  
-  lemonCustomerId     String?            @map("lemon_customer_id")
-  lemonSubscriptionId String?            @unique @map("lemon_subscription_id")
+  billingCycle       BillingCycle? @map("billing_cycle")
+  currentPeriodStart DateTime?     @map("current_period_start")
+  currentPeriodEnd   DateTime?     @map("current_period_end")
 
-  cancelledAt         DateTime?          @map("cancelled_at")
-  endsAt              DateTime?          @map("ends_at")
-  cancelReason        String?            @map("cancel_reason")
+  trialStartedAt DateTime? @default(now()) @map("trial_started_at")
+  trialEndsAt    DateTime? @map("trial_ends_at")
 
-  createdAt           DateTime           @default(now()) @map("created_at")
-  updatedAt           DateTime           @updatedAt @map("updated_at")
-  deletedAt           DateTime?          @map("deleted_at")
+  paymentMethod   String? @map("payment_method")
+  paymentProvider String? @default("LEMON_SQUEEZY") @map("payment_provider")
 
-  payments            Payment[]
-  tenant              Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  lemonCustomerId     String? @map("lemon_customer_id")
+  lemonSubscriptionId String? @unique @map("lemon_subscription_id")
+
+  cancelledAt  DateTime? @map("cancelled_at")
+  endsAt       DateTime? @map("ends_at")
+  cancelReason String?   @map("cancel_reason")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  payments Payment[]
+  tenant   Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@index([tenantId, status])
   @@index([status, currentPeriodEnd])

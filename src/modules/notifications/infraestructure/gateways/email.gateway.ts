@@ -67,7 +67,7 @@ export class EmailGateway {
 
     switch (recipientType) {
       case RecipientType.CUSTOMER: {
-        const customer = await this.customersService.findById('', recipientId);
+        const customer = await this.customersService.findByIdGlobal(recipientId);
         if (!customer?.email) {
           throw new Error('Customer has no email');
         }

@@ -18,11 +18,11 @@ export class CustomersService {
   }
 
   async findById(tenantId: string, id: string) {
-    const customer = await this.customersRepository.findById(tenantId, id);
-    if (!customer) {
-      throw new NotFoundException('Cliente no encontrado');
-    }
-    return customer;
+    return this.customersRepository.findById(tenantId, id);
+  }
+
+  async findByIdGlobal(id: string) {
+    return this.customersRepository.findByIdGlobal(id);
   }
 
   async findByPhoneOrCreate(tenantId: string, data: CreateCustomerDto, tx?: TransactionClient) {
