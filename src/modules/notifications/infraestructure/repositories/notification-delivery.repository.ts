@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { NotificationChannel } from 'src/generated/prisma/enums';
+import { NotificationChannel, NotificationStatus } from 'src/generated/prisma/enums';
 import { NotificationDeliveryCreateInput, NotificationDeliveryCreateManyInput } from 'src/generated/prisma/models';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 
@@ -10,7 +10,7 @@ export class NotificationDeliveryRepository {
   async findPendingToProcess(limit: number) {
     return this.prisma.notificationDelivery.findMany({
       where: {
-        status: 'PENDING',
+        status: NotificationStatus.PENDING,
         runAt: {
           lte: new Date(),
         },
@@ -32,7 +32,7 @@ export class NotificationDeliveryRepository {
     return this.prisma.notificationDelivery.findMany({
       where: {
         notificationId,
-        status: 'PENDING',
+        status: NotificationStatus.PENDING,
         OR: [{ runAt: null }, { runAt: { lte: new Date() } }],
       },
       include: {
@@ -62,13 +62,13 @@ export class NotificationDeliveryRepository {
   async cancelByReference(referenceId: string) {
     return this.prisma.notificationDelivery.updateMany({
       where: {
-        status: 'PENDING',
+        status: NotificationStatus.PENDING,
         notification: {
           referenceId: referenceId
         }
       },
       data: {
-        status: 'CANCELLED'
+        status: NotificationStatus.CANCELLED
       }
     });
   }
