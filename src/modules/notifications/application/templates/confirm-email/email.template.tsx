@@ -4,7 +4,7 @@ import { Layout } from '../_components/Layout';
 import { Button } from '../_components/Button';
 import { ConfirmEmailVariables } from './confirm-email.type';
 
-export const VerificationEmailEmailTemplate = ({ confirmLink, name = 'Iván Rodríguez' }: ConfirmEmailVariables) => {
+export const VerificationEmailEmailTemplate = ({ confirmLink, name }: ConfirmEmailVariables) => {
   return (
     <Layout previewText={`Confirma tu correo electrónico en Turnify`}>
       <Section>

@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { VerificationsService } from './core/verifications.service';
 import { CreateVerificationDto } from './domain/dto/create-verification.dto';
+import { ResendVerificationDto } from './domain/dto/resend-verification.dto';
 import { VerifyOtpDto } from './domain/dto/verify-otp.dto';
 import { VerifyTokenDto } from './domain/dto/verify-token.dto';
 import { Public } from 'src/common/security/decorators/public.decorator';
@@ -14,6 +15,11 @@ export class VerificationsController {
   @Post('request')
   async requestVerification(@Body() dto: CreateVerificationDto) {
     return this.verificationsService.requestVerification(dto);
+  }
+
+  @Post('resend')
+  async resend(@Body() dto: ResendVerificationDto) {
+    return this.verificationsService.resendByEmail(dto);
   }
 
   @Post('verify')

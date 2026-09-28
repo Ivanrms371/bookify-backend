@@ -11,7 +11,8 @@ import {
   VERIFICATION_MAX_ATTEMPTS,
 } from '../domain/verification-rules';
 import { VerifyTokenDto } from '../domain/dto/verify-token.dto';
-import { VerificationType } from 'src/generated/prisma/enums';
+import { ResendVerificationDto } from '../domain/dto/resend-verification.dto';
+import { RecipientType, VerificationType } from 'src/generated/prisma/enums';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 import { CustomersService } from 'src/modules/customers/customers.service';
 import { UsersService } from 'src/modules/users/users.service';
@@ -85,6 +86,30 @@ export class VerificationsService {
       default:
         return false;
     }
+  }
+
+  async resendByEmail(dto: ResendVerificationDto) {
+    const { type, email } = dto;
+
+    const isUserType =
+      type === VerificationType.USER_EMAIL_VERIFICATION ||
+      type === VerificationType.USER_PHONE_VERIFICATION ||
+      type === VerificationType.PASSWORD_RESET;
+
+    if (!isUserType) {
+      throw new BadRequestException('Este tipo de verificación no soporta reenvío por email.');
+    }
+
+    const user = await this.usersService.findByEmail(email);
+    if (!user) {
+      throw new NotFoundException('No existe una cuenta asociada a este email.');
+    }
+
+    return this.requestVerification({
+      type,
+      recipientId: user.id,
+      recipientType: RecipientType.USER,
+    });
   }
 
   async requestVerification(dto: CreateVerificationDto) {

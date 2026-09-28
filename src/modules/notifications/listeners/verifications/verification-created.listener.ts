@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { NotificationsService } from '../../application/services/notifications.service';
 import { RecipientType, VerificationType } from 'src/generated/prisma/enums';
+import { UsersService } from 'src/modules/users/users.service';
 
 export interface VerificationCreatedEvent {
   verificationId: string;
@@ -23,6 +24,7 @@ export class VerificationCreatedListener {
   constructor(
     private readonly notificationsService: NotificationsService,
     private readonly configService: ConfigService,
+    private readonly usersService: UsersService,
   ) {
     this.frontendUrl = this.configService.get<string>('FRONTEND_URL', 'http://localhost:5173');
   }
@@ -30,7 +32,13 @@ export class VerificationCreatedListener {
   @OnEvent('verification.created', { async: true })
   async handle(event: VerificationCreatedEvent) {
     if (event.token) {
-      const magicLink = `${this.frontendUrl}/verify?token=${event.token}&type=${event.type}`;
+      const confirmLink = `${this.frontendUrl}/auth/verify?token=${event.token}&type=${event.type}`;
+
+      let name = '';
+      if (event.recipientType === RecipientType.USER) {
+        const user = await this.usersService.findById(event.recipientId);
+        name = user?.name ?? '';
+      }
 
       await this.notificationsService.create({
         type: 'verification.email.created',
@@ -38,8 +46,8 @@ export class VerificationCreatedListener {
         recipientType: event.recipientType,
         tenantId: event.tenantId,
         payload: {
-          magicLink,
-          recipientId: event.recipientId,
+          name,
+          confirmLink,
         },
       });
 

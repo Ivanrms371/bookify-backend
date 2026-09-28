@@ -29,12 +29,12 @@ export class TenantOnboardingService {
     return OnboardingMapper.toResponse(raw);
   }
 
-  async initalize(ownerId: string, ownerName: string) {
-    const tenant = await this.tenantOnboardingRepository.findByOwnerId(ownerId);
-    if (tenant) {
-      return tenant;
+  async initalize(ownerId: string) {
+    const existing = await this.tenantOnboardingRepository.findByOwnerId(ownerId);
+    if (!existing) {
+      await this.tenantOnboardingRepository.createInitialTenant(ownerId);
     }
-    return this.tenantOnboardingRepository.createInitialTenant(ownerId, ownerName);
+    return this.getStatus(ownerId);
   }
 
   async updateWorkspace(userId: string, dto: WorkspaceStepDto) {
