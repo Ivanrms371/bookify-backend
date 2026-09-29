@@ -62,9 +62,9 @@ export class NotificationsService {
 
     return notification;
   }
-  
-  async cancelScheduledDeliveries(referenceId: string) {
-    await this.deliveryRepository.cancelByReference(referenceId);
+
+  async cancelScheduledDeliveries(referenceId: string, type: string) {
+    await this.deliveryRepository.cancelByReferenceAndType(referenceId, type);
   }
 
   async sendDirectlyEmail(params: { to: string; type: string; payload: Record<string, any> }) {

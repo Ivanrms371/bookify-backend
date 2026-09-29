@@ -1,5 +1,7 @@
 import { Request } from 'express';
 import { MembershipRole } from 'src/generated/prisma/enums';
+import { Role } from '../constants/role-permissions.constants';
+import { Permission } from '../constants/permissions.constant';
 
 export type AuthenticatedRequest = Request & {
   user: AuthenticatedUser;
@@ -17,5 +19,5 @@ export type TenantContext = {
   tenantId: string | null;
   tenantSlug: string | null;
   role: MembershipRole;
-  permissions: string[];
+  permissions: readonly Permission[];
 };

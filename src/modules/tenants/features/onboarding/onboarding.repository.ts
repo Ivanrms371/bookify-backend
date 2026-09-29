@@ -54,22 +54,13 @@ export class TenantOnboardingRepository extends BaseRepository {
     });
   }
 
-  async createInitialTenant(userId: string, ownerName: string): Promise<Tenant> {
+  async createInitialTenant(userId: string): Promise<Tenant> {
     return this.prisma.tenant.create({
       data: {
         memberships: {
           create: {
             userId,
             role: MembershipRole.OWNER,
-          },
-        },
-        professionals: {
-          create: {
-            name: ownerName,
-            email: '',
-            phoneCountryCode: '',
-            phoneNumber: '',
-            user: { connect: { id: userId } },
           },
         },
         onboardingStatus: OnboardingStatus.WORKSPACE_TYPE,

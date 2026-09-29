@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Patch, Post, Req } from '@nestjs/common';
 import { TenantOnboardingService } from './onboarding.service';
-import { AuthenticatedRequest } from 'src/common/security/types/authenticated-request.type';
+import { AuthenticatedRequest, AuthenticatedUser } from 'src/common/security/types/authenticated-request.type';
 import { WorkspaceStepDto } from './dto/workspace-step.dto';
 import { BusinessStepDto } from './dto/business-step.dto';
 import { ScheduleStepDto } from './dto/schedule-step.dto';
@@ -8,6 +8,7 @@ import { ServicesStepDto } from './dto/services-step.dto';
 import { CustomizeStepDto } from './dto/customize-step.dto';
 import { OptionalTenant } from 'src/common/security/decorators/optional-tenant.decorator';
 import { SkipTenant } from 'src/common/security/decorators/skip-tenant.decorator';
+import { CurrentUser } from 'src/common/security/decorators/current-user.decorator';
 
 @Controller('onboarding')
 export class TenantOnboardingController {
@@ -15,58 +16,48 @@ export class TenantOnboardingController {
 
   @SkipTenant()
   @Get('status')
-  async getStatus(@Req() req: AuthenticatedRequest) {
-    const userId = req.user.id;
+  async getStatus(@CurrentUser('id') userId: string) {
     return this.tenantOnboardingService.getStatus(userId);
   }
 
   @SkipTenant()
   @Post('init')
-  async init(@Req() req: AuthenticatedRequest) {
-    const userId = req.user.id;
-    const userName = req.user.name;
-    return this.tenantOnboardingService.initalize(userId, userName);
+  async init(@CurrentUser('id') userId: string) {
+    return this.tenantOnboardingService.initalize(userId);
   }
 
   @Patch('workspace')
-  async updateWorkspace(@Req() req: AuthenticatedRequest, @Body() dto: WorkspaceStepDto) {
-    const userId = req.user.id;
+  async updateWorkspace(@CurrentUser('id') userId: string, @Body() dto: WorkspaceStepDto) {
     return this.tenantOnboardingService.updateWorkspace(userId, dto);
   }
 
   @Patch('business')
-  async updateBusiness(@Req() req: AuthenticatedRequest, @Body() dto: BusinessStepDto) {
-    const userId = req.user.id;
+  async updateBusiness(@CurrentUser('id') userId: string, @Body() dto: BusinessStepDto) {
     return this.tenantOnboardingService.updateBusiness(userId, dto);
   }
 
   @Patch('schedule')
-  async updateSchedule(@Req() req: AuthenticatedRequest, @Body() dto: ScheduleStepDto) {
-    const userId = req.user.id;
+  async updateSchedule(@CurrentUser('id') userId: string, @Body() dto: ScheduleStepDto) {
     return this.tenantOnboardingService.updateSchedule(userId, dto);
   }
 
   @Patch('services')
-  async updateServices(@Req() req: AuthenticatedRequest, @Body() dto: ServicesStepDto) {
-    const userId = req.user.id;
+  async updateServices(@CurrentUser('id') userId: string, @Body() dto: ServicesStepDto) {
     return this.tenantOnboardingService.updateServices(userId, dto);
   }
 
   @Patch('team')
-  async updateTeam(@Req() req: AuthenticatedRequest) {
-    const userId = req.user.id;
+  async updateTeam(@CurrentUser('id') userId: string) {
     return this.tenantOnboardingService.updateTeam(userId);
   }
 
   @Patch('customize')
-  async updateCustomize(@Req() req: AuthenticatedRequest, @Body() dto: CustomizeStepDto) {
-    const userId = req.user.id;
+  async updateCustomize(@CurrentUser('id') userId: string, @Body() dto: CustomizeStepDto) {
     return this.tenantOnboardingService.updateCustomize(userId, dto);
   }
 
   @Patch('confirm')
-  async confirm(@Req() req: AuthenticatedRequest) {
-    const userId = req.user.id;
+  async confirm(@CurrentUser('id') userId: string) {
     return this.tenantOnboardingService.confirm(userId);
   }
 }

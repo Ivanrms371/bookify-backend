@@ -35,8 +35,15 @@ export class UsersRepository extends BaseRepository {
     return this.prisma.user.findUnique({
       where: { id: userId },
       include: {
-        professional: true,
-      }
+        professional: {
+          include: {
+            workingHours: { orderBy: [{ dayOfWeek: 'asc' }, { opensAt: 'asc' }] },
+            tenant: {
+              select: { tenantWorkingHours: { orderBy: [{ dayOfWeek: 'asc' }, { opensAt: 'asc' }] } },
+            },
+          },
+        },
+      },
     });
   }
 

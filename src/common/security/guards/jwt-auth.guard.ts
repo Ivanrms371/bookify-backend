@@ -78,8 +78,10 @@ export class JwtAuthGuard implements CanActivate {
       };
       return true;
     } catch (error) {
-      console.log(error.stack);
-      throw new UnauthorizedException(error.message || 'An error has ocurred, try sign in again');
+      if (error instanceof Error) {
+        throw new UnauthorizedException(error.message);
+      }
+      throw new Error('An unexpected error has ocurred');
     }
   }
 }

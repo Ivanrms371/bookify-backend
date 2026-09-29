@@ -24,6 +24,8 @@ export class AppointmentCancelledListener {
       cancellationReason: event.cancellationReason,
     };
 
+    await this.notificationsService.cancelScheduledDeliveries(event.appointmentId, 'appointment.reminder');
+
     if (event.cancelledBy === RecipientType.CUSTOMER) {
       // Professional xxx your customer has cancelled your appointment.
       // In this case we send the notification to the professional

@@ -71,16 +71,18 @@ export class TenantGuard implements CanActivate {
         },
       });
 
-      if (!membership) {
+      if (!membership && !isOptionalTenant) {
         throw new ForbiddenException('You do not have access to any tenant');
       }
 
-      req.tenantContext = {
-        tenantId: membership.tenant.id,
-        tenantSlug: membership.tenant.slug,
-        role: membership.role,
-        permissions: (ROLE_PERMISSIONS[membership.role] as unknown as string[]) || [],
-      };
+      if (membership) {
+        req.tenantContext = {
+          tenantId: membership.tenant.id,
+          tenantSlug: membership.tenant.slug,
+          role: membership.role,
+          permissions: ROLE_PERMISSIONS[membership.role] || [],
+        };
+      }
 
       return true;
     }
@@ -138,7 +140,7 @@ export class TenantGuard implements CanActivate {
       tenantId: resolvedTenantId,
       tenantSlug: membership.tenant.slug,
       role: membership.role,
-      permissions: (ROLE_PERMISSIONS[membership.role] as unknown as string[]) || [],
+      permissions: ROLE_PERMISSIONS[membership.role],
     };
 
     return true;

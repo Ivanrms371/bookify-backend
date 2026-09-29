@@ -88,7 +88,22 @@ export class MeUserMapper {
   }
 }
 
+type WorkingHoursRow = { dayOfWeek: number; opensAt: number; closesAt: number };
+
 export class ProfileMapper {
+  // Professionals without their own hours fall back to the tenant's schedule
+  private static toScheduleDto(professional: any) {
+    const own: WorkingHoursRow[] = professional.workingHours ?? [];
+    const tenant: WorkingHoursRow[] = professional.tenant?.tenantWorkingHours ?? [];
+    const usesTenantSchedule = own.length === 0;
+    const rows = usesTenantSchedule ? tenant : own;
+
+    return {
+      usesTenantSchedule,
+      workingHours: rows.map(({ dayOfWeek, opensAt, closesAt }) => ({ dayOfWeek, opensAt, closesAt })),
+    };
+  }
+
   static toProfileDto(user: any) {
     const professional = user.professional || null;
     return {
@@ -96,7 +111,12 @@ export class ProfileMapper {
         id: user.id,
         name: user.name,
         email: user.email,
+        emailVerifiedAt: user.emailVerifiedAt ?? null,
         avatarUrl: user.avatarUrl,
+        phoneVerifiedAt: user.phoneVerifiedAt ?? null,
+        hasPassword: Boolean(user.password),
+        hasGoogle: Boolean(user.googleId),
+        createdAt: user.createdAt,
         phoneCountryCode: user.phoneCountryCode,
         phoneNumber: user.phoneNumber,
         birthDate: user.birthDate,
@@ -105,6 +125,9 @@ export class ProfileMapper {
           id: professional.id,
           name: professional.name,
           email: professional.email,
+          phoneCountryCode: professional.phoneCountryCode,
+          phoneNumber: professional.phoneNumber,
+          isActive: professional.isActive,
           profession: professional.profession,
           bio: professional.bio,
           avatarUrl: professional.avatarUrl,
@@ -112,6 +135,7 @@ export class ProfileMapper {
           slotIntervalMinutes: professional.slotIntervalMinutes,
           maxAdvancedDays: professional.maxAdvancedDays,
           minAdvancedMinutes: professional.minAdvancedMinutes,
+          ...ProfileMapper.toScheduleDto(professional),
         } : null,
       }
     };
