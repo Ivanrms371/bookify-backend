@@ -103,19 +103,29 @@ export class CustomersRepository extends BaseRepository {
     const search = `%${query}%`;
 
     return this.db(tx).$queryRaw<any[]>`
-    SELECT id, name, phoneNumber, email, phoneCountryCode, preferredLanguage, notes, blockedAt, firstAppointmentAt, lastAppointmentAt, totalSpent,
-      similarity(unaccent(${query}), unaccent(name)) AS score
-    FROM customers
-    WHERE "tenant_id" = ${tenantId}::uuid
-    AND "deleted_at" IS NULL
-    AND (
-      similarity(unaccent(${query}), unaccent(name)) > 0.1
-      OR email ILIKE ${search}
-      OR phoneNumber ILIKE ${search}
-    )
-    ORDER BY score DESC
-    LIMIT 10;
-  `;
+      SELECT
+        "id",
+        "name",
+        "phone_number" AS "phoneNumber",
+        "email",
+        "phone_country_code" AS "phoneCountryCode",
+        "notes",
+        "blocked_at" AS "blockedAt",
+        "first_appointment_at" AS "firstAppointmentAt",
+        "last_appointment_at" AS "lastAppointmentAt",
+        "total_spent" AS "totalSpent",
+        similarity(unaccent(${query}), unaccent("name")) AS "score"
+      FROM "customers"
+      WHERE "tenant_id" = ${tenantId}::uuid
+        AND "deleted_at" IS NULL
+        AND (
+          similarity(unaccent(${query}), unaccent("name")) > 0.1
+          OR "email" ILIKE ${search}
+          OR "phone_number" ILIKE ${search}
+        )
+      ORDER BY "score" DESC
+      LIMIT 10;
+    `;
   }
 
   async markPhoneAsVerified(id: string, tx?: TransactionClient) {

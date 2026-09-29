@@ -348,7 +348,7 @@ model Customer {
   tenantId String @map("tenant_id") @db.Uuid
 
   name             String
-  phoneNumber      String
+  phoneNumber      String    @map("phone_number")
   phoneCountryCode String    @default("598") @map("phone_country_code")
   phoneVerifiedAt  DateTime? @map("phone_verified_at")
   email            String?
