@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TZDate } from '@date-fns/tz';
 import { addDays, addMinutes, differenceInMinutes, endOfDay, parseISO, startOfDay, format } from 'date-fns';
 import { GenerateSlotsContext, TimeRange } from './types/slots.types';
-import { AvailableSlot } from './types/availability.types';
+import { AppointmentAvailabilitySlot, AvailableSlot } from './types/availability.types';
 import { hasConflict, isWithinOperationalRanges } from './utils/date-intervals.util';
 
 @Injectable()
@@ -48,6 +48,48 @@ export class SlotsGenerator {
 
     // 6. Filter by advance booking limits (minAdvancedMinutes and maxAdvancedDays)
     return this.filterByAdvancedLimits(rawSlots, ctx.timeZone, ctx.minAdvancedMinutes, ctx.maxAdvancedDays);
+  }
+
+  generateAppointmentAvailability(ctx: GenerateSlotsContext): AppointmentAvailabilitySlot[] {
+    if (ctx.isFullyClosed) {
+      return [];
+    }
+
+    const operationalRanges = this.resolveOperationalRanges(ctx);
+    if (operationalRanges.length === 0) {
+      return [];
+    }
+
+    const busyRangesLocal = this.convertUtcToLocalMinutes(ctx.busyIntervalsUtc, ctx.targetDate, ctx.timeZone, ctx.bufferMinutes);
+    const slots: AppointmentAvailabilitySlot[] = [];
+    const now = new Date();
+    const [year, month, day] = ctx.targetDate.split('-').map(Number);
+    const dayStart = startOfDay(new TZDate(year, month - 1, day, 0, 0, 0, ctx.timeZone));
+
+    for (const range of operationalRanges) {
+      let cursor = range.opensAt;
+
+      while (cursor + ctx.serviceDuration <= range.closesAt) {
+        const candidate: TimeRange = {
+          opensAt: cursor,
+          closesAt: cursor + ctx.serviceDuration,
+        };
+        const slotStart = addMinutes(dayStart, candidate.opensAt);
+        const slotEnd = addMinutes(dayStart, candidate.closesAt);
+        const isBusy = hasConflict(candidate, busyRangesLocal);
+
+        slots.push({
+          time: format(slotStart, 'HH:mm'),
+          startsAt: slotStart.toISOString(),
+          endsAt: slotEnd.toISOString(),
+          status: isBusy ? 'busy' : slotStart < now ? 'past' : 'available',
+        });
+
+        cursor += ctx.slotInterval;
+      }
+    }
+
+    return slots;
   }
 
   validateSlot(startTimeUtc: string, ctx: GenerateSlotsContext): boolean {

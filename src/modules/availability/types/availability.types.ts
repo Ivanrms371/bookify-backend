@@ -14,6 +14,12 @@ export interface AvailableSlot {
   endsAt: string; // '2026-09-06T13:15:00.000Z' (ISO UTC)
 }
 
+export type AppointmentAvailabilitySlotStatus = 'available' | 'busy' | 'past';
+
+export interface AppointmentAvailabilitySlot extends AvailableSlot {
+  status: AppointmentAvailabilitySlotStatus;
+}
+
 export interface DaySlotsSummary {
   date: string; // 'YYYY-MM-DD'
   hasAvailability: boolean; // slots.length > 0
@@ -45,6 +51,27 @@ export interface GetDayAvailabilityParams {
   date: string; // 'YYYY-MM-DD'
 }
 
+export interface DayAppointmentAvailabilitySummary {
+  date: string;
+  hasAvailability: boolean;
+  reason: DayAvailabilityReason;
+  message?: string;
+  slots: AppointmentAvailabilitySlot[];
+}
+
+export interface GetAppointmentAvailabilityParams {
+  tenantId: string;
+  professionalId: string;
+  serviceId: string;
+  startDate: string;
+  endDate?: string;
+}
+
+export interface AppointmentAvailabilityResponse {
+  timeZone: string;
+  days: DayAppointmentAvailabilitySummary[];
+}
+
 export type DayOverviewStatus = 'AVAILABLE' | 'SATURATED' | 'EMPTY' | 'CLOSED';
 
 export interface DayOverviewItem {
@@ -74,6 +101,7 @@ export interface ValidateSlotAvailabilityParams {
   serviceId: string;
   startsAt: string;
   ignoreMinAdvanced?: boolean;
+  allowPast?: boolean;
 }
 
 export interface ValidateSlotResponse {

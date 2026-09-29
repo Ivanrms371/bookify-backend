@@ -1,10 +1,18 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { AvailabilityService } from './availability.service';
 import { GetDayAvailabilityQueryDto } from './dto/get-day-availability-query.dto';
 import { GetAvailabilityOverviewQueryDto } from './dto/get-availability-overview-query.dto';
 import { ValidateSlotQueryDto } from './dto/validate-slot-query.dto';
-import { AvailabilityOverviewResponse, DayAvailabilityResponse, ValidateSlotResponse } from './types/availability.types';
+import {
+  AppointmentAvailabilityResponse,
+  AvailabilityOverviewResponse,
+  DayAvailabilityResponse,
+  ValidateSlotResponse,
+} from './types/availability.types';
+import { GetAppointmentAvailabilityQueryDto } from './dto/get-appointment-availability-query.dto';
+import { Permissions } from 'src/common/security/decorators/permissions.decorator';
+import { PERMISSIONS } from 'src/common/security/constants/permissions.constant';
 
 @Controller('availability')
 export class AvailabilityController {
@@ -19,6 +27,24 @@ export class AvailabilityController {
   @Get('slots')
   async getSlotsByDay(@Query() query: GetDayAvailabilityQueryDto): Promise<DayAvailabilityResponse> {
     return this.availabilityService.getAvailableSlotsByDay(query);
+  }
+
+  /**
+   * Returns appointment slots for staff booking across a date range.
+   * Includes available, busy and past statuses and resolves tenant from auth context.
+   *
+   * GET /availability/appointments?professionalId=...&serviceId=...&startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
+   */
+  @Get('appointments')
+  @Permissions(PERMISSIONS.APPOINTMENT_READ)
+  async getAppointmentAvailability(
+    @GetTenantId() tenantId: string,
+    @Query() query: GetAppointmentAvailabilityQueryDto,
+  ): Promise<AppointmentAvailabilityResponse> {
+    return this.availabilityService.getAppointmentAvailability({
+      tenantId,
+      ...query,
+    });
   }
 
   /**

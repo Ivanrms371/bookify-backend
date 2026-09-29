@@ -7,7 +7,7 @@ import { ProfessionalsService } from 'src/modules/professionals/professionals.se
 import { ServicesService } from 'src/modules/services/services.service';
 import { AvailabilityService } from 'src/modules/availability/availability.service';
 import { addMinutes, parseISO } from 'date-fns';
-import { AppointmentStatus } from 'src/generated/prisma/enums';
+import { AppointmentStatus, CreatedByType } from 'src/generated/prisma/enums';
 import { randomBytes } from 'crypto';
 import { FindAllAppointmentsParamsDto } from './dto/find-all-appointments.dto';
 
@@ -66,6 +66,7 @@ export class AppointmentsService {
       serviceId,
       startsAt: dto.startsAt,
       ignoreMinAdvanced: true,
+      allowPast: true,
     });
 
     if (!isAvailable) {
@@ -83,6 +84,7 @@ export class AppointmentsService {
       status: AppointmentStatus.PENDING,
       durationMinutes: service.durationMinutes,
       price: service.price,
+      createdBy: CreatedByType.STAFF,
 
       ...(customer && {
         customerName: customer.name,

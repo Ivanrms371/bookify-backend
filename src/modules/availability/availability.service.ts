@@ -16,11 +16,14 @@ import {
   isBefore,
 } from 'date-fns';
 import {
+  AppointmentAvailabilityResponse,
   AvailabilityOverviewResponse,
   DateRangeResolutionResult,
+  DayAppointmentAvailabilitySummary,
   DayAvailabilityResponse,
   DayOverviewItem,
   DayOverviewStatus,
+  GetAppointmentAvailabilityParams,
   DaySlotsSummary,
   GetAvailabilityOverviewParams,
   GetDayAvailabilityParams,
@@ -135,6 +138,92 @@ export class AvailabilityService {
     };
   }
 
+  async getAppointmentAvailability(params: GetAppointmentAvailabilityParams): Promise<AppointmentAvailabilityResponse> {
+    const { tenantId, professionalId, serviceId, startDate, endDate } = params;
+
+    const { settings, professional, service } = await this.loadConfiguration(tenantId, professionalId, serviceId);
+    const timeZone = settings.timeZone || 'America/Montevideo';
+
+    const startLocal = startOfDay(parseISO(startDate), { in: tz(timeZone) });
+
+    if (!isValid(startLocal)) {
+      throw new BadRequestException('Fecha de inicio inválida. Use YYYY-MM-DD.');
+    }
+
+    const endLocal = endOfDay(parseISO(endDate ?? startDate), { in: tz(timeZone) });
+
+    if (!isValid(endLocal) || isAfter(startLocal, endLocal)) {
+      throw new BadRequestException('Rango de fechas inválido.');
+    }
+
+    const timeline = await this.availabilityRepository.getTimelineForRange({
+      tenantId,
+      professionalId,
+      rangeStartUtc: new Date(startLocal.toISOString()),
+      rangeEndUtc: new Date(endLocal.toISOString()),
+    });
+    const busyIntervalsUtc = this.extractBusyIntervals(timeline.appointments);
+
+    const daysCount = differenceInCalendarDays(endLocal, startLocal) + 1;
+    const days: DayAppointmentAvailabilitySummary[] = [];
+
+    for (let i = 0; i < daysCount; i++) {
+      const currentDayLocal = addDays(startLocal, i);
+      const currentDateStr = format(currentDayLocal, 'yyyy-MM-dd');
+      const dayContext = this.buildDayContext({
+        currentDayLocal,
+        timeZone,
+        timeline,
+        settings,
+        professional,
+        service,
+        busyIntervalsUtc,
+      });
+
+      if (dayContext.workingHours.length === 0) {
+        days.push({
+          date: currentDateStr,
+          hasAvailability: false,
+          reason: timeline.professionalHours.length > 0 ? 'PROFESSIONAL_OFF' : 'BUSINESS_CLOSED',
+          slots: [],
+        });
+        continue;
+      }
+
+      const activeFullClosure = timeline.exceptions.find((e) => {
+        const currentDayStartUtc = new Date(startOfDay(currentDayLocal).getTime());
+        const currentDayEndUtc = new Date(endOfDay(currentDayLocal).getTime());
+        return e.isClosed && e.startDate <= currentDayEndUtc && e.endDate >= currentDayStartUtc;
+      });
+
+      if (dayContext.isFullyClosed) {
+        days.push({
+          date: currentDateStr,
+          hasAvailability: false,
+          reason: 'SCHEDULE_EXCEPTION',
+          message: activeFullClosure?.reason ?? undefined,
+          slots: [],
+        });
+        continue;
+      }
+
+      const slots = this.slotsGenerator.generateAppointmentAvailability(dayContext);
+      const hasBookableSlot = slots.some((slot) => slot.status !== 'busy');
+
+      days.push({
+        date: currentDateStr,
+        hasAvailability: hasBookableSlot,
+        reason: hasBookableSlot ? 'AVAILABLE' : 'FULLY_BOOKED',
+        slots,
+      });
+    }
+
+    return {
+      timeZone,
+      days,
+    };
+  }
+
   /**
    * Validates whether a specific time slot is available for booking or rescheduling.
    *
@@ -149,7 +238,7 @@ export class AvailabilityService {
    * @throws BadRequestException If the startTime format is invalid.
    */
   async isSlotAvailable(params: ValidateSlotAvailabilityParams): Promise<boolean> {
-    const { tenantId, professionalId, serviceId, startsAt, ignoreMinAdvanced = false } = params;
+    const { tenantId, professionalId, serviceId, startsAt, ignoreMinAdvanced = false, allowPast = false } = params;
 
     const { settings, professional, service } = await this.loadConfiguration(tenantId, professionalId, serviceId);
 
@@ -164,7 +253,7 @@ export class AvailabilityService {
 
     const minStartTime = addMinutes(new Date(), ignoreMinAdvanced ? 0 : minAdvancedMinutes);
 
-    if (isBefore(slotDate, minStartTime)) {
+    if (!allowPast && isBefore(slotDate, minStartTime)) {
       return false;
     }
 
