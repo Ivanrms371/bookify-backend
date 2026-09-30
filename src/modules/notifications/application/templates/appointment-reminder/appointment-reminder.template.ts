@@ -3,14 +3,14 @@ import { NotificationChannel } from 'src/generated/prisma/enums';
 import { NotificationTemplate } from 'src/modules/notifications/domain/templates/notification-template.interface';
 import { AppointmentReminderVariables } from './appointment-reminder.type';
 import { AppointmentReminderEmailTemplate } from './email.template';
-import { NotImplementedError } from 'src/modules/notifications/errors/not-implemented.error';
 import { BuildEmailResponse } from 'src/modules/notifications/domain/templates/build-email.interface';
+import { BuildWhatsappResponse } from 'src/modules/notifications/domain/templates/build-whatsapp.interface';
 
 @Injectable()
 export class AppointmentReminderTemplate implements NotificationTemplate {
   type = 'appointment.reminder';
 
-  build(channel: NotificationChannel, variables: any): any {
+  build(channel: NotificationChannel, variables: AppointmentReminderVariables) {
     switch (channel) {
       case NotificationChannel.EMAIL:
         return this.buildEmail(variables);
@@ -19,7 +19,7 @@ export class AppointmentReminderTemplate implements NotificationTemplate {
       case NotificationChannel.WHATSAPP:
         return this.buildWhatsapp(variables);
       default:
-        throw new Error(`Unknown channel: ${channel}`);
+        throw new Error('Unknown channel');
     }
   }
 
@@ -30,7 +30,14 @@ export class AppointmentReminderTemplate implements NotificationTemplate {
     };
   }
 
-  private buildWhatsapp(variables: any): any {
-    throw new NotImplementedError();
+  private buildWhatsapp(variables: AppointmentReminderVariables): BuildWhatsappResponse {
+    const timing = variables.reminderType === '24h' ? 'manana' : 'en 2 horas';
+
+    return {
+      body:
+        `Hola ${variables.customerName}. Te recordamos que tienes una cita ${timing} con ${variables.professionalName} ` +
+        `por ${variables.serviceName}, el ${variables.date} a las ${variables.time}. ` +
+        `Cancelar: ${variables.cancelUrl}. Reprogramar: ${variables.rescheduleUrl}.`,
+    };
   }
 }

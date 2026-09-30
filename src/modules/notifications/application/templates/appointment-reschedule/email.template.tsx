@@ -10,14 +10,34 @@ export const AppointmentRescheduleEmailTemplate = ({
   time = '10:00 AM',
   serviceName = 'Corte de cabello',
   professionalName = 'Juan Pérez',
+  previousDate,
+  previousTime,
+  rescheduleReason,
+  rescheduledByName,
 }: AppointmentRescheduledVariables) => {
   return (
-    <Layout previewText={`Cita reprogramada con ${customerName}`}>
+    <Layout previewText={`Cita reprogramada con ${professionalName}`}>
       <Section>
-        <CustomHeading>Cita reprogramada, {professionalName}</CustomHeading>
+        <CustomHeading>Cita reprogramada, {customerName}</CustomHeading>
         <Text className="text-gray-600 text-lg leading-relaxed text-center mb-8">
-          El cliente <strong>{customerName}</strong> ha reprogramado la cita para el <strong>{date}</strong> a las <strong>{time}</strong>
+          Tu cita de <strong>{serviceName}</strong> con <strong>{professionalName}</strong> fue reprogramada para el{' '}
+          <strong>{date}</strong> a las <strong>{time}</strong>
         </Text>
+        {previousDate && previousTime ? (
+          <Text className="text-gray-600 leading-relaxed text-center">
+            Horario anterior: <strong>{previousDate}</strong> a las <strong>{previousTime}</strong>
+          </Text>
+        ) : null}
+        {rescheduledByName ? (
+          <Text className="text-gray-600 leading-relaxed text-center">
+            Reprogramada por: <strong>{rescheduledByName}</strong>
+          </Text>
+        ) : null}
+        {rescheduleReason ? (
+          <Text className="text-gray-600 leading-relaxed text-center">
+            Motivo: <strong>{rescheduleReason}</strong>
+          </Text>
+        ) : null}
         <Text className="text-gray-500 leading-relaxed text-center">Si deseas ver los detalles puedes acceder al enlace de abajo.</Text>
       </Section>
       <Button href="https://localhost:4000/appointments">Ver detalles</Button>

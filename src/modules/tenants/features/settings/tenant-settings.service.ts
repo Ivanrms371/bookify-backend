@@ -37,8 +37,6 @@ export class TenantSettingsService {
     return this.tenantSettingsRepository.updateAppointmentSettings(tenantId, data);
   }
 
-  
-  
   async getAppointmentConfig(tenantId: string): Promise<TenantAppointmentConfigResponse> {
     const settings = await this.tenantSettingsRepository.getAppointmentConfig(tenantId);
     if (!settings) {

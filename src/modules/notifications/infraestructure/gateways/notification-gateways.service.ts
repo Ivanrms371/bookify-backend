@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { NotificationChannel, Notification } from 'src/generated/prisma/client';
 import { EmailGateway } from './email.gateway';
 import { WhatsappGateway } from './whatsapp.gateway';
-import { ChannelContentMap, EmailContent, InAppContent, WhatsAppContent } from '../../types/template.type';
 import { BuildEmailResponse } from '../../domain/templates/build-email.interface';
 import { BuildWhatsappResponse } from '../../domain/templates/build-whatsapp.interface';
 import { BuildInAppResponse } from '../../domain/templates/build-in-app.interface';
@@ -25,11 +24,11 @@ export class NotificationGatewaysService {
       case NotificationChannel.EMAIL:
         return await this.emailGateway.send(notification, template as BuildEmailResponse);
       case NotificationChannel.WHATSAPP:
-        return await this.whatsappGateway.send(notification, template);
+        return await this.whatsappGateway.send(notification, template as BuildWhatsappResponse);
       case NotificationChannel.IN_APP:
         return await this.inAppService.send(notification, template as BuildInAppResponse);
       default:
-        throw new Error(`Unsupported notification channel: ${channel}`);
+        throw new Error('Unsupported notification channel');
     }
   }
 }

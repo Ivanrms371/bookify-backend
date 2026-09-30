@@ -11,7 +11,14 @@ import { TenantWorkingHoursRepository } from './working-hours/tenant-working-hou
 
 @Module({
   controllers: [TenantSettingsController, ScheduleExceptionController, TenantWorkingHoursController],
-  providers: [TenantSettingsService, TenantSettingsRepository, ScheduleExceptionService, ScheduleExceptionRepository, TenantWorkingHoursService, TenantWorkingHoursRepository],
+  providers: [
+    TenantSettingsService,
+    TenantSettingsRepository,
+    ScheduleExceptionService,
+    ScheduleExceptionRepository,
+    TenantWorkingHoursService,
+    TenantWorkingHoursRepository,
+  ],
   exports: [TenantSettingsService],
 })
 export class TenantSettingsModule {}

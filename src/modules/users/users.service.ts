@@ -41,7 +41,6 @@ export class UsersService {
     return MeUserMapper.toDomain(rawData, preferredTenant);
   }
 
-  
   async getProfile(userId: string, tenantId: string) {
     const userWithProf = await this.usersRepository.findProfileWithProfessional(userId, tenantId);
     if (!userWithProf) throw new NotFoundException('User not found');

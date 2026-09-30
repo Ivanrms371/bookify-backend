@@ -238,7 +238,7 @@ export class AvailabilityService {
    * @throws BadRequestException If the startTime format is invalid.
    */
   async isSlotAvailable(params: ValidateSlotAvailabilityParams): Promise<boolean> {
-    const { tenantId, professionalId, serviceId, startsAt, ignoreMinAdvanced = false, allowPast = false } = params;
+    const { tenantId, professionalId, serviceId, startsAt, ignoreMinAdvanced = false, allowPast = false, excludeAppointmentId } = params;
 
     const { settings, professional, service } = await this.loadConfiguration(tenantId, professionalId, serviceId);
 
@@ -268,7 +268,9 @@ export class AvailabilityService {
       rangeEndUtc: dayEndUtc,
     });
 
-    const busyIntervals = this.extractBusyIntervals(timeline.appointments);
+    const busyIntervals = this.extractBusyIntervals(
+      excludeAppointmentId ? timeline.appointments.filter((appt) => appt.id !== excludeAppointmentId) : timeline.appointments,
+    );
 
     const dayContext = this.buildDayContext({
       currentDayLocal: localDate,

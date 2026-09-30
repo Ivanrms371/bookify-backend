@@ -23,7 +23,7 @@ export class TenantWorkingHoursRepository extends BaseRepository {
   async replaceWorkingHours(
     tenantId: string,
     data: { tenantId: string; dayOfWeek: number; opensAt: number; closesAt: number }[],
-    tx?: TransactionClient
+    tx?: TransactionClient,
   ): Promise<void> {
     await this.db(tx).tenantWorkingHours.deleteMany({ where: { tenantId } });
     if (data.length > 0) {

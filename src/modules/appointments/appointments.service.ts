@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AppointmentsRepository } from './appointments.repository';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
@@ -6,7 +6,7 @@ import { CustomersService } from 'src/modules/customers/customers.service';
 import { ProfessionalsService } from 'src/modules/professionals/professionals.service';
 import { ServicesService } from 'src/modules/services/services.service';
 import { AvailabilityService } from 'src/modules/availability/availability.service';
-import { addMinutes, parseISO } from 'date-fns';
+import { addMinutes, isAfter, isEqual, isValid, parseISO } from 'date-fns';
 import { AppointmentStatus, CreatedByType, RecipientType } from 'src/generated/prisma/enums';
 import { randomBytes } from 'crypto';
 import { FindAllAppointmentsParamsDto } from './dto/find-all-appointments.dto';
@@ -16,6 +16,9 @@ import { AppointmentCreatedEvent } from './domain/events/appointment-created.eve
 import { AppointmentCancelledEvent } from './domain/events/appointment-cancelled.event';
 import { CancelAppointmentDto } from './dto/cancel-appointment.dto';
 import { AuthenticatedUser } from 'src/common/security/types/authenticated-request.type';
+import { RescheduleAppointmentDto } from './dto/reschedule-appointment.dto';
+import { Permission, PERMISSIONS } from 'src/common/security/constants/permissions.constant';
+import { AppointmentRescheduledEvent } from './domain/events/appointment-rescheduled.event';
 
 const APP_URL = process.env.APP_URL ?? 'http://localhost:5173';
 
@@ -135,7 +138,99 @@ export class AppointmentsService {
     return appointment;
   }
 
-  async reschedule() {}
+  async reschedule(
+    tenantId: string,
+    id: string,
+    currentUser: AuthenticatedUser,
+    permissions: readonly Permission[],
+    dto: RescheduleAppointmentDto,
+  ) {
+    const appointment = await this.appointmentsRepository.findById(tenantId, id);
+
+    if (!appointment) {
+      throw new NotFoundException('No hemos encontrado la cita.');
+    }
+
+    if (appointment.status === AppointmentStatus.COMPLETED || appointment.status === AppointmentStatus.CANCELLED) {
+      throw new BadRequestException('Esta cita no puede ser reprogramada.');
+    }
+
+    const startsAt = parseISO(dto.startsAt);
+
+    if (!isValid(startsAt)) {
+      throw new BadRequestException('Formato de fecha inválido para startsAt.');
+    }
+
+    if (!isAfter(startsAt, new Date())) {
+      throw new BadRequestException('La nueva fecha debe ser futura.');
+    }
+
+    if (isEqual(startsAt, appointment.startsAt)) {
+      throw new BadRequestException('El horario seleccionado es igual al que ya tiene la cita.');
+    }
+
+    const canRescheduleOthers = permissions.includes(PERMISSIONS.APPOINTMENT_RESCHEDULE_OTHERS);
+
+    if (!canRescheduleOthers) {
+      const professional = await this.professionalsService.findByUserId(tenantId, currentUser.id);
+
+      if (professional.id !== appointment.professionalId) {
+        throw new ForbiddenException('No tienes permisos para reprogramar citas de otros profesionales.');
+      }
+    }
+
+    const isAvailable = await this.availabilityService.isSlotAvailable({
+      tenantId,
+      professionalId: appointment.professionalId,
+      serviceId: appointment.serviceId,
+      startsAt: dto.startsAt,
+      ignoreMinAdvanced: true,
+      excludeAppointmentId: appointment.id,
+    });
+
+    if (!isAvailable) {
+      throw new BadRequestException('El horario seleccionado ya no está disponible.');
+    }
+
+    const endsAt = addMinutes(startsAt, appointment.service.durationMinutes);
+
+    const rescheduledAppointment = await this.appointmentsRepository.update(tenantId, id, {
+      startsAt,
+      endsAt,
+      rescheduleReason: dto.rescheduleReason,
+      rescheduleCount: { increment: 1 },
+      blocks: {
+        deleteMany: {},
+        create: { startsAt, endsAt },
+      },
+    });
+
+    if (appointment.customerId && appointment.customer) {
+      this.eventEmitter.emit('appointment.rescheduled', {
+        appointmentId: appointment.id,
+        tenantId,
+        userId: appointment.professional.userId,
+        professionalId: appointment.professionalId,
+        professionalName: appointment.professional.name,
+        serviceId: appointment.serviceId,
+        serviceName: appointment.service.name,
+        customerId: appointment.customerId,
+        customerName: appointment.customer.name,
+        cancelUrl: `/appointments/${appointment.manageToken}/cancel`,
+        rescheduleUrl: `/appointments/${appointment.manageToken}/reschedule`,
+        detailsUrl: `${APP_URL}/appointments`,
+        previousStartsAt: appointment.startsAt,
+        previousEndsAt: appointment.endsAt,
+        startsAt,
+        endsAt,
+        rescheduleReason: dto.rescheduleReason,
+        rescheduledByName: currentUser.name,
+        rescheduledBy: RecipientType.USER,
+      } satisfies AppointmentRescheduledEvent);
+    }
+
+    return AppointmentsMapper.toResponse(rescheduledAppointment);
+  }
 
   async cancel(tenantId: string, id: string, currentUser: AuthenticatedUser, dto: CancelAppointmentDto = {}) {
     const appointment = await this.appointmentsRepository.findById(tenantId, id);

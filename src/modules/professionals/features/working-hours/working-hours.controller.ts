@@ -16,22 +16,14 @@ export class WorkingHoursController {
 
   @Permissions(PERMISSIONS.SCHEDULE_UPDATE_SELF)
   @Put('me/working-hours')
-  async updateMyWorkingHours(
-    @GetTenantId() tenantId: string,
-    @CurrentUser('id') userId: string,
-    @Body() dto: CreateWorkingHoursBulkDto,
-  ) {
+  async updateMyWorkingHours(@GetTenantId() tenantId: string, @CurrentUser('id') userId: string, @Body() dto: CreateWorkingHoursBulkDto) {
     const prof = await this.professionalsService.findByUserId(tenantId, userId);
     return this.workingHoursService.replaceAll(tenantId, prof.id, dto);
   }
 
   @Permissions(PERMISSIONS.SCHEDULE_UPDATE)
   @Put(':id/working-hours')
-  async updateWorkingHours(
-    @GetTenantId() tenantId: string,
-    @Param('id') id: string,
-    @Body() dto: CreateWorkingHoursBulkDto,
-  ) {
+  async updateWorkingHours(@GetTenantId() tenantId: string, @Param('id') id: string, @Body() dto: CreateWorkingHoursBulkDto) {
     return this.workingHoursService.replaceAll(tenantId, id, dto);
   }
 }

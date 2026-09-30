@@ -77,6 +77,21 @@ export const NotificationConfig: NotificationConfigMap = {
     },
   },
 
+  'appointment.rescheduled': {
+    retry: {
+      retryable: true,
+      maxRetries: 3,
+    },
+    channels: {
+      CUSTOMER: [
+        {
+          channel: NotificationChannel.WHATSAPP,
+          fallback: [NotificationChannel.EMAIL],
+        },
+      ],
+    },
+  },
+
   'tenant.created': {
     retry: {
       retryable: true,

@@ -1,1 +1,3 @@
-export interface BuildWhatsappResponse {}
+export interface BuildWhatsappResponse {
+  body: string;
+}

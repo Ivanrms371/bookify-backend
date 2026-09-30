@@ -102,6 +102,7 @@ export interface ValidateSlotAvailabilityParams {
   startsAt: string;
   ignoreMinAdvanced?: boolean;
   allowPast?: boolean;
+  excludeAppointmentId?: string;
 }
 
 export interface ValidateSlotResponse {

@@ -6,8 +6,10 @@ import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { Permissions } from 'src/common/security/decorators/permissions.decorator';
 import { PERMISSIONS } from 'src/common/security/constants/permissions.constant';
 import { CurrentUser } from 'src/common/security/decorators/current-user.decorator';
-import { AuthenticatedUser } from 'src/common/security/types/authenticated-request.type';
+import { AuthenticatedUser, TenantContext } from 'src/common/security/types/authenticated-request.type';
 import { CancelAppointmentDto } from './dto/cancel-appointment.dto';
+import { RescheduleAppointmentDto } from './dto/reschedule-appointment.dto';
+import { CurrentTenant } from 'src/common/security/decorators/current-tenant.decorator';
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -27,6 +29,18 @@ export class AppointmentsController {
   @Permissions(PERMISSIONS.APPOINTMENT_CREATE)
   async create(@GetTenantId() tenantId: string, @Body() dto: CreateAppointmentDto) {
     return this.appointmentsService.create(tenantId, dto);
+  }
+
+  @Patch(':id/reschedule')
+  @Permissions(PERMISSIONS.APPOINTMENT_RESCHEDULE)
+  async reschedule(
+    @GetTenantId() tenantId: string,
+    @Param('id') id: string,
+    @CurrentUser() currentUser: AuthenticatedUser,
+    @CurrentTenant() tenantContext: TenantContext,
+    @Body() dto: RescheduleAppointmentDto,
+  ) {
+    return this.appointmentsService.reschedule(tenantId, id, currentUser, tenantContext.permissions, dto);
   }
 
   @Patch(':id/cancel')

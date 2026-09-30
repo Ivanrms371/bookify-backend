@@ -3,6 +3,10 @@ export type AppointmentRescheduledVariables = {
   appointmentId: string;
   serviceName: string;
   professionalName: string;
+  previousDate?: string;
+  previousTime?: string;
   date: string;
   time: string;
+  rescheduleReason?: string;
+  rescheduledByName?: string;
 };

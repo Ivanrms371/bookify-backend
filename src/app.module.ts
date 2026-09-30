@@ -75,7 +75,7 @@ import { TeamModule } from './modules/team/team.module';
     VerificationsModule,
     WebhookModule,
     MembershipsModule,
-    
+
     PublicModule,
   ],
   providers: [

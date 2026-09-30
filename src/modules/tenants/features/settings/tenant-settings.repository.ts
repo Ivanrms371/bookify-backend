@@ -82,8 +82,6 @@ export class TenantSettingsRepository extends BaseRepository {
     });
   }
 
-  
-  
   async updateAppointmentSettings(tenantId: string, data: UpdateAppointmentSettingsDto): Promise<UpdateTenantAppointmentSettingsResponse> {
     return this.db().tenant.update({
       where: { id: tenantId },

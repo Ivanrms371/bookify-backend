@@ -21,6 +21,7 @@ import { VerificationCreatedListener } from './listeners/verifications/verificat
 import { VerificationEmailTemplate } from './application/templates/confirm-email/confirm-email.template';
 import { AppointmentCancelledTemplate } from './application/templates/appointment-cancelled/appointment-cancelled.template';
 import { AppointmentRescheduledTemplate } from './application/templates/appointment-reschedule/appointment-reschedule.template';
+import { AppointmentCreatedListener } from './listeners/appointments/appointment-created.listener';
 import { AppointmentCancelledListener } from './listeners/appointments/appointment-cancelled.listener';
 import { AppointmentRescheduledListener } from './listeners/appointments/appointment-rescheduled.listener';
 import { NotificationsController } from './notifications.controller';
@@ -74,6 +75,7 @@ import { InvitationCreatedTemplate } from './application/templates/invitation-cr
     InvitationCreatedTemplate,
 
     // Listeners
+    AppointmentCreatedListener,
     AppointmentCancelledListener,
     AppointmentRescheduledListener,
     VerificationCreatedListener,

@@ -30,7 +30,7 @@ export class TenantSettingsController {
     return this.tenantSettingsService.updateGeneralSettings(tenantId, updateDto);
   }
 
-    @Permissions(PERMISSIONS.TENANT_UPDATE)
+  @Permissions(PERMISSIONS.TENANT_UPDATE)
   @Patch('appointments')
   async updateAppointmentSettings(
     @GetTenantId() tenantId: string,

@@ -1,14 +1,18 @@
 import { PrismaService } from 'src/shared/prisma/prisma.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AvailabilityService } from '../availability/availability.service';
 import { CustomersService } from '../customers/customers.service';
 import { ProfessionalsService } from '../professionals/professionals.service';
 import { ServicesService } from '../services/services.service';
-import { AppointmentStatus } from 'src/generated/prisma/enums';
+import { AppointmentStatus, CreatedByType } from 'src/generated/prisma/enums';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CancelPublicParams, CreatePublicParams, ReschedulePublicParams } from './appointments.types';
 import { addMinutes, parseISO } from 'date-fns';
 import { randomBytes } from 'crypto';
 import { AppointmentsPublicRepository } from './appointments-public.repository';
+import { AppointmentCreatedEvent } from './domain/events/appointment-created.event';
+
+const APP_URL = process.env.APP_URL ?? 'http://localhost:5173';
 
 @Injectable()
 export class AppointmentsPublicService {
@@ -19,6 +23,7 @@ export class AppointmentsPublicService {
     private readonly customersService: CustomersService,
     private readonly professionalsService: ProfessionalsService,
     private readonly servicesService: ServicesService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async findByToken(token: string) {
@@ -93,6 +98,24 @@ export class AppointmentsPublicService {
 
       return appointment;
     });
+
+    this.eventEmitter.emit('appointment.created', {
+      tenantId,
+      userId: professional.userId,
+      professionalId,
+      professionalName: professional.name,
+      serviceId,
+      serviceName: service.name,
+      customerId: customer.id,
+      customerName: customer.name,
+      cancelUrl: `/appointments/${manageToken}/cancel`,
+      rescheduleUrl: `/appointments/${manageToken}/reschedule`,
+      detailsUrl: `${APP_URL}/appointments`,
+      startAppointmentDate: startsAt,
+      endAppointmentDate: endsAt,
+      appointmentId: appointment.id,
+      createdBy: CreatedByType.CUSTOMER,
+    } satisfies AppointmentCreatedEvent);
 
     return appointment;
   }

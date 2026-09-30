@@ -4,10 +4,12 @@ export const PERMISSIONS = {
   APPOINTMENT_READ: 'appointment:read',
   APPOINTMENT_UPDATE: 'appointment:update',
   APPOINTMENT_DELETE: 'appointment:delete',
+  APPOINTMENT_RESCHEDULE: 'appointment:reschedule',
 
   APPOINTMENT_READ_OTHERS: 'appointment:read_others',
   APPOINTMENT_UPDATE_OTHERS: 'appointment:update_others',
   APPOINTMENT_DELETE_OTHERS: 'appointment:delete_others',
+  APPOINTMENT_RESCHEDULE_OTHERS: 'appointment:reschedule_others',
 
   // Customers
   CUSTOMER_CREATE: 'customer:create',

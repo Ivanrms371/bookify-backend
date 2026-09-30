@@ -30,7 +30,6 @@ export class UsersRepository extends BaseRepository {
     return this.db(tx).user.findUnique({ where: { googleId } });
   }
 
-  
   async findProfileWithProfessional(userId: string, tenantId: string) {
     return this.prisma.user.findUnique({
       where: { id: userId },

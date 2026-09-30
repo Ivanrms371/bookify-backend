@@ -138,7 +138,46 @@ export class AppointmentsRepository extends BaseRepository {
     return this.db(tx).appointment.create({ data });
   }
 
-  async update() {}
+  async update(tenantId: string, id: string, data: AppointmentUpdateInput, tx?: TransactionClient) {
+    return this.db(tx).appointment.update({
+      where: { id, tenantId },
+      data,
+      include: {
+        customer: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            phoneNumber: true,
+          },
+        },
+        professional: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+            bio: true,
+            userId: true,
+            user: {
+              select: {
+                name: true,
+                avatarUrl: true,
+              },
+            },
+          },
+        },
+        service: {
+          select: {
+            id: true,
+            name: true,
+            durationMinutes: true,
+            price: true,
+            imageUrl: true,
+          },
+        },
+      },
+    });
+  }
 
   async cancel(tenantId: string, id: string, data: AppointmentUpdateInput, tx?: TransactionClient) {
     return this.db(tx).appointment.update({

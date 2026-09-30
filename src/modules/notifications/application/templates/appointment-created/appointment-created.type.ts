@@ -7,4 +7,6 @@ export interface AppointmentCreatedVariables {
   appointmentId: string;
   cancelUrl: string;
   rescheduleUrl: string;
+  detailsUrl?: string;
+  createdBy?: 'CUSTOMER' | 'STAFF';
 }

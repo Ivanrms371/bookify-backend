@@ -140,7 +140,6 @@ export class ProfessionalsService {
     });
   }
 
-  
   async findByUserId(tenantId: string, userId: string) {
     const professional = await this.professionalsRepository.findByUserId(tenantId, userId);
     if (!professional) {
