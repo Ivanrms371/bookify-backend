@@ -1,5 +1,5 @@
-import { ConflictException, Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { CreatePublicParams } from './appointments.types';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AppointmentsRepository } from './appointments.repository';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { CustomersService } from 'src/modules/customers/customers.service';
@@ -7,11 +7,17 @@ import { ProfessionalsService } from 'src/modules/professionals/professionals.se
 import { ServicesService } from 'src/modules/services/services.service';
 import { AvailabilityService } from 'src/modules/availability/availability.service';
 import { addMinutes, parseISO } from 'date-fns';
-import { AppointmentStatus, CreatedByType } from 'src/generated/prisma/enums';
+import { AppointmentStatus, CreatedByType, RecipientType } from 'src/generated/prisma/enums';
 import { randomBytes } from 'crypto';
 import { FindAllAppointmentsParamsDto } from './dto/find-all-appointments.dto';
 
 import { AppointmentsMapper } from './mappers/appointments.mapper';
+import { AppointmentCreatedEvent } from './domain/events/appointment-created.event';
+import { AppointmentCancelledEvent } from './domain/events/appointment-cancelled.event';
+import { CancelAppointmentDto } from './dto/cancel-appointment.dto';
+import { AuthenticatedUser } from 'src/common/security/types/authenticated-request.type';
+
+const APP_URL = process.env.APP_URL ?? 'http://localhost:5173';
 
 @Injectable()
 export class AppointmentsService {
@@ -21,6 +27,7 @@ export class AppointmentsService {
     private readonly customersService: CustomersService,
     private readonly professionalsService: ProfessionalsService,
     private readonly servicesService: ServicesService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async findAll(tenantId: string, params: FindAllAppointmentsParamsDto) {
@@ -32,7 +39,7 @@ export class AppointmentsService {
     };
   }
 
-  async findById(id: string) {}
+  async findById() {}
 
   async create(tenantId: string, dto: CreateAppointmentDto) {
     const { customerId, professionalId, serviceId } = dto;
@@ -105,10 +112,71 @@ export class AppointmentsService {
       },
     });
 
+    if (customer) {
+      this.eventEmitter.emit('appointment.created', {
+        tenantId,
+        userId: professional.userId,
+        professionalId,
+        professionalName: professional.name,
+        serviceId,
+        serviceName: service.name,
+        customerId: customer.id,
+        customerName: customer.name,
+        cancelUrl: `/appointments/${manageToken}/cancel`,
+        rescheduleUrl: `/appointments/${manageToken}/reschedule`,
+        detailsUrl: `${APP_URL}/appointments`,
+        startAppointmentDate: startsAt,
+        endAppointmentDate: endsAt,
+        appointmentId: appointment.id,
+        createdBy: CreatedByType.STAFF,
+      } satisfies AppointmentCreatedEvent);
+    }
+
     return appointment;
   }
 
-  async reschedule(tenantId: string, dto: any) {}
+  async reschedule() {}
 
-  async cancel(tenantId: string, dto: any) {}
+  async cancel(tenantId: string, id: string, currentUser: AuthenticatedUser, dto: CancelAppointmentDto = {}) {
+    const appointment = await this.appointmentsRepository.findById(tenantId, id);
+
+    if (!appointment) {
+      throw new NotFoundException('No hemos encontrado la cita.');
+    }
+
+    if (appointment.status === AppointmentStatus.COMPLETED) {
+      throw new BadRequestException('Una cita completada no puede ser cancelada.');
+    }
+
+    if (appointment.status === AppointmentStatus.CANCELLED) {
+      return AppointmentsMapper.toResponse(appointment);
+    }
+
+    const cancelledAppointment = await this.appointmentsRepository.cancel(tenantId, id, {
+      status: AppointmentStatus.CANCELLED,
+      cancelledAt: new Date(),
+      cancellationReason: dto.cancellationReason,
+    });
+
+    if (appointment.customerId && appointment.customer) {
+      this.eventEmitter.emit('appointment.cancelled', {
+        appointmentId: appointment.id,
+        tenantId,
+        userId: appointment.professional.userId ?? currentUser.id,
+        professionalId: appointment.professionalId,
+        professionalName: appointment.professional.name,
+        customerId: appointment.customerId,
+        customerName: appointment.customer.name,
+        serviceId: appointment.serviceId,
+        startsAt: appointment.startsAt,
+        endsAt: appointment.endsAt,
+        status: AppointmentStatus.CANCELLED,
+        cancellationReason: dto.cancellationReason ?? '',
+        cancelledByName: currentUser.name,
+        cancelledBy: RecipientType.USER,
+      } satisfies AppointmentCancelledEvent);
+    }
+
+    return AppointmentsMapper.toResponse(cancelledAppointment);
+  }
 }

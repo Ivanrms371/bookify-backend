@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AppointmentCreateInput, AppointmentWhereInput } from 'src/generated/prisma/models';
+import { AppointmentCreateInput, AppointmentUpdateInput, AppointmentWhereInput } from 'src/generated/prisma/models';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 
 import { FindAllAppointmentsParamsDto } from './dto/find-all-appointments.dto';
@@ -94,7 +94,45 @@ export class AppointmentsRepository extends BaseRepository {
     };
   }
 
-  async findById() {}
+  async findById(tenantId: string, id: string) {
+    return this.prisma.appointment.findFirst({
+      where: {
+        id,
+        tenantId,
+      },
+      include: {
+        customer: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            phoneNumber: true,
+          },
+        },
+        professional: {
+          select: {
+            id: true,
+            name: true,
+            userId: true,
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+        service: {
+          select: {
+            id: true,
+            name: true,
+            durationMinutes: true,
+            price: true,
+            imageUrl: true,
+          },
+        },
+      },
+    });
+  }
 
   async create(data: AppointmentCreateInput, tx?: TransactionClient) {
     return this.db(tx).appointment.create({ data });
@@ -102,7 +140,51 @@ export class AppointmentsRepository extends BaseRepository {
 
   async update() {}
 
-  async cancel() {}
+  async cancel(tenantId: string, id: string, data: AppointmentUpdateInput, tx?: TransactionClient) {
+    return this.db(tx).appointment.update({
+      where: { id, tenantId },
+      data: {
+        ...data,
+        blocks: {
+          deleteMany: {},
+        },
+      },
+      include: {
+        customer: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            phoneNumber: true,
+          },
+        },
+        professional: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+            bio: true,
+            userId: true,
+            user: {
+              select: {
+                name: true,
+                avatarUrl: true,
+              },
+            },
+          },
+        },
+        service: {
+          select: {
+            id: true,
+            name: true,
+            durationMinutes: true,
+            price: true,
+            imageUrl: true,
+          },
+        },
+      },
+    });
+  }
 
   async count(tenantId: string, where: AppointmentWhereInput) {
     return this.prisma.appointment.count({ where: { ...where, tenantId } });

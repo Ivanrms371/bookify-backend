@@ -9,7 +9,7 @@ export const NotificationConfig: NotificationConfigMap = {
       backoffDelays: [60_000, 300_000, 900_000],
     },
     channels: {
-      USER: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL }],
+      USER: [{ channel: NotificationChannel.EMAIL }],
       CUSTOMER: [
         {
           channel: NotificationChannel.WHATSAPP,
@@ -68,6 +68,12 @@ export const NotificationConfig: NotificationConfigMap = {
     },
     channels: {
       USER: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL }],
+      CUSTOMER: [
+        {
+          channel: NotificationChannel.WHATSAPP,
+          fallback: [NotificationChannel.EMAIL],
+        },
+      ],
     },
   },
 
