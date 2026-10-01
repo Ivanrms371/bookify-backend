@@ -60,6 +60,7 @@ export interface DayAppointmentAvailabilitySummary {
 }
 
 export interface GetAppointmentAvailabilityParams {
+  excludeAppointmentId?: string;
   tenantId: string;
   professionalId: string;
   serviceId: string;

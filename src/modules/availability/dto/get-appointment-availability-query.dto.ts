@@ -1,6 +1,10 @@
 import { IsDateString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 
 export class GetAppointmentAvailabilityQueryDto {
+  @IsOptional()
+  @IsUUID('7')
+  excludeAppointmentId?: string;
+
   @IsUUID('7', { message: 'professionalId debe ser un UUID válido.' })
   @IsNotEmpty({ message: 'professionalId es obligatorio.' })
   professionalId: string;

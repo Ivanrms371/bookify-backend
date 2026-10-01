@@ -139,7 +139,7 @@ export class AvailabilityService {
   }
 
   async getAppointmentAvailability(params: GetAppointmentAvailabilityParams): Promise<AppointmentAvailabilityResponse> {
-    const { tenantId, professionalId, serviceId, startDate, endDate } = params;
+    const { tenantId, professionalId, serviceId, startDate, endDate, excludeAppointmentId } = params;
 
     const { settings, professional, service } = await this.loadConfiguration(tenantId, professionalId, serviceId);
     const timeZone = settings.timeZone || 'America/Montevideo';
@@ -162,7 +162,9 @@ export class AvailabilityService {
       rangeStartUtc: new Date(startLocal.toISOString()),
       rangeEndUtc: new Date(endLocal.toISOString()),
     });
-    const busyIntervalsUtc = this.extractBusyIntervals(timeline.appointments);
+    const busyIntervalsUtc = this.extractBusyIntervals(
+      excludeAppointmentId ? timeline.appointments.filter((appointment) => appointment.id !== excludeAppointmentId) : timeline.appointments,
+    );
 
     const daysCount = differenceInCalendarDays(endLocal, startLocal) + 1;
     const days: DayAppointmentAvailabilitySummary[] = [];
