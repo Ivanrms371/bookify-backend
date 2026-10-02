@@ -20,7 +20,7 @@ export class EmailGateway {
   ) {
     this.resend = new Resend(this.configService.getOrThrow<string>('RESEND_API_KEY'));
     this.isDevelopment = this.configService.getOrThrow<string>('NODE_ENV') === 'development';
-    this.resendSandox = this.configService.getOrThrow<string>('RESEND_SANDOX');
+    this.resendSandox = this.configService.getOrThrow<string>('RESEND_SANDBOX');
   }
 
   async send(notification: Notification, template: BuildEmailResponse) {

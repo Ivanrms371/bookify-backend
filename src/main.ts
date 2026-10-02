@@ -15,6 +15,6 @@ async function bootstrap() {
   app.use(cookieParser());
   app.useGlobalPipes(validationPipe);
   app.enableCors(corsOptions);
-  await app.listen(process.env.PORT ?? 4000, '0.0.0.0');
+  await app.listen(process.env.BACKEND_PORT ?? 4000, '0.0.0.0');
 }
 bootstrap();

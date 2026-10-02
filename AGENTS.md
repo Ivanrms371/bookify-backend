@@ -4,27 +4,27 @@ This independent Git repository is the NestJS 11 API using Prisma 7 and PostgreS
 
 ## Commands and side effects
 
-| Command | Behavior |
-| --- | --- |
-| `pnpm start:dev` | Starts Nest watch mode; connects to configured infrastructure and can activate scheduled jobs/listeners. |
-| `pnpm start:prod` | Runs `node dist/main`; requires a build. |
-| `pnpm build` | Runs `nest build`; writes build artifacts. |
-| `pnpm exec tsc -p tsconfig.build.json --noEmit --incremental false` | Checks build-config types without emitting files. |
-| `pnpm test --runInBand` | Runs Jest unit tests under `src`, matching `*.spec.ts`. |
-| `pnpm test --runInBand path/to/file.spec.ts` | Selects a unit test file. |
-| `pnpm test:e2e` | Runs Jest with `test/jest-e2e.json`; may initialize the full app/infrastructure. |
-| `pnpm test:cov` | Runs unit tests and writes coverage. |
-| `pnpm lint` / `pnpm format` | ESLint `--fix` / Prettier `--write`: both rewrite files. |
-| `pnpm email:dev` | Starts React Email preview for notification templates. |
-| `pnpm exec prisma generate` | Rewrites generated client files under `src/generated/prisma` and configured generator outputs. |
-| `pnpm exec prisma migrate dev` / `pnpm exec prisma db seed` | Mutates the database; migration can also write migrations/generate artifacts. Confirm before database changes. |
-| `docker compose up -d db` | Starts persistent Postgres 18 via `docker-compose.yml`, mapped to localhost port 5433. |
+| Command                                                             | Behavior                                                                                                       |
+| ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `pnpm start:dev`                                                    | Starts Nest watch mode; connects to configured infrastructure and can activate scheduled jobs/listeners.       |
+| `pnpm start:prod`                                                   | Runs `node dist/main`; requires a build.                                                                       |
+| `pnpm build`                                                        | Runs `nest build`; writes build artifacts.                                                                     |
+| `pnpm exec tsc -p tsconfig.build.json --noEmit --incremental false` | Checks build-config types without emitting files.                                                              |
+| `pnpm test --runInBand`                                             | Runs Jest unit tests under `src`, matching `*.spec.ts`.                                                        |
+| `pnpm test --runInBand path/to/file.spec.ts`                        | Selects a unit test file.                                                                                      |
+| `pnpm test:e2e`                                                     | Runs Jest with `test/jest-e2e.json`; may initialize the full app/infrastructure.                               |
+| `pnpm test:cov`                                                     | Runs unit tests and writes coverage.                                                                           |
+| `pnpm lint` / `pnpm format`                                         | ESLint `--fix` / Prettier `--write`: both rewrite files.                                                       |
+| `pnpm email:dev`                                                    | Starts React Email preview for notification templates.                                                         |
+| `pnpm exec prisma generate`                                         | Rewrites generated client files under `src/generated/prisma` and configured generator outputs.                 |
+| `pnpm exec prisma migrate dev` / `pnpm exec prisma db seed`         | Mutates the database; migration can also write migrations/generate artifacts. Confirm before database changes. |
+| `docker compose up -d db`                                           | Starts persistent Postgres 18 via `docker-compose.yml`, mapped to localhost port 5433.                         |
 
 `prisma.config.ts` configures `tsx prisma/seed.ts`; the older nested package script uses ts-node and is not the current Prisma seed configuration. Import application Prisma client/types/enums from `src/generated/prisma` (for example `client` and `enums`), following nearby code, rather than substituting `@prisma/client`. Do not hand-edit generated files.
 
 ## Runtime, security and persistence
 
-`src/main.ts` sets `/api`, cookies, raw-body support, global validation and port `PORT` or 4000. `src/config/cors.config.ts` allows all origins in development, requests without an Origin, and `APP_URL` otherwise, with credentials. Do not describe CORS as always restricted to `APP_URL`; no health controller was found at `/api/health`.
+`src/main.ts` sets `/api`, cookies, raw-body support, global validation and port `BACKEND_PORT` or 4000. `src/config/cors.config.ts` allows all origins in development, requests without an Origin, and `APP_URL` otherwise, with credentials. Do not describe CORS as always restricted to `APP_URL`; no health controller was found at `/api/health`.
 
 Global guards in `src/app.module.ts` run `JwtAuthGuard` → `TenantGuard` → `PermissionsGuard`. Tenant resolution reads `x-tenant-id` and `x-tenant-slug`, with ID precedence, and verifies active membership. Inspect optional/skip-tenant decorators before changing exceptions. Role permissions for OWNER/ADMIN/STAFF live in `src/common/security/constants/role-permissions.constants.ts`; controller permission metadata and service ownership checks both matter. A route passing a guard does not prove resource ownership.
 
