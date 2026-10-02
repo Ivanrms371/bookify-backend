@@ -1,98 +1,168 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Bookify Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend API for **Bookify**, a multi-tenant SaaS platform for appointment-based businesses such as barbershops, beauty salons, tattoo studios, and spas.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Bookify provides businesses with tools to manage appointments, customers, professionals, services, schedules, availability, and team access, while also supporting a public booking experience for customers.
 
-## Description
+## Features
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Multi-tenant architecture with tenant isolation
+- Authentication with JWT and HTTP-only cookies
+- Google OAuth authentication
+- Role-based access control (Owner, Admin, Staff)
+- User sessions and device management
+- Business and team management
+- Professional profiles and service assignments
+- Customer management
+- Service management
+- Appointment scheduling and management
+- Dynamic availability and time-slot calculation
+- Working hours and schedule exceptions
+- Public booking flow
+- Team invitations and membership management
+- Email verification and password recovery
+- Professional commissions
+- Security and authorization guards
+- Multi-plan foundation for SaaS billing
 
-## Project setup
+## Tech Stack
 
-```bash
-$ pnpm install
-```
+- **Node.js**
+- **TypeScript**
+- **NestJS**
+- **PostgreSQL**
+- **Prisma ORM**
+- **Docker**
+- **JWT**
+- **Google OAuth**
 
-## Compile and run the project
+## Architecture
 
-```bash
-# development
-$ pnpm run start
+Bookify follows a modular NestJS architecture designed around isolated business domains.
 
-# watch mode
-$ pnpm run start:dev
+The platform is multi-tenant: tenant-scoped operations are executed within an active tenant context, with authorization and tenant isolation enforced through guards and permissions.
 
-# production mode
-$ pnpm run start:prod
-```
+Authentication uses short-lived access tokens and refresh tokens stored through HTTP-only cookies. Session and device management provide additional control over authenticated sessions.
 
-## Run tests
+The scheduling system combines professional working hours, service duration, booking restrictions, schedule exceptions, existing appointments, and availability rules to determine bookable time slots.
 
-```bash
-# unit tests
-$ pnpm run test
+The backend exposes both authenticated endpoints for the management application and public endpoints used by the customer-facing booking website.
 
-# e2e tests
-$ pnpm run test:e2e
+## Getting Started
 
-# test coverage
-$ pnpm run test:cov
-```
+### Prerequisites
 
-## Deployment
+Make sure you have installed:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- Node.js
+- npm
+- Docker
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 1. Clone the repository
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+git clone <repository-url>
+cd bookify-backend
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 2. Install dependencies
 
-## Resources
+```bash
+npm install
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+### 3. Configure environment variables
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Create your local environment file from the provided example:
 
-## Support
+```bash
+cp .env.example .env
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Update the values in `.env` according to your local environment.
 
-## Stay in touch
+The `.env.example` file contains the environment variables required by the application without including private credentials.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 4. Start PostgreSQL
+
+A Docker Compose configuration is included for running PostgreSQL locally.
+
+```bash
+docker compose up -d
+```
+
+Verify that the database is running:
+
+```bash
+docker compose ps
+```
+
+### 5. Run database migrations
+
+Apply the existing Prisma migrations:
+
+```bash
+npx prisma migrate deploy
+```
+
+Generate the Prisma client if necessary:
+
+```bash
+npx prisma generate
+```
+
+### 6. Start the backend
+
+```bash
+npm run start:dev
+```
+
+By default, the API runs at:
+
+```text
+http://localhost:4000/api
+```
+
+## Environment Variables
+
+Environment-specific configuration is managed through environment variables.
+
+See:
+
+```text
+.env.example
+```
+
+for the complete list of required variables.
+
+Never commit your local `.env` file or production credentials.
+
+## Database
+
+Bookify uses **PostgreSQL** as its relational database and **Prisma ORM** for database access and migrations.
+
+Database schema changes are versioned through Prisma migrations, allowing a new database to be reconstructed from the migration history.
+
+## Related Applications
+
+Bookify is divided into three applications:
+
+- **Bookify Backend** — NestJS API and business logic
+- **Bookify App** — Management dashboard for businesses and staff
+- **Bookify Web** — Public website and customer booking experience
+
+Each application is maintained in its own repository.
+
+## Development Status
+
+Bookify is currently under active development.
+
+The project is being developed as a complete SaaS platform and may contain features or APIs that are still evolving.
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Copyright © 2026 Iván Rodríguez. All rights reserved.
+
+This source code is publicly available for viewing and portfolio purposes only.
+
+No permission is granted to copy, modify, distribute, sublicense, sell, or use this software or substantial portions of it for commercial purposes without prior written permission from the author.
