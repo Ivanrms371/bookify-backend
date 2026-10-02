@@ -35,6 +35,7 @@ export class AppointmentsRepository extends BaseRepository {
           customerId: true,
           professionalId: true,
           status: true,
+          tenant: { select: { settings: { select: { timeZone: true } } } },
           startsAt: true,
           endsAt: true,
           customerName: true,
@@ -54,6 +55,9 @@ export class AppointmentsRepository extends BaseRepository {
               name: true,
               avatarUrl: true,
               bio: true,
+              email: true,
+              phoneNumber: true,
+              phoneCountryCode: true,
               user: {
                 select: {
                   name: true,
@@ -101,6 +105,7 @@ export class AppointmentsRepository extends BaseRepository {
         tenantId,
       },
       include: {
+        tenant: { select: { settings: { select: { timeZone: true } } } },
         customer: {
           select: {
             id: true,
@@ -143,6 +148,7 @@ export class AppointmentsRepository extends BaseRepository {
       where: { id, tenantId },
       data,
       include: {
+        tenant: { select: { settings: { select: { timeZone: true } } } },
         customer: {
           select: {
             id: true,
@@ -157,6 +163,9 @@ export class AppointmentsRepository extends BaseRepository {
             name: true,
             avatarUrl: true,
             bio: true,
+            email: true,
+            phoneNumber: true,
+            phoneCountryCode: true,
             userId: true,
             user: {
               select: {
@@ -189,6 +198,7 @@ export class AppointmentsRepository extends BaseRepository {
         },
       },
       include: {
+        tenant: { select: { settings: { select: { timeZone: true } } } },
         customer: {
           select: {
             id: true,
@@ -203,6 +213,9 @@ export class AppointmentsRepository extends BaseRepository {
             name: true,
             avatarUrl: true,
             bio: true,
+            email: true,
+            phoneNumber: true,
+            phoneCountryCode: true,
             userId: true,
             user: {
               select: {

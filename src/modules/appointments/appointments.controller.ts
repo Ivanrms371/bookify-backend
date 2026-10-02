@@ -44,14 +44,15 @@ export class AppointmentsController {
   }
 
   @Patch(':id/cancel')
-  @Permissions(PERMISSIONS.APPOINTMENT_DELETE)
+  @Permissions(PERMISSIONS.APPOINTMENT_CANCEL)
   async cancel(
     @GetTenantId() tenantId: string,
     @Param('id') id: string,
     @CurrentUser() currentUser: AuthenticatedUser,
+    @CurrentTenant() tenantContext: TenantContext,
     @Body() dto: CancelAppointmentDto,
   ) {
-    return this.appointmentsService.cancel(tenantId, id, currentUser, dto);
+    return this.appointmentsService.cancel(tenantId, id, currentUser, tenantContext.permissions, dto);
   }
 
   @Delete(':id')

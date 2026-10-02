@@ -6,7 +6,7 @@ import { CustomersService } from 'src/modules/customers/customers.service';
 import { ProfessionalsService } from 'src/modules/professionals/professionals.service';
 import { ServicesService } from 'src/modules/services/services.service';
 import { AvailabilityService } from 'src/modules/availability/availability.service';
-import { addMinutes, isAfter, isEqual, isValid, parseISO } from 'date-fns';
+import { addMinutes, isEqual, isValid, parseISO } from 'date-fns';
 import { AppointmentStatus, CreatedByType, RecipientType } from 'src/generated/prisma/enums';
 import { randomBytes } from 'crypto';
 import { FindAllAppointmentsParamsDto } from './dto/find-all-appointments.dto';
@@ -161,10 +161,6 @@ export class AppointmentsService {
       throw new BadRequestException('Formato de fecha inválido para startsAt.');
     }
 
-    if (!isAfter(startsAt, new Date())) {
-      throw new BadRequestException('La nueva fecha debe ser futura.');
-    }
-
     if (isEqual(startsAt, appointment.startsAt)) {
       throw new BadRequestException('El horario seleccionado es igual al que ya tiene la cita.');
     }
@@ -185,6 +181,7 @@ export class AppointmentsService {
       serviceId: appointment.serviceId,
       startsAt: dto.startsAt,
       ignoreMinAdvanced: true,
+      allowPast: true,
       excludeAppointmentId: appointment.id,
     });
 
@@ -232,11 +229,19 @@ export class AppointmentsService {
     return AppointmentsMapper.toResponse(rescheduledAppointment);
   }
 
-  async cancel(tenantId: string, id: string, currentUser: AuthenticatedUser, dto: CancelAppointmentDto = {}) {
+  async cancel(tenantId: string, id: string, currentUser: AuthenticatedUser, permissions: readonly Permission[], dto: CancelAppointmentDto = {}) {
     const appointment = await this.appointmentsRepository.findById(tenantId, id);
 
     if (!appointment) {
       throw new NotFoundException('No hemos encontrado la cita.');
+    }
+
+    if (!permissions.includes(PERMISSIONS.APPOINTMENT_CANCEL)) {
+      throw new ForbiddenException('No tienes permisos para cancelar citas.');
+    }
+
+    if (!permissions.includes(PERMISSIONS.APPOINTMENT_CANCEL_OTHERS) && appointment.professional.userId !== currentUser.id) {
+      throw new ForbiddenException('No tienes permisos para cancelar citas de otros profesionales.');
     }
 
     if (appointment.status === AppointmentStatus.COMPLETED) {
@@ -247,10 +252,11 @@ export class AppointmentsService {
       return AppointmentsMapper.toResponse(appointment);
     }
 
+    const cancellationReason = dto.cancellationReason?.trim() || undefined;
     const cancelledAppointment = await this.appointmentsRepository.cancel(tenantId, id, {
       status: AppointmentStatus.CANCELLED,
       cancelledAt: new Date(),
-      cancellationReason: dto.cancellationReason,
+      cancellationReason,
     });
 
     if (appointment.customerId && appointment.customer) {
@@ -266,7 +272,7 @@ export class AppointmentsService {
         startsAt: appointment.startsAt,
         endsAt: appointment.endsAt,
         status: AppointmentStatus.CANCELLED,
-        cancellationReason: dto.cancellationReason ?? '',
+        cancellationReason: cancellationReason ?? '',
         cancelledByName: currentUser.name,
         cancelledBy: RecipientType.USER,
       } satisfies AppointmentCancelledEvent);

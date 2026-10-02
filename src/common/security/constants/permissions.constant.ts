@@ -4,6 +4,8 @@ export const PERMISSIONS = {
   APPOINTMENT_READ: 'appointment:read',
   APPOINTMENT_UPDATE: 'appointment:update',
   APPOINTMENT_DELETE: 'appointment:delete',
+  APPOINTMENT_CANCEL: 'appointment:cancel',
+  APPOINTMENT_CANCEL_OTHERS: 'appointment:cancel_others',
   APPOINTMENT_RESCHEDULE: 'appointment:reschedule',
 
   APPOINTMENT_READ_OTHERS: 'appointment:read_others',

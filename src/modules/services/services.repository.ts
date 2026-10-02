@@ -107,6 +107,9 @@ export class ServicesRepository {
         name: true,
         colorTheme: true,
         bio: true,
+        email: true,
+        phoneNumber: true,
+        phoneCountryCode: true,
       },
     });
   }

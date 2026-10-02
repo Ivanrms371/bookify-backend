@@ -95,7 +95,7 @@ Role permissions are explicit maps, not inheritance. OWNER and ADMIN have broade
 
 A guard-selected tenant must reach resource predicates. Related-record IDs also need same-tenant validation: independent foreign keys prove existence, not that two records belong to the same tenant. Self-service professional routes resolve by both tenant and user; administrative relationship writes require separate scrutiny.
 
-There is no demonstrated system-wide "STAFF can only access their own appointments" rule. Appointment listing accepts an optional professional filter without enforcing `APPOINTMENT_READ_OTHERS`; creation accepts a tenant professional without checking the current user's professional. Rescheduling does enforce own/others access. Cancellation requires the controller's delete permission but does not separately inspect delete-others permission.
+There is no demonstrated system-wide "STAFF can only access their own appointments" rule. Appointment listing accepts an optional professional filter without enforcing `APPOINTMENT_READ_OTHERS`; creation accepts a tenant professional without checking the current user's professional. Rescheduling does enforce own/others access. Cancellation requires `APPOINTMENT_CANCEL`; without `APPOINTMENT_CANCEL_OTHERS`, the appointment’s tenant-scoped professional must be linked to the current user. This check also runs before returning an already-cancelled record. STAFF can cancel their own appointments; OWNER/ADMIN can cancel others. Cancellation permissions do not grant deletion access.
 
 ## Dependencies and side effects
 

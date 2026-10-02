@@ -69,7 +69,7 @@ Listing is an offer, not a reservation or proof the mutation validator will acce
 | Operation | Authenticated | Public/token-based |
 | --- | --- | --- |
 | Create | Optional customer; PENDING; ignores minimum notice and allows past booking | Finds/creates/updates customer first; CONFIRMED; normal minimum notice |
-| Reschedule | Tenant-scoped lookup; rejects COMPLETED/CANCELLED; future changed start; own/others authorization; excludes original appointment | Token lookup; CONFIRMED only; at most one reschedule; normal minimum notice; does not exclude original appointment |
+| Reschedule | Tenant-scoped lookup; rejects COMPLETED/CANCELLED; changed start, including past times; own/others authorization; excludes original appointment | Token lookup; CONFIRMED only; at most one reschedule; normal minimum notice; does not exclude original appointment |
 | Cancel | Rejects COMPLETED; already-cancelled returns existing response; removes blocks | CONFIRMED only; repeated cancellation rejected; blocks retained |
 | Events | Create/reschedule/cancel emitted only when a customer is present | Creation emitted; reschedule/cancel have no matching emissions |
 
@@ -165,3 +165,15 @@ Generated Prisma files with suffixes such as ` 2.ts` are not independent evidenc
 ## When to update this document
 
 Update when changing hours ownership/fallback, exception precedence/targeting, eligibility, timezone/date semantics, buffers/limits, occupancy representation, appointment statuses/snapshots, mutation authorization, transaction guarantees or event emission. Reverify query and mutation paths together, including customerless and public behavior. Keep implementation catalogs in code, operations in AGENTS.md/skills and integration coordination in the parent cross-app workflow when available.
+
+## Dashboard cancellation
+
+The dashboard confirms cancellation in a modal and accepts an optional reason. The reason is trimmed, saved on the appointment, and included in the customer notification; the modal makes this sharing explicit. An authenticated cancellation preserves the appointment record, sets `CANCELLED` and `cancelledAt`, and removes its blocks in the same nested update. Cancelled appointments no longer occupy availability and are excluded from the dashboard overview’s upcoming list, but remain in the appointment list. Appointment responses include the tenant settings timezone (`America/Montevideo` when settings are absent) for confirmation date/time formatting, including for staff who cannot read settings.
+
+Completed appointments cannot be cancelled. Repeating cancellation returns the existing record without another write/event after checking permission and ownership. OWNER/ADMIN can cancel any tenant appointment; STAFF can cancel only a professional appointment linked to their user, using dedicated cancellation permissions. No restore operation is offered.
+
+For a linked customer, the existing asynchronous listener cancels pending reminder deliveries and queues a customer cancellation notification with the optional reason. Successful cancellation does not guarantee notification delivery, retract reminders already sent, or update stored statistics. Customerless appointments emit no customer event; the modal omits the notification promise. Public token cancellation and cancellation-window rules are unchanged.
+
+### Dashboard past-time bookings
+
+Authenticated dashboard creation and rescheduling allow past start times via the existing availability validator’s `allowPast` option. The dashboard shows all generated operating-hour slots, including past and busy slots. Only busy slots are disabled; the rescheduling availability query excludes the original appointment and its blocks while retaining other conflicts. A shared warning Callout appears only after selecting a past time; it does not block submission. Rescheduling to the appointment’s unchanged start time remains rejected. Public customer creation/rescheduling does not enable `allowPast`, so its advance-time restrictions remain in place. Working-hours, service/professional eligibility, conflicts and buffers continue to be validated.

@@ -40,6 +40,7 @@ export class DashboardRepository {
     return this.prisma.appointment.findMany({
       where: {
         tenantId,
+        status: { not: 'CANCELLED' },
         startsAt: {
           gte: startOfDay(startDate),
           lte: endOfDay(endDate),

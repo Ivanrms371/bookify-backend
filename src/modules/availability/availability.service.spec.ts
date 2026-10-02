@@ -44,4 +44,23 @@ describe('staff rescheduling availability', () => {
     const original = await service.getAppointmentAvailability(params);
     expect(excluded).toEqual(original);
   });
+
+  it('retains past slots and allows backdating only when requested, while enforcing conflicts and working hours', async () => {
+    jest.useFakeTimers().setSystemTime(new Date('2031-01-01T12:00:00Z'));
+    try {
+      const result = await service.getAppointmentAvailability({ ...params, excludeAppointmentId: 'current' });
+      expect(result.days[0].slots.find((slot) => slot.time === '09:30')?.status).toBe('past');
+      expect(result.days[0].slots.find((slot) => slot.time === '11:00')?.status).toBe('busy');
+      const validation = {
+        tenantId: 'tenant', professionalId: 'professional', serviceId: 'service',
+        startsAt: '2030-01-07T12:30:00Z', excludeAppointmentId: 'current', ignoreMinAdvanced: true,
+      };
+      expect(await service.isSlotAvailable(validation)).toBe(false);
+      expect(await service.isSlotAvailable({ ...validation, allowPast: true })).toBe(true);
+      expect(await service.isSlotAvailable({ ...validation, allowPast: true, startsAt: '2030-01-07T14:00:00Z' })).toBe(false);
+      expect(await service.isSlotAvailable({ ...validation, allowPast: true, startsAt: '2030-01-07T19:00:00Z' })).toBe(false);
+    } finally {
+      jest.useRealTimers();
+    }
+  });
 });
