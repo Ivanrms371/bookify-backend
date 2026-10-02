@@ -33,6 +33,10 @@ Bookify provides businesses with tools to manage appointments, customers, profes
 - **PostgreSQL**
 - **Prisma ORM**
 - **Docker**
+- **Date & Time:** date-fns, date-fns-tz
+
+### Authentication
+
 - **JWT**
 - **Google OAuth**
 
