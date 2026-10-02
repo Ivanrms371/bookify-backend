@@ -177,3 +177,9 @@ For a linked customer, the existing asynchronous listener cancels pending remind
 ### Dashboard past-time bookings
 
 Authenticated dashboard creation and rescheduling allow past start times via the existing availability validator’s `allowPast` option. The dashboard shows all generated operating-hour slots, including past and busy slots. Only busy slots are disabled; the rescheduling availability query excludes the original appointment and its blocks while retaining other conflicts. A shared warning Callout appears only after selecting a past time; it does not block submission. Rescheduling to the appointment’s unchanged start time remains rejected. Public customer creation/rescheduling does not enable `allowPast`, so its advance-time restrictions remain in place. Working-hours, service/professional eligibility, conflicts and buffers continue to be validated.
+
+### Dashboard calendar filters
+
+Authenticated `GET /api/appointments` accepts `date`, `state` (an AppointmentStatus), and `professionalId`. Omit `state` or `professionalId` to include all values; the string `all` is not an API value. Both results and the total count use these tenant-scoped filters. `orderBy` accepts `startsAt` (appointment hour) or `createdAt` (newest creation), with `order=asc|desc`; omitted sorting remains `startsAt asc`. An ID tie-breaker stabilizes pagination through `skip` and `take` (default 10). The dashboard uses `createdAt desc` for “Más recientes”. Public booking and management endpoints are separate and unchanged.
+
+Dashboard appointment responses include `formattedStartsAt: { date, time }`, formatted in Spanish with date-fns/date-fns-tz using `tenant.settings.timeZone`. Original `startsAt`/`endsAt` instants remain available for scheduling. When tenant settings are missing, `timeZone` and `formattedStartsAt` are null; the mapper does not substitute a timezone. The cancellation modal displays these server-formatted labels.

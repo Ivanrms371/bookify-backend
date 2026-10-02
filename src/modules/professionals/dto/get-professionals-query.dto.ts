@@ -1,4 +1,5 @@
 import { IsOptional, IsUUID, IsEnum, IsInt, Min, Max, IsString, IsIn } from 'class-validator';
+import { Type } from 'class-transformer';
 import { SortOrder } from 'src/generated/prisma/internal/prismaNamespace';
 
 export class GetProfessionalsQueryDto {
@@ -15,11 +16,13 @@ export class GetProfessionalsQueryDto {
   orderBy?: 'name' | 'lastName' | 'email' | 'isActive' | 'createdAt' = 'createdAt';
 
   @IsOptional()
+  @Type(() => Number)
   @IsInt()
   @Min(0)
   skip?: number = 0;
 
   @IsOptional()
+  @Type(() => Number)
   @IsInt()
   @Min(1)
   @Max(24)

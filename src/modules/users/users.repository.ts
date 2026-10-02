@@ -67,6 +67,7 @@ export class UsersRepository extends BaseRepository {
                 slug: true,
                 logoUrl: true,
                 onboardingStatus: true,
+                settings: { select: { timeZone: true } },
                 professionals: {
                   where: {
                     userId,

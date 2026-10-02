@@ -1,5 +1,6 @@
-import { IsOptional, IsString, IsInt, IsIn, Min, IsDate } from 'class-validator';
+import { IsOptional, IsString, IsInt, IsIn, Min, IsDate, IsEnum, IsUUID } from 'class-validator';
 import { Type } from 'class-transformer';
+import { AppointmentStatus } from 'src/generated/prisma/enums';
 
 export class FindAllAppointmentsParamsDto {
   @IsOptional()
@@ -7,8 +8,8 @@ export class FindAllAppointmentsParamsDto {
   query?: string;
 
   @IsOptional()
-  @IsString()
-  orderBy?: string;
+  @IsIn(['startsAt', 'createdAt'])
+  orderBy?: 'startsAt' | 'createdAt';
 
   @IsOptional()
   @IsIn(['asc', 'desc'])
@@ -27,8 +28,12 @@ export class FindAllAppointmentsParamsDto {
   take?: number;
 
   @IsOptional()
-  @IsString()
+  @IsUUID()
   professionalId?: string;
+
+  @IsOptional()
+  @IsEnum(AppointmentStatus)
+  state?: AppointmentStatus;
 
   @IsOptional()
   @Type(() => Date)

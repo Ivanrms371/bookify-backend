@@ -15,10 +15,11 @@ export class AppointmentsRepository extends BaseRepository {
   }
 
   async findMany(tenantId: string, params: FindAllAppointmentsParamsDto) {
-    const { orderBy, order, skip = 0, take = 10, professionalId, date } = params;
+    const { orderBy, order, skip = 0, take = 10, professionalId, date, state } = params;
 
     const where: AppointmentWhereInput = {
       tenantId,
+      ...(state ? { status: state } : {}),
       ...(professionalId ? { professionalId } : {}),
       ...(date ? { startsAt: { gte: startOfDay(date), lte: endOfDay(date) } } : {}),
     };
@@ -26,7 +27,7 @@ export class AppointmentsRepository extends BaseRepository {
     const [data, total] = await Promise.all([
       this.prisma.appointment.findMany({
         where,
-        orderBy: orderBy ? { [orderBy]: order || 'asc' } : { startsAt: 'asc' },
+        orderBy: [{ [orderBy ?? 'startsAt']: order ?? 'asc' }, { id: 'asc' }],
         skip,
         take,
         select: {

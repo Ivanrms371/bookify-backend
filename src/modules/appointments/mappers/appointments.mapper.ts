@@ -1,12 +1,24 @@
+import { formatInTimeZone } from 'date-fns-tz';
+import { es } from 'date-fns/locale';
+
 export class AppointmentsMapper {
   static toResponse(appointment: any) {
+    const timeZone = appointment.tenant?.settings?.timeZone ?? null;
+    const formattedStartsAt = timeZone
+      ? {
+          date: formatInTimeZone(appointment.startsAt, timeZone, "d 'de' MMMM 'de' yyyy", { locale: es }),
+          time: formatInTimeZone(appointment.startsAt, timeZone, 'HH:mm', { locale: es }),
+        }
+      : null;
+
     return {
       id: appointment.id,
       serviceId: appointment.serviceId,
       customerId: appointment.customerId,
       professionalId: appointment.professionalId,
       status: appointment.status,
-      timeZone: appointment.tenant?.settings?.timeZone ?? 'America/Montevideo',
+      timeZone,
+      formattedStartsAt,
       startsAt: appointment.startsAt,
       endsAt: appointment.endsAt,
       customerName: appointment.customerName,

@@ -56,6 +56,7 @@ export class ProfessionalsRepository extends BaseRepository {
       where,
       skip,
       take,
+      orderBy: { id: 'asc' },
       select,
     });
   }

@@ -139,3 +139,5 @@ Generated Prisma variants such as `client 2.ts` are not independent domain sourc
 ## When to update this document
 
 Update when changing token/session validation or caching, guard/decorator behavior, tenant selection, role maps, membership/invitation lifecycle, professional/user relationships, resource ownership, management-token disclosure or alternate-transport authentication. Recheck the affected flow end to end and distinguish newly enforced guarantees from unresolved intent. Keep procedures and operational restrictions in AGENTS.md/skills.
+
+The authenticated session's `activeTenant.timeZone` comes from the selected membership tenant's `settings.timeZone`. It is null when settings are absent; no display timezone is substituted. Dashboard scheduling reads this field from the auth store.

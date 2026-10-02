@@ -13,6 +13,7 @@ export interface RawUserContextResponse {
       slug: string | null;
       logoUrl: string | null;
       onboardingStatus: OnboardingStatus;
+      settings: { timeZone: string } | null;
       professionals: Array<{ id: string }>;
       subscription: {
         status: SubscriptionStatus;
@@ -31,6 +32,7 @@ export interface ActiveTenant {
   role: MembershipRole;
   onboardingStatus: OnboardingStatus;
   professionalId: string | null;
+  timeZone: string | null;
   subscription: {
     status: SubscriptionStatus;
     currentPeriodEnd: string | null;
@@ -67,6 +69,7 @@ export class MeUserMapper {
         role,
         onboardingStatus: tenant.onboardingStatus,
         professionalId,
+        timeZone: tenant.settings?.timeZone ?? null,
         subscription: tenant.subscription
           ? {
               status: tenant.subscription.status,
