@@ -20,45 +20,61 @@ export class ProfessionalsRepository extends BaseRepository {
   }
 
   async findMany(tenantId: string, query: GetProfessionalsQueryDto, tx?: TransactionClient) {
-    const { serviceId, skip, take } = query;
+    const { serviceId, skip = 0, take = 24, orderBy = 'createdAt', sortOrder = 'asc', isActive } = query;
 
     const where: ProfessionalWhereInput = {
       tenantId,
       deletedAt: null,
     };
 
-    const select: ProfessionalSelect = {
+    if (isActive !== undefined) where.isActive = isActive;
+    const search = query.query?.trim().replace(/[\\%_]/g, '\\$&');
+    if (search)
+      where.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        { email: { contains: search, mode: 'insensitive' } },
+        { user: { is: { email: { contains: search, mode: 'insensitive' } } } },
+      ];
+
+    const select = {
       id: true,
       name: true,
       avatarUrl: true,
       colorTheme: true,
       bio: true,
       isActive: true,
+      email: true,
+      phoneNumber: true,
+      phoneCountryCode: true,
       user: {
         select: {
+          memberships: { where: { tenantId, isActive: true }, select: { role: true } },
           email: true,
           phoneNumber: true,
           phoneCountryCode: true,
         },
       },
-    };
+    } satisfies ProfessionalSelect;
 
     if (serviceId) {
       where.assignments = {
         some: {
           serviceId,
           isActive: true,
+          service: { tenantId, deletedAt: null },
         },
       };
     }
 
-    return this.db(tx).professional.findMany({
+    const data = await this.db(tx).professional.findMany({
       where,
       skip,
       take,
-      orderBy: { id: 'asc' },
+      orderBy: [{ [orderBy]: sortOrder }, { id: 'asc' }],
       select,
     });
+    const total = query.count ? await this.db(tx).professional.count({ where }) : undefined;
+    return { data, meta: { total, skip, take } };
   }
 
   async findByUserId(tenantId: string, userId: string, tx?: TransactionClient) {

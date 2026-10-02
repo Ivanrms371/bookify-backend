@@ -1,10 +1,25 @@
-import { IsOptional, IsUUID, IsEnum, IsInt, Min, Max, IsString, IsIn } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsOptional, IsUUID, IsEnum, IsInt, Min, Max, IsString, IsIn, IsBoolean, MaxLength } from 'class-validator';
+import { Type, Transform } from 'class-transformer';
 import { SortOrder } from 'src/generated/prisma/internal/prismaNamespace';
 
 export class GetProfessionalsQueryDto {
   @IsOptional()
-  @IsUUID('4', { message: 'El professionalId debe ser un UUID válido (v4 o v7)' })
+  @IsString()
+  @MaxLength(200)
+  query?: string;
+
+  @IsOptional()
+  @Transform(({ value }) => (value === 'true' || value === '1' ? true : value === 'false' || value === '0' ? false : (value as unknown)))
+  @IsBoolean()
+  isActive?: boolean;
+
+  @IsOptional()
+  @Transform(({ value }) => (value === 'true' || value === '1' ? true : value === 'false' || value === '0' ? false : (value as unknown)))
+  @IsBoolean()
+  count?: boolean;
+
+  @IsOptional()
+  @IsUUID('all', { message: 'El serviceId debe ser un UUID válido' })
   serviceId?: string;
 
   @IsOptional()
@@ -12,8 +27,8 @@ export class GetProfessionalsQueryDto {
   sortOrder?: SortOrder = SortOrder.asc;
 
   @IsOptional()
-  @IsIn(['name', 'lastName', 'email', 'isActive', 'createdAt'])
-  orderBy?: 'name' | 'lastName' | 'email' | 'isActive' | 'createdAt' = 'createdAt';
+  @IsIn(['name', 'email', 'isActive', 'createdAt'])
+  orderBy?: 'name' | 'email' | 'isActive' | 'createdAt' = 'createdAt';
 
   @IsOptional()
   @Type(() => Number)

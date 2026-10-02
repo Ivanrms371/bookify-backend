@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { AppointmentsService } from './appointments.service';
+import { AppointmentsService } from '../appointments.service';
 import { PERMISSIONS } from 'src/common/security/constants/permissions.constant';
 import { AppointmentStatus } from 'src/generated/prisma/enums';
 

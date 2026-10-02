@@ -1,7 +1,3 @@
-export type FindAllCustomersParams = {
-  tenantId: string;
-  take?: number;
-  skip?: number;
-  orderBy?: 'name' | 'createdAt';
-  order?: 'asc' | 'desc';
-};
+import type { FindAllCustomersParams as CustomersQuery } from '../dto/find-all-customers-params.dto';
+
+export type FindAllCustomersParams = CustomersQuery & { tenantId: string };

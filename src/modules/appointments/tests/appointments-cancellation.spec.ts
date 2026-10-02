@@ -1,10 +1,10 @@
-jest.mock('../notifications/application/services/notifications.service', () => ({ NotificationsService: jest.fn() }));
+jest.mock('../../notifications/application/services/notifications.service', () => ({ NotificationsService: jest.fn() }));
 
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
-import { AppointmentsService } from './appointments.service';
-import { AppointmentsRepository } from './appointments.repository';
-import { AppointmentCancelledListener } from '../notifications/listeners/appointments/appointment-cancelled.listener';
-import { DashboardRepository } from '../dashboard/dashboard.repository';
+import { AppointmentsService } from '../appointments.service';
+import { AppointmentsRepository } from '../appointments.repository';
+import { AppointmentCancelledListener } from '../../notifications/listeners/appointments/appointment-cancelled.listener';
+import { DashboardRepository } from '../../dashboard/dashboard.repository';
 import { PERMISSIONS } from 'src/common/security/constants/permissions.constant';
 import { ROLE_PERMISSIONS } from 'src/common/security/constants/role-permissions.constants';
 import { AppointmentStatus, RecipientType } from 'src/generated/prisma/enums';

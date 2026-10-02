@@ -23,17 +23,20 @@ export class ProfessionalsService {
   ) {}
 
   async findAll(tenantId: string, query: GetProfessionalsQueryDto) {
-    const professionals = await this.professionalsRepository.findMany(tenantId, query);
-    return professionals.map((prof) => ({
+    const result = await this.professionalsRepository.findMany(tenantId, query);
+    const data = result.data.map((prof) => ({
       id: prof.id,
       avatarUrl: prof.avatarUrl,
       name: prof.name,
-      colorTheme: (prof as any).colorTheme ?? null,
-      bio: (prof as any).bio ?? null,
-      email: prof.user?.email || null,
-      phoneNumber: prof.user?.phoneNumber || null,
-      phoneCountryCode: prof.user?.phoneCountryCode || null,
+      colorTheme: prof.colorTheme,
+      bio: prof.bio,
+      isActive: prof.isActive,
+      role: prof.user?.memberships[0]?.role ?? null,
+      email: prof.user?.email || prof.email || null,
+      phoneNumber: prof.user?.phoneNumber || prof.phoneNumber || null,
+      phoneCountryCode: prof.user?.phoneCountryCode || prof.phoneCountryCode || null,
     }));
+    return query.count ? { data, meta: result.meta } : data;
   }
 
   async findById(tenantId: string, id: string, tx?: TransactionClient) {

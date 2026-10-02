@@ -19,6 +19,24 @@ export class ServicesRepository {
       deletedAt: null,
     };
 
+    const search = dto.query?.trim();
+    if (search) {
+      const literal = search.replace(/[\\%_]/g, '\\$&');
+      whereClause.OR = [{ name: { contains: literal, mode: 'insensitive' } }, { description: { contains: literal, mode: 'insensitive' } }];
+    }
+    if (dto.duration) {
+      whereClause.durationMinutes = dto.duration === 'short' ? { lte: 30 } : dto.duration === 'medium' ? { gt: 30, lte: 60 } : { gt: 60 };
+    }
+    if (dto.discount === 'with') {
+      whereClause.AND = [{ OR: [{ discountPercentage: { gt: 0 } }, { discountFixed: { gt: 0 } }] }];
+    }
+    if (dto.discount === 'without') {
+      whereClause.AND = [
+        { OR: [{ discountPercentage: null }, { discountPercentage: { lte: 0 } }] },
+        { OR: [{ discountFixed: null }, { discountFixed: { lte: 0 } }] },
+      ];
+    }
+
     if (isActive !== undefined) {
       whereClause.isActive = isActive;
     }
@@ -33,9 +51,7 @@ export class ServicesRepository {
       where: whereClause,
       skip,
       take,
-      orderBy: {
-        [orderBy]: order,
-      },
+      orderBy: [{ [orderBy]: order }, { id: 'asc' }],
       select: {
         id: true,
         name: true,

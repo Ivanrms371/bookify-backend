@@ -1,8 +1,21 @@
-import { IsOptional, IsString, IsInt, Min, IsIn, Max, IsEnum, IsUUID, IsBoolean } from 'class-validator';
+import { IsOptional, IsString, IsInt, Min, IsIn, Max, IsEnum, IsUUID, IsBoolean, MaxLength } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { SortOrder } from 'src/generated/prisma/internal/prismaNamespace';
 
 export class GetServicesQueryDto {
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  query?: string;
+
+  @IsOptional()
+  @IsIn(['short', 'medium', 'long'])
+  duration?: 'short' | 'medium' | 'long';
+
+  @IsOptional()
+  @IsIn(['with', 'without'])
+  discount?: 'with' | 'without';
+
   @IsOptional()
   @IsUUID('4', { message: 'El professionalId debe ser un UUID válido (v4 o v7)' })
   professionalId?: string;
@@ -11,7 +24,7 @@ export class GetServicesQueryDto {
   @Transform(({ value }) => {
     if (value === 'true' || value === '1') return true;
     if (value === 'false' || value === '0') return false;
-    return value;
+    return value as unknown;
   })
   @IsBoolean({ message: 'El campo isActive debe ser un valor booleano (true o false)' })
   isActive?: boolean;
@@ -31,6 +44,7 @@ export class GetServicesQueryDto {
 
   @IsOptional()
   @IsBoolean()
+  @Transform(({ value }) => (value === 'true' || value === '1' ? true : value === 'false' || value === '0' ? false : (value as unknown)))
   count: boolean = false;
 
   @IsOptional()

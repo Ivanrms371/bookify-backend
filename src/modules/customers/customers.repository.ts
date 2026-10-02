@@ -1,8 +1,10 @@
+import { Prisma } from 'src/generated/prisma/client';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from 'src/common/database/base.repository';
 import { CustomerCreateInput, CustomerUpdateInput } from 'src/generated/prisma/models';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { FindAllCustomersParams } from './types/customer-find-all.params';
+import type { CustomerListingRow } from './types/customer-listing-row.type';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 
 @Injectable()
@@ -64,39 +66,61 @@ export class CustomersRepository extends BaseRepository {
   }
 
   async findMany(params: FindAllCustomersParams, tx?: TransactionClient) {
-    const { tenantId, take = 10, skip = 0, orderBy = 'name', order = 'asc' } = params;
-
-    const [customers, total] = await Promise.all([
-      this.db(tx).customer.findMany({
-        where: { tenantId, deletedAt: null },
-        orderBy: { [orderBy]: order },
-        select: {
-          id: true,
-          name: true,
-          phoneNumber: true,
-          phoneCountryCode: true,
-          email: true,
-          notes: true,
-          blockedAt: true,
-          firstAppointmentAt: true,
-          lastAppointmentAt: true,
-        },
-        take: Number(take),
-        skip: Number(skip),
-      }),
-      this.db(tx).customer.count({
-        where: { tenantId, deletedAt: null },
-      }),
-    ]);
-
-    return {
-      data: customers,
-      meta: {
-        total,
-        skip,
-        take,
-      },
+    const { tenantId, take = 24, skip = 0, orderBy = 'createdAt', order = 'desc', status, bookingActivity } = params;
+    const query = params.query?.trim();
+    const now = new Date();
+    const conditions = [Prisma.sql`c.tenant_id = ${tenantId}::uuid`, Prisma.sql`c.deleted_at IS NULL`];
+    if (query) {
+      // Treat wildcard characters as literal search text.
+      const search = `%${query.replace(/[\\%_]/g, '\\$&')}%`;
+      conditions.push(Prisma.sql`(c.name ILIKE ${search} OR c.email ILIKE ${search} OR c.phone_number ILIKE ${search})`);
+    }
+    if (status === 'blocked') conditions.push(Prisma.sql`c.blocked_at IS NOT NULL`);
+    if (status === 'unblocked') conditions.push(Prisma.sql`c.blocked_at IS NULL`);
+    if (bookingActivity === 'upcoming') {
+      conditions.push(Prisma.sql`EXISTS (
+        SELECT 1 FROM appointments a WHERE a.customer_id = c.id AND a.tenant_id = c.tenant_id
+        AND a.status IN ('PENDING', 'CONFIRMED') AND a.starts_at >= ${now}
+      )`);
+    }
+    if (bookingActivity === 'never-booked') {
+      conditions.push(Prisma.sql`NOT EXISTS (
+        SELECT 1 FROM appointments a WHERE a.customer_id = c.id AND a.tenant_id = c.tenant_id
+      )`);
+    }
+    const where = Prisma.join(conditions, ' AND ');
+    const sortColumns = {
+      name: Prisma.sql`c.name`,
+      createdAt: Prisma.sql`c.created_at`,
+      totalSpent: Prisma.sql`c.total_spent`,
+      lastVisitAt: Prisma.sql`visits.last_visit_at`,
     };
+    const direction = order === 'asc' ? Prisma.sql`ASC` : Prisma.sql`DESC`;
+    const db = this.db(tx);
+    const [customers, counts] = await Promise.all([
+      db.$queryRaw<CustomerListingRow[]>(Prisma.sql`
+        SELECT c.id, c.name, c.phone_number AS "phoneNumber", c.phone_country_code AS "phoneCountryCode",
+          c.email, c.notes, c.blocked_at AS "blockedAt", c.first_appointment_at AS "firstAppointmentAt",
+          c.last_appointment_at AS "lastAppointmentAt", c.total_spent::text AS "totalSpent",
+          visits.last_visit_at AS "lastVisitAt", upcoming.next_appointment_at AS "nextAppointmentAt"
+        FROM customers c
+        LEFT JOIN LATERAL (
+          SELECT MAX(a.starts_at) AS last_visit_at FROM appointments a
+          WHERE a.customer_id = c.id AND a.tenant_id = c.tenant_id
+            AND a.status = 'COMPLETED' AND a.starts_at <= ${now}
+        ) visits ON true
+        LEFT JOIN LATERAL (
+          SELECT MIN(a.starts_at) AS next_appointment_at FROM appointments a
+          WHERE a.customer_id = c.id AND a.tenant_id = c.tenant_id
+            AND a.status IN ('PENDING', 'CONFIRMED') AND a.starts_at >= ${now}
+        ) upcoming ON true
+        WHERE ${where}
+        ORDER BY ${sortColumns[orderBy]} ${direction} NULLS LAST, c.id ASC
+        LIMIT ${take} OFFSET ${skip}
+      `),
+      db.$queryRaw<{ total: bigint }[]>(Prisma.sql`SELECT COUNT(*) AS total FROM customers c WHERE ${where}`),
+    ]);
+    return { data: customers, meta: { total: Number(counts[0].total), skip, take } };
   }
 
   async search(tenantId: string, query: string, tx?: TransactionClient) {
