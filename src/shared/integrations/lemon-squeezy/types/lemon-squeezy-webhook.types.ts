@@ -108,6 +108,7 @@ export interface LemonSqueezyInvoiceData {
     store_id: number; subscription_id: number; customer_id: number; test_mode: boolean;
     status: 'pending' | 'paid' | 'void' | 'refunded' | 'partial_refund';
     currency: string; total: number; refunded_amount: number;
+    urls?: { invoice_url: string | null };
     created_at: string; updated_at: string;
   };
 }

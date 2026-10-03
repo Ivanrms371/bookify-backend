@@ -1,3 +1,4 @@
+import type { PrismaService } from 'src/shared/prisma/prisma.service';
 import { SubscriptionWebhookService } from '../subscription-webhook.service';
 import { PlansService } from '../plans.service';
 import { PLANS } from '../plans.config';
@@ -60,6 +61,7 @@ function setup(event = 'subscription_payment_success') {
     }),
   };
   const sync = {
+    acquireLock: jest.fn(),
     transaction: jest.fn(async (work) => {
       const before = structuredClone(state);
       try {
@@ -77,6 +79,7 @@ function setup(event = 'subscription_payment_success') {
     recordFailure: jest.fn(),
   };
   const service = new SubscriptionWebhookService(
+    { $transaction: sync.transaction } as unknown as PrismaService,
     repo as unknown as SubscriptionsRepository,
     new PlansService(),
     provider as unknown as LemonSqueezyService,

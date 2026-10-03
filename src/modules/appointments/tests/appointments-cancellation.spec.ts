@@ -14,10 +14,16 @@ describe('dashboard appointment cancellation', () => {
   const ownPermissions = [PERMISSIONS.APPOINTMENT_CANCEL];
   const adminPermissions = [...ownPermissions, PERMISSIONS.APPOINTMENT_CANCEL_OTHERS];
   const appointment = () => ({
-    id: 'appointment', tenantId: 'tenant', status: AppointmentStatus.CONFIRMED,
-    professionalId: 'professional', professional: { userId: user.id, name: 'Ana' },
-    customerId: 'customer', customer: { name: 'Cliente' }, serviceId: 'service',
-    startsAt: new Date('2030-01-07T12:00:00Z'), endsAt: new Date('2030-01-07T13:00:00Z'),
+    id: 'appointment',
+    tenantId: 'tenant',
+    status: AppointmentStatus.CONFIRMED,
+    professionalId: 'professional',
+    professional: { userId: user.id, name: 'Ana' },
+    customerId: 'customer',
+    customer: { name: 'Cliente' },
+    serviceId: 'service',
+    startsAt: new Date('2030-01-07T12:00:00Z'),
+    endsAt: new Date('2030-01-07T13:00:00Z'),
   });
   let repository: { findById: jest.Mock; cancel: jest.Mock };
   let emitter: { emit: jest.Mock };
@@ -49,11 +55,19 @@ describe('dashboard appointment cancellation', () => {
     expect(result.status).toBe(AppointmentStatus.CANCELLED);
     expect(repository.findById).toHaveBeenCalledWith('tenant', 'appointment');
     expect(repository.cancel).toHaveBeenCalledWith('tenant', 'appointment', {
-      status: AppointmentStatus.CANCELLED, cancelledAt: expect.any(Date), cancellationReason: 'Me enfermé',
+      status: AppointmentStatus.CANCELLED,
+      cancelledAt: expect.any(Date),
+      cancellationReason: 'Me enfermé',
     });
-    expect(emitter.emit).toHaveBeenCalledWith('appointment.cancelled', expect.objectContaining({
-      tenantId: 'tenant', customerId: 'customer', cancellationReason: 'Me enfermé', cancelledBy: RecipientType.USER,
-    }));
+    expect(emitter.emit).toHaveBeenCalledWith(
+      'appointment.cancelled',
+      expect.objectContaining({
+        tenantId: 'tenant',
+        customerId: 'customer',
+        cancellationReason: 'Me enfermé',
+        cancelledBy: RecipientType.USER,
+      }),
+    );
   });
 
   it.each(['other', null])('denies staff cancellation when the linked user is %s', async (userId) => {
@@ -111,31 +125,48 @@ describe('dashboard appointment cancellation', () => {
     const update = jest.fn().mockResolvedValue({ ...appointment(), status: AppointmentStatus.CANCELLED });
     const dbRepository = new AppointmentsRepository({ appointment: { update } } as never);
     await dbRepository.cancel('tenant', 'appointment', { status: AppointmentStatus.CANCELLED });
-    expect(update).toHaveBeenCalledWith(expect.objectContaining({
-      where: { id: 'appointment', tenantId: 'tenant' },
-      data: { status: AppointmentStatus.CANCELLED, blocks: { deleteMany: {} } },
-    }));
+    expect(update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: 'appointment', tenantId: 'tenant' },
+        data: { status: AppointmentStatus.CANCELLED, blocks: { deleteMany: {} } },
+      }),
+    );
   });
 
   it('cancels pending reminders before queuing the customer notification with the reason', async () => {
-    const notifications = { cancelScheduledDeliveries: jest.fn().mockResolvedValue(undefined), create: jest.fn().mockResolvedValue(undefined) };
+    const notifications = {
+      cancelScheduledDeliveries: jest.fn().mockResolvedValue(undefined),
+      create: jest.fn().mockResolvedValue(undefined),
+    };
     const listener = new AppointmentCancelledListener(notifications as never);
     await service.cancel('tenant', 'appointment', user, ownPermissions, { cancellationReason: 'Me enfermé' });
     await listener.handle(emitter.emit.mock.calls[0][1]);
     expect(notifications.cancelScheduledDeliveries).toHaveBeenCalledWith('appointment', 'appointment.reminder');
-    expect(notifications.create).toHaveBeenCalledWith(expect.objectContaining({
-      recipientId: 'customer', recipientType: RecipientType.CUSTOMER, type: 'appointment.cancelled',
-      payload: expect.objectContaining({ cancellationReason: 'Me enfermé' }),
-    }));
-    expect(notifications.cancelScheduledDeliveries.mock.invocationCallOrder[0]).toBeLessThan(notifications.create.mock.invocationCallOrder[0]);
+    expect(notifications.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        recipientId: 'customer',
+        recipientType: RecipientType.CUSTOMER,
+        type: 'appointment.cancelled',
+        payload: expect.objectContaining({ cancellationReason: 'Me enfermé' }),
+      }),
+    );
+    expect(notifications.cancelScheduledDeliveries.mock.invocationCallOrder[0]).toBeLessThan(
+      notifications.create.mock.invocationCallOrder[0],
+    );
   });
 
   it('excludes cancelled appointments from upcoming appointments without changing tenant/date scoping', async () => {
     const findMany = jest.fn().mockResolvedValue([]);
     const dashboard = new DashboardRepository({ appointment: { findMany } } as never);
     await dashboard.findAppointmentsByDateRange('tenant', new Date('2030-01-07T12:00:00Z'), new Date('2030-01-07T13:00:00Z'));
-    expect(findMany).toHaveBeenCalledWith(expect.objectContaining({ where: expect.objectContaining({
-      tenantId: 'tenant', status: { not: 'CANCELLED' }, startsAt: { gte: expect.any(Date), lte: expect.any(Date) },
-    }) }));
+    expect(findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          tenantId: 'tenant',
+          status: { not: 'CANCELLED' },
+          startsAt: { gte: expect.any(Date), lte: expect.any(Date) },
+        }),
+      }),
+    );
   });
 });

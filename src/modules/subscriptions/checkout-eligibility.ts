@@ -59,9 +59,5 @@ export function getCheckoutEligibility(
       message: 'Ya tienes una suscripción de pago. Los cambios de plan estarán disponibles próximamente.',
     });
   }
-  // Trial charge timing remains a product decision; do not charge a running trial.
-  if (subscription?.status === 'TRIAL' && subscription.trialEndsAt && subscription.trialEndsAt > now) {
-    blockers.push({ code: 'TRIAL_PAYMENT_POLICY_PENDING', message: 'Podrás pagar cuando termine tu prueba gratuita.' });
-  }
   return { eligible: blockers.length === 0, blockers };
 }

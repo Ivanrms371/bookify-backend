@@ -24,7 +24,7 @@ describe('checkout eligibility time boundaries', () => {
     ]);
     expect(getCheckoutEligibility({ ...context, subscription: { ...subscription, endsAt: now } }, now).eligible).toBe(true);
   });
-  it('keeps trial checkout blocked before the boundary and permits it at expiry', () => {
+  it('allows trial checkout before and at expiry without preserving remaining free days', () => {
     const subscription = {
       planId: 'pro_plus',
       status: 'TRIAL' as const,
@@ -33,9 +33,7 @@ describe('checkout eligibility time boundaries', () => {
       endsAt: null,
       trialEndsAt: new Date(now.getTime() + 1),
     };
-    expect(getCheckoutEligibility({ ...context, subscription }, now).blockers).toEqual([
-      expect.objectContaining({ code: 'TRIAL_PAYMENT_POLICY_PENDING' }),
-    ]);
+    expect(getCheckoutEligibility({ ...context, subscription }, now)).toEqual({ eligible: true, blockers: [] });
     expect(getCheckoutEligibility({ ...context, subscription: { ...subscription, trialEndsAt: now } }, now).eligible).toBe(true);
   });
 });

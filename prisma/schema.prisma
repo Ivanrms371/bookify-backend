@@ -598,6 +598,7 @@ model Payment {
   paidAt              DateTime?     @map("paid_at")
   dueAt               DateTime?     @map("due_at")
   externalId          String        @unique @map("external_id")
+  invoiceUrl          String?       @map("invoice_url")
   createdAt           DateTime      @default(now()) @map("created_at")
   updatedAt           DateTime      @updatedAt @map("updated_at")
   deletedAt           DateTime?     @map("deleted_at")
@@ -606,6 +607,7 @@ model Payment {
 
   @@index([tenantId])
   @@index([status])
+  @@index([tenantId, issuedAt, id])
   @@map("payments")
 }
 

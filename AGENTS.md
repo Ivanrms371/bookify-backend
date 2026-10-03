@@ -16,11 +16,19 @@ This independent Git repository is the NestJS 11 API using Prisma 7 and PostgreS
 | `pnpm test:cov`                                                     | Runs unit tests and writes coverage.                                                                           |
 | `pnpm lint` / `pnpm format`                                         | ESLint `--fix` / Prettier `--write`: both rewrite files.                                                       |
 | `pnpm email:dev`                                                    | Starts React Email preview for notification templates.                                                         |
-| `pnpm exec prisma generate`                                         | Rewrites generated client files under `src/generated/prisma` and configured generator outputs.                 |
-| `pnpm exec prisma migrate dev` / `pnpm exec prisma db seed`         | Mutates the database; migration can also write migrations/generate artifacts. Confirm before database changes. |
+| `npx prisma generate`                                         | Requires explicit user authorization; rewrites generated client files under `src/generated/prisma` and configured generator outputs.                 |
+| `npx prisma migrate dev --name <descriptive_name>`         | Requires user approval or an explicit /prisma invocation for this task; mutates the development database and writes a named migration. |
 | `docker compose up -d db`                                           | Starts persistent Postgres 18 via `docker-compose.yml`, mapped to localhost port 5433.                         |
 
 `prisma.config.ts` configures `tsx prisma/seed.ts`; the older nested package script uses ts-node and is not the current Prisma seed configuration. Import application Prisma client/types/enums from `src/generated/prisma` (for example `client` and `enums`), following nearby code, rather than substituting `@prisma/client`. Do not hand-edit generated files.
+
+## Code readability
+
+Define feature types, interfaces and type aliases in the feature's `types/` directory or a dedicated types file, not inside services. Services import these definitions with `import type`; request/response DTOs remain in `dto/`. Apply this convention to new or edited service code without refactoring unrelated modules.
+
+Write service methods so a human can follow the business flow without decoding validation details. Use named helpers for ownership, eligibility and provider-association rules when a compound condition mixes several responsibilities. Group checks by meaning and use explicit names such as `verifyInvoiceOwnership`; do not merely move an unexplained boolean expression into a generic `validate` helper.
+
+Keep domain-specific HTTP failures in the owning feature's `exceptions/` directory, following existing exception classes. Preserve status codes and response contracts during refactors. Services should name the failure rather than repeat response objects. Infrastructure adapters retain their own provider errors; do not introduce reverse feature dependencies just to share exceptions. Extract cohesive steps, not a helper for every line, and explain non-obvious reasons in short comments. Verify behavior through the public service/API tests, not tests coupled to private helper names.
 
 ## Runtime, security and persistence
 
@@ -40,7 +48,7 @@ Postgres, environment configuration, cookie/JWT auth, Socket.IO, event listeners
 
 Use targeted unit checks and non-emitting TypeScript checks appropriate to a change. The supplied earlier baseline was 2 suites/8 tests passing and a passing build-config type check; report current results separately. The e2e file still expects starter `Hello World!` at `/` and was not established as a valid API baseline. No repository CI workflows were found. Do not run autofix merely to validate documentation.
 
-For contract changes inspect both `../frontend` dashboard and `../web` public consumers, when present; update affected calls/types/schemas and document an unaffected consumer. If working from this repository alone, report coordination needed in sibling repositories. Preserve dirty files and Git structure. Use local [run-backend](.agents/skills/run-backend/SKILL.md) for server lifecycle and [new-nest-module](.agents/skills/new-nest-module/SKILL.md) for feature additions. No migration skill is present; confirmation is still required for DB changes. Deleted historical dependency rules are pending reconciliation; current session restrictions govern operations.
+For contract changes inspect both `../frontend` dashboard and `../web` public consumers, when present; update affected calls/types/schemas and document an unaffected consumer. If working from this repository alone, report coordination needed in sibling repositories. Preserve dirty files and Git structure. Use local [run-backend](.agents/skills/run-backend/SKILL.md) for server lifecycle and [new-nest-module](.agents/skills/new-nest-module/SKILL.md) for feature additions. Use the local [prisma skill](.agents/skills/prisma/SKILL.md) for migrations/generation. Only `npx prisma migrate dev --name <descriptive_name>` and `npx prisma generate` are allowed, after explicit user approval or `/prisma` invocation for the current task. Other Prisma commands, including reset and seed, are forbidden unless the user explicitly revises this rule; planning/feature requests do not authorize execution. Stop if Prisma requests a reset or reports drift. Deleted historical dependency rules are pending reconciliation; current session restrictions govern operations.
 
 ## Documentation and evidence
 

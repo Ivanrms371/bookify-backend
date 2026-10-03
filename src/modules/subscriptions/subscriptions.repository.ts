@@ -11,8 +11,8 @@ export class SubscriptionsRepository extends BaseRepository {
     super(prisma);
   }
 
-  getCheckoutTenant(tenantId: string) {
-    return this.db().tenant.findUnique({ where: { id: tenantId }, select: { slug: true, workspaceType: true, deletedAt: true } });
+  getCheckoutTenant(tenantId: string, tx?: TransactionClient) {
+    return this.db(tx).tenant.findUnique({ where: { id: tenantId }, select: { slug: true, workspaceType: true, deletedAt: true } });
   }
 
   async create(data: SubscriptionCreateInput, tx?: TransactionClient) {
@@ -43,9 +43,15 @@ export class SubscriptionsRepository extends BaseRepository {
     });
   }
 
-  attachProviderSubscription(tenantId: string, previousProviderId: string | null, data: SubscriptionUpdateManyMutationInput, tx?: TransactionClient) {
+  attachProviderSubscription(
+    tenantId: string,
+    previousProviderId: string | null,
+    data: SubscriptionUpdateManyMutationInput,
+    tx?: TransactionClient,
+  ) {
     return this.db(tx).subscription.updateMany({
-      where: { tenantId, deletedAt: null, lemonSubscriptionId: previousProviderId }, data,
+      where: { tenantId, deletedAt: null, lemonSubscriptionId: previousProviderId },
+      data,
     });
   }
 

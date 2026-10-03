@@ -1,3 +1,4 @@
+import type { PrismaService } from 'src/shared/prisma/prisma.service';
 import { SubscriptionWebhookService } from '../subscription-webhook.service';
 import type { PaymentsService } from '../../payments/payments.service';
 import type { ProviderSyncRepository } from 'src/common/webhooks/repositories/provider-sync.repository';
@@ -25,6 +26,7 @@ const setup = (overrides = {}) => {
     attachProviderSubscription: jest.fn().mockResolvedValue({ count: 1 }),
   };
   const sync = {
+    acquireLock: jest.fn(),
     transaction: jest.fn(async (work) => work({})),
     isNewer: jest.fn().mockResolvedValue(false),
     markVersion: jest.fn(),
@@ -45,6 +47,7 @@ const setup = (overrides = {}) => {
     repo,
     provider,
     webhook: new SubscriptionWebhookService(
+      { $transaction: sync.transaction } as unknown as PrismaService,
       repo as unknown as SubscriptionsRepository,
       new PlansService(),
       provider as unknown as LemonSqueezyService,
@@ -108,12 +111,13 @@ describe('checkout selection and activation', () => {
       expect(provider.createCheckout).not.toHaveBeenCalled();
     },
   );
-  it('does not charge a running trial while its payment policy is unresolved', async () => {
+  it('allows immediate paid checkout during a running local trial', async () => {
     const { service, provider } = setup({ trialEndsAt: new Date('2099-01-01') });
     expect(await service.getCheckoutEligibility('tenant', 'pro', 'MONTHLY')).toMatchObject({
-      blockers: [expect.objectContaining({ code: 'TRIAL_PAYMENT_POLICY_PENDING' })],
+      eligible: true, blockers: [],
     });
-    expect(provider.createCheckout).not.toHaveBeenCalled();
+    await expect(service.createCheckoutSession('tenant', 'owner@example.com', 'Owner', 'pro', 'MONTHLY')).resolves.toBe('https://test.lemonsqueezy.com/checkout/buy/abc');
+    expect(provider.createCheckout).toHaveBeenCalledWith(expect.objectContaining({ variantId: '123', tenantId: 'tenant' }));
   });
   it('blocks missing subscriptions and never issues another trial', async () => {
     const { service, repo } = setup();
@@ -175,6 +179,20 @@ describe('checkout selection and activation', () => {
       }),
       expect.anything(),
     );
+  });
+  it('rejects a tenant ID with no local subscription, rather than guessing another tenant', async () => {
+    const { webhook, repo, provider } = setup();
+    provider.verifyWebhookSignature.mockReturnValue(created);
+    repo.findByTenantId.mockResolvedValue(null as never);
+    await expect(webhook.handleWebhook(Buffer.from('{}'), 'signed')).rejects.toThrow('Subscription mapping not found.');
+    expect(repo.findByTenantId).toHaveBeenCalledWith('tenant', expect.anything());
+    expect(repo.attachProviderSubscription).not.toHaveBeenCalled();
+  });
+  it('rejects a deleted local subscription during activation', async () => {
+    const { webhook, repo, provider } = setup({ deletedAt: new Date() });
+    provider.verifyWebhookSignature.mockReturnValue(created);
+    await expect(webhook.handleWebhook(Buffer.from('{}'), 'signed')).rejects.toThrow('Subscription mapping not found.');
+    expect(repo.attachProviderSubscription).not.toHaveBeenCalled();
   });
   it('does not replay subscription_created over a later cancellation', async () => {
     const { webhook, repo, provider } = setup({ status: 'CANCELLED', lemonSubscriptionId: 'provider-1' });

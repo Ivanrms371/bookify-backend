@@ -20,6 +20,7 @@ import type {
 import { PlansService } from './plans.service';
 import { SubscriptionsRepository } from './subscriptions.repository';
 import { toProviderSubscriptionUpdate } from './mappers/provider-subscription.mapper';
+import { PrismaService } from 'src/shared/prisma/prisma.service';
 
 const INVOICE_EVENTS = new Set([
   'subscription_payment_success',
@@ -42,6 +43,7 @@ export class SubscriptionWebhookService {
   private readonly logger = new Logger(SubscriptionWebhookService.name);
 
   constructor(
+    private readonly prisma: PrismaService,
     private readonly subscriptionsRepo: SubscriptionsRepository,
     private readonly plansService: PlansService,
     private readonly lemonSqueezyService: LemonSqueezyService,
@@ -57,9 +59,15 @@ export class SubscriptionWebhookService {
     const requestId = `LEMON_SQUEEZY:failure:${createHash('sha256').update(rawBody).digest('hex')}`;
     try {
       const { subscription, invoice } = await this.loadProviderState(payload);
-      await this.providerSync.transaction(async (tx) => {
+      await this.prisma.$transaction(async (tx) => {
+        await this.providerSync.acquireLock(tx);
+
         const local = await this.synchronizeSubscription(subscription, payload, tx);
-        if (invoice) await this.synchronizeInvoice(invoice, local, payload.meta.event_name === 'subscription_payment_failed', tx);
+
+        if (invoice) {
+          await this.synchronizeInvoice(invoice, local, payload.meta.event_name === 'subscription_payment_failed', tx);
+        }
+
         await this.providerSync.resolveFailure(requestId, tx);
       });
     } catch (error) {
