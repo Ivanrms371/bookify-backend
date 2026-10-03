@@ -1,3 +1,5 @@
+import { SubscriptionWebhookService } from './subscription-webhook.service';
+import { PaymentsModule } from '../payments/payments.module';
 import { Module } from '@nestjs/common';
 import { WebhookModule } from 'src/common/webhooks/webhook.module';
 import { NotificationsModule } from 'src/modules/notifications/notifications.module';
@@ -8,9 +10,9 @@ import { PlansService } from './plans.service';
 import { LemonSqueezyModule } from 'src/shared/integrations/lemon-squeezy/lemon-squeezy.module';
 
 @Module({
-  imports: [LemonSqueezyModule, WebhookModule, NotificationsModule],
+  imports: [PaymentsModule, LemonSqueezyModule, WebhookModule, NotificationsModule],
   controllers: [SubscriptionsController],
-  providers: [SubscriptionsService, PlansService, SubscriptionsRepository],
+  providers: [SubscriptionWebhookService, SubscriptionsService, PlansService, SubscriptionsRepository],
   exports: [SubscriptionsService],
 })
 export class SubscriptionsModule {}

@@ -4,7 +4,7 @@ import { BadRequestException, Injectable, InternalServerErrorException, Logger }
 import * as crypto from 'crypto';
 import { CreateCheckoutParams, LemonCheckoutResponse, LemonCustomerResponse } from './types/lemon-squeezy.types';
 import axios, { AxiosInstance, isAxiosError } from 'axios';
-import { LemonSqueezyWebhookPayload } from './types/lemon-squeezy-webhook.types';
+import { LemonSqueezyWebhookPayload, LemonSqueezySubscriptionData, LemonSqueezyInvoiceData } from './types/lemon-squeezy-webhook.types';
 
 @Injectable()
 export class LemonSqueezyService {
@@ -34,7 +34,9 @@ export class LemonSqueezyService {
       throw new InternalServerErrorException('Lemon Squeezy credentials are not configured in environment variables.');
     }
 
-    const { variantId, userEmail, userName, tenantId, redirectUrl, trialEndsAt } = params;
+    const { variantId, userEmail, userName, tenantId, redirectUrl } = params;
+
+    if (!/^\d+$/.test(variantId) || Number(variantId) <= 0 || !Number.isSafeInteger(Number(variantId))) throw new BadRequestException('Invalid provider variant.');
 
     const checkoutData: Record<string, unknown> = {
       email: userEmail,
@@ -49,7 +51,9 @@ export class LemonSqueezyService {
         type: 'checkouts',
         attributes: {
           checkout_data: checkoutData,
-          product_options: redirectUrl ? { redirect_url: redirectUrl } : undefined,
+          product_options: { redirect_url: redirectUrl, enabled_variants: [Number(variantId)] },
+          checkout_options: { skip_trial: true },
+          test_mode: process.env.LEMON_SQUEEZY_TEST_MODE === 'true',
         },
         relationships: {
           store: {
@@ -70,7 +74,6 @@ export class LemonSqueezyService {
 
     try {
       const response = await this.http.post<LemonCheckoutResponse>('/checkouts', payload);
-      console.log(response.data.data.attributes);
       return response.data.data.attributes.url;
     } catch (error) {
       if (isAxiosError(error)) {
@@ -109,6 +112,46 @@ export class LemonSqueezyService {
     }
   }
 
+  async retrieveSubscription(id: string): Promise<LemonSqueezySubscriptionData> {
+    return this.retrieveResource('subscriptions', id) as Promise<LemonSqueezySubscriptionData>;
+  }
+
+  async retrieveInvoice(id: string): Promise<LemonSqueezyInvoiceData> {
+    return this.retrieveResource('subscription-invoices', id) as Promise<LemonSqueezyInvoiceData>;
+  }
+
+  private async retrieveResource(type: 'subscriptions' | 'subscription-invoices', id: string) {
+    if (!this.apiKey) throw new InternalServerErrorException('Lemon Squeezy API key is missing.');
+    if (!/^\d+$/.test(id)) throw new BadRequestException('Invalid provider resource ID.');
+    try {
+      const response = await this.http.get<{ data: LemonSqueezyWebhookPayload['data'] }>(`/${type}/${id}`);
+      const data = response.data.data;
+      if (data?.type !== type || data.id !== id) throw new BadRequestException('Provider resource mismatch.');
+      this.validateResource(data);
+      return data;
+    } catch (error) {
+      this.logger.error(`Unable to retrieve Lemon Squeezy ${type}/${id}.`);
+      throw new InternalServerErrorException('Unable to synchronize provider billing state.');
+    }
+  }
+
+  private validateResource(data: LemonSqueezyWebhookPayload['data']) {
+    const attrs = data.attributes;
+    if (!this.storeId || String(attrs.store_id) !== this.storeId || attrs.test_mode !== (process.env.LEMON_SQUEEZY_TEST_MODE === 'true')) throw new BadRequestException('Webhook store/mode mismatch.');
+    for (const date of [attrs.created_at, attrs.updated_at]) if (typeof date !== 'string' || !Number.isFinite(Date.parse(date))) throw new BadRequestException('Invalid provider date.');
+    if (!Number.isSafeInteger(attrs.customer_id) || attrs.customer_id <= 0) throw new BadRequestException('Invalid customer ID.');
+    if (data.type === 'subscriptions') {
+      const subscription = data.attributes;
+      if (!['active', 'on_trial', 'paused', 'past_due', 'unpaid', 'cancelled', 'expired'].includes(subscription.status) || !Number.isSafeInteger(subscription.variant_id) || subscription.variant_id <= 0) throw new BadRequestException('Invalid subscription attributes.');
+      for (const date of [subscription.renews_at, subscription.ends_at, subscription.trial_ends_at]) if (date !== null && (typeof date !== 'string' || !Number.isFinite(Date.parse(date)))) throw new BadRequestException('Invalid subscription date.');
+    } else if (data.type === 'subscription-invoices') {
+      const invoice = data.attributes;
+      if (!Number.isSafeInteger(invoice.subscription_id) || invoice.subscription_id <= 0 || !['pending', 'paid', 'void', 'refunded', 'partial_refund'].includes(invoice.status) || !/^[A-Z]{3}$/.test(invoice.currency)) throw new BadRequestException('Invalid invoice attributes.');
+      for (const amount of [invoice.total, invoice.refunded_amount]) if (!Number.isSafeInteger(amount) || amount < 0 || amount > 9_999_999_999) throw new BadRequestException('Invalid invoice amount.');
+      if (invoice.refunded_amount > invoice.total) throw new BadRequestException('Invalid refund amount.');
+    }
+  }
+
   /**
    * Valida la firma HMAC-SHA256 enviada en el header x-signature de Lemon Squeezy.
    */
@@ -130,6 +173,16 @@ export class LemonSqueezyService {
       throw new BadRequestException('Invalid webhook signature.');
     }
 
-    return JSON.parse(rawBody.toString()) as LemonSqueezyWebhookPayload;
+    let payload: LemonSqueezyWebhookPayload;
+    try { payload = JSON.parse(rawBody.toString()) as LemonSqueezyWebhookPayload; }
+    catch { throw new BadRequestException('Invalid webhook JSON.'); }
+    const expectedTestMode = process.env.LEMON_SQUEEZY_TEST_MODE === 'true';
+    if (!payload?.meta || typeof payload.meta.event_name !== 'string' || !payload.data?.attributes || typeof payload.data.id !== 'string' || !payload.data.id) throw new BadRequestException('Invalid webhook payload.');
+    if (!this.storeId || String(payload.data.attributes.store_id) !== this.storeId || payload.meta.test_mode !== expectedTestMode || payload.data.attributes.test_mode !== expectedTestMode) throw new BadRequestException('Webhook store/mode mismatch.');
+    const invoiceEvent = payload.meta.event_name.startsWith('subscription_payment_');
+    if (invoiceEvent && payload.data.type !== 'subscription-invoices') throw new BadRequestException('Invoice event requires invoice data.');
+    if (!invoiceEvent && payload.meta.event_name.startsWith('subscription_') && payload.data.type !== 'subscriptions') throw new BadRequestException('Lifecycle event requires subscription data.');
+    if (payload.data.type === 'subscriptions' || payload.data.type === 'subscription-invoices') this.validateResource(payload.data);
+    return payload;
   }
 }

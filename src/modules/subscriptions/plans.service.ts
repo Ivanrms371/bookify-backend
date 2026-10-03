@@ -1,6 +1,7 @@
 // src/modules/subscriptions/plans.service.ts
 
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { toPlanDto } from './mappers/plan.mapper';
 import { BillingCycle, Plan, PLANS, PlanId, WorkspaceType } from './plans.config';
 
 export interface ResolvedPlanVariant {
@@ -28,15 +29,15 @@ export class PlansService {
   /**
    * Returns all available plans sorted by their display order.
    */
+  getCatalog() {
+    return this.getAllPlans().map(toPlanDto);
+  }
+
   getAllPlans(): Plan[] {
     return Object.values(this.plans).sort((a, b) => a.sortOrder - b.sortOrder);
   }
 
-  /**
-   * Resolves the default trial plan based on the workspace structure:
-   * - TEAM       -> pro_plus
-   * - INDIVIDUAL -> pro
-   */
+  /** Every workspace receives the same Pro+ trial. */
   resolveTrialPlan(): Plan {
     return this.getPlan('pro_plus');
   }

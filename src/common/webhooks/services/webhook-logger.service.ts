@@ -1,3 +1,4 @@
+import { BILLING_SYNC_PROVIDER } from '../repositories/provider-sync.repository';
 import { Injectable, Logger } from '@nestjs/common';
 import { WebhookLogRepository } from '../repositories/webhook.repository';
 import { WebhookLogCreateInput, WebhookLogUpsertArgs } from 'src/generated/prisma/models';
@@ -188,6 +189,7 @@ export class WebhookLoggerService {
     cutoffDate.setDate(cutoffDate.getDate() - daysOld);
 
     const where: Prisma.WebhookLogWhereInput = {
+      provider: { not: BILLING_SYNC_PROVIDER },
       receivedAt: {
         lt: cutoffDate,
       },

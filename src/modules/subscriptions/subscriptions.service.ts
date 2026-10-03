@@ -1,23 +1,21 @@
-// src/modules/subscriptions/subscriptions.service.ts
-
-import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, InternalServerErrorException, Injectable, NotFoundException } from '@nestjs/common';
 import { addDays } from 'date-fns';
 import { SubscriptionsRepository } from './subscriptions.repository';
 import { PlansService } from './plans.service';
 import { LemonSqueezyService } from 'src/shared/integrations/lemon-squeezy/lemon-squeezy.service';
-import { BillingCycle, Currency, SubscriptionStatus, WorkspaceType } from 'src/generated/prisma/enums';
+import { BillingCycle, Currency, SubscriptionStatus } from 'src/generated/prisma/enums';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 import { PlanId } from './plans.config';
-import { sign } from 'crypto';
-import { LemonSqueezySubscriptionStatus } from 'src/shared/integrations/lemon-squeezy/types/lemon-squeezy.types';
+import type { CheckoutEligibilityDto } from './dto/checkout.dto';
+import type { BillingSummaryDto } from './dto/billing-summary.dto';
+import { getSubscriptionAccess } from './subscription-access';
+import { toPlanDto } from './mappers/plan.mapper';
+import { getCheckoutEligibility } from './checkout-eligibility';
 
 const TRIAL_DURATION_DAYS = 14;
-const MIN_TRIAL_HOURS_THRESHOLD = 24;
 
 @Injectable()
 export class SubscriptionsService {
-  private readonly logger = new Logger(SubscriptionsService.name);
-
   constructor(
     private readonly subscriptionsRepo: SubscriptionsRepository,
     private readonly plansService: PlansService,
@@ -29,17 +27,12 @@ export class SubscriptionsService {
    * Can be executed within an existing Prisma transaction client.
    */
   async createTrialSubscription(tenantId: string, tx?: TransactionClient) {
-    const existingSubscription = await this.subscriptionsRepo.findByTenantId(tenantId, tx);
-
-    if (existingSubscription) {
-      throw new ConflictException(`Tenant "${tenantId}" already has a subscription.`);
-    }
-
     const plan = this.plansService.resolveTrialPlan();
     const now = new Date();
     const trialEndsAt = addDays(now, TRIAL_DURATION_DAYS);
 
-    return this.subscriptionsRepo.create(
+    return this.subscriptionsRepo.ensureTrial(
+      tenantId,
       {
         tenant: { connect: { id: tenantId } },
         planId: plan.id,
@@ -65,35 +58,97 @@ export class SubscriptionsService {
     return subscription;
   }
 
-  /**
-   * Generates a signed Lemon Squeezy checkout session URL for purchasing or upgrading a plan.
-   */
+  getCatalog() {
+    return this.plansService.getCatalog();
+  }
+
+  async getAccess(tenantId: string, canManageBilling: boolean) {
+    return getSubscriptionAccess(await this.subscriptionsRepo.findByTenantId(tenantId), canManageBilling);
+  }
+
+  async getBillingSummary(tenantId: string): Promise<BillingSummaryDto> {
+    const [record, usage] = await Promise.all([
+      this.subscriptionsRepo.findByTenantId(tenantId),
+      this.subscriptionsRepo.getResourceUsage(tenantId),
+    ]);
+    const subscription = record?.deletedAt ? null : record;
+    const plan = this.plansService.getAllPlans().find((plan) => plan.id === subscription?.planId);
+    const hasPortal = Boolean(subscription?.lemonCustomerId);
+    return {
+      subscription: subscription
+        ? {
+            id: subscription.id,
+            planId: subscription.planId,
+            status: subscription.status,
+            cycle: subscription.billingCycle,
+            amount: subscription.amount?.toFixed(2) ?? null,
+            currency: subscription.currency,
+            trialEndsAt: subscription.trialEndsAt?.toISOString() ?? null,
+            currentPeriodEnd: subscription.currentPeriodEnd?.toISOString() ?? null,
+            endsAt: subscription.endsAt?.toISOString() ?? null,
+            cancelledAt: subscription.cancelledAt?.toISOString() ?? null,
+            paymentMethod: subscription.paymentMethod,
+          }
+        : null,
+      currentPlan: plan ? toPlanDto(plan) : null,
+      access: getSubscriptionAccess(subscription, true),
+      usage,
+      allowedActions: {
+        explorePlans: true,
+        manageSubscription: hasPortal,
+        cancelSubscription: hasPortal && subscription?.status !== 'CANCELLED',
+      },
+    };
+  }
+
+  private async checkoutContext(tenantId: string, planId: PlanId, cycle: BillingCycle) {
+    if (!['MONTHLY', 'ANNUAL'].includes(cycle))
+      throw new BadRequestException({ code: 'INVALID_BILLING_CYCLE', message: 'Ciclo de facturación no válido.' });
+    const plan = this.plansService.getAllPlans().find((item) => item.id === planId);
+    if (!plan) throw new BadRequestException({ code: 'PLAN_UNAVAILABLE', message: 'El plan no existe.' });
+    const [tenant, subscription, usage] = await Promise.all([
+      this.subscriptionsRepo.getCheckoutTenant(tenantId),
+      this.subscriptionsRepo.findByTenantId(tenantId),
+      this.subscriptionsRepo.getResourceUsage(tenantId),
+    ]);
+    if (!tenant || tenant.deletedAt || !tenant.slug) throw new NotFoundException('Workspace not found.');
+    return {
+      tenant,
+      eligibility: getCheckoutEligibility({
+        plan,
+        cycle,
+        workspaceType: tenant.workspaceType,
+        subscription,
+        professionals: usage.professionals,
+      }),
+    };
+  }
+
+  async getCheckoutEligibility(tenantId: string, planId: PlanId, cycle: BillingCycle): Promise<CheckoutEligibilityDto> {
+    return (await this.checkoutContext(tenantId, planId, cycle)).eligibility;
+  }
+
   async createCheckoutSession(tenantId: string, userEmail: string, userName: string | undefined, planId: PlanId, cycle: BillingCycle) {
-    const subscription = await this.subscriptionsRepo.findByTenantId(tenantId);
-    if (!subscription) {
-      throw new NotFoundException('Subscription record not found.');
-    }
-
-    const variantId = this.plansService.getVariantId(planId, cycle);
-
-    let validTrialEndDate: string | undefined;
-
-    if (subscription.trialEndsAt) {
-      const now = new Date();
-      const trialEnd = new Date(subscription.trialEndsAt);
-      const diffInHours = (trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60);
-
-      if (diffInHours > MIN_TRIAL_HOURS_THRESHOLD) {
-        validTrialEndDate = trialEnd.toISOString();
-      }
-    }
-
+    const { tenant, eligibility } = await this.checkoutContext(tenantId, planId, cycle);
+    if (!eligibility.eligible)
+      throw new BadRequestException({
+        code: eligibility.blockers[0].code,
+        message: eligibility.blockers.map((item) => item.message).join(' '),
+        blockers: eligibility.blockers,
+      });
+    const appUrl = process.env.APP_URL;
+    if (!appUrl) throw new InternalServerErrorException('APP_URL is required for checkout.');
+    const origin = new URL(appUrl);
+    if (!['http:', 'https:'].includes(origin.protocol)) throw new InternalServerErrorException('Invalid APP_URL.');
+    const redirectUrl = new URL(`/${encodeURIComponent(tenant.slug!)}/billing/return`, origin.origin);
+    redirectUrl.searchParams.set('plan', planId);
+    redirectUrl.searchParams.set('cycle', cycle);
     return this.lemonSqueezyService.createCheckout({
-      variantId,
+      variantId: this.plansService.getVariantId(planId, cycle),
       userEmail,
       userName,
       tenantId,
-      trialEndsAt: validTrialEndDate,
+      redirectUrl: redirectUrl.toString(),
     });
   }
 
@@ -107,126 +162,5 @@ export class SubscriptionsService {
     }
 
     return this.lemonSqueezyService.getCustomerPortalUrl(subscription.lemonCustomerId);
-  }
-
-  /**
-   * Handles incoming Lemon Squeezy webhook payloads and updates internal state accordingly.
-   */
-  async handleWebhook(rawBody: Buffer, signature: string) {
-    const payload = this.lemonSqueezyService.verifyWebhookSignature(rawBody, signature);
-
-    const eventName = payload.meta.event_name;
-    const { attributes } = payload.data;
-    const lemonSubscriptionId = payload.data.id;
-
-    this.logger.log(`Processing Lemon Squeezy webhook event: ${eventName}`);
-
-    switch (eventName) {
-      case 'subscription_created': {
-        const tenantId = payload.meta.custom_data?.tenant_id;
-        if (!tenantId) {
-          this.logger.error('Missing tenant_id in webhook custom_data metadata.');
-          return;
-        }
-
-        const resolvedPlan = this.plansService.resolvePlanByVariantId(String(attributes.variant_id));
-
-        const periodEnd = attributes.renews_at ? new Date(attributes.renews_at) : attributes.ends_at ? new Date(attributes.ends_at) : null;
-
-        await this.subscriptionsRepo.updateByTenantId(tenantId, {
-          lemonSubscriptionId,
-          lemonCustomerId: String(attributes.customer_id),
-          status: this.mapLemonStatus(attributes.status),
-          planId: resolvedPlan.planId,
-          billingCycle: resolvedPlan.cycle,
-          amount: resolvedPlan.price,
-          currentPeriodStart: new Date(attributes.created_at),
-          currentPeriodEnd: periodEnd,
-          endsAt: attributes.ends_at ? new Date(attributes.ends_at) : null,
-          cancelledAt: null,
-          paymentMethod: attributes.card_brand ? `${attributes.card_brand} **** ${attributes.card_last_four ?? ''}`.trim() : null,
-        });
-        break;
-      }
-
-      case 'subscription_updated':
-      case 'subscription_resumed': {
-        const resolvedPlan = this.plansService.resolvePlanByVariantId(String(attributes.variant_id));
-
-        const periodEnd = attributes.renews_at ? new Date(attributes.renews_at) : attributes.ends_at ? new Date(attributes.ends_at) : null;
-
-        await this.subscriptionsRepo.updateByLemonSubscriptionId(lemonSubscriptionId, {
-          status: this.mapLemonStatus(attributes.status),
-          planId: resolvedPlan.planId,
-          billingCycle: resolvedPlan.cycle,
-          amount: resolvedPlan.price,
-          currentPeriodEnd: periodEnd,
-          endsAt: attributes.ends_at ? new Date(attributes.ends_at) : null,
-          ...(eventName === 'subscription_resumed' && { cancelledAt: null }),
-          ...(attributes.card_brand && {
-            paymentMethod: `${attributes.card_brand} **** ${attributes.card_last_four ?? ''}`.trim(),
-          }),
-        });
-        break;
-      }
-
-      case 'subscription_cancelled': {
-        const endsAtDate = attributes.ends_at ? new Date(attributes.ends_at) : null;
-
-        await this.subscriptionsRepo.updateByLemonSubscriptionId(lemonSubscriptionId, {
-          status: SubscriptionStatus.CANCELLED,
-          cancelledAt: new Date(),
-          endsAt: endsAtDate,
-          ...(endsAtDate && { currentPeriodEnd: endsAtDate }),
-        });
-        break;
-      }
-
-      case 'subscription_expired': {
-        const endsAtDate = attributes.ends_at ? new Date(attributes.ends_at) : null;
-
-        await this.subscriptionsRepo.updateByLemonSubscriptionId(lemonSubscriptionId, {
-          status: SubscriptionStatus.EXPIRED,
-          ...(endsAtDate && {
-            endsAt: endsAtDate,
-            currentPeriodEnd: endsAtDate,
-          }),
-        });
-        break;
-      }
-
-      case 'subscription_payment_failed': {
-        await this.subscriptionsRepo.updateByLemonSubscriptionId(lemonSubscriptionId, {
-          status: SubscriptionStatus.PAST_DUE,
-        });
-        break;
-      }
-
-      default:
-        this.logger.debug(`Unhandled event ignored: ${eventName}`);
-    }
-  }
-
-  /**
-   * Maps provider-specific status strings into internal domain SubscriptionStatus enum values.
-   */
-  private mapLemonStatus(status: LemonSqueezySubscriptionStatus): SubscriptionStatus {
-    switch (status) {
-      case 'active':
-        return SubscriptionStatus.ACTIVE;
-      case 'on_trial':
-        return SubscriptionStatus.TRIAL;
-      case 'past_due':
-      case 'unpaid':
-        return SubscriptionStatus.PAST_DUE;
-      case 'cancelled':
-        return SubscriptionStatus.CANCELLED;
-      case 'expired':
-        return SubscriptionStatus.EXPIRED;
-      case 'paused':
-        return SubscriptionStatus.PAUSED;
-      default:
-        return SubscriptionStatus.ACTIVE;
-    }
   }
 }

@@ -28,7 +28,6 @@ export interface CreateCheckoutParams {
   userName?: string;
   tenantId: string;
   redirectUrl?: string;
-  trialEndsAt?: string;
 }
 
 export interface LemonSqueezyWebhookPayload {

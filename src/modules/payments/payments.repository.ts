@@ -6,7 +6,7 @@ import { Prisma } from 'src/generated/prisma/client';
 export class PaymentsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(payment: Prisma.PaymentCreateInput, tx?: Prisma.TransactionClient) {
+  async create(payment: Prisma.PaymentUncheckedCreateInput, tx?: Prisma.TransactionClient) {
     const db = tx || this.prisma;
     return db.payment.create({ data: payment });
   }
@@ -21,12 +21,8 @@ export class PaymentsRepository {
     return payment;
   }
 
-  async update(payment: Prisma.PaymentUpdateInput, tx?: Prisma.TransactionClient) {
-    const db = tx || this.prisma;
-    return db.payment.update({
-      where: { externalId: payment.externalId?.toString() },
-      data: payment,
-    });
+  async updateByExternalId(externalId: string, data: Prisma.PaymentUncheckedUpdateInput, tx: Prisma.TransactionClient) {
+    return tx.payment.update({ where: { externalId }, data });
   }
 
   async findByExternalId(externalId: string, tx?: Prisma.TransactionClient) {

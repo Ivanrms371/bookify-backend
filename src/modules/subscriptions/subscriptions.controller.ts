@@ -1,3 +1,4 @@
+import { SubscriptionWebhookService } from './subscription-webhook.service';
 import { PERMISSIONS } from 'src/common/security/constants/permissions.constant';
 import { Permissions } from 'src/common/security/decorators/permissions.decorator';
 // src/modules/subscriptions/subscriptions.controller.ts
@@ -12,31 +13,25 @@ import {
   HttpStatus,
   Logger,
   Post,
+  Query,
   RawBody,
-  Req,
   UnauthorizedException,
 } from '@nestjs/common';
-import { IsEnum, IsNotEmpty } from 'class-validator';
+import { CheckoutSelectionDto } from './dto/checkout.dto';
+import { Public } from 'src/common/security/decorators/public.decorator';
 import { SubscriptionsService } from './subscriptions.service';
-import { BillingCycle } from 'src/generated/prisma/enums';
-import { PlanId } from './plans.config';
-import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
+import { CurrentTenant, GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { CurrentUser } from 'src/common/security/decorators/current-user.decorator';
 import { AuthenticatedUser } from 'src/common/security/types/authenticated-request.type';
-
-export class CreateCheckoutDto {
-  @IsNotEmpty()
-  planId: PlanId;
-
-  @IsEnum(BillingCycle)
-  cycle: BillingCycle;
-}
 
 @Controller('subscriptions')
 export class SubscriptionsController {
   private readonly logger = new Logger(SubscriptionsController.name);
 
-  constructor(private readonly subscriptionsService: SubscriptionsService) {}
+  constructor(
+    private readonly subscriptionsService: SubscriptionsService,
+    private readonly subscriptionWebhookService: SubscriptionWebhookService,
+  ) {}
 
   /**
    * Retrieves the current subscription state for the authenticated workspace.
@@ -44,15 +39,31 @@ export class SubscriptionsController {
   @Permissions(PERMISSIONS.BILLING_READ)
   @Get('current')
   async getCurrentSubscription(@GetTenantId() tenantId: string) {
-    return this.subscriptionsService.getSubscriptionByTenantId(tenantId);
+    return this.subscriptionsService.getBillingSummary(tenantId);
+  }
+
+  @Get('plans')
+  getPlans() {
+    return this.subscriptionsService.getCatalog();
+  }
+
+  @Get('access')
+  getAccess(@GetTenantId() tenantId: string, @CurrentTenant('permissions') permissions: readonly string[]) {
+    return this.subscriptionsService.getAccess(tenantId, permissions.includes(PERMISSIONS.BILLING_MANAGE));
   }
 
   /**
-   * Generates a signed Lemon Squeezy checkout session URL for purchasing or upgrading a plan.
+   * Generates a signed Lemon Squeezy checkout session URL for purchasing an eligible paid plan.
    */
   @Permissions(PERMISSIONS.BILLING_MANAGE)
+  @Get('eligibility')
+  getEligibility(@GetTenantId() tenantId: string, @Query() dto: CheckoutSelectionDto) {
+    return this.subscriptionsService.getCheckoutEligibility(tenantId, dto.planId, dto.cycle);
+  }
+
+  @Permissions(PERMISSIONS.BILLING_MANAGE)
   @Post('checkout')
-  async createCheckout(@Body() dto: CreateCheckoutDto, @CurrentUser() user: AuthenticatedUser, @GetTenantId() tenantId: string) {
+  async createCheckout(@Body() dto: CheckoutSelectionDto, @CurrentUser() user: AuthenticatedUser, @GetTenantId() tenantId: string) {
     const checkoutUrl = await this.subscriptionsService.createCheckoutSession(tenantId, user.email, user.name, dto.planId, dto.cycle);
 
     return { url: checkoutUrl };
@@ -72,6 +83,7 @@ export class SubscriptionsController {
    * Public webhook receiver endpoint for Lemon Squeezy asynchronous lifecycle events.
    * Note: Expects the request rawBody Buffer to be preserved via NestFactory configuration.
    */
+  @Public()
   @Post('webhook')
   @HttpCode(HttpStatus.OK)
   async handleWebhook(@RawBody() rawBody: Buffer | undefined, @Headers('x-signature') signature: string) {
@@ -84,7 +96,7 @@ export class SubscriptionsController {
       throw new BadRequestException('Invalid request body payload.');
     }
 
-    await this.subscriptionsService.handleWebhook(rawBody, signature);
+    await this.subscriptionWebhookService.handleWebhook(rawBody, signature);
     return { received: true };
   }
 }

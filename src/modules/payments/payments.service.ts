@@ -1,41 +1,38 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePaymentDto } from './dto/create-payment.dto';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { PaymentsRepository } from './payments.repository';
 import { Prisma } from 'src/generated/prisma/client';
+import { PaymentStatus } from 'src/generated/prisma/enums';
+import type { LemonSqueezyInvoiceData } from 'src/shared/integrations/lemon-squeezy/types/lemon-squeezy-webhook.types';
 
 @Injectable()
 export class PaymentsService {
   constructor(private readonly paymentsRepository: PaymentsRepository) {}
 
-  async generateReferenceCode(tx?: Prisma.TransactionClient) {
-    const now = new Date();
-    const year = now.getFullYear();
-    const offset = 50;
-
-    const lastInvoice = await this.paymentsRepository.findLast(tx);
-    const nextNumber = lastInvoice ? parseInt(lastInvoice.referenceCode.split('-')[2]) + 1 : offset + 1;
-
-    const code = `PAY-${year}-${nextNumber.toString().padStart(4, '0')}`;
-
-    return { code, nextNumber };
-  }
-
-  async upsertPayment(payment: CreatePaymentDto, tx?: Prisma.TransactionClient) {
-    const existingPayment = await this.paymentsRepository.findByExternalId(payment.externalId, tx);
-    if (existingPayment) {
-      return this.paymentsRepository.update(payment, tx);
+  // Internal provider ingestion only. The coordinator holds the billing write lock.
+  async synchronizeInvoice(invoice: LemonSqueezyInvoiceData, association: { tenantId: string; subscriptionId: string }, tx: Prisma.TransactionClient, failed = false) {
+    const existing = await this.paymentsRepository.findByExternalId(invoice.id, tx);
+    if (existing && (existing.tenantId !== association.tenantId || existing.subscriptionId !== association.subscriptionId)) {
+      throw new ConflictException('Invoice belongs to another subscription.');
     }
-
-    const { code, nextNumber } = await this.generateReferenceCode(tx);
-
-    const paymentData = {
-      ...payment,
-      referenceCode: code,
-      sequenceNumber: nextNumber,
-      tenant: { connect: { id: payment.tenantId } },
-      subscription: payment.subscriptionId ? { connect: { id: payment.subscriptionId } } : undefined,
+    const attrs = invoice.attributes;
+    const statuses: Record<typeof attrs.status, PaymentStatus> = {
+      pending: 'PENDING', paid: 'COMPLETED', void: 'CANCELLED', refunded: 'REFUNDED', partial_refund: 'REFUNDED',
     };
-
-    return this.paymentsRepository.create(paymentData, tx);
+    const data = {
+      ...association, externalId: invoice.id, status: attrs.status === 'pending' && failed ? PaymentStatus.FAILED : statuses[attrs.status],
+      transactionAmount: new Prisma.Decimal(attrs.total).div(100), transactionCurrency: attrs.currency,
+      // The invoice API does not expose merchant net proceeds. Required legacy field
+      // uses zero with explicit metadata; never infer proceeds from catalog prices.
+      netReceivedAmount: new Prisma.Decimal(0),
+      statusDetails: JSON.stringify({ providerStatus: attrs.status, refundedAmount: new Prisma.Decimal(attrs.refunded_amount).div(100).toFixed(2), netReceivedAmountAvailable: false }),
+      issuedAt: new Date(attrs.created_at),
+    };
+    if (existing) return this.paymentsRepository.updateByExternalId(invoice.id, data, tx);
+    const last = await this.paymentsRepository.findLast(tx);
+    const sequenceNumber = (last?.sequenceNumber ?? 50) + 1;
+    return this.paymentsRepository.create({ ...data,
+      referenceCode: `PAY-${new Date(attrs.created_at).getUTCFullYear()}-${sequenceNumber.toString().padStart(4, '0')}`,
+      sequenceNumber,
+    }, tx);
   }
 }

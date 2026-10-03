@@ -12,7 +12,8 @@ export type LemonSqueezyWebhookEvent =
   | 'subscription_unpaused'
   | 'subscription_payment_failed'
   | 'subscription_payment_success'
-  | 'subscription_payment_recovered';
+  | 'subscription_payment_recovered'
+  | 'subscription_payment_refunded';
 
 export interface LemonSqueezyWebhookCustomData {
   tenant_id?: string;
@@ -100,7 +101,18 @@ export interface LemonSqueezySubscriptionData {
   relationships?: LemonSqueezySubscriptionRelationships;
 }
 
+export interface LemonSqueezyInvoiceData {
+  id: string;
+  type: 'subscription-invoices';
+  attributes: {
+    store_id: number; subscription_id: number; customer_id: number; test_mode: boolean;
+    status: 'pending' | 'paid' | 'void' | 'refunded' | 'partial_refund';
+    currency: string; total: number; refunded_amount: number;
+    created_at: string; updated_at: string;
+  };
+}
+
 export interface LemonSqueezyWebhookPayload {
   meta: LemonSqueezyWebhookMeta;
-  data: LemonSqueezySubscriptionData;
+  data: LemonSqueezySubscriptionData | LemonSqueezyInvoiceData;
 }

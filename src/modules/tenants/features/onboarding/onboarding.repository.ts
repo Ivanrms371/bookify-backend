@@ -88,6 +88,14 @@ export class TenantOnboardingRepository extends BaseRepository {
     });
   }
 
+  async claimConfirmation(tenantId: string, tx: TransactionClient): Promise<boolean> {
+    const result = await tx.tenant.updateMany({
+      where: { id: tenantId, onboardingStatus: OnboardingStatus.CONFIRM },
+      data: { onboardingStatus: OnboardingStatus.COMPLETED },
+    });
+    return result.count === 1;
+  }
+
   async completeOnboarding(tenantId: string, tx?: TransactionClient): Promise<Tenant> {
     return this.db(tx).tenant.update({
       where: { id: tenantId },

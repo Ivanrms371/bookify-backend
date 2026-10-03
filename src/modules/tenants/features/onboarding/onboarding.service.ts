@@ -150,23 +150,18 @@ export class TenantOnboardingService {
 
   async confirm(userId: string) {
     const tenant = await this.requireTenantByOwnerId(userId);
-    const workspaceType = this.getWorkspaceTypeOrThrow(tenant);
+    if (tenant.onboardingStatus === OnboardingStatus.COMPLETED) return this.getStatus(userId);
+    if (tenant.onboardingStatus !== OnboardingStatus.CONFIRM) {
+      throw new BadRequestException('Complete the onboarding steps before confirmation');
+    }
+    this.getWorkspaceTypeOrThrow(tenant);
 
     const tenantId = tenant.id;
 
     await this.prisma.$transaction(async (tx) => {
-      await this.tenantOnboardingRepository.update(
-        tenantId,
-        {
-          isActive: true,
-          isPublic: true,
-          onboardingStatus: OnboardingStatus.COMPLETED,
-          settings: { create: {} },
-          lifetimeStats: { create: {} },
-        },
-        tx,
-      );
-      await this.subscriptionsService.createTrialSubscription(tenantId);
+      if (!(await this.tenantOnboardingRepository.claimConfirmation(tenantId, tx))) return;
+      await this.tenantOnboardingRepository.completeOnboarding(tenantId, tx);
+      await this.subscriptionsService.createTrialSubscription(tenantId, tx);
     });
 
     return this.getStatus(userId);
