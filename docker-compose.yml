@@ -14,3 +14,6 @@ services:
 
 volumes:
   postgres_data:
+
+# Seed Tenant,TenantWorkingHours,TenantUsages,TenantSettings(use dfault for some of them), Subscription, Professionals, Customers, appointments (for next day tomorrow list try to have it full with a service created and well made)
+# Check schema.prisma

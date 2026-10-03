@@ -147,6 +147,10 @@ Bookify uses **PostgreSQL** as its relational database and **Prisma ORM** for da
 
 Database schema changes are versioned through Prisma migrations, allowing a new database to be reconstructed from the migration history.
 
+## Development seed
+
+See [Development seed](docs/development-seed.md) for fictional demo data, login details, refresh behavior, safeguards, and verification commands.
+
 ## Related Applications
 
 Bookify is divided into three applications:

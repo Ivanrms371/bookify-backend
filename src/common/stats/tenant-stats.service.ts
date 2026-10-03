@@ -76,7 +76,7 @@ export class TenantStatsService {
       where: {
         tenantId_periodMonth_periodYear: {
           tenantId: data.tenantId,
-          periodMonth: getMonth(date),
+          periodMonth: getMonth(date) + 1,
           periodYear: getYear(date),
         },
       },

@@ -17,31 +17,31 @@ export class TenantUsageService {
   }
 
   async incrementAppointmentsCount(tenantId: string) {
-    const periodMonth = getMonth(new Date());
+    const periodMonth = getMonth(new Date()) + 1;
     const periodYear = getYear(new Date());
     return this.tenantUsageRepository.incrementAppointmentsCount({ tenantId, periodMonth, periodYear });
   }
 
   async findByTenantId(tenantId: string) {
-    const periodMonth = getMonth(new Date());
+    const periodMonth = getMonth(new Date()) + 1;
     const periodYear = getYear(new Date());
     return this.tenantUsageRepository.findByTenantId({ tenantId, periodMonth, periodYear });
   }
 
   async incrementEmailCount(tenantId: string) {
-    const periodMonth = getMonth(new Date());
+    const periodMonth = getMonth(new Date()) + 1;
     const periodYear = getYear(new Date());
     return this.tenantUsageRepository.incrementEmailCount({ tenantId, periodMonth, periodYear });
   }
 
   async incrementWhatsappCount(tenantId: string) {
-    const periodMonth = getMonth(new Date());
+    const periodMonth = getMonth(new Date()) + 1;
     const periodYear = getYear(new Date());
     return this.tenantUsageRepository.incrementWhatsappCount({ tenantId, periodMonth, periodYear });
   }
 
   async getUsageStatus(tenantId: string): Promise<TenantUsageStatus | null> {
-    const periodMonth = getMonth(new Date());
+    const periodMonth = getMonth(new Date()) + 1;
     const periodYear = getYear(new Date());
     const currentUsage = await this.tenantUsageRepository.findByTenantId({ tenantId, periodMonth, periodYear });
 
