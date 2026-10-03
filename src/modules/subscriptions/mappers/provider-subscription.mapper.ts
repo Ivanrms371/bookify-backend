@@ -21,7 +21,9 @@ export function toProviderSubscriptionUpdate(
 ) {
   const attrs = subscription.attributes;
   const status = Object.hasOwn(PROVIDER_STATUSES, attrs.status) ? PROVIDER_STATUSES[attrs.status] : undefined;
-  if (!status) throw new BadRequestException('Unknown provider subscription status.');
+  if (!status) {
+    throw new BadRequestException('Unknown provider subscription status.');
+  }
   return {
     lemonCustomerId: String(attrs.customer_id),
     status,

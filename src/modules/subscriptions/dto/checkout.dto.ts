@@ -13,7 +13,7 @@ export class CheckoutSelectionDto {
 export interface CheckoutBlocker {
   code: string;
   message: string;
-  resource?: 'professionals' | 'workspace' | 'provider' | 'cycle';
+  resource?: 'professionals' | 'services' | 'workspace' | 'provider' | 'cycle';
   used?: number;
   limit?: number;
   excess?: number;

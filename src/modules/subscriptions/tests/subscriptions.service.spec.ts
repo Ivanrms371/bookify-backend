@@ -9,6 +9,7 @@ describe('subscription foundation', () => {
   const setup = (record: unknown = null) => {
     const repository = {
       ensureTrial: jest.fn(),
+      applyDuePlanChanges: jest.fn(),
       findByTenantId: jest.fn().mockResolvedValue(record),
       getResourceUsage: jest.fn().mockResolvedValue({ professionals: 1, services: 2, countBasis: 'non_deleted' }),
     };
@@ -61,5 +62,42 @@ describe('subscription foundation', () => {
     const serialized = JSON.stringify(await service.getBillingSummary('tenant'));
     expect(serialized).not.toContain('secret-customer');
     expect(serialized).not.toContain('secret-subscription');
+  });
+  it('treats a deleted subscription as missing without exposing its financial details or portal actions', async () => {
+    const { service } = setup({ planId: 'pro', deletedAt: new Date(), lemonCustomerId: 'customer' });
+    expect(await service.getBillingSummary('tenant')).toMatchObject({
+      subscription: null,
+      currentPlan: null,
+      access: { reason: 'SUBSCRIPTION_REQUIRED' },
+      allowedActions: { manageSubscription: false, cancelSubscription: false },
+    });
+  });
+  it('keeps an unknown legacy plan readable without inventing a catalog entry', async () => {
+    const { service } = setup({ id: 'legacy', planId: 'legacy-plan', status: 'ACTIVE' });
+    expect(await service.getBillingSummary('tenant')).toMatchObject({
+      subscription: { id: 'legacy', planId: 'legacy-plan' },
+      currentPlan: null,
+    });
+  });
+  it('serializes scheduled changes while retaining the effective plan and cancellation actions', async () => {
+    jest.useFakeTimers().setSystemTime(new Date('2026-10-03T12:00:00Z'));
+    const deadline = new Date('2026-11-03T12:00:00Z');
+    const { service } = setup({
+      id: 'subscription',
+      planId: 'pro_plus',
+      status: 'CANCELLED',
+      lemonCustomerId: 'customer',
+      endsAt: deadline,
+      pendingPlanId: 'pro',
+      pendingBillingCycle: 'MONTHLY',
+      planChangesAt: deadline,
+      amount: { toFixed: () => '24.99' },
+    });
+    expect(await service.getBillingSummary('tenant')).toMatchObject({
+      subscription: { planId: 'pro_plus', amount: '24.99', pendingPlanId: 'pro', planChangesAt: deadline.toISOString() },
+      currentPlan: { id: 'pro_plus', limits: { professionals: 8, services: 60 } },
+      access: { effectivePlanId: 'pro_plus', canUseApp: true },
+      allowedActions: { manageSubscription: true, cancelSubscription: false },
+    });
   });
 });

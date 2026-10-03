@@ -1,3 +1,4 @@
+import { confirmsUpgradePayment, projectProviderPlanChange } from './plan-change';
 import {
   BadRequestException,
   ConflictException,
@@ -53,16 +54,18 @@ export class SubscriptionWebhookService {
 
   async handleWebhook(rawBody: Buffer, signature: string) {
     const payload = this.lemonSqueezyService.verifyWebhookSignature(rawBody, signature);
-    if (!INVOICE_EVENTS.has(payload.meta.event_name) && !LIFECYCLE_EVENTS.has(payload.meta.event_name)) return;
+    if (!INVOICE_EVENTS.has(payload.meta.event_name) && !LIFECYCLE_EVENTS.has(payload.meta.event_name)) {
+      return;
+    }
     const resource = `${payload.data.type}:${payload.data.id}`;
     // The provider webhook configuration ID is not a delivery identifier.
     const requestId = `LEMON_SQUEEZY:failure:${createHash('sha256').update(rawBody).digest('hex')}`;
     try {
-      const { subscription, invoice } = await this.loadProviderState(payload);
+      const { subscription, invoice, latestInvoice } = await this.loadProviderState(payload);
       await this.prisma.$transaction(async (tx) => {
         await this.providerSync.acquireLock(tx);
 
-        const local = await this.synchronizeSubscription(subscription, payload, tx);
+        const local = await this.synchronizeSubscription(subscription, payload, tx, latestInvoice);
 
         if (invoice) {
           await this.synchronizeInvoice(invoice, local, payload.meta.event_name === 'subscription_payment_failed', tx);
@@ -79,8 +82,12 @@ export class SubscriptionWebhookService {
   // Provider HTTP reads happen before the transaction; delayed payloads are never projected directly.
   private async loadProviderState(payload: LemonSqueezyWebhookPayload) {
     const isInvoice = INVOICE_EVENTS.has(payload.meta.event_name);
-    if (!isInvoice && payload.data.type !== 'subscriptions') throw new BadRequestException('Subscription payload required.');
-    if (isInvoice && payload.data.type !== 'subscription-invoices') throw new BadRequestException('Invoice payload required.');
+    if (!isInvoice && payload.data.type !== 'subscriptions') {
+      throw new BadRequestException('Subscription payload required.');
+    }
+    if (isInvoice && payload.data.type !== 'subscription-invoices') {
+      throw new BadRequestException('Invoice payload required.');
+    }
 
     const invoice = isInvoice ? await this.lemonSqueezyService.retrieveInvoice(payload.data.id) : null;
     if (invoice) {
@@ -91,33 +98,77 @@ export class SubscriptionWebhookService {
     }
     const providerId = invoice ? String(invoice.attributes.subscription_id) : payload.data.id;
     const subscription = await this.lemonSqueezyService.retrieveSubscription(providerId);
-    if (!invoice) this.assertCaughtUp(subscription.attributes.updated_at, payload.data.attributes.updated_at, 'subscription');
-    if (invoice && subscription.attributes.customer_id !== invoice.attributes.customer_id)
+    if (!invoice) {
+      this.assertCaughtUp(subscription.attributes.updated_at, payload.data.attributes.updated_at, 'subscription');
+    }
+    if (invoice && subscription.attributes.customer_id !== invoice.attributes.customer_id) {
       throw new BadRequestException('Invoice customer mismatch.');
-    return { subscription, invoice };
+    }
+    const canConfirmUpgrade = invoice && ['updated', 'renewal'].includes(invoice.attributes.billing_reason ?? '');
+    const latest = canConfirmUpgrade ? await this.lemonSqueezyService.retrieveLatestInvoice(providerId) : null;
+    const latestInvoice = latest?.id === invoice?.id ? latest : null;
+    return { subscription, invoice, latestInvoice };
   }
 
-  private async synchronizeSubscription(current: LemonSqueezySubscriptionData, payload: LemonSqueezyWebhookPayload, tx: TransactionClient) {
+  private async synchronizeSubscription(
+    current: LemonSqueezySubscriptionData,
+    payload: LemonSqueezyWebhookPayload,
+    tx: TransactionClient,
+    invoice: LemonSqueezyInvoiceData | null,
+  ) {
     const local = await this.subscriptionsRepo.findByLemonSubscriptionId(current.id, tx);
-    if (!local && payload.meta.event_name === 'subscription_created')
+    if (!local && payload.meta.event_name === 'subscription_created') {
       return this.attachSubscription(current, payload.meta.custom_data?.tenant_id, tx);
-    if (!local || local.deletedAt) throw new NotFoundException('Subscription mapping not found; retry after activation.');
+    }
+    if (!local || local.deletedAt) {
+      throw new NotFoundException('Subscription mapping not found; retry after activation.');
+    }
 
     const resource = `subscriptions:${current.id}`;
+    const target = this.plansService.resolvePlanByVariantId(String(current.attributes.variant_id));
+    const upgradePaid = confirmsUpgradePayment(local, current, invoice);
     if (await this.providerSync.isNewer(resource, current.attributes.updated_at, tx)) {
-      await this.subscriptionsRepo.updateByLemonSubscriptionId(current.id, this.subscriptionUpdate(current, local.cancelledAt), tx);
+      await this.subscriptionsRepo.updateByLemonSubscriptionId(
+        current.id,
+        projectProviderPlanChange(local, current, target, upgradePaid),
+        tx,
+      );
       await this.providerSync.markVersion(resource, current.attributes.updated_at, tx);
+    } else if (
+      upgradePaid &&
+      local.pendingPlanId === target.planId &&
+      local.pendingBillingCycle === target.cycle &&
+      (await this.providerSync.matchesVersion(resource, current.attributes.updated_at, tx))
+    ) {
+      // Payment may arrive after lifecycle sync at the same subscription version.
+      await this.subscriptionsRepo.updateByLemonSubscriptionId(
+        current.id,
+        {
+          planId: target.planId,
+          billingCycle: target.cycle,
+          amount: target.price,
+          pendingPlanId: null,
+          pendingBillingCycle: null,
+          planChangesAt: null,
+        },
+        tx,
+      );
     }
     return local;
   }
 
   private async attachSubscription(current: LemonSqueezySubscriptionData, tenantId: unknown, tx: TransactionClient) {
-    if (!tenantId || typeof tenantId !== 'string') throw new BadRequestException('Missing tenant_id in subscription metadata.');
+    if (!tenantId || typeof tenantId !== 'string') {
+      throw new BadRequestException('Missing tenant_id in subscription metadata.');
+    }
     const local = await this.subscriptionsRepo.findByTenantId(tenantId, tx);
-    if (!local || local.deletedAt) throw new NotFoundException('Subscription mapping not found.');
+    if (!local || local.deletedAt) {
+      throw new NotFoundException('Subscription mapping not found.');
+    }
     const canReplace = local.status === 'EXPIRED' || (local.status === 'CANCELLED' && local.endsAt && local.endsAt <= new Date());
-    if (local.lemonSubscriptionId && local.lemonSubscriptionId !== current.id && !canReplace)
+    if (local.lemonSubscriptionId && local.lemonSubscriptionId !== current.id && !canReplace) {
       throw new ConflictException('Conflicting provider subscription.');
+    }
 
     const attached = await this.subscriptionsRepo.attachProviderSubscription(
       tenantId,
@@ -129,14 +180,18 @@ export class SubscriptionWebhookService {
       },
       tx,
     );
-    if (attached.count !== 1) throw new ConflictException('Subscription changed during activation.');
+    if (attached.count !== 1) {
+      throw new ConflictException('Subscription changed during activation.');
+    }
     await this.providerSync.markVersion(`subscriptions:${current.id}`, current.attributes.updated_at, tx);
     return local;
   }
 
   private async synchronizeInvoice(invoice: LemonSqueezyInvoiceData, local: Subscription, failed: boolean, tx: TransactionClient) {
     const resource = `subscription-invoices:${invoice.id}`;
-    if (!(await this.providerSync.isNewer(resource, invoice.attributes.updated_at, tx))) return;
+    if (!(await this.providerSync.isNewer(resource, invoice.attributes.updated_at, tx))) {
+      return;
+    }
     await this.paymentsService.synchronizeInvoice(invoice, { tenantId: local.tenantId, subscriptionId: local.id }, tx, failed);
     await this.providerSync.markVersion(resource, invoice.attributes.updated_at, tx);
   }
@@ -147,8 +202,9 @@ export class SubscriptionWebhookService {
   }
 
   private assertCaughtUp(current: string, event: string, resource: string) {
-    if (Date.parse(current) < Date.parse(event))
+    if (Date.parse(current) < Date.parse(event)) {
       throw new InternalServerErrorException(`Provider ${resource} state has not caught up; retry delivery.`);
+    }
   }
 
   private async recordFailure(requestId: string, resource: string) {

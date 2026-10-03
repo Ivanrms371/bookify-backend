@@ -15,6 +15,12 @@ export class ProviderSyncRepository {
     return !version || Date.parse(updatedAt) > Date.parse(version);
   }
 
+  async matchesVersion(resource: string, updatedAt: string, tx: Prisma.TransactionClient) {
+    const log = await tx.webhookLog.findUnique({ where: { requestId: `${BILLING_SYNC_PROVIDER}:${resource}` } });
+    const version = (log?.payload as { updatedAt?: string } | null)?.updatedAt;
+    return Boolean(version && Date.parse(version) === Date.parse(updatedAt));
+  }
+
   acquireLock(tx: Prisma.TransactionClient) {
     return tx.$executeRaw`
     SELECT pg_advisory_xact_lock(73124, 1)

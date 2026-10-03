@@ -13,7 +13,7 @@ export interface PlanDto {
   features: string[];
   currency: 'USD';
   compatibleWorkspaces: WorkspaceType[];
-  limits: { professionals: number; services: { kind: 'not_configured' } };
+  limits: { professionals: number; services: number };
   pricing: { MONTHLY: PlanPriceDto; ANNUAL?: PlanPriceDto };
   isPopular: boolean;
   cta: string;
@@ -30,10 +30,20 @@ export interface SubscriptionAccessDto {
 }
 export interface BillingSummaryDto {
   subscription: {
-    id: string; planId: string; status: SubscriptionStatus; cycle: BillingCycle | null;
-    amount: string | null; currency: Currency; trialEndsAt: string | null;
-    currentPeriodEnd: string | null; endsAt: string | null; cancelledAt: string | null;
+    id: string;
+    planId: string;
+    status: SubscriptionStatus;
+    cycle: BillingCycle | null;
+    amount: string | null;
+    currency: Currency;
+    trialEndsAt: string | null;
+    currentPeriodEnd: string | null;
+    endsAt: string | null;
+    cancelledAt: string | null;
     paymentMethod: string | null;
+    pendingPlanId: string | null;
+    pendingBillingCycle: BillingCycle | null;
+    planChangesAt: string | null;
   } | null;
   currentPlan: PlanDto | null;
   access: SubscriptionAccessDto;

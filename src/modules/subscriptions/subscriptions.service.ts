@@ -4,12 +4,12 @@ import { SubscriptionsRepository } from './subscriptions.repository';
 import { PlansService } from './plans.service';
 import { LemonSqueezyService } from 'src/shared/integrations/lemon-squeezy/lemon-squeezy.service';
 import { BillingCycle, Currency, SubscriptionStatus } from 'src/generated/prisma/enums';
-import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
-import { PlanId } from './plans.config';
+import type { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
+import type { PlanId } from './plans.config';
 import type { CheckoutEligibilityDto } from './dto/checkout.dto';
 import type { BillingSummaryDto } from './dto/billing-summary.dto';
 import { getSubscriptionAccess } from './subscription-access';
-import { toPlanDto } from './mappers/plan.mapper';
+import { toBillingSummaryDto } from './mappers/billing-summary.mapper';
 import { getCheckoutEligibility } from './checkout-eligibility';
 
 const TRIAL_DURATION_DAYS = 14;
@@ -47,99 +47,47 @@ export class SubscriptionsService {
     );
   }
 
-  /**
-   * Retrieves the current subscription details for a specific tenant.
-   */
-  async getSubscriptionByTenantId(tenantId: string) {
-    const subscription = await this.subscriptionsRepo.findByTenantId(tenantId);
-    if (!subscription) {
-      throw new NotFoundException('Subscription not found for this workspace.');
-    }
-    return subscription;
-  }
-
   getCatalog() {
     return this.plansService.getCatalog();
   }
 
   async getAccess(tenantId: string, canManageBilling: boolean) {
+    await this.subscriptionsRepo.applyDuePlanChanges(tenantId);
     return getSubscriptionAccess(await this.subscriptionsRepo.findByTenantId(tenantId), canManageBilling);
   }
 
   async getBillingSummary(tenantId: string): Promise<BillingSummaryDto> {
+    await this.subscriptionsRepo.applyDuePlanChanges(tenantId);
     const [record, usage] = await Promise.all([
       this.subscriptionsRepo.findByTenantId(tenantId),
       this.subscriptionsRepo.getResourceUsage(tenantId),
     ]);
     const subscription = record?.deletedAt ? null : record;
     const plan = this.plansService.getAllPlans().find((plan) => plan.id === subscription?.planId);
-    const hasPortal = Boolean(subscription?.lemonCustomerId);
-    return {
-      subscription: subscription
-        ? {
-            id: subscription.id,
-            planId: subscription.planId,
-            status: subscription.status,
-            cycle: subscription.billingCycle,
-            amount: subscription.amount?.toFixed(2) ?? null,
-            currency: subscription.currency,
-            trialEndsAt: subscription.trialEndsAt?.toISOString() ?? null,
-            currentPeriodEnd: subscription.currentPeriodEnd?.toISOString() ?? null,
-            endsAt: subscription.endsAt?.toISOString() ?? null,
-            cancelledAt: subscription.cancelledAt?.toISOString() ?? null,
-            paymentMethod: subscription.paymentMethod,
-          }
-        : null,
-      currentPlan: plan ? toPlanDto(plan) : null,
-      access: getSubscriptionAccess(subscription, true),
-      usage,
-      allowedActions: {
-        explorePlans: true,
-        manageSubscription: hasPortal,
-        cancelSubscription: hasPortal && subscription?.status !== 'CANCELLED',
-      },
-    };
-  }
-
-  private async checkoutContext(tenantId: string, planId: PlanId, cycle: BillingCycle) {
-    if (!['MONTHLY', 'ANNUAL'].includes(cycle))
-      throw new BadRequestException({ code: 'INVALID_BILLING_CYCLE', message: 'Ciclo de facturación no válido.' });
-    const plan = this.plansService.getAllPlans().find((item) => item.id === planId);
-    if (!plan) throw new BadRequestException({ code: 'PLAN_UNAVAILABLE', message: 'El plan no existe.' });
-    const [tenant, subscription, usage] = await Promise.all([
-      this.subscriptionsRepo.getCheckoutTenant(tenantId),
-      this.subscriptionsRepo.findByTenantId(tenantId),
-      this.subscriptionsRepo.getResourceUsage(tenantId),
-    ]);
-    if (!tenant || tenant.deletedAt || !tenant.slug) throw new NotFoundException('Workspace not found.');
-    return {
-      tenant,
-      eligibility: getCheckoutEligibility({
-        plan,
-        cycle,
-        workspaceType: tenant.workspaceType,
-        subscription,
-        professionals: usage.professionals,
-      }),
-    };
+    return toBillingSummaryDto(subscription, plan, usage);
   }
 
   async getCheckoutEligibility(tenantId: string, planId: PlanId, cycle: BillingCycle): Promise<CheckoutEligibilityDto> {
-    return (await this.checkoutContext(tenantId, planId, cycle)).eligibility;
+    return (await this.getCheckoutContext(tenantId, planId, cycle)).eligibility;
   }
 
   async createCheckoutSession(tenantId: string, userEmail: string, userName: string | undefined, planId: PlanId, cycle: BillingCycle) {
-    const { tenant, eligibility } = await this.checkoutContext(tenantId, planId, cycle);
-    if (!eligibility.eligible)
+    const { tenant, eligibility } = await this.getCheckoutContext(tenantId, planId, cycle);
+    if (!eligibility.eligible) {
       throw new BadRequestException({
         code: eligibility.blockers[0].code,
         message: eligibility.blockers.map((item) => item.message).join(' '),
         blockers: eligibility.blockers,
       });
+    }
     const appUrl = process.env.APP_URL;
-    if (!appUrl) throw new InternalServerErrorException('APP_URL is required for checkout.');
+    if (!appUrl) {
+      throw new InternalServerErrorException('APP_URL is required for checkout.');
+    }
     const origin = new URL(appUrl);
-    if (!['http:', 'https:'].includes(origin.protocol)) throw new InternalServerErrorException('Invalid APP_URL.');
+    if (!['http:', 'https:'].includes(origin.protocol)) {
+      throw new InternalServerErrorException('Invalid APP_URL.');
+    }
     const redirectUrl = new URL(`/${encodeURIComponent(tenant.slug!)}/billing/return`, origin.origin);
     redirectUrl.searchParams.set('plan', planId);
     redirectUrl.searchParams.set('cycle', cycle);
@@ -162,5 +110,34 @@ export class SubscriptionsService {
     }
 
     return this.lemonSqueezyService.getCustomerPortalUrl(subscription.lemonCustomerId);
+  }
+
+  private async getCheckoutContext(tenantId: string, planId: PlanId, cycle: BillingCycle) {
+    if (!['MONTHLY', 'ANNUAL'].includes(cycle)) {
+      throw new BadRequestException({ code: 'INVALID_BILLING_CYCLE', message: 'Ciclo de facturación no válido.' });
+    }
+    const plan = this.plansService.getAllPlans().find((item) => item.id === planId);
+    if (!plan) {
+      throw new BadRequestException({ code: 'PLAN_UNAVAILABLE', message: 'El plan no existe.' });
+    }
+    const [tenant, subscription, usage] = await Promise.all([
+      this.subscriptionsRepo.getCheckoutTenant(tenantId),
+      this.subscriptionsRepo.findByTenantId(tenantId),
+      this.subscriptionsRepo.getResourceUsage(tenantId),
+    ]);
+    if (!tenant || tenant.deletedAt || !tenant.slug) {
+      throw new NotFoundException('Workspace not found.');
+    }
+    return {
+      tenant,
+      eligibility: getCheckoutEligibility({
+        plan,
+        cycle,
+        workspaceType: tenant.workspaceType,
+        subscription,
+        professionals: usage.professionals,
+        services: usage.services,
+      }),
+    };
   }
 }

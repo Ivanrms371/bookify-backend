@@ -2,11 +2,15 @@ import { PlansService } from '../plans.service';
 
 describe('canonical catalog', () => {
   const service = new PlansService();
-  it('uses existing prices, typed unconfigured service limits and no provider IDs', () => {
+  it('uses existing prices, approved resource limits and no provider IDs', () => {
     const plans = service.getCatalog();
     expect(plans.map((p) => p.id)).toEqual(['free', 'pro', 'pro_plus']);
     expect(plans[1].pricing.MONTHLY.amount).toBe('14.99');
-    expect(plans[2].limits).toEqual({ professionals: 5, services: { kind: 'not_configured' } });
+    expect(plans.map((plan) => plan.limits)).toEqual([
+      { professionals: 1, services: 10 },
+      { professionals: 3, services: 30 },
+      { professionals: 8, services: 60 },
+    ]);
     expect(JSON.stringify(plans)).not.toContain('lemonVariantId');
     expect(plans[0].pricing.ANNUAL).toBeUndefined();
   });

@@ -185,3 +185,107 @@ describe('checkout provider boundary', () => {
     expect(await service.retrieveInvoiceForDownload('500')).toEqual(data);
   });
 });
+
+describe('subscription plan provider boundary', () => {
+  const previousKey = process.env.LEMON_SQUEEZY_API_KEY;
+  const previousStore = process.env.LEMON_SQUEEZY_STORE_ID;
+  const previousMode = process.env.LEMON_SQUEEZY_TEST_MODE;
+  let patch: jest.Mock;
+  let get: jest.Mock;
+  let service: LemonSqueezyService;
+  const response = () => ({
+    data: {
+      data: {
+        id: '123',
+        type: 'subscriptions',
+        attributes: {
+          store_id: 99,
+          test_mode: true,
+          customer_id: 22,
+          variant_id: 43,
+          status: 'active',
+          created_at: '2026-10-03T12:00:00Z',
+          updated_at: '2026-10-03T12:00:00Z',
+          renews_at: null,
+          ends_at: null,
+          trial_ends_at: null,
+        },
+      },
+    },
+  });
+  beforeEach(() => {
+    process.env.LEMON_SQUEEZY_API_KEY = 'unit-test-key';
+    process.env.LEMON_SQUEEZY_STORE_ID = '99';
+    process.env.LEMON_SQUEEZY_TEST_MODE = 'true';
+    patch = jest.fn().mockResolvedValue(response());
+    get = jest.fn();
+    jest.spyOn(axios, 'create').mockReturnValue({ patch, get } as never);
+    service = new LemonSqueezyService();
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
+    for (const [key, value] of [
+      ['LEMON_SQUEEZY_API_KEY', previousKey],
+      ['LEMON_SQUEEZY_STORE_ID', previousStore],
+      ['LEMON_SQUEEZY_TEST_MODE', previousMode],
+    ]) {
+      if (value === undefined) delete process.env[key!];
+      else process.env[key!] = value;
+    }
+  });
+  it.each([true, false])('uses immediate proration only for an upgrade: %s', async (charge) => {
+    await service.updateSubscriptionPlan('123', '43', charge);
+    expect(patch).toHaveBeenCalledWith(
+      '/subscriptions/123',
+      {
+        data: {
+          type: 'subscriptions',
+          id: '123',
+          attributes: {
+            variant_id: 43,
+            invoice_immediately: charge,
+            disable_prorations: !charge,
+          },
+        },
+      },
+      { timeout: 10_000 },
+    );
+  });
+  it('distinguishes definite rejection from uncertain timeouts without exposing provider errors', async () => {
+    patch.mockRejectedValue({ isAxiosError: true, response: { status: 422 }, message: 'secret' });
+    await expect(service.updateSubscriptionPlan('123', '43', true)).rejects.toMatchObject({ rejected: true });
+    patch.mockRejectedValue({ isAxiosError: true, code: 'ECONNABORTED', message: 'secret' });
+    await expect(service.updateSubscriptionPlan('123', '43', true)).rejects.toMatchObject({ rejected: false });
+  });
+  it('treats a malformed successful mutation response as uncertain', async () => {
+    patch.mockResolvedValue({ data: { data: { ...response().data.data, id: '124' } } });
+    await expect(service.updateSubscriptionPlan('123', '43', true)).rejects.toMatchObject({ rejected: false });
+  });
+  it('retrieves only the latest invoice for the correct subscription/store/mode', async () => {
+    const invoice = {
+      id: '501',
+      type: 'subscription-invoices',
+      attributes: {
+        store_id: 99,
+        test_mode: true,
+        customer_id: 22,
+        subscription_id: 123,
+        currency: 'USD',
+        status: 'paid',
+        billing_reason: 'updated',
+        total: 1000,
+        refunded_amount: 0,
+        created_at: '2026-10-03T12:00:00Z',
+        updated_at: '2026-10-03T12:00:00Z',
+      },
+    };
+    get.mockResolvedValue({ data: { data: [invoice] } });
+    expect(await service.retrieveLatestInvoice('123')).toEqual(invoice);
+    expect(get).toHaveBeenCalledWith('/subscription-invoices', {
+      params: { 'filter[subscription_id]': '123', 'page[size]': 1, sort: '-createdAt' },
+      timeout: 10_000,
+    });
+    get.mockResolvedValue({ data: { data: [{ ...invoice, attributes: { ...invoice.attributes, subscription_id: 124 } }] } });
+    await expect(service.retrieveLatestInvoice('123')).rejects.toThrow('Unable to confirm');
+  });
+});

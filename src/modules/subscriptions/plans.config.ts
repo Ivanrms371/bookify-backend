@@ -1,29 +1,5 @@
-export type WorkspaceType = 'INDIVIDUAL' | 'TEAM';
-export type BillingCycle = 'MONTHLY' | 'ANNUAL';
-export type PlanId = 'free' | 'pro' | 'pro_plus';
-
-export interface PlanPrice {
-  price: number;
-  compareAtPrice: number | null;
-  equivalentMonthlyPrice?: number;
-  lemonVariantId?: string;
-}
-
-export interface Plan {
-  id: PlanId;
-  title: string;
-  description: string;
-  compatibleWorkspaces: WorkspaceType[];
-  maxProfessionals: number;
-  features: string[];
-  sortOrder: number;
-  isPopular: boolean;
-  cta: string;
-  pricing: {
-    MONTHLY: PlanPrice;
-    ANNUAL?: PlanPrice;
-  };
-}
+import type { Plan, PlanId } from './types/plan.types';
+export type { WorkspaceType, BillingCycle, PlanId, PlanPrice, Plan } from './types/plan.types';
 
 export const PLANS: Record<PlanId, Plan> = {
   free: {
@@ -32,10 +8,18 @@ export const PLANS: Record<PlanId, Plan> = {
     description: 'Ideal para empezar tu negocio',
     compatibleWorkspaces: ['INDIVIDUAL'],
     maxProfessionals: 1,
+    maxServices: 10,
     sortOrder: 1,
     isPopular: false,
     cta: 'Comenzar gratis',
-    features: ['1 profesional', 'Reservas ilimitadas', 'Página de reservas', 'Estadísticas básicas', 'Sin recordatorios'],
+    features: [
+      '1 profesional',
+      'Hasta 10 servicios',
+      'Reservas ilimitadas',
+      'Página de reservas',
+      'Estadísticas básicas',
+      'Sin recordatorios',
+    ],
     pricing: {
       MONTHLY: {
         price: 0,
@@ -46,14 +30,17 @@ export const PLANS: Record<PlanId, Plan> = {
   pro: {
     id: 'pro',
     title: 'Pro',
-    description: 'Ideal para profesionales individuales',
-    compatibleWorkspaces: ['INDIVIDUAL'],
-    maxProfessionals: 1,
+    description: 'Ideal para pequeños equipos',
+    compatibleWorkspaces: ['INDIVIDUAL', 'TEAM'],
+    maxProfessionals: 3,
+    maxServices: 30,
     sortOrder: 2,
     isPopular: true,
     cta: 'Elegir Pro',
     features: [
       'Todo lo del plan Free',
+      'Hasta 3 profesionales',
+      'Hasta 30 servicios',
       'Recordatorios automáticos',
       'Estadísticas avanzadas',
       'Soporte prioritario',
@@ -77,15 +64,17 @@ export const PLANS: Record<PlanId, Plan> = {
   pro_plus: {
     id: 'pro_plus',
     title: 'Pro+',
-    description: 'Ideal para equipos de hasta 5 profesionales',
-    compatibleWorkspaces: ['TEAM'],
-    maxProfessionals: 5,
+    description: 'Ideal para equipos de hasta 8 profesionales',
+    compatibleWorkspaces: ['INDIVIDUAL', 'TEAM'],
+    maxProfessionals: 8,
+    maxServices: 60,
     sortOrder: 3,
     isPopular: false,
     cta: 'Elegir Pro+',
     features: [
       'Todo lo del plan Pro',
-      'Hasta 5 profesionales',
+      'Hasta 8 profesionales',
+      'Hasta 60 servicios',
       'Gestión de profesionales',
       'Panel de administración',
       'Hasta 1200 emails/mes',

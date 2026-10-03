@@ -22,7 +22,7 @@ const setup = (overrides = {}) => {
   const repo = {
     getCheckoutTenant: jest.fn().mockResolvedValue({ slug: 'my workspace', workspaceType: 'INDIVIDUAL', deletedAt: null }),
     findByTenantId: jest.fn().mockResolvedValue(record),
-    getResourceUsage: jest.fn().mockResolvedValue({ professionals: 1, services: 500 }),
+    getResourceUsage: jest.fn().mockResolvedValue({ professionals: 1, services: 1 }),
     attachProviderSubscription: jest.fn().mockResolvedValue({ count: 1 }),
   };
   const sync = {
@@ -95,10 +95,10 @@ describe('checkout selection and activation', () => {
   it('blocks excess professionals and revalidates on POST without provider changes', async () => {
     const { service, repo, provider } = setup();
     expect((await service.getCheckoutEligibility('tenant', 'pro', 'MONTHLY')).eligible).toBe(true);
-    repo.getResourceUsage.mockResolvedValue({ professionals: 3, services: 0 });
+    repo.getResourceUsage.mockResolvedValue({ professionals: 4, services: 0 });
     expect(await service.getCheckoutEligibility('tenant', 'pro', 'MONTHLY')).toMatchObject({
       eligible: false,
-      blockers: [expect.objectContaining({ resource: 'professionals', used: 3, limit: 1, excess: 2 })],
+      blockers: [expect.objectContaining({ resource: 'professionals', used: 4, limit: 3, excess: 1 })],
     });
     await expect(service.createCheckoutSession('tenant', 'owner@example.com', 'Owner', 'pro', 'MONTHLY')).rejects.toThrow();
     expect(provider.createCheckout).not.toHaveBeenCalled();
@@ -114,9 +114,12 @@ describe('checkout selection and activation', () => {
   it('allows immediate paid checkout during a running local trial', async () => {
     const { service, provider } = setup({ trialEndsAt: new Date('2099-01-01') });
     expect(await service.getCheckoutEligibility('tenant', 'pro', 'MONTHLY')).toMatchObject({
-      eligible: true, blockers: [],
+      eligible: true,
+      blockers: [],
     });
-    await expect(service.createCheckoutSession('tenant', 'owner@example.com', 'Owner', 'pro', 'MONTHLY')).resolves.toBe('https://test.lemonsqueezy.com/checkout/buy/abc');
+    await expect(service.createCheckoutSession('tenant', 'owner@example.com', 'Owner', 'pro', 'MONTHLY')).resolves.toBe(
+      'https://test.lemonsqueezy.com/checkout/buy/abc',
+    );
     expect(provider.createCheckout).toHaveBeenCalledWith(expect.objectContaining({ variantId: '123', tenantId: 'tenant' }));
   });
   it('blocks missing subscriptions and never issues another trial', async () => {
@@ -127,12 +130,10 @@ describe('checkout selection and activation', () => {
       blockers: [expect.objectContaining({ code: 'SUBSCRIPTION_REQUIRED' })],
     });
   });
-  it('blocks incompatible workspaces, missing variants and Free checkout', async () => {
+  it('allows paid plans in team workspaces but blocks missing variants and Free checkout', async () => {
     const { service, repo, provider } = setup();
     repo.getCheckoutTenant.mockResolvedValue({ slug: 'team', workspaceType: 'TEAM', deletedAt: null });
-    expect((await service.getCheckoutEligibility('tenant', 'pro', 'MONTHLY')).blockers).toContainEqual(
-      expect.objectContaining({ code: 'PLAN_INCOMPATIBLE' }),
-    );
+    expect((await service.getCheckoutEligibility('tenant', 'pro', 'MONTHLY')).eligible).toBe(true);
     PLANS.pro.pricing.MONTHLY.lemonVariantId = '';
     expect((await service.getCheckoutEligibility('tenant', 'pro', 'MONTHLY')).blockers).toContainEqual(
       expect.objectContaining({ resource: 'provider' }),

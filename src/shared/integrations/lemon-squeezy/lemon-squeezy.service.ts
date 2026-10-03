@@ -1,3 +1,4 @@
+import { LemonPlanChangeError } from './exceptions/lemon-plan-change.error';
 import { isInvoiceUrl } from './invoice-url';
 import { BadGatewayException, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 // src/shared/integrations/lemon-squeezy/lemon-squeezy.service.ts
@@ -122,6 +123,61 @@ export class LemonSqueezyService {
 
   async retrieveInvoice(id: string): Promise<LemonSqueezyInvoiceData> {
     return this.retrieveResource('subscription-invoices', id) as Promise<LemonSqueezyInvoiceData>;
+  }
+
+  async updateSubscriptionPlan(id: string, variantId: string, chargeImmediately: boolean): Promise<LemonSqueezySubscriptionData> {
+    if (
+      !this.apiKey ||
+      !/^[0-9]+$/.test(id) ||
+      !/^[0-9]+$/.test(variantId) ||
+      !Number.isSafeInteger(Number(variantId)) ||
+      Number(variantId) <= 0
+    ) {
+      throw new LemonPlanChangeError(true);
+    }
+    try {
+      const response = await this.http.patch<{ data: LemonSqueezySubscriptionData }>(
+        `/subscriptions/${id}`,
+        {
+          data: {
+            type: 'subscriptions',
+            id,
+            attributes: {
+              variant_id: Number(variantId),
+              invoice_immediately: chargeImmediately,
+              disable_prorations: !chargeImmediately,
+            },
+          },
+        },
+        { timeout: 10_000 },
+      );
+      const data = response.data.data;
+      if (data?.type !== 'subscriptions' || data.id !== id) throw new Error('Provider resource mismatch.');
+      this.validateResource(data);
+      return data;
+    } catch (error) {
+      const status = isAxiosError(error) ? error.response?.status : undefined;
+      throw new LemonPlanChangeError(status !== undefined && [400, 401, 403, 404, 422].includes(status));
+    }
+  }
+
+  async retrieveLatestInvoice(subscriptionId: string): Promise<LemonSqueezyInvoiceData | null> {
+    if (!this.apiKey || !/^[0-9]+$/.test(subscriptionId)) throw new InternalServerErrorException('Invalid provider subscription.');
+    try {
+      const response = await this.http.get<{ data: LemonSqueezyInvoiceData[] }>('/subscription-invoices', {
+        params: { 'filter[subscription_id]': subscriptionId, 'page[size]': 1, sort: '-createdAt' },
+        timeout: 10_000,
+      });
+      if (!Array.isArray(response.data.data)) throw new Error('Invalid invoice list.');
+      const invoice = response.data.data[0];
+      if (!invoice) return null;
+      if (invoice.type !== 'subscription-invoices' || !/^[0-9]+$/.test(invoice.id)) throw new Error('Invalid invoice.');
+      this.validateResource(invoice);
+      if (String(invoice.attributes.subscription_id) !== subscriptionId) throw new Error('Invoice subscription mismatch.');
+      return invoice;
+    } catch {
+      throw new InternalServerErrorException('Unable to confirm provider payment.');
+    }
   }
 
   async retrieveInvoiceForDownload(id: string): Promise<LemonSqueezyInvoiceData> {

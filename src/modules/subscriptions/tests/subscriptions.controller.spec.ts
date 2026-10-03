@@ -1,6 +1,7 @@
 import type { SubscriptionsService } from '../subscriptions.service';
 import type { SubscriptionWebhookService } from '../subscription-webhook.service';
 import { IS_PUBLIC_KEY } from 'src/common/security/decorators/public.decorator';
+import type { PlanChangeService } from '../plan-change.service';
 import { SubscriptionsController } from '../subscriptions.controller';
 import { PermissionsGuard } from 'src/common/security/guards/permissions.guard';
 import { Reflector } from '@nestjs/core';
@@ -22,7 +23,14 @@ describe('subscription read permissions', () => {
     expect(() => guard.canActivate(context('getCurrentSubscription', 'ADMIN'))).toThrow();
   });
   it('allows only owners to create checkout or inspect eligibility', () => {
-    for (const method of ['createCheckout', 'getEligibility'] as const) {
+    for (const method of [
+      'createCheckout',
+      'getEligibility',
+      'getChangeEligibility',
+      'changePlan',
+      'cancelPlanChange',
+      'refreshPlanChange',
+    ] as const) {
       expect(guard.canActivate(context(method, 'OWNER'))).toBe(true);
       expect(() => guard.canActivate(context(method, 'ADMIN'))).toThrow();
       expect(() => guard.canActivate(context(method, 'STAFF'))).toThrow();
@@ -38,7 +46,11 @@ describe('subscription read permissions', () => {
   });
   it('delegates verified raw webhook processing to the dedicated webhook service', async () => {
     const webhook = { handleWebhook: jest.fn().mockResolvedValue(undefined) };
-    const controller = new SubscriptionsController({} as SubscriptionsService, webhook as unknown as SubscriptionWebhookService);
+    const controller = new SubscriptionsController(
+      {} as SubscriptionsService,
+      webhook as unknown as SubscriptionWebhookService,
+      {} as PlanChangeService,
+    );
     const rawBody = Buffer.from('{"signed":"payload"}');
     expect(await controller.handleWebhook(rawBody, 'signature')).toEqual({ received: true });
     expect(webhook.handleWebhook).toHaveBeenCalledWith(rawBody, 'signature');

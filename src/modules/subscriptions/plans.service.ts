@@ -1,15 +1,8 @@
-// src/modules/subscriptions/plans.service.ts
-
+import type { ResolvedPlanVariant } from './types/resolved-plan-variant.types';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { toPlanDto } from './mappers/plan.mapper';
-import { BillingCycle, Plan, PLANS, PlanId, WorkspaceType } from './plans.config';
-
-export interface ResolvedPlanVariant {
-  planId: PlanId;
-  cycle: BillingCycle;
-  price: number;
-  plan: Plan;
-}
+import { PLANS } from './plans.config';
+import type { BillingCycle, Plan, PlanId } from './types/plan.types';
 
 @Injectable()
 export class PlansService {

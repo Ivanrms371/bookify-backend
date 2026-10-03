@@ -1,12 +1,12 @@
+import { PlanChangeService } from './plan-change.service';
 import { SubscriptionWebhookService } from './subscription-webhook.service';
 import { PERMISSIONS } from 'src/common/security/constants/permissions.constant';
 import { Permissions } from 'src/common/security/decorators/permissions.decorator';
-// src/modules/subscriptions/subscriptions.controller.ts
-
 import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Headers,
   HttpCode,
@@ -22,7 +22,7 @@ import { Public } from 'src/common/security/decorators/public.decorator';
 import { SubscriptionsService } from './subscriptions.service';
 import { CurrentTenant, GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { CurrentUser } from 'src/common/security/decorators/current-user.decorator';
-import { AuthenticatedUser } from 'src/common/security/types/authenticated-request.type';
+import type { AuthenticatedUser } from 'src/common/security/types/authenticated-request.type';
 
 @Controller('subscriptions')
 export class SubscriptionsController {
@@ -31,6 +31,7 @@ export class SubscriptionsController {
   constructor(
     private readonly subscriptionsService: SubscriptionsService,
     private readonly subscriptionWebhookService: SubscriptionWebhookService,
+    private readonly planChanges: PlanChangeService,
   ) {}
 
   /**
@@ -69,8 +70,32 @@ export class SubscriptionsController {
     return { url: checkoutUrl };
   }
 
+  @Permissions(PERMISSIONS.BILLING_MANAGE)
+  @Get('change-eligibility')
+  getChangeEligibility(@GetTenantId() tenantId: string, @Query() dto: CheckoutSelectionDto) {
+    return this.planChanges.getEligibility(tenantId, dto);
+  }
+
+  @Permissions(PERMISSIONS.BILLING_MANAGE)
+  @Post('plan-change')
+  changePlan(@GetTenantId() tenantId: string, @Body() dto: CheckoutSelectionDto) {
+    return this.planChanges.change(tenantId, dto);
+  }
+
+  @Permissions(PERMISSIONS.BILLING_MANAGE)
+  @Delete('plan-change')
+  cancelPlanChange(@GetTenantId() tenantId: string) {
+    return this.planChanges.cancel(tenantId);
+  }
+
+  @Permissions(PERMISSIONS.BILLING_MANAGE)
+  @Post('plan-change/refresh')
+  refreshPlanChange(@GetTenantId() tenantId: string) {
+    return this.planChanges.refresh(tenantId);
+  }
+
   /**
-   * Generates an authenticated, single-use URL for the Lemon Squeezy Customer Portal.
+   * Generates a fresh authenticated URL for the Lemon Squeezy Customer Portal.
    */
   @Permissions(PERMISSIONS.BILLING_MANAGE)
   @Get('portal')

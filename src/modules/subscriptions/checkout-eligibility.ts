@@ -1,21 +1,15 @@
-import type { Subscription } from 'src/generated/prisma/client';
-import type { BillingCycle, Plan, WorkspaceType } from './plans.config';
+import type { CheckoutSubscription, CheckoutEligibilityContext } from './types/checkout-eligibility.types';
 import type { CheckoutEligibilityDto } from './dto/checkout.dto';
-
-type CheckoutSubscription = Pick<Subscription, 'planId' | 'status' | 'deletedAt' | 'lemonSubscriptionId' | 'endsAt' | 'trialEndsAt'>;
-interface CheckoutEligibilityContext {
-  plan: Plan;
-  cycle: BillingCycle;
-  workspaceType: WorkspaceType | null;
-  subscription: CheckoutSubscription | null;
-  professionals: number;
-}
 
 const LIVE_PAID_STATUSES = ['ACTIVE', 'PAST_DUE', 'PAUSED', 'SUSPENDED', 'PENDING_PAYMENT'];
 
 function hasPaidSubscription(subscription: CheckoutSubscription | null, now: Date): boolean {
-  if (!subscription || subscription.planId === 'free') return false;
-  if (LIVE_PAID_STATUSES.includes(subscription.status)) return true;
+  if (!subscription || subscription.planId === 'free') {
+    return false;
+  }
+  if (LIVE_PAID_STATUSES.includes(subscription.status)) {
+    return true;
+  }
   const ended =
     subscription.status === 'EXPIRED' ||
     (subscription.status === 'CANCELLED' && subscription.endsAt !== null && subscription.endsAt <= now);
@@ -23,7 +17,7 @@ function hasPaidSubscription(subscription: CheckoutSubscription | null, now: Dat
 }
 
 export function getCheckoutEligibility(
-  { plan, cycle, workspaceType, subscription, professionals }: CheckoutEligibilityContext,
+  { plan, cycle, workspaceType, subscription, professionals, services }: CheckoutEligibilityContext,
   now = new Date(),
 ): CheckoutEligibilityDto {
   const blockers: CheckoutEligibilityDto['blockers'] = [];
@@ -51,6 +45,16 @@ export function getCheckoutEligibility(
       limit: plan.maxProfessionals,
       excess,
       message: `Este plan permite ${plan.maxProfessionals} profesionales. Tienes ${professionals}. Elimina ${excess} para continuar.`,
+    });
+  }
+  if (services > plan.maxServices) {
+    blockers.push({
+      code: 'PLAN_LIMIT_REACHED',
+      resource: 'services',
+      used: services,
+      limit: plan.maxServices,
+      excess: services - plan.maxServices,
+      message: `Este plan permite ${plan.maxServices} servicios. Tienes ${services}. Elimina ${services - plan.maxServices} para continuar.`,
     });
   }
   if (hasPaidSubscription(subscription, now)) {

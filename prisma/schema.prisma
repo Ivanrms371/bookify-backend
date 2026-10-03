@@ -571,12 +571,16 @@ model Subscription {
   deletedAt           DateTime?          @map("deleted_at")
   lemonCustomerId     String?            @map("lemon_customer_id")
   lemonSubscriptionId String?            @unique @map("lemon_subscription_id")
+  pendingPlanId       String?            @map("pending_plan_id")
+  pendingBillingCycle BillingCycle?      @map("pending_billing_cycle")
+  planChangesAt       DateTime?          @map("plan_changes_at")
   endsAt              DateTime?          @map("ends_at")
   currency            Currency           @default(USD)
   payments            Payment[]
   tenant              Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@index([tenantId, status])
+  @@index([planChangesAt])
   @@index([status, currentPeriodEnd])
   @@index([status, trialEndsAt])
   @@index([lemonCustomerId])

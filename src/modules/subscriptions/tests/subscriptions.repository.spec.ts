@@ -19,4 +19,32 @@ describe('subscription persistence', () => {
     expect(prisma.professional.count).toHaveBeenCalledWith({ where: { tenantId: 'tenant-a', deletedAt: null } });
     expect(prisma.service.count).toHaveBeenCalledWith({ where: { tenantId: 'tenant-a', deletedAt: null } });
   });
+  it('settles only due downgrades and cycle switches for the requested tenant and clears all pending fields', async () => {
+    const updateMany = jest.fn().mockResolvedValue({ count: 1 });
+    const repo = new SubscriptionsRepository({ subscription: { updateMany } } as unknown as PrismaService);
+    const now = new Date('2026-11-03T12:00:00Z');
+    await repo.applyDuePlanChanges('tenant-a', undefined, now);
+    expect(updateMany).toHaveBeenCalledTimes(4);
+    expect(updateMany).toHaveBeenCalledWith({
+      where: {
+        tenantId: 'tenant-a',
+        deletedAt: null,
+        OR: [{ planId: 'pro_plus' }, { planId: 'pro', billingCycle: 'ANNUAL' }],
+        pendingPlanId: 'pro',
+        pendingBillingCycle: 'MONTHLY',
+        planChangesAt: { lte: now },
+      },
+      data: { planId: 'pro', billingCycle: 'MONTHLY', amount: 14.99, pendingPlanId: null, pendingBillingCycle: null, planChangesAt: null },
+    });
+    expect(updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          pendingPlanId: 'pro_plus',
+          pendingBillingCycle: 'ANNUAL',
+          OR: [{ planId: 'pro_plus', billingCycle: 'MONTHLY' }],
+        }),
+        data: expect.objectContaining({ planId: 'pro_plus', billingCycle: 'ANNUAL', amount: 239.88 }),
+      }),
+    );
+  });
 });

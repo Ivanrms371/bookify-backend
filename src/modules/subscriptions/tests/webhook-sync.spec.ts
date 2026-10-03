@@ -72,6 +72,7 @@ function setup(event = 'subscription_payment_success') {
       }
     }),
     isNewer: jest.fn(async (resource, date) => !state.versions[resource] || Date.parse(date) > Date.parse(state.versions[resource])),
+    matchesVersion: jest.fn(async (resource, date) => state.versions[resource] === date),
     markVersion: jest.fn(async (resource, date) => {
       state.versions[resource] = date;
     }),
@@ -91,11 +92,14 @@ function setup(event = 'subscription_payment_success') {
 
 describe('invoice/subscription webhook coordination', () => {
   const original = PLANS.pro.pricing.MONTHLY.lemonVariantId;
+  const originalPlus = PLANS.pro_plus.pricing.MONTHLY.lemonVariantId;
   beforeEach(() => {
     PLANS.pro.pricing.MONTHLY.lemonVariantId = '42';
+    PLANS.pro_plus.pricing.MONTHLY.lemonVariantId = '43';
   });
   afterEach(() => {
     PLANS.pro.pricing.MONTHLY.lemonVariantId = original;
+    PLANS.pro_plus.pricing.MONTHLY.lemonVariantId = originalPlus;
   });
   it('associates by invoice subscription ID, ignores custom tenant data, and shares one transaction', async () => {
     const { service, provider, repo, payments, sync, tx } = setup();
@@ -207,5 +211,116 @@ describe('invoice/subscription webhook coordination', () => {
     });
     await expect(service.handleWebhook(Buffer.from('{}'), 'sig')).rejects.toThrow('version write failure');
     expect(state).toEqual({ subscription: 'TRIAL', payment: null, versions: {} });
+  });
+  it('keeps the current cycle until a confirmed cycle switch reaches its original deadline', async () => {
+    const { service, provider, repo } = setup('subscription_updated');
+    const deadline = new Date('2099-11-03T12:00:00Z');
+    const originalAnnual = PLANS.pro.pricing.ANNUAL!.lemonVariantId;
+    PLANS.pro.pricing.ANNUAL!.lemonVariantId = '44';
+    try {
+      repo.findByLemonSubscriptionId.mockResolvedValue({
+        id: 'local-sub',
+        tenantId: 'tenant-A',
+        deletedAt: null,
+        planId: 'pro',
+        billingCycle: 'MONTHLY',
+        amount: 14.99,
+        pendingPlanId: 'pro',
+        pendingBillingCycle: 'ANNUAL',
+        planChangesAt: null,
+        currentPeriodEnd: deadline,
+      } as never);
+      const current = {
+        ...subscription(),
+        attributes: { ...subscription().attributes, variant_id: 44, renews_at: deadline.toISOString() },
+      };
+      provider.retrieveSubscription.mockResolvedValue(current);
+      provider.verifyWebhookSignature.mockReturnValue({ meta: { event_name: 'subscription_updated' }, data: current } as never);
+      await service.handleWebhook(Buffer.from('{}'), 'sig');
+      expect(repo.updateByLemonSubscriptionId).toHaveBeenCalledWith(
+        '123',
+        expect.objectContaining({
+          planId: 'pro',
+          billingCycle: 'MONTHLY',
+          amount: 14.99,
+          planChangesAt: deadline,
+        }),
+        expect.anything(),
+      );
+    } finally {
+      PLANS.pro.pricing.ANNUAL!.lemonVariantId = originalAnnual;
+    }
+  });
+  it('keeps effective Pro after a lifecycle-only upgrade update', async () => {
+    const { service, provider, repo } = setup();
+    repo.findByLemonSubscriptionId.mockResolvedValue({
+      id: 'local-sub',
+      tenantId: 'tenant-A',
+      deletedAt: null,
+      planId: 'pro',
+      billingCycle: 'MONTHLY',
+      amount: 14.99,
+      pendingPlanId: 'pro_plus',
+      pendingBillingCycle: 'MONTHLY',
+      planChangesAt: new Date('2026-10-02T11:00:00Z'),
+      lemonCustomerId: '22',
+    } as never);
+    const current = { ...subscription(), attributes: { ...subscription().attributes, variant_id: 43 } };
+    provider.retrieveSubscription.mockResolvedValue(current);
+    provider.verifyWebhookSignature.mockReturnValue({ meta: { event_name: 'subscription_updated' }, data: current } as never);
+    await service.handleWebhook(Buffer.from('{}'), 'sig');
+    expect(repo.updateByLemonSubscriptionId).toHaveBeenCalledWith(
+      '123',
+      expect.objectContaining({ planId: 'pro', amount: 14.99 }),
+      expect.anything(),
+    );
+  });
+  it('confirms a paid upgrade even when subscription version is already synchronized', async () => {
+    const { service, provider, repo, state } = setup();
+    repo.findByLemonSubscriptionId.mockResolvedValue({
+      id: 'local-sub',
+      tenantId: 'tenant-A',
+      deletedAt: null,
+      planId: 'pro',
+      billingCycle: 'MONTHLY',
+      amount: 14.99,
+      pendingPlanId: 'pro_plus',
+      pendingBillingCycle: 'MONTHLY',
+      planChangesAt: new Date('2026-10-02T11:00:00Z'),
+      lemonCustomerId: '22',
+    } as never);
+    const paid = { ...invoice(), attributes: { ...invoice().attributes, billing_reason: 'updated' } };
+    provider.retrieveInvoice.mockResolvedValue(paid);
+    Object.assign(provider, { retrieveLatestInvoice: jest.fn().mockResolvedValue(paid) });
+    provider.retrieveSubscription.mockResolvedValue({ ...subscription(), attributes: { ...subscription().attributes, variant_id: 43 } });
+    state.versions['subscriptions:123'] = subscription().attributes.updated_at;
+    await service.handleWebhook(Buffer.from('{}'), 'sig');
+    expect(repo.updateByLemonSubscriptionId).toHaveBeenCalledWith(
+      '123',
+      expect.objectContaining({ planId: 'pro_plus', pendingPlanId: null }),
+      expect.anything(),
+    );
+  });
+  it('does not confirm an upgrade from a delayed older invoice when another invoice is current', async () => {
+    const { service, provider, repo } = setup();
+    repo.findByLemonSubscriptionId.mockResolvedValue({
+      id: 'local-sub',
+      tenantId: 'tenant-A',
+      deletedAt: null,
+      planId: 'pro',
+      billingCycle: 'MONTHLY',
+      pendingPlanId: 'pro_plus',
+      pendingBillingCycle: 'MONTHLY',
+      planChangesAt: new Date('2026-10-02T11:00:00Z'),
+      lemonCustomerId: '22',
+    } as never);
+    const paid = { ...invoice(), attributes: { ...invoice().attributes, billing_reason: 'updated' } };
+    provider.retrieveInvoice.mockResolvedValue(paid);
+    Object.assign(provider, {
+      retrieveLatestInvoice: jest.fn().mockResolvedValue({ ...paid, id: '501', attributes: { ...paid.attributes, status: 'pending' } }),
+    });
+    provider.retrieveSubscription.mockResolvedValue({ ...subscription(), attributes: { ...subscription().attributes, variant_id: 43 } });
+    await service.handleWebhook(Buffer.from('{}'), 'sig');
+    expect(repo.updateByLemonSubscriptionId).toHaveBeenCalledWith('123', expect.objectContaining({ planId: 'pro' }), expect.anything());
   });
 });
