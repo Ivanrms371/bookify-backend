@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from 'src/common/database/base.repository';
-import { Tenant } from 'src/generated/prisma/client';
-import { MembershipRole, OnboardingStatus } from 'src/generated/prisma/enums';
+import { Prisma, Tenant } from 'src/generated/prisma/client';
+import { MembershipRole, OnboardingStatus, WorkspaceType } from 'src/generated/prisma/enums';
 import { ServiceCreateManyInput, TenantUpdateInput, TenantWorkingHoursCreateManyInput } from 'src/generated/prisma/models';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { TenantOnboardingRaw } from './types/onboarding-raw.types';
@@ -15,7 +15,7 @@ export class TenantOnboardingRepository extends BaseRepository {
 
   getStatus(userId: string): Promise<TenantOnboardingRaw> {
     return this.db().tenant.findFirstOrThrow({
-      where: { memberships: { some: { userId, role: MembershipRole.OWNER } } },
+      where: { deletedAt: null, memberships: { some: { userId, role: MembershipRole.OWNER, isActive: true } } },
       select: {
         id: true,
         onboardingStatus: true,
@@ -26,6 +26,9 @@ export class TenantOnboardingRepository extends BaseRepository {
         logoUrl: true,
         coverUrl: true,
         colorTheme: true,
+        logoPublicId: true,
+        coverPublicId: true,
+        onboardingProfessionalDraft: true,
         tenantWorkingHours: {
           select: {
             dayOfWeek: true,
@@ -34,11 +37,14 @@ export class TenantOnboardingRepository extends BaseRepository {
           },
         },
         services: {
+          where: { deletedAt: null, isActive: true },
           select: {
             id: true,
             name: true,
             price: true,
             durationMinutes: true,
+            imageUrl: true,
+            imagePublicId: true,
           },
         },
       },
@@ -48,7 +54,7 @@ export class TenantOnboardingRepository extends BaseRepository {
   async findByOwnerId(userId: string): Promise<Tenant | null> {
     return this.prisma.tenant.findFirst({
       where: {
-        memberships: { some: { userId, role: MembershipRole.OWNER } },
+        memberships: { some: { userId, role: MembershipRole.OWNER, isActive: true } },
         deletedAt: null,
       },
     });
@@ -63,9 +69,19 @@ export class TenantOnboardingRepository extends BaseRepository {
             role: MembershipRole.OWNER,
           },
         },
-        onboardingStatus: OnboardingStatus.WORKSPACE_TYPE,
+        onboardingStatus: OnboardingStatus.BUSINESS_DETAILS,
+        workspaceType: WorkspaceType.INDIVIDUAL,
       },
     });
+  }
+
+  async lockOwner(userId: string, tx: TransactionClient) {
+    await tx.$queryRaw(Prisma.sql`SELECT id FROM users WHERE id = ${userId}::uuid FOR UPDATE`);
+  }
+
+  async lockTenant(tenantId: string, tx: TransactionClient) {
+    await tx.$queryRaw(Prisma.sql`SELECT id FROM tenants WHERE id = ${tenantId}::uuid FOR UPDATE`);
+    return tx.tenant.findUniqueOrThrow({ where: { id: tenantId } });
   }
 
   async findBySlug(slug: string): Promise<Tenant | null> {

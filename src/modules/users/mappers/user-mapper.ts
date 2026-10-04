@@ -5,6 +5,8 @@ export interface RawUserContextResponse {
   name: string;
   email: string;
   avatarUrl: string | null;
+  phoneNumber?: string | null;
+  phoneCountryCode?: string | null;
   memberships: Array<{
     role: MembershipRole;
     tenant: {
@@ -45,6 +47,8 @@ export interface UserSessionContext {
   name: string;
   email: string;
   avatarUrl: string | null;
+  phoneNumber?: string | null;
+  phoneCountryCode?: string | null;
   activeTenant: ActiveTenant | null;
   hasMultipleTenants: boolean;
 }
@@ -85,6 +89,8 @@ export class MeUserMapper {
       name: raw.name,
       email: raw.email,
       avatarUrl: raw.avatarUrl,
+      phoneNumber: raw.phoneNumber ?? null,
+      phoneCountryCode: raw.phoneCountryCode ?? null,
       activeTenant,
       hasMultipleTenants: memberships.length > 1,
     };

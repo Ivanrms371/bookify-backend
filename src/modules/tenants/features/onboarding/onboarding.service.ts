@@ -1,20 +1,34 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Tenant } from 'src/generated/prisma/client';
-import { OnboardingStatus, WorkspaceType } from 'src/generated/prisma/enums';
+import type { TenantOnboardingResponse } from './types/onboarding.types';
+import { Injectable } from '@nestjs/common';
+import type { Tenant } from 'src/generated/prisma/client';
+import { OnboardingStatus } from 'src/generated/prisma/enums';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { TenantOnboardingRepository } from './onboarding.repository';
 import { OnboardingMapper } from './mappers/onboarding.mapper';
 import { getNextOnboardingStep } from './config/get-next-onboarding-step';
-import { WorkspaceStepDto } from './dto/workspace-step.dto';
+import { ONBOARDING_STEP_ORDER, type StepId } from './config/onboarding-steps.config';
 import { BusinessStepDto } from './dto/business-step.dto';
 import { ScheduleStepDto } from './dto/schedule-step.dto';
 import { ServicesStepDto } from './dto/services-step.dto';
 import { CustomizeStepDto } from './dto/customize-step.dto';
+import { ProfessionalStepDto } from './dto/professional-step.dto';
 import { generateSlugTenant } from '../../utils/generate-slug.util';
 import { DAY_OF_WEEK_TO_INT } from 'src/common/constants/day-of-week.constants';
-import { TenantWorkingHoursCreateManyInput } from 'src/generated/prisma/models';
 import { timeToMinutes } from 'src/shared/schedule';
 import { SubscriptionsService } from 'src/modules/subscriptions/subscriptions.service';
+import type { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
+import type { ProfessionalDraft } from './types/professional-draft.types';
+import type { OnboardingMutation } from './types/onboarding-mutation.types';
+import {
+  OnboardingTenantNotFoundException,
+  OnboardingStepUnavailableException,
+  OnboardingProfileRequiredException,
+  OnboardingServicesChangedException,
+  OnboardingProfessionalConflictException,
+  OnboardingProfileInvalidException,
+  OnboardingConfirmationUnavailableException,
+  OnboardingServicesInvalidException,
+} from './exceptions/onboarding.exceptions';
 
 @Injectable()
 export class TenantOnboardingService {
@@ -24,162 +38,196 @@ export class TenantOnboardingService {
     private readonly subscriptionsService: SubscriptionsService,
   ) {}
 
-  async getStatus(onwerId: string) {
-    const raw = await this.tenantOnboardingRepository.getStatus(onwerId);
-    return OnboardingMapper.toResponse(raw);
+  async getStatus(ownerId: string): Promise<TenantOnboardingResponse> {
+    return {
+      ...OnboardingMapper.toResponse(await this.tenantOnboardingRepository.getStatus(ownerId)),
+      trial: this.subscriptionsService.getTrialDetails(),
+    };
   }
 
   async initalize(ownerId: string) {
-    const existing = await this.tenantOnboardingRepository.findByOwnerId(ownerId);
-    if (!existing) {
+    if (!(await this.tenantOnboardingRepository.findByOwnerId(ownerId))) {
       await this.tenantOnboardingRepository.createInitialTenant(ownerId);
     }
     return this.getStatus(ownerId);
   }
 
-  async updateWorkspace(userId: string, dto: WorkspaceStepDto) {
-    const tenant = await this.requireTenantByOwnerId(userId);
-    const nextStep = getNextOnboardingStep(dto.workspaceType, OnboardingStatus.WORKSPACE_TYPE);
-
-    await this.tenantOnboardingRepository.update(tenant.id, {
-      onboardingStatus: nextStep,
-      workspaceType: dto.workspaceType,
-    });
-
-    return this.getStatus(userId);
-  }
-
   async updateBusiness(userId: string, dto: BusinessStepDto) {
-    const tenant = await this.requireTenantByOwnerId(userId);
-    const workspaceType = this.getWorkspaceTypeOrThrow(tenant);
-    const slug = await this.generateAvailableSlug(dto.name);
-
-    const nextStep = getNextOnboardingStep(workspaceType, OnboardingStatus.BUSINESS_DETAILS);
-    await this.tenantOnboardingRepository.update(tenant.id, {
-      ...(tenant.onboardingStatus === OnboardingStatus.BUSINESS_DETAILS && { onboardingStatus: nextStep }),
-      name: dto.name,
-      slug,
-      type: dto.type,
+    return this.saveStep(userId, 'BUSINESS_DETAILS', async (tenant, tx) => {
+      const slug = tenant.name === dto.name && tenant.slug ? tenant.slug : await this.generateAvailableSlug(dto.name);
+      await this.tenantOnboardingRepository.update(tenant.id, { name: dto.name, slug, type: dto.type }, tx);
     });
-
-    return this.getStatus(userId);
-  }
-
-  async updateSchedule(userId: string, dto: ScheduleStepDto) {
-    const tenant = await this.requireTenantByOwnerId(userId);
-    const workspaceType = this.getWorkspaceTypeOrThrow(tenant);
-
-    const nextStep = getNextOnboardingStep(workspaceType, OnboardingStatus.SCHEDULE);
-
-    const schedule: TenantWorkingHoursCreateManyInput[] = dto.workingHours.flatMap((sch) => {
-      const dayOfWeek = DAY_OF_WEEK_TO_INT[sch.dayOfWeek];
-
-      if (!sch.isActive) return [];
-
-      return sch.intervals.map((interval) => {
-        const opensAt = timeToMinutes(interval.opensAt);
-        const closesAt = timeToMinutes(interval.closesAt);
-
-        return {
-          tenantId: tenant.id,
-          dayOfWeek,
-          opensAt,
-          closesAt,
-        };
-      });
-    });
-
-    await this.prisma.$transaction(async (tx) => {
-      await this.tenantOnboardingRepository.replaceSchedules(tenant.id, schedule, tx);
-      if (tenant.onboardingStatus === OnboardingStatus.SCHEDULE) {
-        await this.tenantOnboardingRepository.updateStatus(tenant.id, nextStep, tx);
-      }
-    });
-
-    return this.getStatus(userId);
   }
 
   async updateServices(userId: string, dto: ServicesStepDto) {
-    const tenant = await this.requireTenantByOwnerId(userId);
-    const workspaceType = this.getWorkspaceTypeOrThrow(tenant);
-    const nextStep = getNextOnboardingStep(workspaceType, OnboardingStatus.SERVICES);
-
-    const services = dto.services.map((service) => ({
-      tenantId: tenant.id,
-      name: service.name,
-      price: service.price,
-      durationMinutes: service.durationMinutes,
-    }));
-
-    await this.prisma.$transaction(async (tx) => {
-      await this.tenantOnboardingRepository.replaceServices(tenant.id, services, tx);
-      if (tenant.onboardingStatus === OnboardingStatus.SERVICES) {
-        await this.tenantOnboardingRepository.updateStatus(tenant.id, nextStep, tx);
+    this.verifyServicesData(dto);
+    return this.saveStep(userId, 'SERVICES', async (tenant, tx) => {
+      const existing = await tx.service.findMany({ where: { tenantId: tenant.id }, select: { id: true } });
+      const existingIds = new Set(existing.map((service) => service.id));
+      if (dto.services.some((service) => service.id && !existingIds.has(service.id))) {
+        throw new OnboardingServicesChangedException();
+      }
+      const retained = dto.services.flatMap((service) => (service.id ? [service.id] : []));
+      await tx.service.deleteMany({ where: { tenantId: tenant.id, id: { notIn: retained } } });
+      for (const service of dto.services) {
+        const data = {
+          name: service.name,
+          price: service.price,
+          durationMinutes: service.durationMinutes,
+          ...(service.imageUrl !== undefined ? { imageUrl: service.imageUrl } : {}),
+          ...(service.imagePublicId !== undefined ? { imagePublicId: service.imagePublicId } : {}),
+        };
+        if (service.id) await tx.service.update({ where: { id: service.id, tenantId: tenant.id }, data });
+        else await tx.service.create({ data: { ...data, tenantId: tenant.id } });
       }
     });
-
-    return this.getStatus(userId);
   }
 
-  async updateTeam(userId: string) {
-    const tenant = await this.requireTenantByOwnerId(userId);
-    const workspaceType = this.getWorkspaceTypeOrThrow(tenant);
-    const nextStep = getNextOnboardingStep(workspaceType, OnboardingStatus.TEAM_INVITE);
+  async updateSchedule(userId: string, dto: ScheduleStepDto) {
+    return this.saveStep(userId, 'SCHEDULE', async (tenant, tx) => {
+      const schedules = dto.workingHours.flatMap((day) =>
+        day.isActive
+          ? day.intervals.map((interval) => ({
+              tenantId: tenant.id,
+              dayOfWeek: DAY_OF_WEEK_TO_INT[day.dayOfWeek],
+              opensAt: timeToMinutes(interval.opensAt),
+              closesAt: timeToMinutes(interval.closesAt),
+            }))
+          : [],
+      );
+      await this.tenantOnboardingRepository.replaceSchedules(tenant.id, schedules, tx);
+    });
+  }
 
-    if (tenant.onboardingStatus === OnboardingStatus.TEAM_INVITE) {
-      await this.tenantOnboardingRepository.updateStatus(tenant.id, nextStep);
-    }
-
-    return this.getStatus(userId);
+  async updateProfessional(userId: string, dto: ProfessionalStepDto) {
+    return this.saveStep(userId, 'PROFESSIONAL_PROFILE', async (tenant, tx) => {
+      const draft: ProfessionalDraft = dto.attendsClients
+        ? {
+            attendsClients: true,
+            name: dto.name,
+            email: dto.email,
+            phoneCountryCode: dto.phoneCountryCode,
+            phoneNumber: dto.phoneNumber,
+            ...(dto.profession ? { profession: dto.profession } : {}),
+            serviceIds: dto.serviceIds,
+          }
+        : { attendsClients: false };
+      await this.verifyProfileEligibility(tenant.id, userId, draft, tx);
+      if (draft.attendsClients) await this.saveOwnerProfessional(tenant.id, userId, draft, tx);
+      else await tx.professional.updateMany({ where: { tenantId: tenant.id, userId, deletedAt: null }, data: { isActive: false } });
+      await this.tenantOnboardingRepository.update(tenant.id, { onboardingProfessionalDraft: draft }, tx);
+    });
   }
 
   async updateCustomize(userId: string, dto: CustomizeStepDto) {
-    const tenant = await this.requireTenantByOwnerId(userId);
-    const workspaceType = this.getWorkspaceTypeOrThrow(tenant);
-    const nextStep = getNextOnboardingStep(workspaceType, OnboardingStatus.CUSTOMIZE);
-
-    await this.tenantOnboardingRepository.update(tenant.id, {
-      logoUrl: dto.logoUrl,
-      coverUrl: dto.coverUrl,
-      colorTheme: dto.colorTheme,
-      ...(tenant.onboardingStatus === OnboardingStatus.CUSTOMIZE && { onboardingStatus: nextStep }),
+    return this.saveStep(userId, 'CUSTOMIZE', async (tenant, tx) => {
+      await this.tenantOnboardingRepository.update(
+        tenant.id,
+        {
+          logoUrl: dto.logoUrl,
+          logoPublicId: dto.logoPublicId,
+          coverUrl: dto.coverUrl,
+          coverPublicId: dto.coverPublicId,
+          colorTheme: dto.colorTheme,
+        },
+        tx,
+      );
     });
-
-    return this.getStatus(userId);
   }
 
   async confirm(userId: string) {
     const tenant = await this.requireTenantByOwnerId(userId);
     if (tenant.onboardingStatus === OnboardingStatus.COMPLETED) return this.getStatus(userId);
-    if (tenant.onboardingStatus !== OnboardingStatus.CONFIRM) {
-      throw new BadRequestException('Complete the onboarding steps before confirmation');
-    }
-    this.getWorkspaceTypeOrThrow(tenant);
-
-    const tenantId = tenant.id;
-
     await this.prisma.$transaction(async (tx) => {
-      if (!(await this.tenantOnboardingRepository.claimConfirmation(tenantId, tx))) return;
-      await this.tenantOnboardingRepository.completeOnboarding(tenantId, tx);
-      await this.subscriptionsService.createTrialSubscription(tenantId, tx);
+      const current = await this.tenantOnboardingRepository.lockTenant(tenant.id, tx);
+      if (current.onboardingStatus === OnboardingStatus.COMPLETED) return;
+      if (current.onboardingStatus !== OnboardingStatus.CONFIRM) throw new OnboardingConfirmationUnavailableException();
+      const draft = current.onboardingProfessionalDraft as ProfessionalDraft | null;
+      if (!draft || typeof draft.attendsClients !== 'boolean') throw new OnboardingProfileRequiredException();
+      await this.verifyProfileEligibility(tenant.id, userId, draft, tx);
+      if (!(await this.tenantOnboardingRepository.claimConfirmation(tenant.id, tx))) return;
+      if (draft.attendsClients) {
+        const activated = await tx.professional.updateMany({
+          where: { tenantId: tenant.id, userId, deletedAt: null },
+          data: { isActive: true },
+        });
+        if (activated.count !== 1) throw new OnboardingProfileRequiredException();
+      }
+      await this.tenantOnboardingRepository.completeOnboarding(tenant.id, tx);
+      await this.subscriptionsService.createTrialSubscription(tenant.id, tx);
     });
-
     return this.getStatus(userId);
+  }
+
+  private async saveStep(userId: string, step: StepId, action: OnboardingMutation) {
+    const tenant = await this.requireTenantByOwnerId(userId);
+    await this.prisma.$transaction(async (tx) => {
+      // Serialize edits with confirmation so stale requests cannot change a published tenant.
+      const current = await this.tenantOnboardingRepository.lockTenant(tenant.id, tx);
+      const currentIndex = ONBOARDING_STEP_ORDER.findIndex((id) => id === current.onboardingStatus);
+      if (current.onboardingStatus === 'COMPLETED' || currentIndex < ONBOARDING_STEP_ORDER.indexOf(step)) {
+        throw new OnboardingStepUnavailableException();
+      }
+      await action(current, tx);
+      if (current.onboardingStatus === step) {
+        await this.tenantOnboardingRepository.updateStatus(tenant.id, getNextOnboardingStep(step), tx);
+      }
+    });
+    return this.getStatus(userId);
+  }
+
+  private verifyServicesData(dto: ServicesStepDto) {
+    const ids = dto.services.flatMap((service) => (service.id ? [service.id] : []));
+    const hasInvalidService = dto.services.some(
+      (service) =>
+        !service.name.trim() ||
+        !Number.isFinite(Number(service.price)) ||
+        Number(service.price) < 0 ||
+        !Number.isInteger(service.durationMinutes) ||
+        service.durationMinutes <= 0,
+    );
+    if (!dto.services.length || hasInvalidService || new Set(ids).size !== ids.length) {
+      throw new OnboardingServicesInvalidException();
+    }
+  }
+
+  private async verifyProfileEligibility(tenantId: string, userId: string, draft: ProfessionalDraft, tx: TransactionClient) {
+    if (!draft.attendsClients) return;
+    if (!draft.name?.trim() || !draft.email || !draft.phoneCountryCode || !draft.phoneNumber || !draft.serviceIds?.length) {
+      throw new OnboardingProfileInvalidException();
+    }
+    const services = await tx.service.count({ where: { id: { in: draft.serviceIds }, tenantId, deletedAt: null, isActive: true } });
+    if (services !== new Set(draft.serviceIds).size) throw new OnboardingServicesChangedException();
+    await this.tenantOnboardingRepository.lockOwner(userId, tx);
+    const existing = await tx.professional.findUnique({ where: { userId } });
+    if (existing && (existing.tenantId !== tenantId || existing.deletedAt)) throw new OnboardingProfessionalConflictException();
+  }
+
+  private async saveOwnerProfessional(tenantId: string, userId: string, draft: ProfessionalDraft, tx: TransactionClient) {
+    const user = await tx.user.findUniqueOrThrow({ where: { id: userId }, select: { avatarUrl: true } });
+    const data = {
+      name: draft.name!,
+      email: draft.email!,
+      phoneCountryCode: draft.phoneCountryCode!,
+      phoneNumber: draft.phoneNumber!,
+      profession: draft.profession ?? null,
+      isActive: false,
+    };
+    const professional = await tx.professional.upsert({
+      where: { userId },
+      create: { ...data, tenantId, userId, avatarUrl: user.avatarUrl },
+      update: data,
+    });
+    await tx.serviceAssignment.deleteMany({ where: { professionalId: professional.id } });
+    await tx.serviceAssignment.createMany({
+      data: draft.serviceIds!.map((serviceId) => ({ professionalId: professional.id, serviceId, isActive: true })),
+    });
   }
 
   private async requireTenantByOwnerId(userId: string): Promise<Tenant> {
     const tenant = await this.tenantOnboardingRepository.findByOwnerId(userId);
-    if (!tenant) {
-      throw new NotFoundException('Tenant not found');
-    }
+    if (!tenant) throw new OnboardingTenantNotFoundException();
     return tenant;
-  }
-
-  private getWorkspaceTypeOrThrow(tenant: Tenant): WorkspaceType {
-    if (!tenant.workspaceType) {
-      throw new BadRequestException('Tenant workspace type is required before updating this onboarding step');
-    }
-    return tenant.workspaceType;
   }
 
   private async generateAvailableSlug(name: string): Promise<string> {
@@ -188,29 +236,10 @@ export class TenantOnboardingService {
         .replace(/[^a-z0-9-]/g, '')
         .replace(/-+/g, '-')
         .replace(/^-|-$/g, '') || 'business';
-    const firstCandidate = baseSlug;
-    const firstMatch = await this.tenantOnboardingRepository.findBySlug(firstCandidate);
-
-    if (!firstMatch) {
-      return firstCandidate;
-    }
-
+    if (!(await this.tenantOnboardingRepository.findBySlug(baseSlug))) return baseSlug;
     while (true) {
-      const suffix = this.randomSuffix(6);
-      const candidate = `${baseSlug}-${suffix}`;
-      const existing = await this.tenantOnboardingRepository.findBySlug(candidate);
-      if (!existing) {
-        return candidate;
-      }
+      const candidate = `${baseSlug}-${Math.random().toString(36).slice(2, 8)}`;
+      if (!(await this.tenantOnboardingRepository.findBySlug(candidate))) return candidate;
     }
-  }
-
-  private randomSuffix(length: number): string {
-    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      result += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return result;
   }
 }

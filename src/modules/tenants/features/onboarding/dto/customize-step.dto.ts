@@ -1,15 +1,23 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsHexColor, IsOptional, IsString } from 'class-validator';
 
 export class CustomizeStepDto {
   @IsOptional()
   @IsString()
-  logoUrl?: string;
+  logoUrl?: string | null;
 
   @IsOptional()
   @IsString()
-  coverUrl?: string;
+  coverUrl?: string | null;
+
+  @IsOptional()
+  @IsHexColor()
+  colorTheme?: string | null;
 
   @IsOptional()
   @IsString()
-  colorTheme?: string;
+  logoPublicId?: string | null;
+
+  @IsOptional()
+  @IsString()
+  coverPublicId?: string | null;
 }

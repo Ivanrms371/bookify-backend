@@ -1,31 +1,9 @@
-import { OnboardingStatus, WorkspaceType } from 'src/generated/prisma/enums';
-import { INDIVIDUAL_STEP_ORDER, TEAM_STEP_ORDER, StepId } from './onboarding-steps.config';
 import { ConflictException } from '@nestjs/common';
+import { OnboardingStatus } from 'src/generated/prisma/enums';
+import { ONBOARDING_STEP_ORDER, type StepId } from './onboarding-steps.config';
 
-export function getOnboardingStepOrder(workspaceType: WorkspaceType): readonly StepId[] {
-  switch (workspaceType) {
-    case WorkspaceType.TEAM:
-      return TEAM_STEP_ORDER;
-    case WorkspaceType.INDIVIDUAL:
-      return INDIVIDUAL_STEP_ORDER;
-  }
-}
-
-export function getNextOnboardingStep(workspaceType: WorkspaceType | null, currentStep: StepId): OnboardingStatus {
-  if (currentStep === OnboardingStatus.COMPLETED) {
-    throw new ConflictException('Onbarding already is completed');
-  }
-
-  if (!workspaceType) {
-    return OnboardingStatus.WORKSPACE_TYPE;
-  }
-  const order = getOnboardingStepOrder(workspaceType);
-  const currentIndex = order.indexOf(currentStep);
-
-  if (currentIndex === -1) {
-    throw new ConflictException(`Step "${currentStep}" does not exists in onboarding for "${workspaceType}"`);
-  }
-
-  const nextStep = order[currentIndex + 1];
-  return nextStep ?? OnboardingStatus.COMPLETED;
+export function getNextOnboardingStep(currentStep: StepId): any {
+  const index = ONBOARDING_STEP_ORDER.indexOf(currentStep);
+  if (index < 0 || currentStep === 'COMPLETED') throw new ConflictException('Onboarding step cannot advance');
+  return ONBOARDING_STEP_ORDER[index + 1];
 }

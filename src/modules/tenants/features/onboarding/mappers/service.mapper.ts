@@ -9,6 +9,8 @@ export class ServiceMapper {
       name: raw.name,
       price: raw.price,
       durationMinutes: raw.durationMinutes,
+      imageUrl: raw.imageUrl,
+      imagePublicId: raw.imagePublicId,
     };
   }
 }

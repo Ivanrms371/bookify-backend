@@ -118,7 +118,8 @@ model Tenant {
   colorTheme                String?                     @map("color_theme")
   isPublic                  Boolean                     @default(false) @map("is_public")
   isActive                  Boolean                     @default(false) @map("is_active")
-  onboardingStatus          OnboardingStatus            @default(WORKSPACE_TYPE) @map("onboarding_status")
+  onboardingProfessionalDraft Json? @map("onboarding_professional_draft")
+  onboardingStatus          OnboardingStatus            @default(BUSINESS_DETAILS) @map("onboarding_status")
   phoneNumber               String?
   addressLine1              String?                     @map("address_line_1")
   addressLine2              String?                     @map("address_line_2")
@@ -710,6 +711,7 @@ enum TenantType {
 }
 
 enum OnboardingStatus {
+  PROFESSIONAL_PROFILE
   WORKSPACE_TYPE
   BUSINESS_DETAILS
   SCHEDULE

@@ -11,6 +11,9 @@ export type TenantOnboardingRaw = Prisma.TenantGetPayload<{
     logoUrl: true;
     coverUrl: true;
     colorTheme: true;
+    logoPublicId: true;
+    coverPublicId: true;
+    onboardingProfessionalDraft: true;
     tenantWorkingHours: {
       select: {
         dayOfWeek: true;
@@ -24,38 +27,9 @@ export type TenantOnboardingRaw = Prisma.TenantGetPayload<{
         name: true;
         price: true;
         durationMinutes: true;
+        imageUrl: true;
+        imagePublicId: true;
       };
     };
   };
 }>;
-
-export type TenantOnboardingResponse = {
-  steps: [
-    {
-      id: string;
-      label: string;
-      completed: boolean;
-    },
-  ];
-  onboardingStatus: string;
-  savedData: {
-    workspaceType: string;
-    name: string;
-    slug: string;
-    type: string;
-    logoUrl: string;
-    coverUrl: string;
-    colorTheme: string;
-    workingHours: {
-      dayOfWeek: number;
-      opensAt: number;
-      closesAt: number;
-    };
-    services: {
-      id: string;
-      name: string;
-      price: number;
-      durationMinutes: number;
-    }[];
-  };
-};

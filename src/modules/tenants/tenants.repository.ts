@@ -22,6 +22,7 @@ export class TenantsRepository extends BaseRepository {
         phoneNumber: true,
         logoUrl: true,
         coverUrl: true,
+        colorTheme: true,
         addressLine1: true,
         addressLine2: true,
         city: true,

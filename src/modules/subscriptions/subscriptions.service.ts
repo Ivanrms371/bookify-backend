@@ -47,6 +47,11 @@ export class SubscriptionsService {
     );
   }
 
+  getTrialDetails() {
+    const plan = this.plansService.resolveTrialPlan();
+    return { planName: plan.title, durationDays: TRIAL_DURATION_DAYS };
+  }
+
   getCatalog() {
     return this.plansService.getCatalog();
   }

@@ -1,3 +1,4 @@
+import type { ProfessionalDraft } from '../types/professional-draft.types';
 import type { TenantOnboardingRaw } from '../types/onboarding-raw.types';
 import type { OnboardingSavedData } from '../types/onboarding.types';
 import { ServiceMapper } from './service.mapper';
@@ -13,6 +14,9 @@ export class OnboardingSavedDataMapper {
       logoUrl: raw.logoUrl,
       coverUrl: raw.coverUrl,
       colorTheme: raw.colorTheme,
+      logoPublicId: raw.logoPublicId,
+      coverPublicId: raw.coverPublicId,
+      professional: raw.onboardingProfessionalDraft as ProfessionalDraft | null,
       workingHours: WorkingHoursMapper.toResponse(raw.tenantWorkingHours),
       services: raw.services.map(ServiceMapper.toResponse),
     };

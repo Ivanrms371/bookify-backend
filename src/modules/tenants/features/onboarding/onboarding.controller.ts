@@ -1,12 +1,10 @@
-import { Body, Controller, Get, Patch, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { TenantOnboardingService } from './onboarding.service';
-import { AuthenticatedRequest, AuthenticatedUser } from 'src/common/security/types/authenticated-request.type';
-import { WorkspaceStepDto } from './dto/workspace-step.dto';
+import { ProfessionalStepDto } from './dto/professional-step.dto';
 import { BusinessStepDto } from './dto/business-step.dto';
 import { ScheduleStepDto } from './dto/schedule-step.dto';
 import { ServicesStepDto } from './dto/services-step.dto';
 import { CustomizeStepDto } from './dto/customize-step.dto';
-import { OptionalTenant } from 'src/common/security/decorators/optional-tenant.decorator';
 import { SkipTenant } from 'src/common/security/decorators/skip-tenant.decorator';
 import { CurrentUser } from 'src/common/security/decorators/current-user.decorator';
 
@@ -26,11 +24,6 @@ export class TenantOnboardingController {
     return this.tenantOnboardingService.initalize(userId);
   }
 
-  @Patch('workspace')
-  async updateWorkspace(@CurrentUser('id') userId: string, @Body() dto: WorkspaceStepDto) {
-    return this.tenantOnboardingService.updateWorkspace(userId, dto);
-  }
-
   @Patch('business')
   async updateBusiness(@CurrentUser('id') userId: string, @Body() dto: BusinessStepDto) {
     return this.tenantOnboardingService.updateBusiness(userId, dto);
@@ -46,9 +39,9 @@ export class TenantOnboardingController {
     return this.tenantOnboardingService.updateServices(userId, dto);
   }
 
-  @Patch('team')
-  async updateTeam(@CurrentUser('id') userId: string) {
-    return this.tenantOnboardingService.updateTeam(userId);
+  @Patch('professional')
+  async updateProfessional(@CurrentUser('id') userId: string, @Body() dto: ProfessionalStepDto) {
+    return this.tenantOnboardingService.updateProfessional(userId, dto);
   }
 
   @Patch('customize')

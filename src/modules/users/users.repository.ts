@@ -54,6 +54,8 @@ export class UsersRepository extends BaseRepository {
         name: true,
         email: true,
         avatarUrl: true,
+        phoneNumber: true,
+        phoneCountryCode: true,
         memberships: {
           where: {
             isActive: true,
