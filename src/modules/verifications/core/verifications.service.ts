@@ -109,11 +109,39 @@ export class VerificationsService {
       type,
       recipientId: user.id,
       recipientType: RecipientType.USER,
+      invitationToken: dto.invitationToken,
     });
+  }
+
+  private async verifyInvitationEmailContext(dto: CreateVerificationDto) {
+    if (!dto.invitationToken) {
+      return;
+    }
+    if (dto.type !== VerificationType.USER_EMAIL_VERIFICATION) {
+      throw new BadRequestException('La invitación solo puede acompañar una verificación de email.');
+    }
+    if (dto.recipientType !== RecipientType.USER) {
+      throw new BadRequestException('La invitación debe corresponder a una cuenta de usuario.');
+    }
+    const invitation = await this.prisma.invitation.findUnique({ where: { token: dto.invitationToken } });
+    if (!invitation) {
+      throw new BadRequestException('Invitación no encontrada para esta verificación.');
+    }
+    if (invitation.revokedAt || invitation.acceptedAt) {
+      throw new BadRequestException('Esta invitación ya no está pendiente.');
+    }
+    if (invitation.expiresAt <= new Date()) {
+      throw new BadRequestException('La invitación ha expirado.');
+    }
+    const user = await this.usersService.findById(dto.recipientId);
+    if (invitation.email.toLowerCase() !== user.email.toLowerCase()) {
+      throw new BadRequestException('La invitación no corresponde al destinatario de la verificación.');
+    }
   }
 
   async requestVerification(dto: CreateVerificationDto) {
     const { type, recipientId, recipientType, tenantId } = dto;
+    await this.verifyInvitationEmailContext(dto);
     const isOtp = isOtpVerification(type);
     const isMagic = isMagicLinkVerification(type);
 
@@ -169,6 +197,7 @@ export class VerificationsService {
     });
 
     this.eventEmitter.emit('verification.created', {
+      invitationToken: dto.invitationToken,
       verificationId: record.id,
       type: record.type,
       recipientId: record.recipientId,

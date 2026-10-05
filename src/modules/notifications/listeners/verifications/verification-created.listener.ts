@@ -12,6 +12,7 @@ export interface VerificationCreatedEvent {
   recipientId: string;
   recipientType: RecipientType;
   token?: string;
+  invitationToken?: string;
   code?: string;
   expiresAt: Date;
   tenantId?: string;
@@ -32,7 +33,12 @@ export class VerificationCreatedListener {
   @OnEvent('verification.created', { async: true })
   async handle(event: VerificationCreatedEvent) {
     if (event.token) {
-      const confirmLink = `${this.frontendUrl}/auth/verify?token=${event.token}&type=${event.type}`;
+      const params = new URLSearchParams({
+        token: event.token,
+        type: event.type,
+        ...(event.invitationToken ? { invitationToken: event.invitationToken } : {}),
+      });
+      const confirmLink = `${this.frontendUrl}/auth/verify?${params}`;
 
       let name = '';
       if (event.recipientType === RecipientType.USER) {

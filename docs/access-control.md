@@ -64,7 +64,7 @@ flowchart TD
 | PermissionsGuard | All declared permissions are present | Resource ownership; undeclared permissions are not inferred |
 | Services/repositories | Path-specific scoping and relationship checks | No universal authorization guarantee across all paths |
 
-**Current behavior:** JwtAuthGuard caches by user ID for five minutes. Cache hits still verify the JWT but skip database session/token-version validation and reuse the cached user/JTI. Different sessions for the same user can therefore receive the same cached JTI context. Immediate revocation and per-session revalidation on every request are not established guarantees.
+**Current behavior:** JwtAuthGuard caches by session JTI for five minutes. Cache hits still verify the JWT but skip database session/token-version validation and reuse the cached user/JTI for that session. Different sessions for the same user retain their own JTI context. Immediate revocation and per-session revalidation on every request are not established guarantees.
 
 Login creates or reuses a user/device session and issues access/refresh cookies. Refresh checks the stored session and token version and extends the session. Logout-all and password reset revoke sessions and increment token version, but do not invalidate the guard's in-memory cache. Session upsert reactivates an existing user/device session without replacing its JTI. Do not describe every login/refresh as token-identity rotation.
 
@@ -99,7 +99,7 @@ There is no demonstrated system-wide "STAFF can only access their own appointmen
 
 ## Dependencies and side effects
 
-Invitation acceptance can create membership and link a professional. Team deletion of a linked professional coordinates invitation revocation and membership deactivation. These lifecycle paths affect subsequent tenant access independently of JWT validity.
+Invitation acceptance can create membership and link a professional. Professional deletion through either authenticated delete route coordinates soft deletion, outstanding invitation revocation, and removal of the linked membership row for the selected tenant in one transaction. OWNER-linked and self-linked professionals are protected; only OWNER may delete an ADMIN-linked professional. User accounts, other tenant memberships, and appointment history remain intact. These lifecycle paths affect subsequent tenant access independently of JWT validity.
 
 Notification WebSocket connections validate the access JWT directly and join a user room. They do not run the HTTP session, membership or permission guards. Do not transfer HTTP revocation/tenant guarantees to that transport.
 
@@ -107,14 +107,14 @@ Notification WebSocket connections validate the access JWT directly and join a u
 
 | Finding | Evidence / limit |
 | --- | --- |
-| Session freshness differs from token validity | User-keyed JWT guard cache delays stored-session/token-version checks; cache-miss code also does not explicitly compare session user ID to token subject |
-| Selected tenant can disagree with `/auth/me` output | Controller passes tenant slug; user mapper compares tenant ID and falls back to first membership |
+| Session freshness differs from token validity | Session-keyed JWT guard cache delays stored-session/token-version checks; cache-miss code also does not explicitly compare session user ID to token subject |
+| Selected tenant context | `/auth/me` passes the guard-selected tenant ID; invitation acceptance refreshes using the target ID |
 | Roles metadata is not enforcement | `Roles` exists, but no consumer of its metadata was located in the inspected guard pipeline |
-| Owner protection is not established | Team role DTOs accept all membership roles; inspected update/remove paths lack role-escalation or last-owner protection rules |
+| Wider Team protection remains incomplete | Professional editor enforces owner/admin/self restrictions; general Team member update/remove paths still need separate policy work |
 | Resource tenant can differ from guard tenant | Availability slots/overview/validate use query tenant IDs; appointment availability uses guard context |
 | Related-resource isolation is incomplete | Administrative working-hours writes, exception professional links and service-assignment writes lack same-tenant validation in the inspected paths |
-| Logout wiring is inconsistent | Controller binds the whole request as a user and passes `user.id`; service expects JTI. Logout/logout-all also retain normal tenant requirements |
-| Some invitation controller contracts disagree | Create/revoke use unqualified `CurrentTenant`, which returns the context object, as a string. Validate/accept retain normal tenant requirements, which matters before membership exists |
+| Logout session scope | Logout reads the authenticated user through `CurrentUser`, revokes that session JTI and clears access/refresh cookies after revocation succeeds. `SkipTenant` permits logout without active tenant membership; logout-all retains normal tenant requirements |
+| Invitation entry before membership | Validation is public/token-scoped, acceptance is authenticated with `SkipTenant`, and create/revoke extract the tenant ID |
 | Professional/profile context needs verification | The profile repository accepts tenant ID but fetches the user's globally linked professional without using it |
 
 These observations are not approved policy or runtime exploit demonstrations. Desired role hierarchy, owner lifecycle, session freshness and public capability restrictions require explicit decisions in future work.
@@ -145,3 +145,11 @@ The authenticated session's `activeTenant.timeZone` comes from the selected memb
 ## Owner profile during onboarding
 
 The [onboarding flow](onboarding.md) links a professional directly to its owner at confirmation when requested, without changing the OWNER membership. Tenant and owner row locks serialize confirmation with edits and profile linking. Selected services are verified in the owned tenant; existing profiles in another tenant are never reassigned.
+
+## Creating a professional with optional access
+
+[Professional creation](professional-creation.md) documents `POST /api/team/professionals`: OWNER/ADMIN via `TEAM_INVITE`, required normalized contact fields, active same-tenant service validation, and an optional pending STAFF invitation. Creation and assignments roll back together on invitation conflicts. The creation event is published after commit; delivery uses the stored recipient email and does not require a user. Creating a pending invitation does not create membership or link a user. Creation and editing share contact/service validation. The professional editor manages access transactionally without changing account profile or membership role. Invitation signup/login/verification and Google context/consumption are implemented; see the linked guide for restrictions, lock ordering and verification limits.
+
+### Professional booking status
+
+Authenticated `PATCH /professionals/:id/status` requires `PROFESSIONAL_UPDATE` and a boolean `isActive`. It updates only an undeleted professional in the selected tenant, returning 404 otherwise. Explicit status assignment is idempotent. Owners/admins may update their own booking status; this does not change account login, memberships, service assignments or existing appointments. Public professional listings and availability validation continue to require active professionals. The dashboard confirmation guards tenant changes and refreshes professional lists/details, service selectors and availability after success.

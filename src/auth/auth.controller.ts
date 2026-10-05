@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { Body, Controller, Get, Post, Query, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Public } from 'src/common/security/decorators/public.decorator';
@@ -15,6 +15,10 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { CurrentUser } from 'src/common/security/decorators/current-user.decorator';
 import { CurrentTenant } from 'src/common/security/decorators/current-tenant.decorator';
 import { OptionalTenant } from 'src/common/security/decorators/optional-tenant.decorator';
+import { SkipTenant } from 'src/common/security/decorators/skip-tenant.decorator';
+
+import { createOAuthContext, readOAuthContext, OAUTH_CONTEXT_COOKIE } from './services/oauth-context';
+import type { OAuthContext } from './types/oauth-context.type';
 
 @Controller('auth')
 export class AuthController {
@@ -32,7 +36,7 @@ export class AuthController {
   @Get('me')
   @OptionalTenant()
   me(@CurrentUser() user: AuthenticatedUser, @CurrentTenant() tenant: TenantContext) {
-    return this.authService.getMe(user.id, tenant?.tenantSlug ?? undefined);
+    return this.authService.getMe(user.id, tenant?.tenantId ?? undefined);
   }
 
   @Public()
@@ -60,10 +64,10 @@ export class AuthController {
     this.cookieService.set(res, COOKIE_KEYS.REFRESH_TOKEN, refreshToken);
     this.cookieService.set(res, COOKIE_KEYS.DEVICE_ID, deviceId);
 
-    const meData = await this.authService.getMe(userId);
+    const meData = await this.authService.getMe(userId, result.tenantId);
 
     return {
-      requireEmailVerification: false,
+      requiresEmailVerification: false,
       ...meData,
     };
   }
@@ -72,7 +76,9 @@ export class AuthController {
   @Get('google')
   google(@Req() req: Request, @Res() res: Response, @Query('invitationToken') invitationToken?: string) {
     const deviceId = this.cookieService.get(req, COOKIE_KEYS.DEVICE_ID);
-    const url = this.googleService.getAuthorizationUrl({ deviceId, invitationToken });
+    const context = createOAuthContext(this.configService.getOrThrow('ACCESS_TOKEN_SECRET'), { deviceId, invitationToken });
+    this.cookieService.set(res, OAUTH_CONTEXT_COOKIE, context.cookie, { maxAge: 600000, path: '/api/auth/google' });
+    const url = this.googleService.getAuthorizationUrl(context.nonce);
     res.send({ url });
   }
 
@@ -83,19 +89,32 @@ export class AuthController {
     @Res() res: Response,
     @Query() query: { code: string; state: string; invitationToken: string },
   ) {
+    let context: OAuthContext | undefined;
+    const cookie = this.cookieService.get(req, OAUTH_CONTEXT_COOKIE);
+    res.clearCookie(OAUTH_CONTEXT_COOKIE, { path: '/api/auth/google' });
     try {
-      const deviceId = this.cookieService.get(req, COOKIE_KEYS.DEVICE_ID) || query.state;
+      context = readOAuthContext(this.configService.getOrThrow('ACCESS_TOKEN_SECRET'), cookie ?? '', query.state);
+      const deviceId = context.deviceId;
       const {
         accessToken,
         refreshToken,
         deviceId: newDeviceId,
-      } = await this.authCallbackHandler.handleGoogleOAuthCallback({ code: query.code, deviceId, invitationToken: query.invitationToken });
+        redirectPath,
+      } = await this.authCallbackHandler.handleGoogleOAuthCallback({
+        code: query.code,
+        deviceId,
+        invitationToken: context.invitationToken,
+      });
       this.cookieService.set(res, COOKIE_KEYS.ACCESS_TOKEN, accessToken);
       this.cookieService.set(res, COOKIE_KEYS.REFRESH_TOKEN, refreshToken);
       this.cookieService.set(res, COOKIE_KEYS.DEVICE_ID, newDeviceId);
-      res.redirect(`${this.appUrl}/onboarding`);
+      res.redirect(`${this.appUrl}${redirectPath}`);
     } catch (error) {
-      res.redirect(`${this.appUrl}/login`);
+      res.redirect(
+        context?.invitationToken
+          ? `${this.appUrl}/auth/invitations?${new URLSearchParams({ token: context.invitationToken, error: 'google' })}`
+          : `${this.appUrl}/auth/login?error=google`,
+      );
     }
   }
 
@@ -113,9 +132,9 @@ export class AuthController {
   }
 
   @Post('logout')
-  async logout(@Req() user: AuthenticatedUser, @Res() res: Response) {
-    if (!user.id) res.json({ success: false });
-    await this.authService.logout(user.id);
+  @SkipTenant()
+  async logout(@CurrentUser() user: AuthenticatedUser, @Res() res: Response) {
+    await this.authService.logout(user.jti);
     this.cookieService.clear(res, COOKIE_KEYS.ACCESS_TOKEN);
     this.cookieService.clear(res, COOKIE_KEYS.REFRESH_TOKEN);
     res.json({ success: true });

@@ -2,6 +2,10 @@ import { IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validato
 import { RecipientType, VerificationType } from 'src/generated/prisma/enums';
 
 export class CreateVerificationDto {
+  @IsOptional()
+  @IsString()
+  invitationToken?: string;
+
   @IsEnum(VerificationType)
   type: VerificationType;
 

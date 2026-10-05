@@ -32,7 +32,7 @@ export class JwtAuthGuard implements CanActivate {
       const payload = this.jwtService.validateAccessToken(token);
 
       const now = Date.now();
-      const cached = this.sessionCache.get(payload.sub);
+      const cached = this.sessionCache.get(payload.jti);
 
       let user: AuthenticatedUser | null = null;
 
@@ -63,7 +63,7 @@ export class JwtAuthGuard implements CanActivate {
 
         if (dbUser) {
           user = { id: dbUser.id, name: dbUser.name, email: dbUser.email, jti: payload.jti };
-          this.sessionCache.set(payload.sub, { user, expires: now + this.TTL });
+          this.sessionCache.set(payload.jti, { user, expires: now + this.TTL });
         }
       }
       if (!user) {

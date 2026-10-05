@@ -9,9 +9,9 @@ export class AuthCallbackHandler {
     private readonly googleService: GoogleService,
   ) {}
 
-  async handleGoogleOAuthCallback({ code, deviceId, invitationToken }: { code: string; deviceId: string; invitationToken?: string }) {
+  async handleGoogleOAuthCallback({ code, deviceId, invitationToken }: { code: string; deviceId?: string; invitationToken?: string }) {
     const { access_token } = await this.googleService.exchange(code);
     const userInfo = await this.googleService.getUserInfo(access_token);
-    return this.authService.loginOrCreateFromGoogle(userInfo, deviceId);
+    return this.authService.loginOrCreateFromGoogle(userInfo, deviceId, invitationToken);
   }
 }
