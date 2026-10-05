@@ -24,6 +24,7 @@ export class AppointmentsMapper {
       customerName: appointment.customerName,
       customerEmail: appointment.customerEmail,
       customerPhone: appointment.customerPhone,
+      customerPhoneCountryCode: appointment.customer?.phoneCountryCode ?? null,
       notes: appointment.notes,
       internalNotes: appointment.internalNotes,
       confirmationCode: appointment.manageToken,

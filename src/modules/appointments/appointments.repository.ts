@@ -82,6 +82,7 @@ export class AppointmentsRepository extends BaseRepository {
               name: true,
               email: true,
               phoneNumber: true,
+              phoneCountryCode: true,
             },
           },
         },
@@ -113,6 +114,7 @@ export class AppointmentsRepository extends BaseRepository {
             name: true,
             email: true,
             phoneNumber: true,
+            phoneCountryCode: true,
           },
         },
         professional: {
@@ -156,6 +158,7 @@ export class AppointmentsRepository extends BaseRepository {
             name: true,
             email: true,
             phoneNumber: true,
+            phoneCountryCode: true,
           },
         },
         professional: {
@@ -206,6 +209,7 @@ export class AppointmentsRepository extends BaseRepository {
             name: true,
             email: true,
             phoneNumber: true,
+            phoneCountryCode: true,
           },
         },
         professional: {

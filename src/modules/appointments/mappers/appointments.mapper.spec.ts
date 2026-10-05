@@ -31,3 +31,19 @@ describe('appointment display date in tenant timezone', () => {
     expect(result.formattedStartsAt).toBeNull();
   });
 });
+
+describe('appointment customer phone display', () => {
+  it('returns the country code with the stored appointment phone number', () => {
+    const result = AppointmentsMapper.toResponse({
+      customerPhone: '99123456',
+      customer: { phoneCountryCode: '598' },
+    });
+    expect(result.customerPhone).toBe('99123456');
+    expect(result.customerPhoneCountryCode).toBe('598');
+  });
+
+  it('returns no country code when the customer is unavailable', () => {
+    const result = AppointmentsMapper.toResponse({ customerPhone: '99123456' });
+    expect(result.customerPhoneCountryCode).toBeNull();
+  });
+});
