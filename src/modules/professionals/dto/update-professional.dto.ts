@@ -1,21 +1,13 @@
-import {
-  IsArray,
-  IsBoolean,
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  IsUUID,
-  Min,
-  ValidateNested,
-} from 'class-validator';
+import { IsArray, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, Min, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { MembershipRole, CommissionType } from 'src/generated/prisma/enums';
 import { CreateScheduleDto } from 'src/common/dto/create-schedule.dto';
 
 export class UpdateProfessionalDto {
+  @IsString()
+  @IsOptional()
+  colorTheme?: string | null;
+
   @IsString()
   @IsOptional()
   name?: string;
@@ -32,16 +24,17 @@ export class UpdateProfessionalDto {
   @IsOptional()
   bio?: string;
 
-  @IsBoolean()
-  giveAccess: boolean;
+  @IsEmail()
+  @IsOptional()
+  email?: string;
 
   @IsString()
   @IsOptional()
-  avatarUrl?: string;
+  avatarUrl?: string | null;
 
   @IsString()
   @IsOptional()
-  avatarPublicId?: string;
+  avatarPublicId?: string | null;
 
   @IsArray()
   @IsUUID('all', { each: true })

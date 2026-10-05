@@ -1,13 +1,17 @@
 import { PERMISSIONS } from 'src/common/security/constants/permissions.constant';
 import { Permissions } from 'src/common/security/decorators/permissions.decorator';
-import { Controller, Get, Query, Req, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Query, Req, Post, Put, Delete, Param, Body, Patch } from '@nestjs/common';
 import { ProfessionalsService } from './professionals.service';
 import { AuthenticatedRequest } from 'src/common/security/types/authenticated-request.type';
 import { GetProfessionalsQueryDto } from './dto/get-professionals-query.dto';
 import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { UpdateProfessionalDto } from './dto/update-professional.dto';
 import { UpdateProfessionalProfileDto } from './dto/update-professional-profile.dto';
+import { CurrentTenant } from 'src/common/security/decorators/current-tenant.decorator';
+import type { AuthenticatedUser, TenantContext } from 'src/common/security/types/authenticated-request.type';
 import { CurrentUser } from 'src/common/security/decorators/current-user.decorator';
+
+import { UpdateProfessionalStatusDto } from './dto/update-professional-status.dto';
 
 @Controller('professionals')
 export class ProfessionalsController {
@@ -27,8 +31,13 @@ export class ProfessionalsController {
 
   @Permissions(PERMISSIONS.PROFESSIONAL_READ)
   @Get(':id/details')
-  async getDetails(@GetTenantId() tenantId: string, @Param('id') id: string) {
-    return this.professionalsService.getByIdWithDetails(tenantId, id);
+  async getDetails(
+    @GetTenantId() tenantId: string,
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+    @CurrentTenant() tenant: TenantContext,
+  ) {
+    return this.professionalsService.getByIdWithDetails(tenantId, id, { id: user.id, role: tenant.role });
   }
 
   @Permissions(PERMISSIONS.PROFESSIONAL_UPDATE_SELF)
@@ -56,15 +65,15 @@ export class ProfessionalsController {
   }
 
   @Permissions(PERMISSIONS.PROFESSIONAL_UPDATE)
+  @Patch(':id/status')
+  async updateStatus(@GetTenantId() tenantId: string, @Param('id') id: string, @Body() dto: UpdateProfessionalStatusDto) {
+    return this.professionalsService.updateStatus(tenantId, id, dto.isActive);
+  }
+
+  @Permissions(PERMISSIONS.PROFESSIONAL_UPDATE)
   @Put(':id')
   async update(@GetTenantId() tenantId: string, @Param('id') id: string, @Body() dto: UpdateProfessionalDto) {
     return this.professionalsService.update(tenantId, id, dto);
-  }
-
-  @Permissions(PERMISSIONS.PROFESSIONAL_DELETE)
-  @Delete(':id')
-  async delete(@GetTenantId() tenantId: string, @Param('id') id: string) {
-    return this.professionalsService.delete(tenantId, id);
   }
 
   @Permissions(PERMISSIONS.PROFESSIONAL_UPDATE)

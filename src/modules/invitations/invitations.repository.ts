@@ -15,6 +15,9 @@ export class InvitationsRepository extends BaseRepository {
       where: {
         tenantId,
         email,
+        acceptedAt: null,
+        revokedAt: null,
+        expiresAt: { gt: new Date() },
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -37,6 +40,7 @@ export class InvitationsRepository extends BaseRepository {
           select: {
             id: true,
             name: true,
+            slug: true,
           },
         },
       },
@@ -61,13 +65,12 @@ export class InvitationsRepository extends BaseRepository {
     });
   }
 
-  async accept(id: string, tx?: TransactionClient) {
-    return this.db(tx).invitation.update({
-      where: { id },
-      data: {
-        acceptedAt: new Date(),
-      },
+  async consume(id: string, token: string, tx: TransactionClient) {
+    const result = await tx.invitation.updateMany({
+      where: { id, token, revokedAt: null, acceptedAt: null, expiresAt: { gt: new Date() } },
+      data: { acceptedAt: new Date() },
     });
+    return result.count === 1;
   }
 
   async revokeByProfessionalId(tenantId: string, professionalId: string, tx?: TransactionClient) {

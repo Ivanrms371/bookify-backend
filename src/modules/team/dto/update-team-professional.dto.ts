@@ -1,46 +1,23 @@
-import { IsArray, IsBoolean, IsEmail, IsEnum, IsOptional, IsString, IsUUID, ValidateIf } from 'class-validator';
-import { MembershipRole } from 'src/generated/prisma/enums';
+import { IsBoolean, IsIn, ValidateIf } from 'class-validator';
+import { ProfessionalContactDto } from './professional-contact.dto';
+import { ACCESS_STATUSES } from '../types/professional-access.types';
+import type { ProfessionalAccessStatus } from '../types/professional-access.types';
 
-export class UpdateTeamProfessionalDto {
-  @IsString()
-  @IsOptional()
-  name?: string;
+export class UpdateTeamProfessionalDto extends ProfessionalContactDto {
+  @ValidateIf((_, value) => value !== undefined)
+  declare name?: string;
+  @ValidateIf((_, value) => value !== undefined)
+  declare email?: string;
+  @ValidateIf((_, value) => value !== undefined)
+  declare phoneNumber?: string;
+  @ValidateIf((_, value) => value !== undefined)
+  declare phoneCountryCode?: string;
 
-  @IsString()
-  @IsOptional()
-  phone?: string;
-
-  @IsString()
-  @IsOptional()
-  phoneCountryCode?: string;
-
-  @IsString()
-  @IsOptional()
-  bio?: string;
-
-  @IsArray()
-  @IsUUID('all', { each: true })
-  @IsOptional()
-  serviceIds?: string[];
-
+  @ValidateIf((_, value) => value !== undefined)
   @IsBoolean()
-  @IsOptional()
   giveAccess?: boolean;
 
-  @ValidateIf((o) => o.giveAccess === true)
-  @IsEmail()
-  @IsOptional()
-  email?: string;
-
-  @IsString()
-  @IsOptional()
-  avatarUrl?: string;
-
-  @IsString()
-  @IsOptional()
-  avatarPublicId?: string;
-
-  @IsOptional()
-  @IsEnum(MembershipRole)
-  role?: MembershipRole;
+  @ValidateIf((o, value) => o.giveAccess !== undefined || value !== undefined)
+  @IsIn(ACCESS_STATUSES)
+  accessStatus?: ProfessionalAccessStatus;
 }

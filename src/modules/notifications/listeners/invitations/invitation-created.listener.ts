@@ -11,13 +11,14 @@ export class InvitationCreatedListener {
 
   @OnEvent('invitation.created')
   async handle(event: InvitationCreatedEvent) {
-    const { tenantId, userId, email, token, role, tenantName } = event;
-    const inviteLink = `${process.env.APP_URL}/auth/signup?token=${token}`;
+    const { tenantId, invitationId, email, token, role, tenantName } = event;
+    const inviteLink = `${process.env.APP_URL}/auth/invitations?token=${token}`;
     await this.notificationsService.create({
       type: 'invitation.created',
       tenantId,
-      recipientId: userId,
+      recipientId: invitationId,
       recipientType: RecipientType.USER,
+      referenceId: invitationId,
       payload: {
         tenantName,
         email,

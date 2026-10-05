@@ -100,7 +100,8 @@ export class ProfessionalsRepository extends BaseRepository {
             },
           },
         },
-        assignments: true,
+        assignments: { include: { service: { select: { id: true, name: true, isActive: true, deletedAt: true } } } },
+        invitations: { where: { acceptedAt: null, revokedAt: null }, orderBy: { createdAt: 'desc' }, take: 1 },
         workingHours: true,
       },
     });
@@ -114,12 +115,19 @@ export class ProfessionalsRepository extends BaseRepository {
     return this.db(tx).professional.update({ where: { id, tenantId }, data });
   }
 
+  async updateStatus(tenantId: string, id: string, isActive: boolean) {
+    return this.db().professional.updateMany({
+      where: { id, tenantId, deletedAt: null },
+      data: { isActive },
+    });
+  }
+
   async softDelete(tenantId: string, id: string, tx?: TransactionClient) {
     return this.db(tx).professional.update({ where: { id, tenantId }, data: { deletedAt: new Date() } });
   }
 
   async replaceServices(professionalId: string, data: ServiceAssignmentCreateManyInput[], tx?: TransactionClient) {
-    this.db(tx).serviceAssignment.deleteMany({ where: { professionalId } });
+    await this.db(tx).serviceAssignment.deleteMany({ where: { professionalId } });
     return await this.db(tx).serviceAssignment.createMany({ data });
   }
 

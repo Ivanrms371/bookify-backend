@@ -1,6 +1,6 @@
 import { PERMISSIONS } from 'src/common/security/constants/permissions.constant';
 import { Permissions } from 'src/common/security/decorators/permissions.decorator';
-import { Body, Controller, Get, Patch, Param, Post, Delete, Put } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Param, Post, Delete, Put, ParseUUIDPipe } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { CreateTeamProfessionalDto } from './dto/create-team-professional.dto';
@@ -8,6 +8,9 @@ import { UpdateTeamProfessionalDto } from './dto/update-team-professional.dto';
 import { InviteTeamMemberDto } from './dto/invite-team-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { UpdateInvitationDto } from './dto/update-invitation.dto';
+import { CurrentUser } from 'src/common/security/decorators/current-user.decorator';
+import { CurrentTenant } from 'src/common/security/decorators/current-tenant.decorator';
+import type { AuthenticatedUser, TenantContext } from 'src/common/security/types/authenticated-request.type';
 import { Roles } from 'src/common/security/decorators/roles.decorator';
 
 @Controller('team')
@@ -28,14 +31,25 @@ export class TeamController {
 
   @Permissions(PERMISSIONS.TEAM_UPDATE)
   @Put('professionals/:id')
-  async updateProfessional(@GetTenantId() tenantId: string, @Param('id') id: string, @Body() dto: UpdateTeamProfessionalDto) {
-    return this.teamService.updateProfessional(tenantId, id, dto);
+  async updateProfessional(
+    @GetTenantId() tenantId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateTeamProfessionalDto,
+    @CurrentUser() user: AuthenticatedUser,
+    @CurrentTenant() tenant: TenantContext,
+  ) {
+    return this.teamService.updateProfessional(tenantId, id, dto, { id: user.id, role: tenant.role });
   }
 
   @Permissions(PERMISSIONS.TEAM_DELETE)
   @Delete('professionals/:id')
-  async deleteProfessional(@GetTenantId() tenantId: string, @Param('id') id: string) {
-    return this.teamService.deleteProfessional(tenantId, id);
+  async deleteProfessional(
+    @GetTenantId() tenantId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: AuthenticatedUser,
+    @CurrentTenant() tenant: TenantContext,
+  ) {
+    return this.teamService.deleteProfessional(tenantId, id, { id: user.id, role: tenant.role });
   }
 
   // --- MEMBERS ---

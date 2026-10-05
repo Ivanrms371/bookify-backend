@@ -1,45 +1,17 @@
-import { IsArray, IsBoolean, IsEmail, IsEnum, IsOptional, IsString, IsUUID, ValidateIf } from 'class-validator';
+import { IsBoolean, IsIn, IsOptional } from 'class-validator';
 import { MembershipRole } from 'src/generated/prisma/enums';
+import { ProfessionalContactDto } from './professional-contact.dto';
 
-export class CreateTeamProfessionalDto {
-  @IsString()
-  name: string;
-
-  @IsString()
-  phoneNumber: string;
-
-  @IsString()
-  phoneCountryCode: string;
-
-  @IsEmail()
-  email: string;
-
-  @IsString()
-  @IsOptional()
-  bio?: string;
-
-  @IsString()
-  @IsOptional()
-  profession?: string;
-
-  @IsArray()
-  @IsUUID('all', { each: true })
-  @IsOptional()
-  serviceIds?: string[];
-
+export class CreateTeamProfessionalDto extends ProfessionalContactDto {
+  declare name: string;
+  declare email: string;
+  declare phoneNumber: string;
+  declare phoneCountryCode: string;
   @IsBoolean()
   giveAccess: boolean;
 
-  @ValidateIf((o) => o.giveAccess === true)
-  @IsEnum(MembershipRole)
+  // Compatibility only: this creation flow always invites STAFF.
   @IsOptional()
+  @IsIn([MembershipRole.STAFF])
   role?: MembershipRole;
-
-  @IsString()
-  @IsOptional()
-  avatarUrl?: string;
-
-  @IsString()
-  @IsOptional()
-  avatarPublicId?: string;
 }

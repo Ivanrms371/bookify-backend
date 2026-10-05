@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ProfessionalDeletionController } from './professional-deletion.controller';
 import { TeamController } from './team.controller';
 import { TeamService } from './team.service';
 import { MembershipsModule } from '../memberships/memberships.module';
@@ -7,7 +8,7 @@ import { ProfessionalsModule } from '../professionals/professionals.module';
 
 @Module({
   imports: [MembershipsModule, InvitationsModule, ProfessionalsModule],
-  controllers: [TeamController],
+  controllers: [TeamController, ProfessionalDeletionController],
   providers: [TeamService],
 })
 export class TeamModule {}

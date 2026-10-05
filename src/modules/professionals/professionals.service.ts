@@ -8,11 +8,16 @@ import { UpdateProfessionalDto } from './dto/update-professional.dto';
 import { UpdateProfessionalProfileDto } from './dto/update-professional-profile.dto';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { MembershipsService } from '../memberships/memberships.service';
-import { ServiceAssignmentCreateManyInput } from 'src/generated/prisma/models';
+import type { ServiceAssignmentCreateManyInput } from 'src/generated/prisma/models';
 import { ProfessionalWorkingHoursService } from './features/working-hours/working-hours.service';
-import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
+import type { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 import { CreateProfessionalDto } from './dto/create-professional.dto';
 import { MembershipRole } from 'src/generated/prisma/enums';
+
+import { accessStatus, canChangeAccess } from '../team/utils/professional-access';
+import type { AccessViewer } from '../team/types/professional-access.types';
+
+import { verifyAssignableServices } from './utils/assignment-eligibility';
 
 @Injectable()
 export class ProfessionalsService {
@@ -32,9 +37,9 @@ export class ProfessionalsService {
       bio: prof.bio,
       isActive: prof.isActive,
       role: prof.user?.memberships[0]?.role ?? null,
-      email: prof.user?.email || prof.email || null,
-      phoneNumber: prof.user?.phoneNumber || prof.phoneNumber || null,
-      phoneCountryCode: prof.user?.phoneCountryCode || prof.phoneCountryCode || null,
+      email: prof.email || null,
+      phoneNumber: prof.phoneNumber || null,
+      phoneCountryCode: prof.phoneCountryCode || null,
     }));
     return query.count ? { data, meta: result.meta } : data;
   }
@@ -44,13 +49,25 @@ export class ProfessionalsService {
     return professional;
   }
 
-  async getByIdWithDetails(tenantId: string, id: string) {
+  async getByIdWithDetails(tenantId: string, id: string, viewer: AccessViewer) {
     const prof = await this.professionalsRepository.findByIdWithDetails(tenantId, id);
     if (!prof) {
       throw new NotFoundException('Profesional no encontrado');
     }
 
-    return ProfessionalsMapper.toDetailsDto(prof);
+    const membership = prof.user?.memberships[0];
+    const invitation = prof.invitations[0];
+    return {
+      ...ProfessionalsMapper.toDetailsDto(prof),
+      access: {
+        status: accessStatus(prof.userId, membership, invitation),
+        accountEmail: prof.user?.email ?? null,
+        role: membership?.role ?? invitation?.role ?? null,
+        invitationEmail: invitation?.email ?? null,
+        expiresAt: invitation?.expiresAt ?? null,
+        canChange: canChangeAccess(viewer, prof.userId, membership?.role ?? invitation?.role),
+      },
+    };
   }
 
   async create(tenantId: string, dto: CreateProfessionalDto, tx?: TransactionClient) {
@@ -65,6 +82,7 @@ export class ProfessionalsService {
         bio: dto.bio,
         avatarUrl: dto.avatarUrl,
         avatarPublicId: dto.avatarPublicId,
+        colorTheme: dto.colorTheme,
       },
       tx,
     );
@@ -82,12 +100,12 @@ export class ProfessionalsService {
   }
 
   async update(tenantId: string, id: string, dto: UpdateProfessionalDto, externalTx?: TransactionClient) {
-    const professional = await this.professionalsRepository.findById(tenantId, id);
+    const professional = await this.professionalsRepository.findById(tenantId, id, externalTx);
     if (!professional) {
       throw new NotFoundException('Profesional no encontrado');
     }
 
-    const { name, phoneNumber, phoneCountryCode, avatarUrl, avatarPublicId, bio, serviceIds, giveAccess } = dto;
+    const { name, phoneNumber, phoneCountryCode, avatarUrl, avatarPublicId, bio, serviceIds, email, colorTheme } = dto;
 
     const executeUpdate = async (tx: TransactionClient) => {
       await this.professionalsRepository.update(
@@ -99,16 +117,24 @@ export class ProfessionalsService {
           phoneCountryCode,
           avatarUrl,
           avatarPublicId,
+          colorTheme,
           bio,
-          ...(giveAccess && professional.userId && { user: { disconnect: { id } } }),
+          email,
         },
         tx,
       );
       if (serviceIds) {
+        const existing = await tx.serviceAssignment.findMany({ where: { professionalId: id } });
+        await verifyAssignableServices(
+          tenantId,
+          serviceIds,
+          tx,
+          existing.map((a) => a.serviceId),
+        );
         const servicesData: ServiceAssignmentCreateManyInput[] = serviceIds.map((serviceId) => ({
           professionalId: id,
           serviceId,
-          isActive: true,
+          isActive: existing.find((a) => a.serviceId === serviceId)?.isActive ?? true,
         }));
         await this.professionalsRepository.replaceServices(professional.id, servicesData, tx);
       }
@@ -120,6 +146,14 @@ export class ProfessionalsService {
       await this.prisma.$transaction(executeUpdate);
     }
 
+    return { success: true };
+  }
+
+  async updateStatus(tenantId: string, id: string, isActive: boolean) {
+    const result = await this.professionalsRepository.updateStatus(tenantId, id, isActive);
+    if (result.count === 0) {
+      throw new NotFoundException('Profesional no encontrado');
+    }
     return { success: true };
   }
 

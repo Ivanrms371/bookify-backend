@@ -3,11 +3,15 @@ import { IsArray, IsBoolean, IsOptional, IsString, IsUUID } from 'class-validato
 export class CreateProfessionalDto {
   @IsString()
   @IsOptional()
-  avatarUrl?: string;
+  colorTheme?: string | null;
 
   @IsString()
   @IsOptional()
-  avatarPublicId?: string;
+  avatarUrl?: string | null;
+
+  @IsString()
+  @IsOptional()
+  avatarPublicId?: string | null;
 
   @IsString()
   name: string;

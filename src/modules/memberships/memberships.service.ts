@@ -44,7 +44,7 @@ export class MembershipsService {
     return this.membershipsRepository.update(tenantId, id, data, tx);
   }
 
-  async delete(tenantId: string, id: string) {
-    return this.membershipsRepository.delete(tenantId, id);
+  async delete(tenantId: string, id: string, tx?: TransactionClient) {
+    return this.membershipsRepository.delete(tenantId, id, tx);
   }
 }

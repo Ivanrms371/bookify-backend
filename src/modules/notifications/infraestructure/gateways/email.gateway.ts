@@ -45,7 +45,8 @@ export class EmailGateway {
 
   async sendDirectly(to: string, template: BuildEmailResponse) {
     const { react, subject } = template;
-    const resolvedTo = await this.resolveTo(to, RecipientType.USER);
+    // This method accepts an email address, rather than a user/customer ID.
+    const resolvedTo = this.isDevelopment ? this.resendSandox : to;
     const { data } = await this.resend.emails.send({
       from: 'Turnify <onboarding@resend.dev>',
       to: resolvedTo,
