@@ -27,6 +27,10 @@ import {
   ProfessionalMembershipMissingException,
 } from './exceptions/professional-access.exception';
 
+import { EmptyMemberUpdateException, TeamMemberNotFoundException, SelfMembershipChangeException } from './exceptions/team-member.exception';
+import { loadTeamManager, verifyManageableRole } from 'src/common/security/utils/team-management';
+import type { TeamResponseDto } from './dto/team-response.dto';
+
 @Injectable()
 export class TeamService {
   constructor(
@@ -36,17 +40,15 @@ export class TeamService {
     private readonly prisma: PrismaService,
   ) {}
 
-  async getTeam(tenantId: string) {
+  async getTeam(tenantId: string): Promise<TeamResponseDto> {
     const members = await this.membershipsService.findAll(tenantId);
-    const invitations = await this.invitationsService.findPending(tenantId);
+    const invitations = await this.invitationsService.listForManagement(tenantId);
 
-    const formattedMembers = members.filter((m) => m.isActive).map(TeamMapper.toTeamMemberDto);
-
-    const formattedInvitations = invitations.map(TeamMapper.toPendingInvitationDto);
+    const formattedMembers = members.map((member) => TeamMapper.toTeamMemberDto(member, tenantId));
 
     return {
       members: formattedMembers,
-      invitations: formattedInvitations,
+      invitations,
     };
   }
 
@@ -212,42 +214,48 @@ export class TeamService {
     });
   }
 
-  // --- STANDARD MEMBERS (NON-PROFESSIONALS) ---
+  async inviteMember(tenantId: string, dto: InviteTeamMemberDto, actorId: string) {
+    return this.invitationsService.create(tenantId, dto, actorId);
+  }
 
-  async inviteMember(tenantId: string, dto: InviteTeamMemberDto) {
-    return this.invitationsService.create(tenantId, {
-      name: dto.name,
-      email: dto.email,
-      role: dto.role,
+  async updateMember(tenantId: string, id: string, dto: UpdateTeamMemberDto, actorId: string) {
+    if (dto.role === undefined && dto.isActive === undefined) {
+      throw new EmptyMemberUpdateException();
+    }
+    return this.prisma.$transaction(async (tx) => {
+      await lockTenantAccess(tx, tenantId);
+      const actor = await loadTeamManager(tx, tenantId, actorId);
+      const member = await tx.membership.findUnique({ where: { id, tenantId } });
+      if (!member) throw new TeamMemberNotFoundException();
+      if (member.userId === actorId) throw new SelfMembershipChangeException();
+      verifyManageableRole(actor.role, member.role, dto.role);
+      await this.membershipsService.update(
+        tenantId,
+        id,
+        {
+          ...(dto.role !== undefined && { role: dto.role }),
+          ...(dto.isActive !== undefined && { isActive: dto.isActive }),
+        },
+        tx,
+      );
+      return { success: true };
     });
   }
 
-  async updateMember(tenantId: string, id: string, dto: UpdateTeamMemberDto) {
-    if (dto.role) {
-      await this.membershipsService.updateRoleByMembershipId(tenantId, id, dto.role);
-    }
+  async removeMember(tenantId: string, id: string, actorId: string) {
+    return this.updateMember(tenantId, id, { isActive: false }, actorId);
+  }
+
+  async updateInvitation(tenantId: string, id: string, dto: UpdateInvitationDto, actorId: string) {
+    await this.invitationsService.updateRole(tenantId, id, dto.role, actorId);
     return { success: true };
   }
 
-  async removeMember(tenantId: string, id: string) {
-    await this.membershipsService.deactivateByMembershipId(tenantId, id);
-    return { success: true };
+  async resendInvitation(tenantId: string, id: string, actorId: string) {
+    return this.invitationsService.resend(tenantId, id, actorId);
   }
 
-  // --- INVITATIONS MANAGEMENT ---
-
-  async updateInvitation(tenantId: string, id: string, dto: UpdateInvitationDto) {
-    if (dto.role) {
-      await this.invitationsService.updateRole(tenantId, id, dto.role);
-    }
-    return { success: true };
-  }
-
-  async resendInvitation(tenantId: string, id: string) {
-    return this.invitationsService.resend(tenantId, id);
-  }
-
-  async revokeInvitation(tenantId: string, id: string) {
-    return this.invitationsService.revoke(tenantId, id);
+  async revokeInvitation(tenantId: string, id: string, actorId: string) {
+    return this.invitationsService.revoke(tenantId, id, actorId);
   }
 }

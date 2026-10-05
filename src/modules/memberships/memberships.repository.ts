@@ -26,6 +26,7 @@ export class MembershipsRepository extends BaseRepository {
             professional: {
               select: {
                 id: true,
+                tenantId: true,
                 name: true,
                 avatarUrl: true,
                 colorTheme: true,

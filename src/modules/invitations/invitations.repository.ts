@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { InvitationCreateInput } from 'src/generated/prisma/models';
+import { InvitationCreateInput, InvitationUpdateInput } from 'src/generated/prisma/models';
 import { BaseRepository } from 'src/common/database/base.repository';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 
@@ -14,10 +14,9 @@ export class InvitationsRepository extends BaseRepository {
     return this.db(tx).invitation.findFirst({
       where: {
         tenantId,
-        email,
+        email: { equals: email, mode: 'insensitive' },
         acceptedAt: null,
         revokedAt: null,
-        expiresAt: { gt: new Date() },
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -100,9 +99,9 @@ export class InvitationsRepository extends BaseRepository {
     });
   }
 
-  async update(id: string, data: any, tx?: TransactionClient) {
+  async update(tenantId: string, id: string, data: InvitationUpdateInput, tx?: TransactionClient) {
     return this.db(tx).invitation.update({
-      where: { id },
+      where: { id, tenantId },
       data,
     });
   }
@@ -117,7 +116,7 @@ export class InvitationsRepository extends BaseRepository {
       orderBy: { createdAt: 'desc' },
       include: {
         professional: {
-          select: { name: true },
+          select: { name: true, tenantId: true },
         },
       },
     });

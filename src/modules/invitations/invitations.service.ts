@@ -1,4 +1,4 @@
-import { Injectable, Logger, ConflictException, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, Logger, ConflictException, NotFoundException } from '@nestjs/common';
 import { randomBytes } from 'crypto';
 import { addDays } from 'date-fns';
 
@@ -22,6 +22,7 @@ import {
   InvitationRecipientException,
   InvitationMembershipConflictException,
   InvitationProfessionalConflictException,
+  InvitationDuplicateException,
 } from './exceptions/invitation-access.exception';
 
 import type {
@@ -30,6 +31,10 @@ import type {
   AcceptedInvitationResponse,
   AcceptedInvitationAccess,
 } from './types/invitation-acceptance.types';
+
+import { loadTeamManager, verifyManageableRole } from 'src/common/security/utils/team-management';
+import { toInvitationManagementDto } from './mappers/invitation-management.mapper';
+import type { InvitationManagementDto } from './dto/invitation-management.dto';
 
 @Injectable()
 export class InvitationsService {
@@ -63,30 +68,26 @@ export class InvitationsService {
     return invitation;
   }
 
-  async create(tenantId: string, dto: CreateInviteDto): Promise<Invitation> {
+  async create(tenantId: string, dto: CreateInviteDto, actorId: string) {
     const invitation = await this.prisma.$transaction(async (tx) => {
       await lockTenantAccess(tx, tenantId);
+      const actor = await loadTeamManager(tx, tenantId, actorId);
+      verifyManageableRole(actor.role, dto.role, dto.role);
       return this.createPendingInvitation(tenantId, dto, tx);
     });
     await this.queueInvitationNotification(invitation);
-    return invitation;
+    return toInvitationManagementDto(invitation);
   }
 
   // Persistence only. The caller queues the notification after its transaction commits.
   async createPendingInvitation(tenantId: string, dto: CreateInviteDto, tx: TransactionClient): Promise<Invitation> {
     const email = dto.email.trim().toLowerCase();
 
-    const existingUser = await this.usersService.findByEmail(email, tx);
-    if (existingUser) {
-      const membership = await this.membershipsService.findByUserId(tenantId, existingUser.id, tx);
-      if (membership) {
-        throw new InvitationMembershipConflictException();
-      }
-    }
+    await this.verifyRecipientEligibility(tenantId, email, dto.professionalId, tx);
 
     const pendingInvitation = await this.invitationsRepository.findByEmail(tenantId, email, tx);
-    if (pendingInvitation && !pendingInvitation.acceptedAt && !pendingInvitation.revokedAt && pendingInvitation.expiresAt > new Date()) {
-      throw new ConflictException('Ya existe una invitación pendiente para este correo electrónico.');
+    if (pendingInvitation) {
+      throw new InvitationDuplicateException();
     }
 
     const token = randomBytes(32).toString('hex');
@@ -105,6 +106,32 @@ export class InvitationsService {
     );
 
     return invitation;
+  }
+
+  private async verifyRecipientEligibility(
+    tenantId: string,
+    email: string,
+    professionalId: string | null | undefined,
+    tx: TransactionClient,
+  ) {
+    const user = await this.usersService.findByEmail(email, tx);
+    if (user) {
+      const membership = await this.membershipsService.findByUserId(tenantId, user.id, tx);
+      if (membership) throw new InvitationMembershipConflictException(!membership.isActive);
+    }
+    if (!professionalId) return;
+    const professional = await this.professionalsService.findById(tenantId, professionalId, tx);
+    if (!professional || professional.tenantId !== tenantId) {
+      throw new InvitationProfessionalConflictException();
+    }
+    if (professional.userId || professional.deletedAt) {
+      throw new InvitationProfessionalConflictException();
+    }
+    if (!user) return;
+    const linkedProfessional = await tx.professional.findFirst({ where: { userId: user.id } });
+    if (linkedProfessional) {
+      throw new InvitationProfessionalConflictException();
+    }
   }
 
   // Called after commit. The listener registers a queued delivery; this does not send mail.
@@ -127,55 +154,50 @@ export class InvitationsService {
     }
   }
 
-  async revoke(tenantId: string, invitationId: string) {
+  async revoke(tenantId: string, invitationId: string, actorId: string) {
     return this.prisma.$transaction(async (tx) => {
       await lockTenantAccess(tx, tenantId);
-      const invitation = await this.invitationsRepository.findById(tenantId, invitationId, tx);
-      if (!invitation) {
-        throw new NotFoundException('Invitación no encontrada.');
-      }
+      const { invitation } = await this.loadManageableInvitation(tenantId, invitationId, actorId, tx);
       if (invitation.acceptedAt) {
         throw new ConflictException('No se puede revocar una invitación que ya ha sido aceptada.');
       }
       if (invitation.revokedAt) {
         throw new ConflictException('La invitación ya está revocada.');
       }
-      return this.invitationsRepository.revoke(tenantId, invitationId, tx);
+      await this.invitationsRepository.revoke(tenantId, invitationId, tx);
+      return { success: true };
     });
   }
 
-  async updateRole(tenantId: string, invitationId: string, role: MembershipRole) {
+  async updateRole(tenantId: string, invitationId: string, role: MembershipRole, actorId: string) {
     return this.prisma.$transaction(async (tx) => {
       await lockTenantAccess(tx, tenantId);
-      const invitation = await this.invitationsRepository.findById(tenantId, invitationId, tx);
-      if (!invitation) {
-        throw new NotFoundException('Invitación no encontrada.');
-      }
+      const { actor, invitation } = await this.loadManageableInvitation(tenantId, invitationId, actorId, tx);
       if (invitation.acceptedAt || invitation.revokedAt) {
         throw new InvitationUnavailableException('changed');
       }
-      return this.invitationsRepository.update(invitationId, { role }, tx);
+      verifyManageableRole(actor.role, invitation.role, role);
+      return toInvitationManagementDto(await this.invitationsRepository.update(tenantId, invitationId, { role }, tx));
     });
   }
 
-  async resend(tenantId: string, invitationId: string) {
+  async resend(tenantId: string, invitationId: string, actorId: string) {
     const updated = await this.prisma.$transaction(async (tx) => {
       await lockTenantAccess(tx, tenantId);
-      const invitation = await this.invitationsRepository.findById(tenantId, invitationId, tx);
-      if (!invitation) {
-        throw new NotFoundException('Invitación no encontrada.');
-      }
+      const { invitation } = await this.loadManageableInvitation(tenantId, invitationId, actorId, tx);
       if (invitation.acceptedAt || invitation.revokedAt) {
         throw new InvitationUnavailableException('changed');
       }
+      await this.verifyRecipientEligibility(tenantId, invitation.email, invitation.professionalId, tx);
       return this.invitationsRepository.update(
+        tenantId,
         invitationId,
         { token: randomBytes(32).toString('hex'), expiresAt: addDays(new Date(), 7) },
         tx,
       );
     });
     await this.queueInvitationNotification(updated);
-    return updated;
+    return toInvitationManagementDto(updated);
   }
 
   async verify(token: string) {
@@ -228,6 +250,17 @@ export class InvitationsService {
       await this.professionalsService.linkToUser(invitation.tenantId, invitation.professionalId, userId, tx);
     }
     return this.acceptedResponse(invitation);
+  }
+
+  // Call after acquiring the tenant lock so authorization uses current access.
+  private async loadManageableInvitation(tenantId: string, invitationId: string, actorId: string, tx: TransactionClient) {
+    const actor = await loadTeamManager(tx, tenantId, actorId);
+    const invitation = await this.invitationsRepository.findById(tenantId, invitationId, tx);
+    if (!invitation) {
+      throw new NotFoundException('Invitación no encontrada.');
+    }
+    verifyManageableRole(actor.role, invitation.role);
+    return { actor, invitation };
   }
 
   private getInvitationStatus(invitation: Invitation): InvitationStatus {
@@ -314,6 +347,11 @@ export class InvitationsService {
 
   async revokeByProfessionalId(tenantId: string, professionalId: string, tx?: TransactionClient) {
     return this.invitationsRepository.revokeByProfessionalId(tenantId, professionalId, tx);
+  }
+
+  async listForManagement(tenantId: string): Promise<InvitationManagementDto[]> {
+    const invitations = await this.invitationsRepository.findPending(tenantId);
+    return invitations.map(toInvitationManagementDto);
   }
 
   async findPendingByProfessionalId(tenantId: string, professionalId: string, tx?: TransactionClient) {

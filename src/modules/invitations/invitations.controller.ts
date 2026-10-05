@@ -8,8 +8,6 @@ import { InvitationsService } from './invitations.service';
 import { CreateInviteDto } from './dto/create-invite.dto';
 import { CurrentUser } from 'src/common/security/decorators/current-user.decorator';
 import { AuthenticatedUser } from 'src/common/security/types/authenticated-request.type';
-import { Response } from 'express';
-import { ConfigService } from '@nestjs/config';
 
 import { Public } from 'src/common/security/decorators/public.decorator';
 import { SkipTenant } from 'src/common/security/decorators/skip-tenant.decorator';
@@ -20,14 +18,18 @@ export class InvitationsController {
 
   @Permissions(PERMISSIONS.TEAM_INVITE)
   @Post()
-  create(@CurrentTenant('tenantId') tenantId: string, @Body() dto: CreateInviteDto) {
-    return this.invitationsService.create(tenantId, dto);
+  create(@CurrentTenant('tenantId') tenantId: string, @Body() dto: CreateInviteDto, @CurrentUser() user: AuthenticatedUser) {
+    return this.invitationsService.create(tenantId, dto, user.id);
   }
 
   @Permissions(PERMISSIONS.TEAM_INVITE)
   @Delete(':id')
-  revoke(@CurrentTenant('tenantId') tenantId: string, @Param('id', ParseUUIDPipe) invitationId: string) {
-    return this.invitationsService.revoke(tenantId, invitationId);
+  revoke(
+    @CurrentTenant('tenantId') tenantId: string,
+    @Param('id', ParseUUIDPipe) invitationId: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.invitationsService.revoke(tenantId, invitationId, user.id);
   }
 
   @Public()

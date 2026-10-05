@@ -40,8 +40,16 @@ function setup() {
       ),
     },
     professional: {
+      findUnique: jest.fn(async ({ where }) => state.professionals.find((p) => p.id === where.id && p.tenantId === where.tenantId) ?? null),
+      findFirst: jest.fn().mockResolvedValue(null),
       create: jest.fn(async ({ data }) => {
-        const professional = { ...data, id: 'professional', userId: null, isActive: true } as Professional;
+        const professional = {
+          ...data,
+          tenantId: data.tenant.connect.id,
+          id: 'professional',
+          userId: null,
+          isActive: true,
+        } as Professional;
         state.professionals.push(professional);
         return professional;
       }),

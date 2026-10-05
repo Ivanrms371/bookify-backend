@@ -6,6 +6,7 @@ import { InvitationsService } from '../../invitations/invitations.service';
 import { InvitationsRepository } from '../../invitations/invitations.repository';
 import { MembershipsService } from '../../memberships/memberships.service';
 import { MembershipsRepository } from '../../memberships/memberships.repository';
+
 export function accessFixture(status = 'NONE', role = 'STAFF') {
   const state: any = {
     professional: {
@@ -47,7 +48,10 @@ export function accessFixture(status = 'NONE', role = 'STAFF') {
       { id: 'active', tenantId: 't', isActive: true, deletedAt: null },
     ],
   };
-  const matches = (i: any, w: any) => Object.entries(w).every(([k, v]: any) => (k === 'expiresAt' ? i[k] > v.gt : i[k] === v));
+  const matches = (i: any, w: any) =>
+    Object.entries(w).every(([k, v]: any) =>
+      k === 'expiresAt' ? i[k] > v.gt : k === 'email' && typeof v === 'object' ? i[k].toLowerCase() === v.equals.toLowerCase() : i[k] === v,
+    );
   const tx: any = {
     $queryRaw: jest.fn().mockResolvedValue([]),
     professional: {
@@ -64,14 +68,25 @@ export function accessFixture(status = 'NONE', role = 'STAFF') {
       }),
     },
     membership: {
+      findUnique: jest.fn(async ({ where }) => state.memberships.find((m: any) => matches(m, where)) ?? null),
+      findMany: jest.fn(async ({ where }) =>
+        state.memberships
+          .filter((m: any) => matches(m, where))
+          .map((m: any) => ({
+            ...m,
+            user: {
+              ...state.users.find((u: any) => u.id === m.userId),
+              id: m.userId,
+              professional: state.professional.userId === m.userId ? { ...state.professional } : null,
+            },
+          })),
+      ),
       delete: jest.fn(async ({ where }) => {
         const index = state.memberships.findIndex((m: any) => m.id === where.id && m.tenantId === where.tenantId);
         if (index < 0) throw new Error('Membership not found');
         return state.memberships.splice(index, 1)[0];
       }),
-      findFirst: jest.fn(
-        async ({ where }) => state.memberships.find((m: any) => m.tenantId === where.tenantId && m.userId === where.userId) ?? null,
-      ),
+      findFirst: jest.fn(async ({ where }) => state.memberships.find((m: any) => matches(m, where)) ?? null),
       create: jest.fn(async ({ data }) => {
         const m = { ...data, isActive: true, id: 'new' };
         state.memberships.push(m);
@@ -86,14 +101,25 @@ export function accessFixture(status = 'NONE', role = 'STAFF') {
     },
     user: { findUnique: jest.fn(async ({ where }) => state.users.find((u: any) => u.id === where.id) ?? null) },
     invitation: {
+      findMany: jest.fn(async ({ where }) =>
+        state.invitations
+          .filter((i: any) => matches(i, where))
+          .map((i: any) => ({
+            ...i,
+            professional: i.professionalId === state.professional.id ? { ...state.professional } : null,
+          })),
+      ),
       findFirst: jest.fn(async ({ where }) => state.invitations.find((i: any) => matches(i, where)) ?? null),
-      findUnique: jest.fn(async ({ where }) => state.invitations.find((i: any) => matches(i, where)) ?? null),
+      findUnique: jest.fn(async ({ where }) => {
+        const found = state.invitations.find((i: any) => matches(i, where));
+        return found ? { ...found } : null;
+      }),
       create: jest.fn(async ({ data }) => {
         const i = {
           ...data,
           id: 'new',
           tenantId: data.tenant.connect.id,
-          professionalId: data.professional.connect.id,
+          professionalId: data.professional?.connect.id ?? null,
           revokedAt: null,
           acceptedAt: null,
           createdAt: new Date(),
@@ -156,15 +182,18 @@ export function accessFixture(status = 'NONE', role = 'STAFF') {
   const memberships = new MembershipsService(new MembershipsRepository(prisma));
   const professionals = new ProfessionalsService(prisma, new ProfessionalsRepository(prisma), {} as never);
   const emitter = { emitAsync: jest.fn().mockResolvedValue([]) };
+  const users = {
+    findByEmail: jest.fn(async (email: string) => state.users.find((u: any) => u.email.toLowerCase() === email.toLowerCase()) ?? null),
+  };
   const invitations = new InvitationsService(
     new InvitationsRepository(prisma),
     { findById: async () => ({ name: 'Business' }) } as never,
-    { findByEmail: jest.fn().mockResolvedValue(null) } as never,
+    users as never,
     memberships,
     professionals,
     prisma,
     emitter as never,
   );
   const team = new TeamService(memberships, invitations, professionals, prisma);
-  return { state, tx, prisma, team, invitations, emitter, professionals };
+  return { state, tx, prisma, team, invitations, emitter, professionals, users };
 }

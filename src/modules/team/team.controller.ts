@@ -56,39 +56,49 @@ export class TeamController {
 
   @Permissions(PERMISSIONS.TEAM_INVITE)
   @Post('members/invite')
-  async inviteMember(@GetTenantId() tenantId: string, @Body() dto: InviteTeamMemberDto) {
-    return this.teamService.inviteMember(tenantId, dto);
+  async inviteMember(@GetTenantId() tenantId: string, @Body() dto: InviteTeamMemberDto, @CurrentUser() user: AuthenticatedUser) {
+    return this.teamService.inviteMember(tenantId, dto, user.id);
   }
 
   @Permissions(PERMISSIONS.TEAM_UPDATE)
   @Patch('members/:id')
-  async updateMember(@GetTenantId() tenantId: string, @Param('id') id: string, @Body() dto: UpdateTeamMemberDto) {
-    return this.teamService.updateMember(tenantId, id, dto);
+  async updateMember(
+    @GetTenantId() tenantId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateTeamMemberDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.teamService.updateMember(tenantId, id, dto, user.id);
   }
 
   @Permissions(PERMISSIONS.TEAM_DELETE)
   @Delete('members/:id')
-  async removeMember(@GetTenantId() tenantId: string, @Param('id') id: string) {
-    return this.teamService.removeMember(tenantId, id);
+  async removeMember(@GetTenantId() tenantId: string, @Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser) {
+    return this.teamService.removeMember(tenantId, id, user.id);
   }
 
   // --- INVITATIONS ---
 
   @Permissions(PERMISSIONS.TEAM_UPDATE)
   @Patch('invitations/:id')
-  async updateInvitation(@GetTenantId() tenantId: string, @Param('id') id: string, @Body() dto: UpdateInvitationDto) {
-    return this.teamService.updateInvitation(tenantId, id, dto);
+  async updateInvitation(
+    @GetTenantId() tenantId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateInvitationDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.teamService.updateInvitation(tenantId, id, dto, user.id);
   }
 
   @Permissions(PERMISSIONS.TEAM_INVITE)
   @Post('invitations/:id/resend')
-  async resendInvitation(@GetTenantId() tenantId: string, @Param('id') id: string) {
-    return this.teamService.resendInvitation(tenantId, id);
+  async resendInvitation(@GetTenantId() tenantId: string, @Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser) {
+    return this.teamService.resendInvitation(tenantId, id, user.id);
   }
 
   @Permissions(PERMISSIONS.TEAM_DELETE)
   @Delete('invitations/:id')
-  async revokeInvitation(@GetTenantId() tenantId: string, @Param('id') id: string) {
-    return this.teamService.revokeInvitation(tenantId, id);
+  async revokeInvitation(@GetTenantId() tenantId: string, @Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser) {
+    return this.teamService.revokeInvitation(tenantId, id, user.id);
   }
 }

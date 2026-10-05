@@ -1,18 +1,21 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsEmail, IsIn, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 import { MembershipRole } from 'src/generated/prisma/enums';
 
 export class CreateInviteDto {
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name?: string;
 
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim().toLowerCase() : value))
   @IsEmail()
   email: string;
 
-  @IsEnum(MembershipRole)
+  @IsIn([MembershipRole.ADMIN, MembershipRole.STAFF])
   role: MembershipRole;
 
-  @IsString()
+  @IsUUID()
   @IsOptional()
   professionalId?: string;
 }
