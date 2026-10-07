@@ -183,3 +183,9 @@ Authenticated dashboard creation and rescheduling allow past start times via the
 Authenticated `GET /api/appointments` accepts `date`, `state` (an AppointmentStatus), and `professionalId`. Omit `state` or `professionalId` to include all values; the string `all` is not an API value. Both results and the total count use these tenant-scoped filters. `orderBy` accepts `startsAt` (appointment hour) or `createdAt` (newest creation), with `order=asc|desc`; omitted sorting remains `startsAt asc`. An ID tie-breaker stabilizes pagination through `skip` and `take` (default 10). The dashboard uses `createdAt desc` for “Más recientes”. Public booking and management endpoints are separate and unchanged.
 
 Dashboard appointment responses include `formattedStartsAt: { date, time }`, formatted in Spanish with date-fns/date-fns-tz using `tenant.settings.timeZone`. Original `startsAt`/`endsAt` instants remain available for scheduling. When tenant settings are missing, `timeZone` and `formattedStartsAt` are null; the mapper does not substitute a timezone. The cancellation modal displays these server-formatted labels.
+
+## Agenda day filtering
+
+The authenticated appointment list accepts `date` as a validated `YYYY-MM-DD` business date. The repository uses the tenant settings timezone (default `America/Montevideo`) to select appointments from inclusive local midnight to exclusive next-day midnight. This handles daylight-saving days without assuming 24 hours. Legacy timestamp values for `date` remains compatible with its existing server-local filtering behavior. Public booking and availability endpoints are unchanged.
+
+Agenda uses the business timezone for today and displayed appointment times, with stable calendar dates in query keys. Changing date or filters resets pagination; pagination alone may retain previous results during loading. Placeholder results cannot carry across tenants or different filter criteria.

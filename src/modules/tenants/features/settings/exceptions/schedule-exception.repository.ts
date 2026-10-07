@@ -14,6 +14,10 @@ interface FindManyParams {
 export class ScheduleExceptionRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  countTenantProfessionals(tenantId: string, ids: string[]) {
+    return this.prisma.professional.count({ where: { tenantId, id: { in: ids }, deletedAt: null } });
+  }
+
   findMany(tenantId: string, params?: FindManyParams): Promise<RawScheduleException[]> {
     return this.prisma.scheduleException.findMany({
       where: {

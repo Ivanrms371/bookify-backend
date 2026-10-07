@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ScheduleExceptionRepository } from './schedule-exception.repository';
 import { CreateScheduleExceptionDto } from './dto/create-schedule-exception.dto';
 import { UpdateScheduleExceptionDto } from './dto/update-schedule-exception.dto';
-import { isAfter } from 'date-fns';
 import { mapTimeIntervals } from 'src/shared/schedule/map-time-interval.mapper';
 import { toScheduleExceptionResponse } from './mappers/schedule-exception.mapper';
+import { validateException } from './utils/validate-exception';
+import { InvalidScheduleException } from './exceptions/invalid-schedule-exception.exception';
 
 @Injectable()
 export class ScheduleExceptionService {
@@ -26,17 +27,11 @@ export class ScheduleExceptionService {
   }
 
   async create(tenantId: string, dto: CreateScheduleExceptionDto) {
+    validateException(dto);
+    await this.verifyProfessionalOwnership(tenantId, dto.professionalIds);
     const startDate = new Date(dto.startDate);
     const endDate = new Date(dto.endDate);
     const { isClosed, professionalIds, reason } = dto;
-
-    if (isAfter(startDate, endDate)) {
-      throw new BadRequestException('La fecha de inicio debe ser anterior o igual a la fecha de fin');
-    }
-
-    if (!isClosed && (!dto.intervals || dto.intervals.length === 0)) {
-      throw new BadRequestException('Debes definir al menos un intervalo de trabajo cuando el negocio no está cerrado');
-    }
 
     const intervals = isClosed ? [] : mapTimeIntervals(dto.intervals!);
     const professionals = professionalIds.map((p) => ({ professionalId: p }));
@@ -55,14 +50,12 @@ export class ScheduleExceptionService {
 
   async update(tenantId: string, id: string, dto: UpdateScheduleExceptionDto) {
     await this.findById(tenantId, id);
+    validateException(dto);
+    await this.verifyProfessionalOwnership(tenantId, dto.professionalIds);
 
     const { isClosed, professionalIds, reason } = dto;
     const startDate = dto.startDate ? new Date(dto.startDate) : undefined;
     const endDate = dto.endDate ? new Date(dto.endDate) : undefined;
-
-    if (startDate && endDate && isAfter(startDate, endDate)) {
-      throw new BadRequestException('La fecha de inicio debe ser anterior o igual a la fecha de fin');
-    }
 
     const intervals = isClosed ? [] : dto.intervals ? mapTimeIntervals(dto.intervals) : [];
     const professionals = professionalIds ? professionalIds.map((p) => ({ professionalId: p })) : [];
@@ -88,5 +81,11 @@ export class ScheduleExceptionService {
   async delete(tenantId: string, id: string) {
     await this.findById(tenantId, id);
     await this.scheduleExceptionRepository.delete(tenantId, id);
+  }
+
+  private async verifyProfessionalOwnership(tenantId: string, professionalIds: string[]) {
+    const count = await this.scheduleExceptionRepository.countTenantProfessionals(tenantId, professionalIds);
+    if (count !== professionalIds.length)
+      throw new InvalidScheduleException('Los profesionales deben pertenecer a este negocio y no estar eliminados');
   }
 }
