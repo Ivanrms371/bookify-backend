@@ -3,7 +3,7 @@ import { RecipientType } from 'src/generated/prisma/enums';
 export interface AppointmentCancelledEvent {
   appointmentId: string;
   tenantId: string;
-  userId: string;
+  userId: string | null;
   professionalId: string;
   professionalName: string;
   customerId: string;

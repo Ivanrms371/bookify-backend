@@ -1,3 +1,4 @@
+import { mutationFixture } from '../../appointments/tests/appointment-mutation.fixture';
 /// <reference types="jest" />
 import { ExecutionContext, NotFoundException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
@@ -96,11 +97,11 @@ describe('professional booking status', () => {
     const create = jest.fn();
     const emit = jest.fn();
     const publicService = new AppointmentsPublicService(
-      { $transaction: (callback) => callback({}) } as never, { create } as never, service,
+      { create } as never, service,
       { findByPhoneOrCreate: jest.fn().mockResolvedValue({ id: 'customer' }) } as never,
       { findById: jest.fn().mockResolvedValue({ id: 'p', isActive: false }) } as never,
       { findByIdAndProfessional: jest.fn().mockResolvedValue({ durationMinutes: 30 }) } as never,
-      { emit } as never,
+      mutationFixture(emit) as never,
     );
     await expect(publicService.create({ tenantId: 't', professionalId: 'p', serviceId: 's', startsAt: '2030-01-01T12:00:00Z',
       customerName: 'Customer', customerPhone: '123', customerPhoneCode: '598', customerEmail: 'customer@example.com' })).rejects.toBeInstanceOf(NotFoundException);

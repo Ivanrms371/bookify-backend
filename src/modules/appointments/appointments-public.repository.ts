@@ -63,11 +63,13 @@ export class AppointmentsPublicRepository extends BaseRepository {
     });
   }
 
-  async findByToken(token: string) {
-    return this.prisma.appointment.findUnique({
+  async findByToken(token: string, tx?: TransactionClient) {
+    return this.db(tx).appointment.findUnique({
       where: { manageToken: token },
       include: {
-        service: { select: { durationMinutes: true } },
+        service: { select: { durationMinutes: true, name: true } },
+        professional: { select: { name: true, userId: true } },
+        customer: { select: { name: true } },
       },
     });
   }
@@ -91,6 +93,7 @@ export class AppointmentsPublicRepository extends BaseRepository {
         cancellationReason: data.cancellationReason,
         cancelledAt: new Date(),
         status: AppointmentStatus.CANCELLED,
+        blocks: { deleteMany: {} },
       },
     });
   }

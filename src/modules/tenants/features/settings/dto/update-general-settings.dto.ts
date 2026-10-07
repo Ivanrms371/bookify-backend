@@ -9,9 +9,14 @@ export class UpdateGeneralSettingsDto {
   @IsString()
   slug?: string;
 
+  // Compatibility input only; preferences are derived from country/region by the service.
   @IsOptional()
   @IsString()
   timeZone?: string;
+
+  @IsOptional()
+  @IsString()
+  currency?: string;
 
   @IsOptional()
   @IsString()

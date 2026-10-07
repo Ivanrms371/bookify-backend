@@ -1,3 +1,4 @@
+import { calendarDayRange } from '../../appointments/utils/calendar-day-range';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { startOfDay, endOfDay } from 'date-fns';
@@ -10,15 +11,17 @@ export class DashboardRepository {
    * Returns appointments between startDate and endDate (inclusive, day-boundary aware),
    * including professional and service relations.
    */
-  async findAppointmentsByDateRange(tenantId: string, startDate: Date, endDate: Date) {
+  async findAppointmentsByDateRange(tenantId: string, startDate: Date, endDate: Date, timeZone?: string) {
     return this.prisma.appointment.findMany({
       where: {
         tenantId,
         status: { not: 'CANCELLED' },
-        startsAt: {
-          gte: startOfDay(startDate),
-          lte: endOfDay(endDate),
-        },
+        startsAt: timeZone
+          ? calendarDayRange(startDate.toISOString().slice(0, 10), timeZone)
+          : {
+              gte: startOfDay(startDate),
+              lte: endOfDay(endDate),
+            },
       },
       orderBy: { startsAt: 'asc' },
       select: {

@@ -65,16 +65,21 @@ export class TenantSettingsRepository extends BaseRepository {
   }
 
   async updateGeneralSettings(tenantId: string, data: UpdateGeneralSettingsDto): Promise<UpdateTenantGeneralSettingsResponse> {
-    const { timeZone, ...tenantData } = data;
+    const { timeZone, currency, ...tenantData } = data;
 
     return this.db().tenant.update({
       where: { id: tenantId },
+      include: { settings: true },
       data: {
         ...tenantData,
-        ...(timeZone && {
+        ...((timeZone || currency) && {
           settings: {
-            update: {
-              timeZone,
+            upsert: {
+              create: { ...(timeZone ? { timeZone } : {}), ...(currency ? { currency } : {}) },
+              update: {
+                ...(timeZone ? { timeZone } : {}),
+                ...(currency ? { currency } : {}),
+              },
             },
           },
         }),

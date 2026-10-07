@@ -5,18 +5,45 @@ import { ReportMetricsService } from '../services/report-metrics.service';
 
 describe('Dashboard comparisons', () => {
   const repository = {
+    findSettings: jest.fn().mockResolvedValue({ timeZone: 'America/Montevideo' }),
     findDailyStatsByDateRange: jest.fn(),
     findLifetimeStats: jest.fn().mockResolvedValue(null),
+    findRegisteredCustomerCount: jest.fn().mockResolvedValue(0),
     findAppointmentsByDateRange: jest.fn().mockResolvedValue([]),
   };
-  const service = new DashboardService(new ReportMetricsService(repository as unknown as ReportMetricsRepository), repository as unknown as DashboardRepository);
-  const row = (date: Date, revenue: number) => ({ date, revenue, appointments: 0, confirmed: 0, cancelled: 0, completed: 0, noShow: 0, newCustomers: 0 });
+  const service = new DashboardService(
+    new ReportMetricsService(repository as unknown as ReportMetricsRepository),
+    repository as unknown as DashboardRepository,
+  );
+  const row = (date: Date, revenue: number) => ({
+    date,
+    revenue,
+    appointments: 0,
+    confirmed: 0,
+    cancelled: 0,
+    completed: 0,
+    noShow: 0,
+    newCustomers: 0,
+  });
 
   beforeEach(() => {
-    jest.useFakeTimers().setSystemTime(new Date(2026, 9, 31, 12));
+    jest.useFakeTimers().setSystemTime(new Date(Date.UTC(2026, 9, 31, 12)));
     repository.findDailyStatsByDateRange.mockReset();
   });
   afterEach(() => jest.useRealTimers());
+
+  it('uses the tenant day around midnight and counts registered customers independently of visits', async () => {
+    jest.setSystemTime(new Date('2026-10-07T01:00:00Z'));
+    repository.findDailyStatsByDateRange.mockResolvedValue([
+      { ...row(new Date('2026-10-06T00:00:00Z'), 20), appointments: 3 },
+      { ...row(new Date('2026-10-07T00:00:00Z'), 40), appointments: 9 },
+    ]);
+    repository.findRegisteredCustomerCount.mockResolvedValueOnce(12);
+    const result = await service.getOverview('tenant-1');
+    expect(result.stats.appointmentsToday.current).toBe(3);
+    expect(result.stats.totalCustomers.current).toBe(12);
+    expect(repository.findAppointmentsByDateRange).toHaveBeenLastCalledWith('tenant-1', new Date('2026-10-06T00:00:00Z'), new Date('2026-10-06T00:00:00Z'), 'America/Montevideo');
+  });
 
   it.each([
     [150, 100, '+50.00%'],
@@ -27,20 +54,24 @@ describe('Dashboard comparisons', () => {
     [0, 0, ''],
   ])('compares %s current revenue with %s previous revenue', async (current, previous, trend) => {
     repository.findDailyStatsByDateRange.mockResolvedValue([
-      row(new Date(2026, 8, 1), previous),
-      row(new Date(2026, 9, 1), current),
+      row(new Date(Date.UTC(2026, 8, 1)), previous),
+      row(new Date(Date.UTC(2026, 9, 1)), current),
     ]);
     const result = await service.getOverview('tenant-1');
     expect(result.stats.revenue).toEqual({ current, trend });
     // October 1 is outside the last 30 days on October 31, but counts toward monthly revenue.
     expect(result.chart).toEqual([]);
-    expect(repository.findDailyStatsByDateRange).toHaveBeenCalledWith('tenant-1', new Date(2026, 8, 1), new Date(2026, 9, 31, 23, 59, 59, 999));
+    expect(repository.findDailyStatsByDateRange).toHaveBeenCalledWith(
+      'tenant-1',
+      new Date(Date.UTC(2026, 8, 1)),
+      new Date(Date.UTC(2026, 9, 31, 23, 59, 59, 999)),
+    );
   });
 
   it('keeps current-day data in the chart without including previous-month revenue in the current total', async () => {
     repository.findDailyStatsByDateRange.mockResolvedValue([
-      row(new Date(2026, 8, 30), 200),
-      row(new Date(2026, 9, 31), 300),
+      row(new Date(Date.UTC(2026, 8, 30)), 200),
+      row(new Date(Date.UTC(2026, 9, 31)), 300),
     ]);
     const result = await service.getOverview('tenant-1');
     expect(result.stats.revenue).toEqual({ current: 300, trend: '+50.00%' });
@@ -50,9 +81,9 @@ describe('Dashboard comparisons', () => {
 
   it('compares appointments against yesterday and new customers against the previous month', async () => {
     repository.findDailyStatsByDateRange.mockResolvedValue([
-      { ...row(new Date(2026, 8, 1), 0), newCustomers: 10, appointments: 100 },
-      { ...row(new Date(2026, 9, 30), 0), newCustomers: 4, appointments: 8 },
-      { ...row(new Date(2026, 9, 31), 0), newCustomers: 1, appointments: 12 },
+      { ...row(new Date(Date.UTC(2026, 8, 1)), 0), newCustomers: 10, appointments: 100 },
+      { ...row(new Date(Date.UTC(2026, 9, 30)), 0), newCustomers: 4, appointments: 8 },
+      { ...row(new Date(Date.UTC(2026, 9, 31)), 0), newCustomers: 1, appointments: 12 },
     ]);
     const result = await service.getOverview('tenant-1');
     expect(result.stats.appointmentsToday).toEqual({ current: 12, trend: '4 más que ayer' });
@@ -61,7 +92,7 @@ describe('Dashboard comparisons', () => {
 
   it('hides comparisons when previous data is absent', async () => {
     repository.findDailyStatsByDateRange.mockResolvedValue([
-      { ...row(new Date(2026, 9, 31), 100), newCustomers: 3, appointments: 5 },
+      { ...row(new Date(Date.UTC(2026, 9, 31)), 100), newCustomers: 3, appointments: 5 },
     ]);
     const result = await service.getOverview('tenant-1');
     expect(result.stats.revenue.trend).toBe('');
@@ -71,9 +102,9 @@ describe('Dashboard comparisons', () => {
 
   it('sums daily customer counters across both months, including the first day of a 31-day month', async () => {
     repository.findDailyStatsByDateRange.mockResolvedValue([
-      { ...row(new Date(2026, 8, 1), 0), newCustomers: 10 },
-      { ...row(new Date(2026, 9, 1), 0), newCustomers: 12 },
-      { ...row(new Date(2026, 9, 31), 0), newCustomers: 13 },
+      { ...row(new Date(Date.UTC(2026, 8, 1)), 0), newCustomers: 10 },
+      { ...row(new Date(Date.UTC(2026, 9, 1)), 0), newCustomers: 12 },
+      { ...row(new Date(Date.UTC(2026, 9, 31)), 0), newCustomers: 13 },
     ]);
     const result = await service.getOverview('tenant-1');
     expect(result.stats.newCustomers).toEqual({ current: 25, trend: '+150.00%' });
@@ -86,8 +117,8 @@ describe('Dashboard comparisons', () => {
     [4, 0, '4 más que ayer'],
   ])('describes the appointment difference for %s today and %s yesterday', async (current, previous, trend) => {
     repository.findDailyStatsByDateRange.mockResolvedValue([
-      { ...row(new Date(2026, 9, 30), 0), appointments: previous },
-      { ...row(new Date(2026, 9, 31), 0), appointments: current },
+      { ...row(new Date(Date.UTC(2026, 9, 30)), 0), appointments: previous },
+      { ...row(new Date(Date.UTC(2026, 9, 31)), 0), appointments: current },
     ]);
     const result = await service.getOverview('tenant-1');
     expect(result.stats.appointmentsToday).toEqual({ current, trend });

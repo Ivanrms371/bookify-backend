@@ -1,3 +1,4 @@
+import { mutationFixture, mutationTx } from './appointment-mutation.fixture';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { AppointmentsService } from '../appointments.service';
 import { ROLE_PERMISSIONS } from 'src/common/security/constants/role-permissions.constants';
@@ -17,7 +18,7 @@ function fixture() {
   const availability = { isSlotAvailable: jest.fn().mockResolvedValue(true) };
   const service = new AppointmentsService(repository as never, availability as never, {} as never,
     professionals as never, { findByIdAndProfessional: jest.fn().mockResolvedValue({ durationMinutes: 30, price: 10 }) } as never,
-    { emit: jest.fn() } as never);
+    mutationFixture() as never);
   return { service, repository, professionals, availability };
 }
 

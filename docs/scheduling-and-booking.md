@@ -68,26 +68,26 @@ Listing is an offer, not a reservation or proof the mutation validator will acce
 
 | Operation | Authenticated | Public/token-based |
 | --- | --- | --- |
-| Create | Optional customer; PENDING; ignores minimum notice and allows past booking | Finds/creates/updates customer first; CONFIRMED; normal minimum notice |
-| Reschedule | Tenant-scoped lookup; rejects COMPLETED/CANCELLED; changed start, including past times; own/others authorization; excludes original appointment | Token lookup; CONFIRMED only; at most one reschedule; normal minimum notice; does not exclude original appointment |
-| Cancel | Rejects COMPLETED; already-cancelled returns existing response; removes blocks | CONFIRMED only; repeated cancellation rejected; blocks retained |
-| Events | Create/reschedule/cancel emitted only when a customer is present | Creation emitted; reschedule/cancel have no matching emissions |
+| Create | Optional customer; CONFIRMED; ignores minimum notice and allows past booking | Validates slot before transactional customer write; CONFIRMED; normal minimum notice |
+| Reschedule | Tenant-scoped lookup; PENDING/CONFIRMED only; changed start, including past times; own/others authorization; excludes original appointment | Token lookup; CONFIRMED only; at most one reschedule; normal minimum notice; excludes original appointment |
+| Cancel | Rejects COMPLETED; already-cancelled returns existing response; removes blocks | CONFIRMED only; repeated cancellation returns existing record; removes blocks |
+| Events | Create/reschedule/cancel emitted only when a customer is present | Create/reschedule/cancel emitted after commit |
 
 Creation resolves the tenant professional/service relationship, validates eligibility/availability and writes appointment snapshots plus one full-duration block. Staff can create customerless appointments; these paths do not emit the notification events described below.
 
-Rescheduling uses the service's current duration to calculate the new end, replaces blocks and increments the count. Stored appointment duration is not updated in those writes. Public rescheduling can conflict with its own original interval when the new duration overlaps it.
+Rescheduling uses the service's current duration to calculate the new end, replaces blocks and increments the count. Both reschedule paths update stored durationMinutes and exclude their original occupancy during validation.
 
-Public cancellation retains blocks, but the active timeline filters out their cancelled parent appointment. Authenticated cancellation deletes blocks. Do not infer equivalent cleanup just because both stop occupying slots in this query.
+Both cancellation paths remove blocks and retain the cancelled appointment for history.
 
 ### Transactions and overlap limits
 
-Public creation wraps appointment persistence in a Prisma transaction, but customer writes happen before it and Availability reads do not receive its transaction client. Failed booking can therefore leave a customer created/updated. Authenticated creation and rescheduling validate before their repository writes without a shared validation/write transaction.
+All active appointment mutations use a tenant-row lock and shared transaction for appointment/customer writes and statistics. Availability reads retain their existing client. Events are emitted after commit. See [appointment lifecycle and stats](appointment-lifecycle-and-stats.md) for metric definitions and limitations.
 
-**Uncertainty:** no booking lock, exclusion constraint or serializable protocol was located in the inspected code/migrations. A transaction wrapper or repository comment about atomic verification does not establish race-safe collision prevention. Actual deployed database constraints were not inspected. Slots can change between query, validation and persistence.
+**Current limit:** appointment writers share a tenant-row lock; no database exclusion constraint was added. A transaction wrapper or repository comment about atomic verification does not establish race-safe collision prevention. Actual deployed database constraints were not inspected. Slots can change between query, validation and persistence.
 
 ## Authorization and tenant isolation
 
-Authenticated appointment mutations use guard-derived tenant context and tenant-scoped target lookups. Rescheduling additionally checks the professional/user relationship unless the caller has reschedule-others permission. Read/create do not enforce an equivalent own-professional rule; see [access control](access-control.md).
+Authenticated appointment mutations use guard-derived tenant context and tenant-scoped target lookups. Rescheduling additionally checks the professional/user relationship unless the caller has reschedule-others permission. Read/create and status updates also enforce own/others appointment authority; see [access control](access-control.md).
 
 Public booking accepts a tenant/resource combination and relies on service/Availability eligibility checks. Management operations derive tenant/professional/service from the token-resolved appointment. Management tokens are capabilities; do not treat them as harmless confirmation labels.
 
@@ -121,7 +121,7 @@ This is a conceptual feedback loop through persisted appointment state, not a Ne
 | Rescheduled listener | Cancels pending reminder deliveries, creates customer reschedule notification and schedules replacement reminders |
 | Cancelled listener | Cancels pending reminders and notifies the opposite recipient according to who cancelled |
 
-Listeners are asynchronous and persistence uses `emit`, not an awaited atomic notification transaction. Notifications create persisted deliveries; immediate processing events and the scheduler continue into configured gateways. Event emission is not proof of successful delivery or exactly-once behavior. Public reschedule/cancel currently bypass the event-driven reminder maintenance path.
+Listeners are asynchronous and persistence uses `emit`, not an awaited atomic notification transaction. Notifications create persisted deliveries; immediate processing events and the scheduler continue into configured gateways. Event emission is not proof of successful delivery or exactly-once behavior. Public reschedule/cancel now emit the matching events after commit; completion/no-show also cancels pending reminders.
 
 ## Edge cases, inconsistencies and uncertainties
 
@@ -134,9 +134,9 @@ Listeners are asynchronous and persistence uses `emit`, not an awaited atomic no
 | Configuration validation | Interval ordering/overlap enforcement is absent in inspected hours paths; administrative professional replacement does not start its own transaction; same-tenant related-ID checks are incomplete |
 | Global exception representation | Query supports exceptions with no professional links, but create/update DTOs require a nonempty list |
 | Persisted settings versus booking enforcement | Cancellation window, pending-booking cap, confirmation requirement, holiday auto-apply and passive-time setting are not enforced by the inspected appointment mutations |
-| Customer eligibility | Booking paths do not check customer blocking; public lookup by phone can update existing customer data before booking validation |
+| Customer eligibility | Booking paths do not check customer blocking; public lookup by phone can update existing customer data after slot validation, within the booking transaction |
 | Occupancy meaning | All non-cancelled appointment statuses contribute busy time. Full appointment intervals plus full-duration blocks are redundant today; passive-time intent is unestablished |
-| Snapshot duration | Rescheduling uses current service duration without updating stored appointment duration |
+| Snapshot duration | Rescheduling uses current service duration and updates stored appointment duration |
 | Time boundaries | Overnight intervals, DST transitions and exception date-boundary intent are not covered by located tests; mutation's local-minute containment must not be presented as proven cross-midnight correctness |
 | Legacy availability path | Shared `AvailabilityQuery` is registered/exported but no consumer was located; it differs from active repository/service behavior |
 | Incomplete integration | Public-web booking mutations remain placeholders; emitted management URLs have no established matching web pages in the earlier cross-app investigation |
@@ -189,3 +189,7 @@ Dashboard appointment responses include `formattedStartsAt: { date, time }`, for
 The authenticated appointment list accepts `date` as a validated `YYYY-MM-DD` business date. The repository uses the tenant settings timezone (default `America/Montevideo`) to select appointments from inclusive local midnight to exclusive next-day midnight. This handles daylight-saving days without assuming 24 hours. Legacy timestamp values for `date` remains compatible with its existing server-local filtering behavior. Public booking and availability endpoints are unchanged.
 
 Agenda uses the business timezone for today and displayed appointment times, with stable calendar dates in query keys. Changing date or filters resets pagination; pagination alone may retain previous results during loading. Placeholder results cannot carry across tenants or different filter criteria.
+
+## Appointment outcomes and projections
+
+New bookings are automatically CONFIRMED; existing PENDING bookings have a Confirm action. `PATCH /appointments/:id/status` supports confirmation, completion and no-show with own/others permissions, start-time checks and repeat-safe requests. Stats write ownership is `appointments/stats`, not `common/stats`; tenant/professional/customer appointment summaries are replaced atomically from source records. See [appointment lifecycle and stats](appointment-lifecycle-and-stats.md) for correction rules, scheduled-day timezone grouping, first completed visits, revenue and performance limits.

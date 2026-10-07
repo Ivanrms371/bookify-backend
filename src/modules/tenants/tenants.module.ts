@@ -4,12 +4,11 @@ import { UsersModule } from 'src/modules/users/users.module';
 import { TenantsController } from './tenants.controller';
 import { TenantUsageModule } from './features/usage/tenant-usage.module';
 import { TenantsService } from './tenants.service';
-import { StatsModule } from 'src/common/stats/stats.module';
 import { TenantsRepository } from './tenants.repository';
 import { SubscriptionsModule } from '../subscriptions/subscriptions.module';
 
 @Module({
-  imports: [MediaModule, SubscriptionsModule, UsersModule, StatsModule, TenantUsageModule],
+  imports: [MediaModule, SubscriptionsModule, UsersModule, TenantUsageModule],
   controllers: [TenantsController],
   providers: [TenantsService, TenantsRepository],
   exports: [TenantsService],

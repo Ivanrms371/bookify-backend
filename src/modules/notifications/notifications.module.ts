@@ -23,6 +23,7 @@ import { AppointmentCancelledTemplate } from './application/templates/appointmen
 import { AppointmentRescheduledTemplate } from './application/templates/appointment-reschedule/appointment-reschedule.template';
 import { AppointmentCreatedListener } from './listeners/appointments/appointment-created.listener';
 import { AppointmentCancelledListener } from './listeners/appointments/appointment-cancelled.listener';
+import { AppointmentFinishedListener } from './listeners/appointments/appointment-finished.listener';
 import { AppointmentRescheduledListener } from './listeners/appointments/appointment-rescheduled.listener';
 import { NotificationsController } from './notifications.controller';
 import { InAppNotificationsService } from './application/services/in-app-notifications.service';
@@ -77,6 +78,7 @@ import { InvitationCreatedTemplate } from './application/templates/invitation-cr
     // Listeners
     AppointmentCreatedListener,
     AppointmentCancelledListener,
+    AppointmentFinishedListener,
     AppointmentRescheduledListener,
     VerificationCreatedListener,
     TenantCreatedListener,

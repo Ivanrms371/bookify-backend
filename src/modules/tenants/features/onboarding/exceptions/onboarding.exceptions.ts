@@ -40,3 +40,9 @@ export class OnboardingServicesInvalidException extends BadRequestException {
     super('Ingresá al menos un servicio con nombre, precio válido y duración en minutos');
   }
 }
+
+export class OnboardingLocationRequiredException extends BadRequestException {
+  constructor() {
+    super('Completá la dirección del negocio antes de confirmar');
+  }
+}

@@ -14,7 +14,16 @@ const profile: ProfessionalDraft = {
   serviceIds: ['service'],
 };
 const setup = (status = 'CONFIRM', draft: ProfessionalDraft | null = { attendsClients: false }) => {
-  const tenant = { id: 'tenant', workspaceType: 'TEAM', onboardingStatus: status, onboardingProfessionalDraft: draft };
+  const tenant = {
+    country: 'UY',
+    province: 'Montevideo',
+    city: 'Montevideo',
+    addressLine1: '18 de Julio 1234',
+    id: 'tenant',
+    workspaceType: 'TEAM',
+    onboardingStatus: status,
+    onboardingProfessionalDraft: draft,
+  };
   const tx = {
     service: {
       count: jest.fn().mockResolvedValue(1),
@@ -58,11 +67,12 @@ const setup = (status = 'CONFIRM', draft: ProfessionalDraft | null = { attendsCl
 };
 
 describe('business-first onboarding', () => {
-  it('returns six steps in the same order for every workspace', async () => {
+  it('returns seven steps in the same order for every workspace', async () => {
     const { service } = setup('BUSINESS_DETAILS');
     const result = await service.getStatus('owner');
     expect(result.steps.map((step) => step.id)).toEqual([
       'BUSINESS_DETAILS',
+      'LOCATION',
       'SERVICES',
       'SCHEDULE',
       'PROFESSIONAL_PROFILE',
@@ -192,7 +202,7 @@ describe('onboarding confirmation', () => {
   it('activates the saved professional and creates the trial in the completion transaction', async () => {
     const { service, repo, subscriptions, tx } = setup('CONFIRM', profile);
     await service.confirm('owner');
-    expect(repo.completeOnboarding).toHaveBeenCalledWith('tenant', tx);
+    expect(repo.completeOnboarding).toHaveBeenCalledWith('tenant', tx, { currency: 'UYU', timeZone: 'America/Montevideo' });
     expect(subscriptions.createTrialSubscription).toHaveBeenCalledWith('tenant', tx);
     expect(tx.professional.updateMany).toHaveBeenCalledWith({
       where: { tenantId: 'tenant', userId: 'owner', deletedAt: null },
@@ -264,5 +274,120 @@ describe('onboarding confirmation', () => {
     tx.professional.findUnique.mockResolvedValue({ tenantId: 'tenant', deletedAt: null } as never);
     await service.updateProfessional('owner', profile);
     expect(tx.professional.upsert).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('onboarding studio location', () => {
+  const dto = { country: 'AR', province: 'Córdoba', city: 'Córdoba', addressLine1: 'San Martín 123' };
+  it('saves studio fields under the owned tenant lock without advancing services or changing the professional', async () => {
+    const { service, repo, tx } = setup('SERVICES');
+    await service.updateLocation('owner', 'tenant', { ...dto, addressLine2: 'Piso 2', phoneNumber: '+54 351 1234567' });
+    expect(repo.findByOwnerId).toHaveBeenCalledWith('owner', 'tenant');
+    expect(repo.lockTenant).toHaveBeenCalledWith('tenant', tx);
+    expect(repo.update).toHaveBeenCalledWith(
+      'tenant',
+      expect.objectContaining({ ...dto, addressLine2: 'Piso 2', phoneNumber: '+54 351 1234567' }),
+      tx,
+    );
+    expect(repo.updateStatus).not.toHaveBeenCalled();
+    expect(tx.professional.upsert).not.toHaveBeenCalled();
+    expect(repo.getStatus).toHaveBeenCalledWith('owner', 'tenant');
+  });
+  it('rejects a region from another country without saving', async () => {
+    const { service, repo } = setup('SERVICES');
+    await expect(service.updateLocation('owner', 'tenant', { ...dto, country: 'UY' })).rejects.toThrow('país elegido');
+    expect(repo.update).not.toHaveBeenCalled();
+  });
+  it.each(['BUSINESS_DETAILS', 'COMPLETED'])('rejects location writes at %s', async (status) => {
+    const { service, repo } = setup(status);
+    await expect(service.updateLocation('owner', 'tenant', dto)).rejects.toThrow('previous onboarding steps');
+    expect(repo.update).not.toHaveBeenCalled();
+  });
+  it('rejects a tenant not owned by the caller before opening a write transaction', async () => {
+    const { service, repo, prisma } = setup('SERVICES');
+    repo.findByOwnerId.mockResolvedValue(null);
+    await expect(service.updateLocation('owner', 'other', dto)).rejects.toThrow('Tenant not found');
+    expect(prisma.$transaction).not.toHaveBeenCalled();
+  });
+  it('retains omitted optional fields and supports explicit removal', async () => {
+    const { service, repo } = setup('SERVICES');
+    await service.updateLocation('owner', 'tenant', dto);
+    expect(repo.update.mock.calls[0][1]).not.toHaveProperty('phoneNumber');
+    expect(repo.update.mock.calls[0][1]).not.toHaveProperty('addressLine2');
+    await service.updateLocation('owner', 'tenant', { ...dto, phoneNumber: null, addressLine2: null });
+    expect(repo.update.mock.calls[1][1]).toMatchObject({ phoneNumber: null, addressLine2: null });
+  });
+  it('returns address and resolved defaults on reload', async () => {
+    const { service, repo, tenant } = setup('SERVICES');
+    repo.getStatus.mockResolvedValue({ ...tenant, ...dto, addressLine2: null, phoneNumber: null, tenantWorkingHours: [], services: [] });
+    const result = await service.getStatus('owner');
+    expect(result.savedData).toMatchObject({ ...dto, currency: 'ARS', timeZone: 'America/Argentina/Cordoba' });
+  });
+  it('uses saved country/province under the confirmation lock for settings creation', async () => {
+    const { service, repo, tx, tenant } = setup();
+    repo.lockTenant.mockResolvedValue({ ...tenant, country: 'AR', province: 'Mendoza' });
+    await service.confirm('owner');
+    expect(repo.completeOnboarding).toHaveBeenCalledWith('tenant', tx, { currency: 'ARS', timeZone: 'America/Argentina/Mendoza' });
+  });
+});
+
+describe('separate address onboarding step', () => {
+  it('saves business details only and advances to address', async () => {
+    const { service, repo, tx } = setup('BUSINESS_DETAILS');
+    await service.updateBusiness('owner', { name: 'Studio', type: 'OTHER' as never });
+    expect(repo.update).toHaveBeenCalledWith('tenant', { name: 'Studio', slug: 'studio', type: 'OTHER' }, tx);
+    expect(repo.updateStatus).toHaveBeenCalledWith('tenant', 'LOCATION', tx);
+  });
+  it('saves address and derived preferences before advancing to services', async () => {
+    const { service, repo, tx } = setup('LOCATION');
+    await service.updateLocation('owner', 'tenant', {
+      country: 'PE',
+      currency: 'USD',
+      timeZone: 'America/Montevideo',
+      province: 'Lima',
+      city: 'Lima',
+      addressLine1: 'Calle 123',
+    });
+    expect(repo.update).toHaveBeenCalledWith(
+      'tenant',
+      expect.objectContaining({
+        country: 'PE',
+        settings: {
+          upsert: {
+            create: { currency: 'PEN', timeZone: 'America/Lima' },
+            update: { currency: 'PEN', timeZone: 'America/Lima' },
+          },
+        },
+      }),
+      tx,
+    );
+    expect(repo.updateStatus).toHaveBeenCalledWith('tenant', 'SERVICES', tx);
+  });
+  it('blocks services until address is saved', async () => {
+    const { service, tx } = setup('LOCATION');
+    await expect(service.updateServices('owner', { services: [{ name: 'Cut', price: 0 as never, durationMinutes: 30 }] })).rejects.toThrow(
+      'previous onboarding steps',
+    );
+    expect(tx.service.create).not.toHaveBeenCalled();
+  });
+  it('does not advance an invalid address selection', async () => {
+    const { service, repo } = setup('LOCATION');
+    await expect(
+      service.updateLocation('owner', 'tenant', {
+        country: 'US',
+        province: 'California',
+        city: 'San Francisco',
+        addressLine1: 'Main 123',
+      }),
+    ).rejects.toThrow('país válido');
+    expect(repo.update).not.toHaveBeenCalled();
+    expect(repo.updateStatus).not.toHaveBeenCalled();
+  });
+  it('requires a saved address before confirmation or activation', async () => {
+    const { service, repo, tenant, subscriptions } = setup('CONFIRM');
+    repo.lockTenant.mockResolvedValue({ ...tenant, addressLine1: '' });
+    await expect(service.confirm('owner')).rejects.toThrow('dirección');
+    expect(repo.claimConfirmation).not.toHaveBeenCalled();
+    expect(subscriptions.createTrialSubscription).not.toHaveBeenCalled();
   });
 });

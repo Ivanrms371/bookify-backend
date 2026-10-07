@@ -71,9 +71,19 @@ export class CustomersRepository extends BaseRepository {
     const now = new Date();
     const conditions = [Prisma.sql`c.tenant_id = ${tenantId}::uuid`, Prisma.sql`c.deleted_at IS NULL`];
     if (query) {
-      // Treat wildcard characters as literal search text.
+      // Keep email/phone substring searches literal; names use accent-insensitive similarity.
       const search = `%${query.replace(/[\\%_]/g, '\\$&')}%`;
-      conditions.push(Prisma.sql`(c.name ILIKE ${search} OR c.email ILIKE ${search} OR c.phone_number ILIKE ${search})`);
+      const phoneDigits = query.replace(/\D/g, '');
+      const fullPhoneSearch = phoneDigits && /^[+\d\s().-]+$/.test(query)
+        ? Prisma.sql`OR regexp_replace(c.phone_country_code || c.phone_number, '[^0-9]', '', 'g') ILIKE ${`%${phoneDigits}%`}`
+        : Prisma.empty;
+      conditions.push(Prisma.sql`(
+        similarity(unaccent(${query}), unaccent(c.name)) > 0.1
+        OR c.email ILIKE ${search}
+        OR c.phone_number ILIKE ${search}
+        OR c.phone_country_code ILIKE ${search}
+        ${fullPhoneSearch}
+      )`);
     }
     if (status === 'blocked') conditions.push(Prisma.sql`c.blocked_at IS NOT NULL`);
     if (status === 'unblocked') conditions.push(Prisma.sql`c.blocked_at IS NULL`);
@@ -96,6 +106,7 @@ export class CustomersRepository extends BaseRepository {
       lastVisitAt: Prisma.sql`visits.last_visit_at`,
     };
     const direction = order === 'asc' ? Prisma.sql`ASC` : Prisma.sql`DESC`;
+    const sorting = Prisma.sql`${sortColumns[orderBy]} ${direction} NULLS LAST, c.id ASC`;
     const db = this.db(tx);
     const [customers, counts] = await Promise.all([
       db.$queryRaw<CustomerListingRow[]>(Prisma.sql`
@@ -115,7 +126,7 @@ export class CustomersRepository extends BaseRepository {
             AND a.status IN ('PENDING', 'CONFIRMED') AND a.starts_at >= ${now}
         ) upcoming ON true
         WHERE ${where}
-        ORDER BY ${sortColumns[orderBy]} ${direction} NULLS LAST, c.id ASC
+        ORDER BY ${sorting}
         LIMIT ${take} OFFSET ${skip}
       `),
       db.$queryRaw<{ total: bigint }[]>(Prisma.sql`SELECT COUNT(*) AS total FROM customers c WHERE ${where}`),

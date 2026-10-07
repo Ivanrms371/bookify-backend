@@ -1,3 +1,4 @@
+import { getLocationCountry, resolveLocationSelection, resolveLocationRegion } from 'src/shared/location/location-catalog';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateGeneralSettingsDto } from './dto/update-general-settings.dto';
 import { UpdateAppointmentSettingsDto } from './dto/update-appointment-settings.dto';
@@ -30,7 +31,24 @@ export class TenantSettingsService {
   }
 
   async updateGeneralSettings(tenantId: string, data: UpdateGeneralSettingsDto): Promise<UpdateTenantGeneralSettingsResponse> {
-    return this.tenantSettingsRepository.updateGeneralSettings(tenantId, data);
+    // Older clients can still submit preferences, but the backend derives their values.
+    const { currency: _currency, timeZone: _timeZone, ...profile } = data;
+    const previous = await this.tenantSettingsRepository.getSettings(tenantId);
+    if (!previous) throw new NotFoundException('Tenant not found');
+    const selectedCountry = profile.country ?? previous.country;
+    if (!selectedCountry) return this.tenantSettingsRepository.updateGeneralSettings(tenantId, profile);
+    const country = getLocationCountry(selectedCountry);
+    const changedCountry = (previous.country || '').toUpperCase() !== country.code && previous.country !== country.label;
+    const province = profile.province ?? (changedCountry ? '' : previous.province || '');
+    const region = province ? resolveLocationRegion(country.code, province) : null;
+    const derived = resolveLocationSelection(country.code, province);
+    return this.tenantSettingsRepository.updateGeneralSettings(tenantId, {
+      ...profile,
+      country: country.code,
+      province: region?.value || '',
+      ...(changedCountry && profile.city === undefined ? { city: '' } : {}),
+      ...derived,
+    });
   }
 
   async updateAppointmentSettings(tenantId: string, data: UpdateAppointmentSettingsDto): Promise<UpdateTenantAppointmentSettingsResponse> {

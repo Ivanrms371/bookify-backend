@@ -8,6 +8,14 @@ export type TenantOnboardingRaw = Prisma.TenantGetPayload<{
     name: true;
     slug: true;
     type: true;
+    settings: { select: { currency: true; timeZone: true } };
+    country: true;
+    province: true;
+    city: true;
+    addressLine1: true;
+    addressLine2: true;
+    phoneNumber: true;
+
     logoUrl: true;
     coverUrl: true;
     colorTheme: true;

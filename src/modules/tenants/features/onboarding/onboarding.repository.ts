@@ -1,3 +1,4 @@
+import type { LocationDefaults } from 'src/shared/location/types/location.types';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from 'src/common/database/base.repository';
 import { Prisma, Tenant } from 'src/generated/prisma/client';
@@ -13,9 +14,13 @@ export class TenantOnboardingRepository extends BaseRepository {
     super(prisma);
   }
 
-  getStatus(userId: string): Promise<TenantOnboardingRaw> {
+  getStatus(userId: string, tenantId?: string): Promise<TenantOnboardingRaw> {
     return this.db().tenant.findFirstOrThrow({
-      where: { deletedAt: null, memberships: { some: { userId, role: MembershipRole.OWNER, isActive: true } } },
+      where: {
+        ...(tenantId ? { id: tenantId } : {}),
+        deletedAt: null,
+        memberships: { some: { userId, role: MembershipRole.OWNER, isActive: true } },
+      },
       select: {
         id: true,
         onboardingStatus: true,
@@ -23,6 +28,13 @@ export class TenantOnboardingRepository extends BaseRepository {
         name: true,
         slug: true,
         type: true,
+        settings: { select: { currency: true, timeZone: true } },
+        country: true,
+        province: true,
+        city: true,
+        addressLine1: true,
+        addressLine2: true,
+        phoneNumber: true,
         logoUrl: true,
         coverUrl: true,
         colorTheme: true,
@@ -51,9 +63,10 @@ export class TenantOnboardingRepository extends BaseRepository {
     });
   }
 
-  async findByOwnerId(userId: string): Promise<Tenant | null> {
+  async findByOwnerId(userId: string, tenantId?: string): Promise<Tenant | null> {
     return this.prisma.tenant.findFirst({
       where: {
+        ...(tenantId ? { id: tenantId } : {}),
         memberships: { some: { userId, role: MembershipRole.OWNER, isActive: true } },
         deletedAt: null,
       },
@@ -112,14 +125,14 @@ export class TenantOnboardingRepository extends BaseRepository {
     return result.count === 1;
   }
 
-  async completeOnboarding(tenantId: string, tx?: TransactionClient): Promise<Tenant> {
+  async completeOnboarding(tenantId: string, tx: TransactionClient, defaults: LocationDefaults): Promise<Tenant> {
     return this.db(tx).tenant.update({
       where: { id: tenantId },
       data: {
         isActive: true,
         isPublic: true,
         onboardingStatus: OnboardingStatus.COMPLETED,
-        settings: { create: {} },
+        settings: { upsert: { create: defaults, update: defaults } },
         lifetimeStats: { create: {} },
       },
     });

@@ -1,3 +1,4 @@
+import { mutationFixture, mutationTx } from './appointment-mutation.fixture';
 jest.mock('../../notifications/application/services/notifications.service', () => ({ NotificationsService: jest.fn() }));
 
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
@@ -35,7 +36,7 @@ describe('dashboard appointment cancellation', () => {
       cancel: jest.fn().mockImplementation(async (_tenant, _id, data) => ({ ...appointment(), ...data })),
     };
     emitter = { emit: jest.fn() };
-    service = new AppointmentsService(repository as never, {} as never, {} as never, {} as never, {} as never, emitter as never);
+    service = new AppointmentsService(repository as never, {} as never, {} as never, {} as never, {} as never, mutationFixture(emitter.emit) as never);
   });
 
   it('grants staff cancellation without granting deletion or cancellation of others', () => {
@@ -53,12 +54,12 @@ describe('dashboard appointment cancellation', () => {
   it('allows staff own cancellation, trims the reason, and emits the customer notification event', async () => {
     const result = await service.cancel('tenant', 'appointment', user, ownPermissions, { cancellationReason: '  Me enfermé  ' });
     expect(result.status).toBe(AppointmentStatus.CANCELLED);
-    expect(repository.findById).toHaveBeenCalledWith('tenant', 'appointment');
+    expect(repository.findById).toHaveBeenCalledWith('tenant', 'appointment', mutationTx);
     expect(repository.cancel).toHaveBeenCalledWith('tenant', 'appointment', {
       status: AppointmentStatus.CANCELLED,
       cancelledAt: expect.any(Date),
       cancellationReason: 'Me enfermé',
-    });
+    }, mutationTx);
     expect(emitter.emit).toHaveBeenCalledWith(
       'appointment.cancelled',
       expect.objectContaining({
@@ -85,7 +86,7 @@ describe('dashboard appointment cancellation', () => {
   it('rejects an ID outside the tenant scope', async () => {
     repository.findById.mockResolvedValue(null);
     await expect(service.cancel('other-tenant', 'appointment', user, adminPermissions)).rejects.toBeInstanceOf(NotFoundException);
-    expect(repository.findById).toHaveBeenCalledWith('other-tenant', 'appointment');
+    expect(repository.findById).toHaveBeenCalledWith('other-tenant', 'appointment', mutationTx);
     expect(repository.cancel).not.toHaveBeenCalled();
   });
 

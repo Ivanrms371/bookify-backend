@@ -1,3 +1,5 @@
+import { LocationStepDto } from './dto/location-step.dto';
+import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { TenantOnboardingService } from './onboarding.service';
 import { ProfessionalStepDto } from './dto/professional-step.dto';
@@ -27,6 +29,17 @@ export class TenantOnboardingController {
   @Patch('business')
   async updateBusiness(@CurrentUser('id') userId: string, @Body() dto: BusinessStepDto) {
     return this.tenantOnboardingService.updateBusiness(userId, dto);
+  }
+
+  @SkipTenant()
+  @Get('location-options')
+  getLocationOptions() {
+    return this.tenantOnboardingService.getLocationOptions();
+  }
+
+  @Patch('location')
+  updateLocation(@CurrentUser('id') userId: string, @GetTenantId() tenantId: string, @Body() dto: LocationStepDto) {
+    return this.tenantOnboardingService.updateLocation(userId, tenantId, dto);
   }
 
   @Patch('schedule')

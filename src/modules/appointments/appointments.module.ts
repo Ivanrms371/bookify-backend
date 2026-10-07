@@ -1,3 +1,5 @@
+import { AppointmentStatsService } from './stats/appointment-stats.service';
+import { AppointmentStatsRepository } from './stats/appointment-stats.repository';
 import { Module } from '@nestjs/common';
 import { AppointmentsController } from './appointments.controller';
 import { AppointmentsService } from './appointments.service';
@@ -13,7 +15,7 @@ import { AppointmentsPublicRepository } from './appointments-public.repository';
 @Module({
   imports: [AvailabilityModule, CustomersModule, ProfessionalsModule, ServicesModule, TenantSettingsModule],
   controllers: [AppointmentsController],
-  providers: [AppointmentsService, AppointmentsPublicService, AppointmentsRepository, AppointmentsPublicRepository],
+  providers: [AppointmentStatsService, AppointmentStatsRepository, AppointmentsService, AppointmentsPublicService, AppointmentsRepository, AppointmentsPublicRepository],
   exports: [AppointmentsService, AppointmentsPublicService],
 })
 export class AppointmentsModule {}

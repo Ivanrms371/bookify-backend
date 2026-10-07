@@ -712,6 +712,7 @@ enum TenantType {
 }
 
 enum OnboardingStatus {
+  LOCATION
   WORKSPACE_TYPE
   BUSINESS_DETAILS
   SCHEDULE

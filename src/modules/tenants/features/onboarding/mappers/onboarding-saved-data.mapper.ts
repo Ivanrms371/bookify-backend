@@ -1,3 +1,4 @@
+import { resolveLocationDefaults } from 'src/shared/location/location-catalog';
 import type { ProfessionalDraft } from '../types/professional-draft.types';
 import type { TenantOnboardingRaw } from '../types/onboarding-raw.types';
 import type { OnboardingSavedData } from '../types/onboarding.types';
@@ -11,6 +12,13 @@ export class OnboardingSavedDataMapper {
       name: raw.name,
       slug: raw.slug,
       type: raw.type,
+      country: raw.country,
+      province: raw.province,
+      city: raw.city,
+      addressLine1: raw.addressLine1,
+      addressLine2: raw.addressLine2,
+      phoneNumber: raw.phoneNumber,
+      ...(raw.settings ?? resolveLocationDefaults(raw.country, raw.province)),
       logoUrl: raw.logoUrl,
       coverUrl: raw.coverUrl,
       colorTheme: raw.colorTheme,

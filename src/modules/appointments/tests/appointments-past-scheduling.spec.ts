@@ -31,7 +31,7 @@ describe('dashboard past-time scheduling', () => {
   });
 
   it('creates a past appointment through the dashboard with conflict validation', async () => {
-    await service.create('tenant', { professionalId: 'professional', serviceId: 'service', startsAt: pastStart }, user, [PERMISSIONS.APPOINTMENT_CREATE_OTHERS]);
+    await service.create('tenant', { professionalId: 'professional', serviceId: 'service', startsAt: pastStart });
     expect(availability.isSlotAvailable).toHaveBeenCalledWith(expect.objectContaining({ allowPast: true, startsAt: pastStart }));
     expect(repository.create).toHaveBeenCalledWith(expect.objectContaining({ startsAt: new Date(pastStart) }));
   });

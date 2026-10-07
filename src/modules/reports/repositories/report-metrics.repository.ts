@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { startOfDay, endOfDay } from 'date-fns';
 import type { ReportFilterOptions, ReportOverviewData, ReportScope, ReportSettings, ReportAggregateQueryRow } from '../types/reports.types';
 import { reportOverviewQuery } from './report-overview.query';
 
@@ -14,8 +13,12 @@ export class ReportMetricsRepository {
 
   async filtersBelongToTenant(scope: ReportScope): Promise<boolean> {
     const [professional, service] = await Promise.all([
-      scope.professionalId ? this.prisma.professional.findFirst({ where: { id: scope.professionalId, tenantId: scope.tenantId }, select: { id: true } }) : true,
-      scope.serviceId ? this.prisma.service.findFirst({ where: { id: scope.serviceId, tenantId: scope.tenantId }, select: { id: true } }) : true,
+      scope.professionalId
+        ? this.prisma.professional.findFirst({ where: { id: scope.professionalId, tenantId: scope.tenantId }, select: { id: true } })
+        : true,
+      scope.serviceId
+        ? this.prisma.service.findFirst({ where: { id: scope.serviceId, tenantId: scope.tenantId }, select: { id: true } })
+        : true,
     ]);
     return Boolean(professional && service);
   }
@@ -46,8 +49,8 @@ export class ReportMetricsRepository {
       where: {
         tenantId,
         date: {
-          gte: startOfDay(startDate),
-          lte: endOfDay(endDate),
+          gte: startDate,
+          lte: endDate,
         },
       },
       orderBy: { date: 'asc' },
@@ -63,4 +66,7 @@ export class ReportMetricsRepository {
     });
   }
 
+  findRegisteredCustomerCount(tenantId: string) {
+    return this.prisma.customer.count({ where: { tenantId, deletedAt: null } });
+  }
 }

@@ -67,7 +67,7 @@ export type TenantAppointmentConfigResponse = TenantSettings;
 /**
  * Return type for updateGeneralSettings.
  */
-export type UpdateTenantGeneralSettingsResponse = Tenant;
+export type UpdateTenantGeneralSettingsResponse = Tenant & { settings: TenantSettings | null };
 
 /**
  * Return type for updateAppointmentSettings.

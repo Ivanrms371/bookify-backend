@@ -1,3 +1,4 @@
+import { LocationModule } from './shared/location/location.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
@@ -20,7 +21,6 @@ import { TenantSettingsModule } from './modules/tenants/features/settings/tenant
 import { InfrastructureModule } from './shared/infrastructure/infrastructure.module';
 import { JwtModule } from './auth/infrastructure/jwt/jwt.module';
 import { MediaModule } from './shared/media/media.module';
-import { StatsModule } from './common/stats/stats.module';
 import { CustomersModule } from './modules/customers/customers.module';
 import { ServicesModule } from './modules/services/services.module';
 import { TenantOnboardingModule } from './modules/tenants/features/onboarding/onboarding.module';
@@ -40,6 +40,7 @@ import { TeamModule } from './modules/team/team.module';
 
 @Module({
   imports: [
+    LocationModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -51,7 +52,6 @@ import { TeamModule } from './modules/team/team.module';
     MediaModule,
     InfrastructureModule,
     PrismaModule,
-    StatsModule,
     JwtModule,
     AuthModule,
     SessionsModule,

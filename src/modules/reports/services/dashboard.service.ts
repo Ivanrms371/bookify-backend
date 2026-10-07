@@ -1,21 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { startOfDay, endOfDay } from 'date-fns';
+import { statsDate, statsDay } from '../../appointments/stats/appointment-stats-projection';
 import { DashboardRepository } from '../repositories/dashboard.repository';
 import { ReportMetricsService } from './report-metrics.service';
 import type { DashboardOverviewResponse, DashboardUpcomingAppointment } from '../types/dashboard.types';
 
 @Injectable()
 export class DashboardService {
-  constructor(private readonly metrics: ReportMetricsService, private readonly dashboardRepository: DashboardRepository) {}
+  constructor(
+    private readonly metrics: ReportMetricsService,
+    private readonly dashboardRepository: DashboardRepository,
+  ) {}
 
   async getOverview(tenantId: string): Promise<DashboardOverviewResponse> {
     const now = new Date();
-    const today = startOfDay(now);
-
-    const [{ chart, stats }, todayAppointments] = await Promise.all([
-      this.metrics.getDashboardMetrics(tenantId, now),
-      this.dashboardRepository.findAppointmentsByDateRange(tenantId, today, endOfDay(now)),
-    ]);
+    const { chart, stats, timeZone } = await this.metrics.getDashboardMetrics(tenantId, now);
+    const today = statsDate(statsDay(now, timeZone));
+    const todayAppointments = await this.dashboardRepository.findAppointmentsByDateRange(tenantId, today, today, timeZone);
 
     // ── Upcoming appointments (today's list from appointments table) ───────
     const upcomingAppointments: DashboardUpcomingAppointment[] = todayAppointments.map((appt) => ({

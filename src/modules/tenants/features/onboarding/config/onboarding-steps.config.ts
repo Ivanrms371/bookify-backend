@@ -1,5 +1,6 @@
 export const ONBOARDING_STEP_ORDER = [
   'BUSINESS_DETAILS',
+  'LOCATION',
   'SERVICES',
   'SCHEDULE',
   'PROFESSIONAL_PROFILE',
@@ -16,6 +17,7 @@ export enum StepStatus {
 export type Step = { id: string; label: string; status: StepStatus };
 export const STEP_LABELS: Record<StepId, string> = {
   BUSINESS_DETAILS: 'Tu negocio',
+  LOCATION: 'Dirección',
   SERVICES: 'Tus servicios',
   SCHEDULE: 'Tus horarios',
   PROFESSIONAL_PROFILE: 'Tu perfil profesional',

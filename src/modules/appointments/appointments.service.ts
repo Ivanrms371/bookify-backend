@@ -1,6 +1,12 @@
+import { AppointmentStatsService } from './stats/appointment-stats.service';
+import {
+  AppointmentNotStartedException,
+  AppointmentStatusPermissionException,
+  AppointmentStatusTransitionException,
+} from './exceptions/appointment-status.exceptions';
+import type { AppointmentMutationContext } from './stats/types/appointment-stats.types';
 import { AppointmentOwnershipException } from './exceptions/appointment-ownership.exception';
 import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AppointmentsRepository } from './appointments.repository';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { CustomersService } from 'src/modules/customers/customers.service';
@@ -31,10 +37,15 @@ export class AppointmentsService {
     private readonly customersService: CustomersService,
     private readonly professionalsService: ProfessionalsService,
     private readonly servicesService: ServicesService,
-    private readonly eventEmitter: EventEmitter2,
+    private readonly stats: AppointmentStatsService,
   ) {}
 
-  async findAll(tenantId: string, params: FindAllAppointmentsParamsDto, currentUser: AuthenticatedUser, permissions: readonly Permission[]) {
+  async findAll(
+    tenantId: string,
+    params: FindAllAppointmentsParamsDto,
+    currentUser: AuthenticatedUser,
+    permissions: readonly Permission[],
+  ) {
     let scopedParams = params;
     if (!permissions.includes(PERMISSIONS.APPOINTMENT_READ_OTHERS)) {
       const professional = await this.professionalsService.findByUserId(tenantId, currentUser.id);
@@ -59,6 +70,75 @@ export class AppointmentsService {
   }
 
   async create(tenantId: string, dto: CreateAppointmentDto, currentUser: AuthenticatedUser, permissions: readonly Permission[]) {
+    return this.stats.mutate(tenantId, (context) => this.createInTransaction(context, tenantId, dto, currentUser, permissions));
+  }
+
+  async reschedule(
+    tenantId: string,
+    id: string,
+    currentUser: AuthenticatedUser,
+    permissions: readonly Permission[],
+    dto: RescheduleAppointmentDto,
+  ) {
+    return this.stats.mutate(tenantId, (context) => this.rescheduleInTransaction(context, tenantId, id, currentUser, permissions, dto));
+  }
+
+  async cancel(
+    tenantId: string,
+    id: string,
+    currentUser: AuthenticatedUser,
+    permissions: readonly Permission[],
+    dto: CancelAppointmentDto = {},
+  ) {
+    return this.stats.mutate(tenantId, (context) => this.cancelInTransaction(context, tenantId, id, currentUser, permissions, dto));
+  }
+
+  async changeStatus(
+    tenantId: string,
+    id: string,
+    status: AppointmentStatus,
+    currentUser: AuthenticatedUser,
+    permissions: readonly Permission[],
+  ) {
+    return this.stats.mutate(tenantId, async (context) => {
+      const appointment = await this.appointmentsRepository.findById(tenantId, id, context.tx);
+      if (!appointment) throw new NotFoundException('No hemos encontrado la cita.');
+      this.verifyStatusAuthority(appointment.professional.userId, currentUser.id, permissions);
+      if (appointment.status === status) return AppointmentsMapper.toResponse(appointment);
+      this.verifyStatusTransition(appointment.status, status, appointment.startsAt);
+      const updated = await this.appointmentsRepository.update(tenantId, id, { status }, context.tx);
+      if (status === AppointmentStatus.COMPLETED || status === AppointmentStatus.NO_SHOW) {
+        context.afterCommit('appointment.finished', { appointmentId: id, tenantId });
+      }
+      return AppointmentsMapper.toResponse(updated);
+    });
+  }
+
+  private verifyStatusAuthority(professionalUserId: string | null, userId: string, permissions: readonly Permission[]) {
+    if (!permissions.includes(PERMISSIONS.APPOINTMENT_UPDATE)) throw new AppointmentStatusPermissionException();
+    if (!permissions.includes(PERMISSIONS.APPOINTMENT_UPDATE_OTHERS) && professionalUserId !== userId)
+      throw new AppointmentOwnershipException();
+  }
+
+  private verifyStatusTransition(previous: AppointmentStatus, next: AppointmentStatus, startsAt: Date) {
+    const canConfirm = next === AppointmentStatus.CONFIRMED && previous === AppointmentStatus.PENDING;
+    const canFinish =
+      (next === AppointmentStatus.COMPLETED || next === AppointmentStatus.NO_SHOW) &&
+      (previous === AppointmentStatus.CONFIRMED ||
+        previous === AppointmentStatus.PENDING ||
+        previous === AppointmentStatus.NO_SHOW ||
+        previous === AppointmentStatus.COMPLETED);
+    if (!canConfirm && !canFinish) throw new AppointmentStatusTransitionException();
+    if (canFinish && startsAt > new Date()) throw new AppointmentNotStartedException();
+  }
+
+  private async createInTransaction(
+    context: AppointmentMutationContext,
+    tenantId: string,
+    dto: CreateAppointmentDto,
+    currentUser: AuthenticatedUser,
+    permissions: readonly Permission[],
+  ) {
     const { customerId, professionalId, serviceId } = dto;
     if (!permissions.includes(PERMISSIONS.APPOINTMENT_CREATE_OTHERS)) {
       const ownProfessional = await this.professionalsService.findByUserId(tenantId, currentUser.id);
@@ -103,40 +183,43 @@ export class AppointmentsService {
       throw new BadRequestException('El horario seleccionado ya no está disponible.');
     }
 
-    const appointment = await this.appointmentsRepository.create({
-      tenant: { connect: { id: tenantId } },
-      professional: { connect: { id: professionalId } },
-      service: { connect: { id: serviceId } },
+    const appointment = await this.appointmentsRepository.create(
+      {
+        tenant: { connect: { id: tenantId } },
+        professional: { connect: { id: professionalId } },
+        service: { connect: { id: serviceId } },
 
-      startsAt,
-      endsAt,
-      manageToken,
-      status: AppointmentStatus.PENDING,
-      durationMinutes: service.durationMinutes,
-      price: service.price,
-      createdBy: CreatedByType.STAFF,
+        startsAt,
+        endsAt,
+        manageToken,
+        status: AppointmentStatus.CONFIRMED,
+        durationMinutes: service.durationMinutes,
+        price: service.price,
+        createdBy: CreatedByType.STAFF,
 
-      ...(customer && {
-        customerName: customer.name,
-        customerEmail: customer.email,
-        customerPhone: customer.phoneNumber,
-        customer: {
-          connect: {
-            id: customer.id,
+        ...(customer && {
+          customerName: customer.name,
+          customerEmail: customer.email,
+          customerPhone: customer.phoneNumber,
+          customer: {
+            connect: {
+              id: customer.id,
+            },
+          },
+        }),
+
+        blocks: {
+          create: {
+            startsAt,
+            endsAt,
           },
         },
-      }),
-
-      blocks: {
-        create: {
-          startsAt,
-          endsAt,
-        },
       },
-    });
+      context.tx,
+    );
 
     if (customer) {
-      this.eventEmitter.emit('appointment.created', {
+      context.afterCommit('appointment.created', {
         tenantId,
         userId: professional.userId,
         professionalId,
@@ -158,20 +241,21 @@ export class AppointmentsService {
     return appointment;
   }
 
-  async reschedule(
+  private async rescheduleInTransaction(
+    context: AppointmentMutationContext,
     tenantId: string,
     id: string,
     currentUser: AuthenticatedUser,
     permissions: readonly Permission[],
     dto: RescheduleAppointmentDto,
   ) {
-    const appointment = await this.appointmentsRepository.findById(tenantId, id);
+    const appointment = await this.appointmentsRepository.findById(tenantId, id, context.tx);
 
     if (!appointment) {
       throw new NotFoundException('No hemos encontrado la cita.');
     }
 
-    if (appointment.status === AppointmentStatus.COMPLETED || appointment.status === AppointmentStatus.CANCELLED) {
+    if (appointment.status !== AppointmentStatus.CONFIRMED && appointment.status !== AppointmentStatus.PENDING) {
       throw new BadRequestException('Esta cita no puede ser reprogramada.');
     }
 
@@ -211,19 +295,25 @@ export class AppointmentsService {
 
     const endsAt = addMinutes(startsAt, appointment.service.durationMinutes);
 
-    const rescheduledAppointment = await this.appointmentsRepository.update(tenantId, id, {
-      startsAt,
-      endsAt,
-      rescheduleReason: dto.rescheduleReason,
-      rescheduleCount: { increment: 1 },
-      blocks: {
-        deleteMany: {},
-        create: { startsAt, endsAt },
+    const rescheduledAppointment = await this.appointmentsRepository.update(
+      tenantId,
+      id,
+      {
+        startsAt,
+        endsAt,
+        durationMinutes: appointment.service.durationMinutes,
+        rescheduleReason: dto.rescheduleReason,
+        rescheduleCount: { increment: 1 },
+        blocks: {
+          deleteMany: {},
+          create: { startsAt, endsAt },
+        },
       },
-    });
+      context.tx,
+    );
 
     if (appointment.customerId && appointment.customer) {
-      this.eventEmitter.emit('appointment.rescheduled', {
+      context.afterCommit('appointment.rescheduled', {
         appointmentId: appointment.id,
         tenantId,
         userId: appointment.professional.userId,
@@ -249,8 +339,15 @@ export class AppointmentsService {
     return AppointmentsMapper.toResponse(rescheduledAppointment);
   }
 
-  async cancel(tenantId: string, id: string, currentUser: AuthenticatedUser, permissions: readonly Permission[], dto: CancelAppointmentDto = {}) {
-    const appointment = await this.appointmentsRepository.findById(tenantId, id);
+  private async cancelInTransaction(
+    context: AppointmentMutationContext,
+    tenantId: string,
+    id: string,
+    currentUser: AuthenticatedUser,
+    permissions: readonly Permission[],
+    dto: CancelAppointmentDto = {},
+  ) {
+    const appointment = await this.appointmentsRepository.findById(tenantId, id, context.tx);
 
     if (!appointment) {
       throw new NotFoundException('No hemos encontrado la cita.');
@@ -273,14 +370,19 @@ export class AppointmentsService {
     }
 
     const cancellationReason = dto.cancellationReason?.trim() || undefined;
-    const cancelledAppointment = await this.appointmentsRepository.cancel(tenantId, id, {
-      status: AppointmentStatus.CANCELLED,
-      cancelledAt: new Date(),
-      cancellationReason,
-    });
+    const cancelledAppointment = await this.appointmentsRepository.cancel(
+      tenantId,
+      id,
+      {
+        status: AppointmentStatus.CANCELLED,
+        cancelledAt: new Date(),
+        cancellationReason,
+      },
+      context.tx,
+    );
 
     if (appointment.customerId && appointment.customer) {
-      this.eventEmitter.emit('appointment.cancelled', {
+      context.afterCommit('appointment.cancelled', {
         appointmentId: appointment.id,
         tenantId,
         userId: appointment.professional.userId ?? currentUser.id,

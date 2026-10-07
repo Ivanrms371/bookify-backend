@@ -1,3 +1,6 @@
+import { resolveLocationSelection, getLocationOptions } from 'src/shared/location/location-catalog';
+import { LocationStepDto } from './dto/location-step.dto';
+import { getLocationCountry, resolveLocationRegion } from 'src/shared/location/location-catalog';
 import type { TenantOnboardingResponse } from './types/onboarding.types';
 import { Injectable } from '@nestjs/common';
 import type { Tenant } from 'src/generated/prisma/client';
@@ -18,7 +21,7 @@ import { timeToMinutes } from 'src/shared/schedule';
 import { SubscriptionsService } from 'src/modules/subscriptions/subscriptions.service';
 import type { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 import type { ProfessionalDraft } from './types/professional-draft.types';
-import type { OnboardingMutation } from './types/onboarding-mutation.types';
+import type { OnboardingMutation, OnboardingSaveOptions } from './types/onboarding-mutation.types';
 import {
   OnboardingTenantNotFoundException,
   OnboardingStepUnavailableException,
@@ -28,6 +31,7 @@ import {
   OnboardingProfileInvalidException,
   OnboardingConfirmationUnavailableException,
   OnboardingServicesInvalidException,
+  OnboardingLocationRequiredException,
 } from './exceptions/onboarding.exceptions';
 
 @Injectable()
@@ -38,9 +42,9 @@ export class TenantOnboardingService {
     private readonly subscriptionsService: SubscriptionsService,
   ) {}
 
-  async getStatus(ownerId: string): Promise<TenantOnboardingResponse> {
+  async getStatus(ownerId: string, tenantId?: string): Promise<TenantOnboardingResponse> {
     return {
-      ...OnboardingMapper.toResponse(await this.tenantOnboardingRepository.getStatus(ownerId)),
+      ...OnboardingMapper.toResponse(await this.tenantOnboardingRepository.getStatus(ownerId, tenantId)),
       trial: this.subscriptionsService.getTrialDetails(),
     };
   }
@@ -57,6 +61,37 @@ export class TenantOnboardingService {
       const slug = tenant.name === dto.name && tenant.slug ? tenant.slug : await this.generateAvailableSlug(dto.name);
       await this.tenantOnboardingRepository.update(tenant.id, { name: dto.name, slug, type: dto.type }, tx);
     });
+  }
+
+  private prepareStudioLocation(dto: LocationStepDto) {
+    const country = getLocationCountry(dto.country);
+    const province = resolveLocationRegion(country.code, dto.province);
+    const defaults = resolveLocationSelection(country.code, province.value);
+    return {
+      settings: { upsert: { create: defaults, update: defaults } },
+      country: country.code,
+      province: province.value,
+      city: dto.city,
+      addressLine1: dto.addressLine1,
+      ...(dto.addressLine2 !== undefined ? { addressLine2: dto.addressLine2 || null } : {}),
+      ...(dto.phoneNumber !== undefined ? { phoneNumber: dto.phoneNumber || null } : {}),
+    };
+  }
+
+  getLocationOptions() {
+    return getLocationOptions();
+  }
+
+  async updateLocation(userId: string, tenantId: string, dto: LocationStepDto) {
+    const location = this.prepareStudioLocation(dto);
+    return this.saveStep(
+      userId,
+      'LOCATION',
+      async (tenant, tx) => {
+        await this.tenantOnboardingRepository.update(tenant.id, location, tx);
+      },
+      { tenantId },
+    );
   }
 
   async updateServices(userId: string, dto: ServicesStepDto) {
@@ -142,6 +177,7 @@ export class TenantOnboardingService {
       const current = await this.tenantOnboardingRepository.lockTenant(tenant.id, tx);
       if (current.onboardingStatus === OnboardingStatus.COMPLETED) return;
       if (current.onboardingStatus !== OnboardingStatus.CONFIRM) throw new OnboardingConfirmationUnavailableException();
+      this.verifyStudioLocation(current);
       const draft = current.onboardingProfessionalDraft as ProfessionalDraft | null;
       if (!draft || typeof draft.attendsClients !== 'boolean') throw new OnboardingProfileRequiredException();
       await this.verifyProfileEligibility(tenant.id, userId, draft, tx);
@@ -153,14 +189,19 @@ export class TenantOnboardingService {
         });
         if (activated.count !== 1) throw new OnboardingProfileRequiredException();
       }
-      await this.tenantOnboardingRepository.completeOnboarding(tenant.id, tx);
+      await this.tenantOnboardingRepository.completeOnboarding(
+        tenant.id,
+        tx,
+        resolveLocationSelection(current.country!, current.province!),
+      );
       await this.subscriptionsService.createTrialSubscription(tenant.id, tx);
     });
     return this.getStatus(userId);
   }
 
-  private async saveStep(userId: string, step: StepId, action: OnboardingMutation) {
-    const tenant = await this.requireTenantByOwnerId(userId);
+  private async saveStep(userId: string, step: StepId, action: OnboardingMutation, options: OnboardingSaveOptions = {}) {
+    const { tenantId, advance = true } = options;
+    const tenant = await this.requireTenantByOwnerId(userId, tenantId);
     await this.prisma.$transaction(async (tx) => {
       // Serialize edits with confirmation so stale requests cannot change a published tenant.
       const current = await this.tenantOnboardingRepository.lockTenant(tenant.id, tx);
@@ -169,11 +210,18 @@ export class TenantOnboardingService {
         throw new OnboardingStepUnavailableException();
       }
       await action(current, tx);
-      if (current.onboardingStatus === step) {
+      if (advance && current.onboardingStatus === step) {
         await this.tenantOnboardingRepository.updateStatus(tenant.id, getNextOnboardingStep(step), tx);
       }
     });
-    return this.getStatus(userId);
+    return this.getStatus(userId, tenantId);
+  }
+
+  private verifyStudioLocation(tenant: Tenant) {
+    if (![tenant.country, tenant.province, tenant.city, tenant.addressLine1].every((value) => value?.trim())) {
+      throw new OnboardingLocationRequiredException();
+    }
+    resolveLocationRegion(tenant.country!, tenant.province!);
   }
 
   private verifyServicesData(dto: ServicesStepDto) {
@@ -224,8 +272,8 @@ export class TenantOnboardingService {
     });
   }
 
-  private async requireTenantByOwnerId(userId: string): Promise<Tenant> {
-    const tenant = await this.tenantOnboardingRepository.findByOwnerId(userId);
+  private async requireTenantByOwnerId(userId: string, tenantId?: string): Promise<Tenant> {
+    const tenant = await this.tenantOnboardingRepository.findByOwnerId(userId, tenantId);
     if (!tenant) throw new OnboardingTenantNotFoundException();
     return tenant;
   }

@@ -109,8 +109,8 @@ export class AppointmentsRepository extends BaseRepository {
     };
   }
 
-  async findById(tenantId: string, id: string) {
-    return this.prisma.appointment.findFirst({
+  async findById(tenantId: string, id: string, tx?: TransactionClient) {
+    return this.db(tx).appointment.findFirst({
       where: {
         id,
         tenantId,
