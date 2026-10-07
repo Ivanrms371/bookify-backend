@@ -1,5 +1,5 @@
 import { TZDate } from '@date-fns/tz';
-import { addDays, addMinutes, endOfDay, format, getDay, startOfDay } from 'date-fns';
+import { addDays, addMinutes, addMonths, differenceInCalendarDays, endOfDay, endOfMonth, format, getDay, startOfDay, startOfMonth } from 'date-fns';
 import { AppointmentStatus } from '../../src/generated/prisma/enums';
 import { SlotsGenerator } from '../../src/modules/availability/slots-generator';
 import { GenerateSlotsContext, TimeRange } from '../../src/modules/availability/types/slots.types';
@@ -101,6 +101,8 @@ function candidateSlots(
   reserved: TimeRange[] = [],
   historical = false,
 ) {
+  const dayEnd = endOfDay(day);
+  busy = busy.filter((booking) => booking.startsAt <= dayEnd && booking.endsAt >= day);
   const ranges = operatingHours(input, professional, day);
   const ctx: GenerateSlotsContext = {
     targetDate: format(day, 'yyyy-MM-dd'),
@@ -188,7 +190,10 @@ export function planAppointments(input: PlannerInput): { appointments: PlannedBo
   const appointments: PlannedBooking[] = [];
   const days: DaySummary[] = [];
   validateBookings(input, input.existing, []);
-  for (let offset = -7; offset <= 7; offset++) {
+  const today = localDay(input.now, 0, input.timeZone);
+  const firstOffset = differenceInCalendarDays(startOfMonth(addMonths(today, -2)), today);
+  const lastOffset = Math.max(7, differenceInCalendarDays(endOfMonth(today), today));
+  for (let offset = firstOffset; offset <= lastOffset; offset++) {
     const day = localDay(input.now, offset, input.timeZone);
     let capacity = 0;
     for (const professional of input.professionals) {
@@ -209,8 +214,10 @@ export function planAppointments(input: PlannerInput): { appointments: PlannedBo
         const minute = start.getHours() * 60 + start.getMinutes();
         reserved.push({ opensAt: minute, closesAt: minute + gapService.durationMinutes + input.bufferMinutes });
       }
-      const target =
-        Math.floor((minutes * (offset < 0 ? 0.2 : targets[offset])) / professional.slotIntervalMinutes) * professional.slotIntervalMinutes;
+      const occupancyTarget = offset < 0
+        ? 0.35 + ((offset - firstOffset) % 5) * 0.08
+        : targets[offset <= 7 ? offset : 2 + ((offset - 8) % 6)];
+      const target = Math.floor((minutes * occupancyTarget) / professional.slotIntervalMinutes) * professional.slotIntervalMinutes;
       let occupied = busy
         .filter(
           (b) =>
@@ -221,7 +228,7 @@ export function planAppointments(input: PlannerInput): { appointments: PlannedBo
         .reduce((n, b) => n + b.durationMinutes, 0);
       let sequence = 0;
       while (occupied < target) {
-        const rotated = services.map((_, i) => services[(i + sequence + offset + 7) % services.length]);
+        const rotated = services.map((_, i) => services[(i + sequence + offset + (offset < 0 ? -firstOffset : 7)) % services.length]);
         const choices = rotated.filter((s) => {
           const remaining = target - occupied - s.durationMinutes;
           return remaining === 0 || remaining >= shortest.durationMinutes;

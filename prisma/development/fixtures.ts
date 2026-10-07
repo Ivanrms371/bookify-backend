@@ -1,9 +1,16 @@
-import { v5 as uuidv5 } from 'uuid';
+import { createHash } from 'node:crypto';
+import { v7 as uuidv7 } from 'uuid';
 import { formatWorkingHoursForBackend } from '../../src/shared/schedule/schedule.utils';
 import { DayOfWeek } from '../../src/shared/schedule/schedule.types';
 
-// Stable IDs are necessary only for fixture ownership/reconciliation, not for bookings.
-export const fixtureId = (key: string) => uuidv5(`bookify:development:v1:${key}`, uuidv5.URL);
+// A fixed fixture timestamp and key-derived entropy keep refresh IDs stable.
+// These are fixture identities, not creation timestamps or security tokens.
+const FIXTURE_TIMESTAMP = Date.parse('2026-10-01T00:00:00.000Z');
+export const fixtureId = (key: string) =>
+  uuidv7({
+    msecs: FIXTURE_TIMESTAMP,
+    random: createHash('sha256').update(`bookify:development:v1:${key}`).digest().subarray(0, 16),
+  });
 export const TENANT_ID = fixtureId('tenant');
 export const SLUG = 'brisa-estudio-demo';
 export const SEED_MARKER = '[bookify-dev-seed:v1]';

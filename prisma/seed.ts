@@ -14,7 +14,7 @@ async function main() {
     const days = await seedDevelopment(prisma);
     console.log(`Development tenant: ${SLUG}`);
     console.table(days);
-    console.log('Development logins (existing passwords are preserved):');
+    console.log('Development logins (demo accounts recreated):');
     for (const professional of PROFESSIONALS) console.log(`  ${professional.email}`);
     console.log(`Initial development password: ${DEVELOPMENT_PASSWORD}`);
     console.log(`Public business path: /b/${SLUG}`);

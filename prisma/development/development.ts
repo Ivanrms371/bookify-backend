@@ -1,5 +1,5 @@
 import { randomBytes } from 'crypto';
-import { addDays, endOfDay, getDay } from 'date-fns';
+import { addDays, addMonths, differenceInCalendarDays, endOfDay, getDay, startOfMonth } from 'date-fns';
 import { PrismaClient } from '../../src/generated/prisma/client';
 import {
   AppointmentStatus,
@@ -22,17 +22,23 @@ import {
   TENANT_HOURS,
   TENANT_ID,
 } from './fixtures';
+import { TZDate } from '@date-fns/tz';
+import { TIME_ZONE } from './fixtures';
 import { localDay, planAppointments, PlannerInput, validateBookings } from './planner';
 import { reconcileStatistics } from './statistics';
+import { removeDevelopmentDemo } from './cleanup';
 
 export function assertDevelopmentEnvironment(environment: NodeJS.ProcessEnv) {
   if (environment.NODE_ENV !== 'development') throw new Error('The development seed requires NODE_ENV=development.');
   if (!environment.DATABASE_URL) throw new Error('DATABASE_URL is required for the development seed.');
 }
 export async function seedDevelopment(prisma: PrismaClient, now = new Date()) {
+  const historyStart = startOfMonth(addMonths(new TZDate(now, TIME_ZONE), -2));
+  const customerCreationDays = differenceInCalendarDays(localDay(now, 0, TIME_ZONE), historyStart) + 1;
   const password = await new PasswordService().hash(DEVELOPMENT_PASSWORD);
   return prisma.$transaction(
     async (tx) => {
+      await removeDevelopmentDemo(tx);
       const tenants = await tx.tenant.findMany({ where: { OR: [{ id: TENANT_ID }, { slug: SLUG }] } });
       if (tenants.some((t) => t.id !== TENANT_ID || t.slug !== SLUG))
         throw new Error('Demo tenant identity collides with an existing tenant.');
@@ -52,7 +58,7 @@ export async function seedDevelopment(prisma: PrismaClient, now = new Date()) {
       };
       await tx.tenant.upsert({
         where: { id: TENANT_ID },
-        create: { id: TENANT_ID, ...business, createdAt: addDays(now, -30) },
+        create: { id: TENANT_ID, ...business, createdAt: historyStart },
         update: business,
       });
       const settings = await tx.tenantSettings.upsert({
@@ -91,7 +97,7 @@ export async function seedDevelopment(prisma: PrismaClient, now = new Date()) {
         if (existing && existing.tenantId !== TENANT_ID) throw new Error('Service fixture collision.');
         await tx.service.upsert({
           where: { id: service.id },
-          create: { tenantId: TENANT_ID, ...data, createdAt: addDays(now, -30) },
+          create: { tenantId: TENANT_ID, ...data, createdAt: historyStart },
           update: { ...data, isActive: true, deletedAt: null, discountFixed: 0, discountPercentage: 0 },
         });
       }
@@ -107,7 +113,7 @@ export async function seedDevelopment(prisma: PrismaClient, now = new Date()) {
             email: professional.email,
             password,
             emailVerifiedAt: now,
-            createdAt: addDays(now, -30),
+            createdAt: historyStart,
           },
           update: { name: professional.name, emailVerifiedAt: now },
         });
@@ -131,7 +137,7 @@ export async function seedDevelopment(prisma: PrismaClient, now = new Date()) {
           throw new Error('Professional fixture identity collision.');
         await tx.professional.upsert({
           where: { id: professional.id },
-          create: { tenantId: TENANT_ID, ...profile, phoneCountryCode: '598', slotIntervalMinutes: 15, createdAt: addDays(now, -30) },
+          create: { tenantId: TENANT_ID, ...profile, phoneCountryCode: '598', slotIntervalMinutes: 15, createdAt: historyStart },
           update: {
             ...profile,
             phoneCountryCode: '598',
@@ -162,7 +168,7 @@ export async function seedDevelopment(prisma: PrismaClient, now = new Date()) {
           });
         }
       }
-      for (const customer of CUSTOMERS) {
+      for (const [customerIndex, customer] of CUSTOMERS.entries()) {
         const existing = await tx.customer.findMany({
           where: { OR: [{ id: customer.id }, { tenantId: TENANT_ID, phoneCountryCode: '598', phoneNumber: customer.phoneNumber }] },
         });
@@ -175,7 +181,7 @@ export async function seedDevelopment(prisma: PrismaClient, now = new Date()) {
           throw new Error('Customer fixture identity collision.');
         await tx.customer.upsert({
           where: { id: customer.id },
-          create: { tenantId: TENANT_ID, ...customer, createdAt: addDays(now, -14) },
+          create: { tenantId: TENANT_ID, ...customer, createdAt: addDays(historyStart, customerIndex % customerCreationDays) },
           update: { ...customer, deletedAt: null },
         });
       }

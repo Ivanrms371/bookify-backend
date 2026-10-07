@@ -36,14 +36,15 @@ describe('development appointment seed', () => {
   it.each([0, 1, 2, 3, 4, 5, 6])('keeps tomorrow busy and every future day bookable when run on weekday %i', (weekday) => {
     const ctx = input(new TZDate(2026, 9, 4 + weekday, 8, 0, 0, TIME_ZONE));
     const result = planAppointments(ctx);
-    const tomorrow = result.days[8];
+    const tomorrowIndex = result.days.findIndex((d) => d.date === format(localDay(ctx.now, 1, TIME_ZONE), 'yyyy-MM-dd'));
+    const tomorrow = result.days[tomorrowIndex];
     expect(tomorrow.occupancyPercent).toBeGreaterThanOrEqual(85);
     expect(tomorrow.occupancyPercent).toBeLessThanOrEqual(90);
     expect(tomorrow.seedAppointments).toBeGreaterThanOrEqual(12);
-    expect(result.days.slice(8).every((d) => d.freeSlots > 0 && d.seedAppointments > 0)).toBe(true);
-    expect(new Set(result.days.slice(9).map((d) => Math.round(d.occupancyPercent))).size).toBeGreaterThanOrEqual(4);
-    for (const day of result.days.slice(9)) {
-      const target = [45, 70, 35, 60, 50, 75][result.days.indexOf(day) - 9];
+    expect(result.days.slice(tomorrowIndex).every((d) => d.freeSlots > 0 && d.seedAppointments > 0)).toBe(true);
+    expect(new Set(result.days.slice(tomorrowIndex + 1).map((d) => Math.round(d.occupancyPercent))).size).toBeGreaterThanOrEqual(4);
+    for (const day of result.days.slice(tomorrowIndex + 1)) {
+      const target = [45, 70, 35, 60, 50, 75][(result.days.indexOf(day) - tomorrowIndex - 1) % 6];
       expect(Math.abs(day.occupancyPercent - target)).toBeLessThanOrEqual(8);
     }
     for (const p of ctx.professionals) {
@@ -58,11 +59,24 @@ describe('development appointment seed', () => {
   it.each(['2026-12-31T23:59:00-03:00', '2028-02-29T23:59:00-03:00'])('uses local calendar days across boundaries: %s', (date) => {
     const ctx = input(new Date(date));
     const result = planAppointments(ctx);
-    expect(result.days[8].date).toBe(format(addDays(new TZDate(ctx.now, TIME_ZONE), 1), 'yyyy-MM-dd'));
-    expect(result.days[7].seedAppointments).toBe(0);
+    expect(result.days.find((d) => d.date === format(localDay(ctx.now, 1, TIME_ZONE), 'yyyy-MM-dd'))!.date).toBe(format(addDays(new TZDate(ctx.now, TIME_ZONE), 1), 'yyyy-MM-dd'));
+    expect(result.days.find((d) => d.date === format(localDay(ctx.now, 0, TIME_ZONE), 'yyyy-MM-dd'))!.seedAppointments).toBe(0);
     for (const a of result.appointments.filter((a) => a.dayOffset >= 0))
       expect(+a.startsAt).toBeGreaterThanOrEqual(+addMinutes(ctx.now, 30));
-    expect(result.days[8].occupancyPercent).toBeGreaterThanOrEqual(85);
+    expect(result.days.find((d) => d.date === format(localDay(ctx.now, 1, TIME_ZONE), 'yyyy-MM-dd'))!.occupancyPercent).toBeGreaterThanOrEqual(85);
+  });
+  it('covers the two previous months and current month for every professional and service', () => {
+    const ctx = input(new Date('2026-10-15T11:00:00Z'));
+    const result = planAppointments(ctx);
+    expect(result.days[0].date).toBe('2026-08-01');
+    expect(result.days.at(-1)!.date).toBe('2026-10-31');
+    expect(result.days).toHaveLength(92);
+    for (const month of ['2026-08', '2026-09', '2026-10']) {
+      const completed = result.appointments.filter((a) => format(new TZDate(a.startsAt, TIME_ZONE), 'yyyy-MM') === month && a.status === AppointmentStatus.COMPLETED);
+      expect(new Set(completed.map((a) => a.professionalId)).size).toBe(PROFESSIONALS.length);
+      expect(new Set(completed.map((a) => a.serviceId)).size).toBe(SERVICES.length);
+    }
+    expect(result.appointments.filter((a) => a.startsAt > ctx.now).every((a) => (a.status === AppointmentStatus.PENDING || a.status === AppointmentStatus.CONFIRMED))).toBe(true);
   });
   it('is deterministic for a reference execution instant', () => {
     const ctx = input(new Date('2026-10-02T11:00:00Z'));
@@ -75,7 +89,7 @@ describe('development appointment seed', () => {
     const before = JSON.stringify(ctx.existing);
     const result = planAppointments(ctx);
     expect(JSON.stringify(ctx.existing)).toBe(before);
-    expect(result.days[8].preservedAppointments).toBe(1);
+    expect(result.days.find((d) => d.date === format(localDay(ctx.now, 1, TIME_ZONE), 'yyyy-MM-dd'))!.preservedAppointments).toBe(1);
     validateBookings(ctx, [...ctx.existing, ...result.appointments], result.appointments);
   });
   it('leaves long-service slots on quieter days', () => {
