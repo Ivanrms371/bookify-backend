@@ -2,7 +2,7 @@ import { PERMISSIONS } from 'src/common/security/constants/permissions.constant'
 import { Permissions } from 'src/common/security/decorators/permissions.decorator';
 import { Controller, Get } from '@nestjs/common';
 import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
-import { DashboardService } from './dashboard.service';
+import { DashboardService } from '../services/dashboard.service';
 
 @Controller('dashboard')
 export class DashboardController {

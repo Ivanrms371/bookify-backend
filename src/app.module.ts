@@ -26,7 +26,7 @@ import { ServicesModule } from './modules/services/services.module';
 import { TenantOnboardingModule } from './modules/tenants/features/onboarding/onboarding.module';
 import { ProfessionalsModule } from './modules/professionals/professionals.module';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
-import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { ReportsModule } from './modules/reports/reports.module';
 import { InvitationsModule } from './modules/invitations/invitations.module';
 import { MembershipsModule } from './modules/memberships/memberships.module';
 import { PublicModule } from './modules/public/public.module';
@@ -58,7 +58,7 @@ import { TeamModule } from './modules/team/team.module';
     SecurityModule,
     TenantUsageModule,
     AppointmentsModule,
-    DashboardModule,
+    ReportsModule,
     InvitationsModule,
     TenantSettingsModule,
     AvailabilityModule,
