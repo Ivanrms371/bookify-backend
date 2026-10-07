@@ -6,14 +6,21 @@ import { LemonPlanChangeError } from 'src/shared/integrations/lemon-squeezy/exce
 import type { LemonSqueezySubscriptionData } from 'src/shared/integrations/lemon-squeezy/types/lemon-squeezy-webhook.types';
 import { SubscriptionsRepository } from './subscriptions.repository';
 import { PlansService } from './plans.service';
-import type { PlanChangeEligibilityDto, PlanChangeResultDto, PlanSelection, SubscriptionPlanState } from './types/plan-change.types';
+import type {
+  PlanChangeEligibilityDto,
+  PlanChangeResultDto,
+  PlanChangeSelection,
+  PlanSelection,
+  SubscriptionPlanState,
+} from './types/plan-change.types';
 import {
   IneligiblePlanChangeException,
   PlanChangeConflictException,
   PlanChangeUnconfirmedException,
   UnsupportedPlanPaymentException,
 } from './exceptions/plan-change.exceptions';
-import { getPlanChangeEligibility } from './plan-change-eligibility';
+import { freeActivation } from './utils/free-transition';
+import { getFreeEligibility, getPlanChangeEligibility } from './plan-change-eligibility';
 import { confirmsUpgradePayment, isPendingScheduledChange, isPendingUpgrade, projectProviderPlanChange } from './plan-change';
 
 @Injectable()
@@ -26,12 +33,15 @@ export class PlanChangeService {
     private readonly sync: ProviderSyncRepository,
   ) {}
 
-  async getEligibility(tenantId: string, selection: PlanSelection): Promise<PlanChangeEligibilityDto> {
+  async getEligibility(tenantId: string, selection: PlanChangeSelection): Promise<PlanChangeEligibilityDto> {
     return this.evaluateEligibility(await this.requireSubscription(tenantId), selection);
   }
 
-  async change(tenantId: string, selection: PlanSelection): Promise<PlanChangeResultDto> {
+  async change(tenantId: string, request: PlanChangeSelection): Promise<PlanChangeResultDto> {
     const local = await this.requireSubscription(tenantId);
+    if (request.planId === 'free') return this.changeToFree(local);
+    if (!request.cycle) throw new PlanChangeConflictException();
+    const selection = { ...request, cycle: request.cycle };
     // Same target retries only inspect state; they never send another charge request.
     if (this.samePendingSelection(local, selection)) {
       return this.result(local);
@@ -83,6 +93,7 @@ export class PlanChangeService {
     if (!local.pendingPlanId) {
       return this.result(local);
     }
+    if (local.pendingPlanId === 'free') return this.undoFree(local);
     if (!isPendingScheduledChange(local) || !local.planChangesAt) {
       throw new PlanChangeConflictException();
     }
@@ -94,16 +105,162 @@ export class PlanChangeService {
     if (!local.pendingPlanId || !local.lemonSubscriptionId) {
       return this.result(local);
     }
-    return this.confirmProviderState(tenantId, await this.provider.retrieveSubscription(local.lemonSubscriptionId));
+    let current = await this.provider.retrieveSubscription(local.lemonSubscriptionId);
+    this.verifyProviderAssociation(local, current);
+    if (local.pendingPlanId === 'free') {
+      if (
+        !local.planChangesAt &&
+        !local.planChangeUndoRequestedAt &&
+        current.attributes.status === 'active' &&
+        !current.attributes.cancelled
+      ) {
+        current = await this.provider.setSubscriptionCancelled(current.id, true);
+      } else if (
+        local.planChangeUndoRequestedAt &&
+        current.attributes.cancelled &&
+        current.attributes.ends_at &&
+        new Date(current.attributes.ends_at) > new Date()
+      ) {
+        current = await this.provider.setSubscriptionCancelled(current.id, false);
+      }
+    }
+    return this.confirmProviderState(tenantId, current);
   }
 
-  private async evaluateEligibility(local: SubscriptionPlanState, selection: PlanSelection): Promise<PlanChangeEligibilityDto> {
+  private async changeToFree(local: SubscriptionPlanState): Promise<PlanChangeResultDto> {
+    if (local.pendingPlanId === 'free' || (local.planId === 'free' && local.status === 'ACTIVE')) return this.result(local);
+    const eligibility = await this.evaluateEligibility(local, { planId: 'free' });
+    if (!eligibility.eligible) throw new IneligiblePlanChangeException(eligibility.blockers);
+    const current = local.lemonSubscriptionId ? await this.provider.retrieveSubscription(local.lemonSubscriptionId) : null;
+    if (current) this.verifyProviderAssociation(local, current);
+    if (!eligibility.effectiveAt && current && !this.providerHasExpired(current)) throw new PlanChangeConflictException();
+    if (eligibility.effectiveAt && current && !['active', 'cancelled'].includes(current.attributes.status))
+      throw new PlanChangeConflictException();
+    if (eligibility.effectiveAt && !current) throw new PlanChangeConflictException();
+
+    const reserved = await this.prisma.$transaction(async (tx) => {
+      await this.sync.acquireLock(tx);
+      const latest = await this.repository.findByTenantId(local.tenantId, tx);
+      if (!latest || latest.updatedAt.getTime() !== local.updatedAt.getTime()) throw new PlanChangeConflictException();
+      const [tenant, usage] = await Promise.all([
+        this.repository.getCheckoutTenant(local.tenantId, tx),
+        this.repository.getResourceUsage(local.tenantId, tx),
+      ]);
+      if (!tenant || tenant.deletedAt) throw new PlanChangeConflictException();
+      const checked = getFreeEligibility({ local: latest, tenant, usage });
+      if (!checked.eligible) throw new IneligiblePlanChangeException(checked.blockers);
+      if (current && (await this.sync.isNewer(`subscriptions:${current.id}`, current.attributes.updated_at, tx))) {
+        await this.sync.markVersion(`subscriptions:${current.id}`, current.attributes.updated_at, tx);
+      }
+      return this.repository.updateByTenantId(
+        local.tenantId,
+        checked.effectiveAt
+          ? { pendingPlanId: 'free', pendingBillingCycle: null, planChangesAt: null, planChangeUndoRequestedAt: null }
+          : freeActivation,
+        tx,
+      );
+    });
+    if (reserved.planId === 'free') return this.result(reserved);
+    if (current!.attributes.cancelled) return this.confirmProviderState(local.tenantId, current!);
+    try {
+      const cancelled = await this.provider.setSubscriptionCancelled(current!.id, true);
+      return await this.confirmProviderState(local.tenantId, cancelled);
+    } catch (error) {
+      if (error instanceof LemonPlanChangeError && error.rejected) {
+        await this.restoreFreeIntent(reserved, local);
+        throw new IneligiblePlanChangeException([
+          {
+            code: 'PROVIDER_PLAN_CHANGE_REJECTED',
+            resource: 'provider',
+            message: 'No se pudo cancelar la renovación. Tu plan continúa vigente.',
+          },
+        ]);
+      }
+      throw new PlanChangeUnconfirmedException();
+    }
+  }
+
+  private async undoFree(local: SubscriptionPlanState): Promise<PlanChangeResultDto> {
+    if (local.planChangeUndoRequestedAt) return this.refresh(local.tenantId);
+    if (!local.planChangesAt || local.planChangesAt <= new Date() || !local.lemonSubscriptionId) throw new PlanChangeConflictException();
+    const current = await this.provider.retrieveSubscription(local.lemonSubscriptionId);
+    this.verifyProviderAssociation(local, current);
+    if (current.attributes.status === 'active' && !current.attributes.cancelled) return this.confirmProviderState(local.tenantId, current);
+    if (!current.attributes.cancelled || !current.attributes.ends_at || new Date(current.attributes.ends_at) <= new Date())
+      throw new PlanChangeConflictException();
+    const reserved = await this.prisma.$transaction(async (tx) => {
+      await this.sync.acquireLock(tx);
+      const latest = await this.repository.findByTenantId(local.tenantId, tx);
+      if (
+        !latest ||
+        latest.updatedAt.getTime() !== local.updatedAt.getTime() ||
+        !latest.planChangesAt ||
+        !!latest.planChangeUndoRequestedAt
+      )
+        throw new PlanChangeConflictException();
+      return this.repository.updateByTenantId(local.tenantId, { planChangeUndoRequestedAt: new Date() }, tx);
+    });
+    try {
+      return await this.confirmProviderState(local.tenantId, await this.provider.setSubscriptionCancelled(current.id, false));
+    } catch (error) {
+      if (error instanceof LemonPlanChangeError && error.rejected) {
+        await this.restoreFreeIntent(reserved, local);
+        throw new IneligiblePlanChangeException([
+          {
+            code: 'PROVIDER_PLAN_CHANGE_REJECTED',
+            resource: 'provider',
+            message: 'No se pudo reanudar la renovación. El cambio a Free sigue programado.',
+          },
+        ]);
+      }
+      throw new PlanChangeUnconfirmedException();
+    }
+  }
+
+  private async restoreFreeIntent(reserved: SubscriptionPlanState, previous: SubscriptionPlanState) {
+    await this.prisma.$transaction(async (tx) => {
+      await this.sync.acquireLock(tx);
+      const latest = await this.repository.findByTenantId(previous.tenantId, tx);
+      if (
+        latest?.updatedAt.getTime() !== reserved.updatedAt.getTime() ||
+        latest?.planChangeUndoRequestedAt?.getTime() !== reserved.planChangeUndoRequestedAt?.getTime()
+      )
+        return;
+      await this.repository.updateByTenantId(
+        previous.tenantId,
+        {
+          pendingPlanId: previous.pendingPlanId,
+          pendingBillingCycle: previous.pendingBillingCycle,
+          planChangesAt: previous.planChangesAt,
+          planChangeUndoRequestedAt: previous.planChangeUndoRequestedAt,
+        },
+        tx,
+      );
+    });
+  }
+
+  private providerHasExpired(current: LemonSqueezySubscriptionData) {
+    return (
+      current.attributes.status === 'expired' ||
+      (current.attributes.status === 'cancelled' && !!current.attributes.ends_at && new Date(current.attributes.ends_at) <= new Date())
+    );
+  }
+
+  private async evaluateEligibility(local: SubscriptionPlanState, selection: PlanChangeSelection): Promise<PlanChangeEligibilityDto> {
     const tenantId = local.tenantId;
     const [tenant, usage] = await Promise.all([this.repository.getCheckoutTenant(tenantId), this.repository.getResourceUsage(tenantId)]);
     if (!tenant || tenant.deletedAt) {
       throw new NotFoundException('Workspace not found.');
     }
-    return getPlanChangeEligibility({ local, selection, target: this.plans.getPlan(selection.planId), tenant, usage });
+    if (selection.planId === 'free') return getFreeEligibility({ local, tenant, usage });
+    if (!selection.cycle) throw new PlanChangeConflictException();
+    return getPlanChangeEligibility({
+      local,
+      selection: { ...selection, cycle: selection.cycle },
+      target: this.plans.getPlan(selection.planId),
+      tenant,
+      usage,
+    });
   }
 
   private async confirmProviderState(tenantId: string, current: LemonSqueezySubscriptionData) {
@@ -190,7 +347,10 @@ export class PlanChangeService {
 
   private result(local: SubscriptionPlanState): PlanChangeResultDto {
     return {
-      state: local.pendingPlanId ? 'pending' : 'confirmed',
+      state:
+        local.pendingPlanId && !(local.pendingPlanId === 'free' && local.planChangesAt && !local.planChangeUndoRequestedAt)
+          ? 'pending'
+          : 'confirmed',
       planId: local.planId,
       pendingPlanId: local.pendingPlanId ?? null,
       pendingBillingCycle: local.pendingBillingCycle ?? null,

@@ -161,6 +161,28 @@ export class LemonSqueezyService {
     }
   }
 
+  async setSubscriptionCancelled(id: string, cancelled: boolean): Promise<LemonSqueezySubscriptionData> {
+    if (!this.apiKey || !/^[0-9]+$/.test(id)) throw new InternalServerErrorException('Invalid provider subscription.');
+    try {
+      const response = cancelled
+        ? await this.http.delete<{ data: LemonSqueezySubscriptionData }>(`/subscriptions/${id}`, { timeout: 10_000 })
+        : await this.http.patch<{ data: LemonSqueezySubscriptionData }>(
+            `/subscriptions/${id}`,
+            {
+              data: { type: 'subscriptions', id, attributes: { cancelled: false } },
+            },
+            { timeout: 10_000 },
+          );
+      const current = response.data.data;
+      if (current.type !== 'subscriptions' || current.id !== id) throw new Error('Provider subscription mismatch.');
+      this.validateResource(current);
+      return current;
+    } catch (error) {
+      const status = isAxiosError(error) ? error.response?.status : undefined;
+      throw new LemonPlanChangeError(status !== undefined && [400, 401, 403, 404, 422].includes(status));
+    }
+  }
+
   async retrieveLatestInvoice(subscriptionId: string): Promise<LemonSqueezyInvoiceData | null> {
     if (!this.apiKey || !/^[0-9]+$/.test(subscriptionId)) throw new InternalServerErrorException('Invalid provider subscription.');
     try {

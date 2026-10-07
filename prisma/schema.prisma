@@ -109,49 +109,49 @@ model Verification {
 }
 
 model Tenant {
-  id                        String                      @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  slug                      String?                     @unique
-  name                      String?
-  type                      TenantType?
-  description               String?
-  workspaceType             WorkspaceType?              @map("workspace_type")
-  colorTheme                String?                     @map("color_theme")
-  isPublic                  Boolean                     @default(false) @map("is_public")
-  isActive                  Boolean                     @default(false) @map("is_active")
-  onboardingProfessionalDraft Json? @map("onboarding_professional_draft")
-  onboardingStatus          OnboardingStatus            @default(BUSINESS_DETAILS) @map("onboarding_status")
-  phoneNumber               String?
-  addressLine1              String?                     @map("address_line_1")
-  addressLine2              String?                     @map("address_line_2")
-  city                      String?
-  province                  String?
-  country                   String?                     @default("UY")
-  logoUrl                   String?                     @map("logo_url")
-  logoPublicId              String?                     @map("logo_public_id")
-  coverUrl                  String?                     @map("cover_url")
-  coverPublicId             String?                     @map("cover_public_id")
-  createdAt                 DateTime                    @default(now()) @map("created_at")
-  updatedAt                 DateTime                    @updatedAt @map("updated_at")
-  deletedAt                 DateTime?                   @map("deleted_at")
-  appointments              Appointment[]
-  customers                 Customer[]
-  inAppNotifications        InAppNotification[]
-  invitations               Invitation[]
-  memberships               Membership[]
-  payments                  Payment[]
-  professionalLifetimeStats ProfessionalLifetimeStats[]
-  professionalDailyStats    ProfessionalDailyStats[]
-  professionalWorkingHours  ProfessionalWorkingHours[]
-  professionals             Professional[]
-  scheduleExceptions        ScheduleException[]
-  services                  Service[]
-  subscription              Subscription?
-  dailyStats                TenantDailyStats[]
-  lifetimeStats             TenantLifetimeStats?
-  settings                  TenantSettings?
-  usage                     TenantUsage[]
-  tenantWorkingHours        TenantWorkingHours[]
-  verifications             Verification[]
+  id                          String                      @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  slug                        String?                     @unique
+  name                        String?
+  type                        TenantType?
+  description                 String?
+  workspaceType               WorkspaceType?              @map("workspace_type")
+  colorTheme                  String?                     @map("color_theme")
+  isPublic                    Boolean                     @default(false) @map("is_public")
+  isActive                    Boolean                     @default(false) @map("is_active")
+  onboardingStatus            OnboardingStatus            @default(BUSINESS_DETAILS) @map("onboarding_status")
+  phoneNumber                 String?
+  addressLine1                String?                     @map("address_line_1")
+  addressLine2                String?                     @map("address_line_2")
+  city                        String?
+  province                    String?
+  country                     String?                     @default("UY")
+  logoUrl                     String?                     @map("logo_url")
+  logoPublicId                String?                     @map("logo_public_id")
+  coverUrl                    String?                     @map("cover_url")
+  coverPublicId               String?                     @map("cover_public_id")
+  createdAt                   DateTime                    @default(now()) @map("created_at")
+  updatedAt                   DateTime                    @updatedAt @map("updated_at")
+  deletedAt                   DateTime?                   @map("deleted_at")
+  onboardingProfessionalDraft Json?                       @map("onboarding_professional_draft")
+  appointments                Appointment[]
+  customers                   Customer[]
+  inAppNotifications          InAppNotification[]
+  invitations                 Invitation[]
+  memberships                 Membership[]
+  payments                    Payment[]
+  professionalLifetimeStats   ProfessionalLifetimeStats[]
+  professionalDailyStats      ProfessionalDailyStats[]
+  professionalWorkingHours    ProfessionalWorkingHours[]
+  professionals               Professional[]
+  scheduleExceptions          ScheduleException[]
+  services                    Service[]
+  subscription                Subscription?
+  dailyStats                  TenantDailyStats[]
+  lifetimeStats               TenantLifetimeStats?
+  settings                    TenantSettings?
+  usage                       TenantUsage[]
+  tenantWorkingHours          TenantWorkingHours[]
+  verifications               Verification[]
 
   @@map("tenants")
 }
@@ -572,11 +572,12 @@ model Subscription {
   deletedAt           DateTime?          @map("deleted_at")
   lemonCustomerId     String?            @map("lemon_customer_id")
   lemonSubscriptionId String?            @unique @map("lemon_subscription_id")
-  pendingPlanId       String?            @map("pending_plan_id")
-  pendingBillingCycle BillingCycle?      @map("pending_billing_cycle")
-  planChangesAt       DateTime?          @map("plan_changes_at")
   endsAt              DateTime?          @map("ends_at")
   currency            Currency           @default(USD)
+  pendingBillingCycle BillingCycle?      @map("pending_billing_cycle")
+  planChangeUndoRequestedAt DateTime? @map("plan_change_undo_requested_at")
+  pendingPlanId       String?            @map("pending_plan_id")
+  planChangesAt       DateTime?          @map("plan_changes_at")
   payments            Payment[]
   tenant              Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
@@ -603,10 +604,10 @@ model Payment {
   paidAt              DateTime?     @map("paid_at")
   dueAt               DateTime?     @map("due_at")
   externalId          String        @unique @map("external_id")
-  invoiceUrl          String?       @map("invoice_url")
   createdAt           DateTime      @default(now()) @map("created_at")
   updatedAt           DateTime      @updatedAt @map("updated_at")
   deletedAt           DateTime?     @map("deleted_at")
+  invoiceUrl          String?       @map("invoice_url")
   subscription        Subscription? @relation(fields: [subscriptionId], references: [id])
   tenant              Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
@@ -711,7 +712,6 @@ enum TenantType {
 }
 
 enum OnboardingStatus {
-  PROFESSIONAL_PROFILE
   WORKSPACE_TYPE
   BUSINESS_DETAILS
   SCHEDULE
@@ -720,6 +720,7 @@ enum OnboardingStatus {
   CUSTOMIZE
   CONFIRM
   COMPLETED
+  PROFESSIONAL_PROFILE
 }
 
 enum Currency {

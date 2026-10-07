@@ -4,7 +4,10 @@ import type { CheckoutEligibilityDto } from '../dto/checkout.dto';
 
 export type SubscriptionPlanState = Subscription;
 export interface PlanChangeEligibilityDto extends CheckoutEligibilityDto {
-  kind: 'upgrade' | 'downgrade' | 'cycle' | 'undo' | null;
+  kind: 'upgrade' | 'downgrade' | 'cycle' | 'undo' | 'free' | null;
+  usage?: { professionals: number; services: number };
+  limits?: { professionals: number; services: number };
+  endsTrial?: boolean;
   effectiveAt: string | null;
   chargeImmediately: boolean;
 }
@@ -18,6 +21,10 @@ export interface PlanChangeResultDto {
 export interface PlanSelection {
   planId: PlanId;
   cycle: BillingCycle;
+}
+export interface PlanChangeSelection {
+  planId: PlanId;
+  cycle?: BillingCycle;
 }
 
 export interface PlanChangeEligibilityContext {

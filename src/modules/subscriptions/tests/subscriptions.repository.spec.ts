@@ -21,10 +21,18 @@ describe('subscription persistence', () => {
   });
   it('settles only due downgrades and cycle switches for the requested tenant and clears all pending fields', async () => {
     const updateMany = jest.fn().mockResolvedValue({ count: 1 });
-    const repo = new SubscriptionsRepository({ subscription: { updateMany } } as unknown as PrismaService);
+    const tx = { subscription: { updateMany }, $executeRaw: jest.fn() };
+    const prisma = { ...tx, $transaction: jest.fn(async (work) => work(tx)) };
+    const repo = new SubscriptionsRepository(prisma as unknown as PrismaService);
     const now = new Date('2026-11-03T12:00:00Z');
     await repo.applyDuePlanChanges('tenant-a', undefined, now);
-    expect(updateMany).toHaveBeenCalledTimes(4);
+    expect(updateMany).toHaveBeenCalledTimes(5);
+    expect(updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ pendingPlanId: 'free', planChangeUndoRequestedAt: null }),
+        data: expect.objectContaining({ planId: 'free', status: 'ACTIVE', billingCycle: null }),
+      }),
+    );
     expect(updateMany).toHaveBeenCalledWith({
       where: {
         tenantId: 'tenant-a',

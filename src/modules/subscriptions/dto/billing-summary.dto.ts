@@ -41,6 +41,7 @@ export interface BillingSummaryDto {
     endsAt: string | null;
     cancelledAt: string | null;
     paymentMethod: string | null;
+    planChangeUndoRequestedAt: string | null;
     pendingPlanId: string | null;
     pendingBillingCycle: BillingCycle | null;
     planChangesAt: string | null;

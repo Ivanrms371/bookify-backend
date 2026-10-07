@@ -17,7 +17,7 @@ function hasPaidSubscription(subscription: CheckoutSubscription | null, now: Dat
 }
 
 export function getCheckoutEligibility(
-  { plan, cycle, workspaceType, subscription, professionals, services }: CheckoutEligibilityContext,
+  { plan, cycle, subscription, professionals, services }: CheckoutEligibilityContext,
   now = new Date(),
 ): CheckoutEligibilityDto {
   const blockers: CheckoutEligibilityDto['blockers'] = [];
@@ -25,10 +25,7 @@ export function getCheckoutEligibility(
     blockers.push({ code: 'SUBSCRIPTION_REQUIRED', message: 'No encontramos la suscripción de este negocio.' });
   }
   if (plan.id === 'free') {
-    blockers.push({ code: 'PLAN_UNAVAILABLE', message: 'La selección del plan Free estará disponible próximamente.' });
-  }
-  if (!workspaceType || !plan.compatibleWorkspaces.includes(workspaceType)) {
-    blockers.push({ code: 'PLAN_INCOMPATIBLE', resource: 'workspace', message: 'Este plan no es compatible con el tipo de tu negocio.' });
+    blockers.push({ code: 'PLAN_UNAVAILABLE', message: 'Free se activa desde el cambio de plan, sin checkout.' });
   }
   const price = plan.pricing[cycle];
   if (!price) {

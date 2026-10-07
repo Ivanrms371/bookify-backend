@@ -1,3 +1,4 @@
+import { PlanChangeSelectionDto } from './dto/plan-change-selection.dto';
 import { PlanChangeService } from './plan-change.service';
 import { SubscriptionWebhookService } from './subscription-webhook.service';
 import { PERMISSIONS } from 'src/common/security/constants/permissions.constant';
@@ -72,13 +73,13 @@ export class SubscriptionsController {
 
   @Permissions(PERMISSIONS.BILLING_MANAGE)
   @Get('change-eligibility')
-  getChangeEligibility(@GetTenantId() tenantId: string, @Query() dto: CheckoutSelectionDto) {
+  getChangeEligibility(@GetTenantId() tenantId: string, @Query() dto: PlanChangeSelectionDto) {
     return this.planChanges.getEligibility(tenantId, dto);
   }
 
   @Permissions(PERMISSIONS.BILLING_MANAGE)
   @Post('plan-change')
-  changePlan(@GetTenantId() tenantId: string, @Body() dto: CheckoutSelectionDto) {
+  changePlan(@GetTenantId() tenantId: string, @Body() dto: PlanChangeSelectionDto) {
     return this.planChanges.change(tenantId, dto);
   }
 

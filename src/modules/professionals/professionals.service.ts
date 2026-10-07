@@ -1,3 +1,4 @@
+import { verifyFreeResourceAddition } from '../subscriptions/utils/free-plan-limits';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { GetProfessionalsQueryDto } from './dto/get-professionals-query.dto';
 import { ProfessionalsRepository } from './professionals.repository';
@@ -71,6 +72,8 @@ export class ProfessionalsService {
   }
 
   async create(tenantId: string, dto: CreateProfessionalDto, tx?: TransactionClient) {
+    if (!tx) return this.prisma.$transaction((transaction) => this.create(tenantId, dto, transaction));
+    await verifyFreeResourceAddition(tx, tenantId, 'professionals');
     const professional = await this.professionalsRepository.create(
       {
         tenant: { connect: { id: tenantId } },

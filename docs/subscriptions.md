@@ -1,6 +1,6 @@
 # Subscriptions module
 
-The product rules and implementation history live in the [billing plan](../../docs/billing-subscription-plan.md), especially Task 12. Earlier planning notes about unconfigured caps and pending plan changes predate that implementation. Current catalog caps are Free 1 professional/10 services, Pro 3/30, and Pro+ 8/60. Resource-creation enforcement and Free transitions remain separate tasks.
+The product rules and implementation history live in the [billing plan](../../docs/billing-subscription-plan.md), especially Task 12. Earlier planning notes about unconfigured caps and pending plan changes predate that implementation. Current catalog caps are Free 1 professional/10 services, Pro 3/30, and Pro+ 8/60. Free selection and transitions now reuse the plan-change flow. Free caps are enforced for active Free and pending Free transitions; broader paid-plan operational restrictions remain separate work.
 
 ## Responsibilities
 
@@ -43,3 +43,19 @@ pnpm exec tsc -p tsconfig.build.json --noEmit --incremental false
 ```
 
 The payment HTTP suite binds a local port with mocked services. These checks do not verify live provider flows or PostgreSQL concurrency. No database mutation or provider settings change is part of this refactor.
+
+## Free transitions
+
+The existing owner-only change-eligibility, plan-change, plan-change cancellation and refresh endpoints handle Free. Plan-change selections send `{ "planId": "free" }` without a cycle; paid changes still require one. Checkout retains its separate paid-plan contract. No new Free endpoints or provider variants are introduced, and public web has no consumer of these authenticated endpoints.
+
+Free is available regardless of workspace type, with at most one non-deleted professional and ten non-deleted services. Inactive resources count. Trial/expired-trial selection activates immediately and preserves the original trial history; an active trial review warns that its remaining benefits end without granting another trial. Expired paid activation verifies that the provider has expired. Paused, past-due and suspended states require portal recovery first. Existing paid-plan changes must be resolved first.
+
+Paid selection persists a Free intent, cancels renewal on the already linked Lemon subscription with DELETE, then schedules Free at the provider-confirmed ends_at. Already cancelled subscriptions can adopt their existing deadline. Paid features remain until that date, but Free resource caps apply as soon as the intent is reserved. The existing billing lock is shared with service/professional creation and service bulk creation so concurrent additions cannot exceed the cap. No published workspace-type mutation currently exists; onboarding edits reject completed tenants. No resources, appointments or payment history are deleted.
+
+Scheduling is deduced from existing fields: pendingPlanId=free with a null planChangesAt awaits confirmation; a populated deadline is confirmed. The nullable planChangeUndoRequestedAt preserves an uncertain undo request. Only confirmed deadlines with no undo request settle automatically. Undo before expiry uses provider PATCH cancelled=false and clears intent only after confirmation. Explicit refresh reconciles provider state and may repeat the idempotent cancellation/resumption when a prior request timed out; frontend HTTP auth retries are disabled for these mutations. Definite provider rejection restores the previous intent. Portal resumption removes a confirmed Free schedule. Provider versions prevent stale snapshots from overriding newer states.
+
+Active Free has ACTIVE status, zero amount, no billing cycle or expiry, and retains provider IDs for historical invoice association. Old paid lifecycle events cannot overwrite it; a newly confirmed paid checkout may attach a new provider subscription. An expired provider snapshot resolves an uncertain undo into Free. If undo remains uncertain, settlement waits for reconciliation rather than guessing.
+
+Schema/client preparation requires the additive add_plan_change_undo_requested_at migration and regeneration before running the new code. Applying it requires the repository's explicit Prisma authorization. Mocked unit/API tests and server-rendered UI checks do not establish live provider or PostgreSQL concurrency behavior; verify cancellation, resumption and deadline settlement in provider test mode before release. Reminder/advanced-statistics enforcement and wider operational-access policies remain outside this slice.
+
+Plan eligibility does not validate `workspaceType` or `compatibleWorkspaces` for checkout, paid plan/cycle changes or Free activation. Existing catalog compatibility metadata is informational only; resource caps, owner permissions and provider/subscription checks still apply. Dashboard and public-web consumers do not enforce workspace compatibility.

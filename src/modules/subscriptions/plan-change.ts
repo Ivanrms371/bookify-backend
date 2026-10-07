@@ -1,3 +1,4 @@
+import { freeActivation, projectFreeProviderState } from './utils/free-transition';
 import type { SubscriptionPlanState } from './types/plan-change.types';
 import { PLANS } from './plans.config';
 import type {
@@ -37,6 +38,9 @@ export function projectDuePlanChange(subscription: SubscriptionPlanState, now = 
   if (!isPendingScheduledChange(subscription) || !subscription.planChangesAt || subscription.planChangesAt > now) {
     return subscription;
   }
+  if (subscription.pendingPlanId === 'free') {
+    return !subscription.planChangeUndoRequestedAt ? { ...subscription, ...freeActivation } : subscription;
+  }
   const plan = PLANS[subscription.pendingPlanId as PlanId];
   const cycle = subscription.pendingBillingCycle ?? subscription.billingCycle;
   return {
@@ -73,6 +77,9 @@ export function projectProviderPlanChange(
   upgradePaid: boolean,
   now = new Date(),
 ) {
+  if (local.pendingPlanId === 'free' || (local.planId === 'free' && local.status === 'ACTIVE')) {
+    return projectFreeProviderState(local, current, now);
+  }
   const update = toProviderSubscriptionUpdate(current, target, local.cancelledAt);
   const keepCurrentPlan = {
     ...update,
@@ -81,7 +88,7 @@ export function projectProviderPlanChange(
     billingCycle: local.billingCycle,
     ...(isPendingCycleChange(local) ? { currentPeriodEnd: local.currentPeriodEnd } : {}),
   };
-  const clearPending = { pendingPlanId: null, pendingBillingCycle: null, planChangesAt: null };
+  const clearPending = { pendingPlanId: null, pendingBillingCycle: null, planChangesAt: null, planChangeUndoRequestedAt: null };
   if (target.planId === local.planId) {
     if (target.cycle !== local.billingCycle) {
       const matchesRequest = local.pendingPlanId === target.planId && local.pendingBillingCycle === target.cycle;

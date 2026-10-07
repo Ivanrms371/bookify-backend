@@ -1,3 +1,4 @@
+import { verifyFreeResourceAddition } from '../subscriptions/utils/free-plan-limits';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository, DbClient } from 'src/common/database/base.repository';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
@@ -87,11 +88,22 @@ export class ServicesRepository {
   }
 
   create(data: ServiceCreateInput) {
-    return this.prisma.service.create({ data: { ...data } });
+    return this.prisma.$transaction(async (tx) => {
+      const tenantId = data.tenant.connect?.id;
+      if (!tenantId) throw new Error('Service creation requires a tenant ID.');
+      await verifyFreeResourceAddition(tx, tenantId, 'services');
+      return tx.service.create({ data });
+    });
   }
 
   createMany(data: ServiceCreateManyArgs) {
-    return this.prisma.service.createMany(data);
+    return this.prisma.$transaction(async (tx) => {
+      const rows = Array.isArray(data.data) ? data.data : [data.data];
+      const additions = new Map<string, number>();
+      for (const row of rows) additions.set(row.tenantId, (additions.get(row.tenantId) ?? 0) + 1);
+      for (const [tenantId, count] of additions) await verifyFreeResourceAddition(tx, tenantId, 'services', count);
+      return tx.service.createMany(data);
+    });
   }
 
   deleteMany(tenantId: string) {

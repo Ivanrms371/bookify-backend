@@ -24,6 +24,7 @@ export function toBillingSummaryDto(
           endsAt: subscription.endsAt?.toISOString() ?? null,
           cancelledAt: subscription.cancelledAt?.toISOString() ?? null,
           paymentMethod: subscription.paymentMethod,
+          planChangeUndoRequestedAt: subscription.planChangeUndoRequestedAt?.toISOString() ?? null,
           pendingPlanId: subscription.pendingPlanId ?? null,
           pendingBillingCycle: subscription.pendingBillingCycle ?? null,
           planChangesAt: subscription.planChangesAt?.toISOString() ?? null,
@@ -35,7 +36,7 @@ export function toBillingSummaryDto(
     allowedActions: {
       explorePlans: true,
       manageSubscription: hasPortal,
-      cancelSubscription: hasPortal && subscription?.status !== 'CANCELLED',
+      cancelSubscription: hasPortal && subscription?.planId !== 'free' && subscription?.status !== 'CANCELLED',
     },
   };
 }

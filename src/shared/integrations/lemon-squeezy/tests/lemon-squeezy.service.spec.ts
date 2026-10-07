@@ -191,6 +191,7 @@ describe('subscription plan provider boundary', () => {
   const previousStore = process.env.LEMON_SQUEEZY_STORE_ID;
   const previousMode = process.env.LEMON_SQUEEZY_TEST_MODE;
   let patch: jest.Mock;
+  let remove: jest.Mock;
   let get: jest.Mock;
   let service: LemonSqueezyService;
   const response = () => ({
@@ -218,8 +219,9 @@ describe('subscription plan provider boundary', () => {
     process.env.LEMON_SQUEEZY_STORE_ID = '99';
     process.env.LEMON_SQUEEZY_TEST_MODE = 'true';
     patch = jest.fn().mockResolvedValue(response());
+    remove = jest.fn().mockResolvedValue(response());
     get = jest.fn();
-    jest.spyOn(axios, 'create').mockReturnValue({ patch, get } as never);
+    jest.spyOn(axios, 'create').mockReturnValue({ patch, get, delete: remove } as never);
     service = new LemonSqueezyService();
   });
   afterEach(() => {
@@ -232,6 +234,26 @@ describe('subscription plan provider boundary', () => {
       if (value === undefined) delete process.env[key!];
       else process.env[key!] = value;
     }
+  });
+  it('cancels renewal using DELETE and resumes the same subscription using PATCH', async () => {
+    await service.setSubscriptionCancelled('123', true);
+    expect(remove).toHaveBeenCalledWith('/subscriptions/123', { timeout: 10_000 });
+    await service.setSubscriptionCancelled('123', false);
+    expect(patch).toHaveBeenCalledWith(
+      '/subscriptions/123',
+      { data: { type: 'subscriptions', id: '123', attributes: { cancelled: false } } },
+      { timeout: 10_000 },
+    );
+  });
+  it('does not mutate an invalid provider subscription ID', async () => {
+    await expect(service.setSubscriptionCancelled('../other', true)).rejects.toThrow();
+    expect(remove).not.toHaveBeenCalled();
+  });
+  it('classifies cancellation rejection and timeout for safe recovery', async () => {
+    remove.mockRejectedValueOnce({ isAxiosError: true, response: { status: 422 } });
+    await expect(service.setSubscriptionCancelled('123', true)).rejects.toMatchObject({ rejected: true });
+    remove.mockRejectedValueOnce({ isAxiosError: true, code: 'ETIMEDOUT' });
+    await expect(service.setSubscriptionCancelled('123', true)).rejects.toMatchObject({ rejected: false });
   });
   it.each([true, false])('uses immediate proration only for an upgrade: %s', async (charge) => {
     await service.updateSubscriptionPlan('123', '43', charge);

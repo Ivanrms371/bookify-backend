@@ -1,3 +1,5 @@
+import { lockBilling } from 'src/common/database/billing-lock';
+import { freeActivation } from './utils/free-transition';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from 'src/common/database/base.repository';
 import type { Subscription } from 'src/generated/prisma/client';
@@ -84,6 +86,12 @@ export class SubscriptionsRepository extends BaseRepository {
   }
 
   async applyDuePlanChanges(tenantId?: string, tx?: TransactionClient, now = new Date()) {
+    if (!tx) return this.prisma.$transaction((transaction) => this.applyDuePlanChanges(tenantId, transaction, now));
+    await lockBilling(tx);
+    await this.db(tx).subscription.updateMany({
+      where: { tenantId, deletedAt: null, pendingPlanId: 'free', planChangeUndoRequestedAt: null, planChangesAt: { lte: now } },
+      data: freeActivation,
+    });
     // Confirmed downgrades and cycle switches expire; upgrades still require payment.
     for (const planId of ['pro', 'pro_plus'] as const) {
       for (const cycle of ['MONTHLY', 'ANNUAL'] as const) {

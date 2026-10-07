@@ -115,8 +115,8 @@ export class ProfessionalsRepository extends BaseRepository {
     return this.db(tx).professional.update({ where: { id, tenantId }, data });
   }
 
-  async updateStatus(tenantId: string, id: string, isActive: boolean) {
-    return this.db().professional.updateMany({
+  async updateStatus(tenantId: string, id: string, isActive: boolean, tx?: TransactionClient) {
+    return this.db(tx).professional.updateMany({
       where: { id, tenantId, deletedAt: null },
       data: { isActive },
     });

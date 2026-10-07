@@ -63,9 +63,9 @@ describe('checkout resource limits', () => {
     ]);
   });
 
-  it('supports either paid plan in individual and team workspaces', () => {
+  it('supports either paid plan regardless of workspace type', () => {
     for (const plan of [PLANS.pro, PLANS.pro_plus]) {
-      for (const workspaceType of ['INDIVIDUAL', 'TEAM'] as const) {
+      for (const workspaceType of ['INDIVIDUAL', 'TEAM', null] as const) {
         const availablePlan = { ...plan, pricing: { MONTHLY: { ...plan.pricing.MONTHLY, lemonVariantId: '42' } } };
         expect(getCheckoutEligibility({ ...context, subscription, plan: availablePlan, workspaceType }, now).eligible).toBe(true);
       }

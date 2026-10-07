@@ -1,3 +1,4 @@
+import { lockBilling } from 'src/common/database/billing-lock';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from 'src/generated/prisma/client';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
@@ -22,9 +23,7 @@ export class ProviderSyncRepository {
   }
 
   acquireLock(tx: Prisma.TransactionClient) {
-    return tx.$executeRaw`
-    SELECT pg_advisory_xact_lock(73124, 1)
-  `;
+    return lockBilling(tx);
   }
 
   markVersion(resource: string, updatedAt: string, tx: Prisma.TransactionClient) {

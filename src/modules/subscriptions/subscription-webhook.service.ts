@@ -165,7 +165,10 @@ export class SubscriptionWebhookService {
     if (!local || local.deletedAt) {
       throw new NotFoundException('Subscription mapping not found.');
     }
-    const canReplace = local.status === 'EXPIRED' || (local.status === 'CANCELLED' && local.endsAt && local.endsAt <= new Date());
+    const canReplace =
+      (local.planId === 'free' && local.status === 'ACTIVE') ||
+      local.status === 'EXPIRED' ||
+      (local.status === 'CANCELLED' && local.endsAt && local.endsAt <= new Date());
     if (local.lemonSubscriptionId && local.lemonSubscriptionId !== current.id && !canReplace) {
       throw new ConflictException('Conflicting provider subscription.');
     }
