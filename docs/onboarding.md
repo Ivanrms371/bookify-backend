@@ -2,6 +2,14 @@
 
 Every owner follows the same six steps: business, services, business hours, owner professional profile, optional customization, and confirmation. Workspace type no longer selects the onboarding flow. New tenants retain INDIVIDUAL internally for billing compatibility; existing workspace values and plan eligibility rules are unchanged. The existing subscription service determines the Pro+ trial and duration shown on confirmation.
 
+## Planned country step
+
+Add a country selection step immediately after business information (name and type, with a generated slug), before services. This extends the flow to seven steps: business information, country, services, business hours, owner professional profile, optional customization, and confirmation. This step is planned and has not been implemented.
+
+Use the selected country to suggest the default currency. For countries with one timezone, set the timezone automatically; for countries with multiple timezones, ask the owner to select the appropriate timezone. Timezone alone must not determine currency. Save the resolved currency and timezone in the existing `TenantSettings` fields during confirmation, and allow the owner to change them later in Settings. This step does not require a full business address.
+
+## Existing flow behavior
+
 The services step accepts any positive whole-minute duration and optional images. The dashboard uploads selected files through the existing service media upload flow before saving image URLs and public IDs through the onboarding endpoint. Saved images are returned in onboarding status for revisiting the step; omitting image fields preserves existing images.
 
 `PATCH /onboarding/professional` stores an explicit `attendsClients` choice. If true, it also stores display name, email, country code, phone number, optional profession and selected service IDs. The same step creates or updates the linked professional and its service assignments in the save transaction. It remains inactive until confirmation; the JSON field retains the attendance choice and saved summary for reloads. Choosing manager-only keeps the owner profile inactive without deleting it or changing membership. The status response includes `tenantId`, trial details and saved professional/branding data. All selected services must be active, non-deleted and belong to the owned tenant. Editing saved services retains their IDs; removing a selected service requires profile review before confirmation.

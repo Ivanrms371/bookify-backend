@@ -2,7 +2,6 @@ import { PERMISSIONS } from 'src/common/security/constants/permissions.constant'
 import { Permissions } from 'src/common/security/decorators/permissions.decorator';
 import { Controller, Get, Query, Req, Post, Put, Delete, Param, Body, Patch } from '@nestjs/common';
 import { ProfessionalsService } from './professionals.service';
-import { AuthenticatedRequest } from 'src/common/security/types/authenticated-request.type';
 import { GetProfessionalsQueryDto } from './dto/get-professionals-query.dto';
 import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 import { UpdateProfessionalDto } from './dto/update-professional.dto';
@@ -10,7 +9,6 @@ import { UpdateProfessionalProfileDto } from './dto/update-professional-profile.
 import { CurrentTenant } from 'src/common/security/decorators/current-tenant.decorator';
 import type { AuthenticatedUser, TenantContext } from 'src/common/security/types/authenticated-request.type';
 import { CurrentUser } from 'src/common/security/decorators/current-user.decorator';
-
 import { UpdateProfessionalStatusDto } from './dto/update-professional-status.dto';
 
 @Controller('professionals')
@@ -78,23 +76,13 @@ export class ProfessionalsController {
 
   @Permissions(PERMISSIONS.PROFESSIONAL_UPDATE)
   @Post(':id/services/:serviceId')
-  async addService(
-    @Req() req: AuthenticatedRequest,
-    @GetTenantId() tenantId: string,
-    @Param('id') id: string,
-    @Param('serviceId') serviceId: string,
-  ) {
+  async addService(@GetTenantId() tenantId: string, @Param('id') id: string, @Param('serviceId') serviceId: string) {
     return this.professionalsService.addService({ professionalId: id, serviceId, tenantId });
   }
 
   @Permissions(PERMISSIONS.PROFESSIONAL_UPDATE)
   @Delete(':id/services/:serviceId')
-  async deleteService(
-    @Req() req: AuthenticatedRequest,
-    @GetTenantId() tenantId: string,
-    @Param('id') id: string,
-    @Param('serviceId') serviceId: string,
-  ) {
+  async deleteService(@GetTenantId() tenantId: string, @Param('id') id: string, @Param('serviceId') serviceId: string) {
     return this.professionalsService.removeService({ professionalId: id, serviceId, tenantId });
   }
 }

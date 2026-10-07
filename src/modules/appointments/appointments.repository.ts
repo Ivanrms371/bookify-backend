@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { calendarDayRange } from './utils/calendar-day-range';
 import { AppointmentCreateInput, AppointmentUpdateInput, AppointmentWhereInput } from 'src/generated/prisma/models';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 
@@ -17,11 +18,19 @@ export class AppointmentsRepository extends BaseRepository {
   async findMany(tenantId: string, params: FindAllAppointmentsParamsDto) {
     const { orderBy, order, skip = 0, take = 10, professionalId, date, state } = params;
 
+    const calendarDate = typeof date === 'string' ? date : undefined;
+    const settings = calendarDate ? await this.prisma.tenantSettings.findUnique({ where: { tenantId }, select: { timeZone: true } }) : null;
+    const dayRange = calendarDate
+      ? calendarDayRange(calendarDate, settings?.timeZone ?? 'America/Montevideo')
+      : date
+        ? { gte: startOfDay(date), lte: endOfDay(date) }
+        : undefined;
+
     const where: AppointmentWhereInput = {
       tenantId,
       ...(state ? { status: state } : {}),
       ...(professionalId ? { professionalId } : {}),
-      ...(date ? { startsAt: { gte: startOfDay(date), lte: endOfDay(date) } } : {}),
+      ...(dayRange ? { startsAt: dayRange } : {}),
     };
 
     const [data, total] = await Promise.all([

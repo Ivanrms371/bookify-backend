@@ -4,7 +4,7 @@ import { BadRequestException, ForbiddenException, NotFoundException } from '@nes
 import { AppointmentsService } from '../appointments.service';
 import { AppointmentsRepository } from '../appointments.repository';
 import { AppointmentCancelledListener } from '../../notifications/listeners/appointments/appointment-cancelled.listener';
-import { DashboardRepository } from '../../dashboard/dashboard.repository';
+import { DashboardRepository } from '../../reports/repositories/dashboard.repository';
 import { PERMISSIONS } from 'src/common/security/constants/permissions.constant';
 import { ROLE_PERMISSIONS } from 'src/common/security/constants/role-permissions.constants';
 import { AppointmentStatus, RecipientType } from 'src/generated/prisma/enums';

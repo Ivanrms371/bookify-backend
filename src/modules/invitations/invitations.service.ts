@@ -134,7 +134,6 @@ export class InvitationsService {
     }
   }
 
-  // Called after commit. The listener registers a queued delivery; this does not send mail.
   async queueInvitationNotification(invitation: Invitation) {
     try {
       const tenant = await this.tenantsService.findById(invitation.tenantId);
@@ -229,7 +228,7 @@ export class InvitationsService {
     return this.prisma.$transaction((tx) => this.acceptWithTx(tx, invitation, currentUserId, currentUserEmail));
   }
 
-  async acceptWithTx(tx: TransactionClient, original: Invitation, userId: string, email?: string): Promise<AcceptedInvitationResponse> {
+  async acceptWithTx(tx: TransactionClient, original: Invitation, userId: string, email: string): Promise<AcceptedInvitationResponse> {
     await lockInvitationAcceptance(tx, original, userId);
     const invitation = await this.loadInvitationForAcceptance(original.token, tx);
     await this.verifyInvitationRecipient(invitation, userId, email, tx);
@@ -285,21 +284,12 @@ export class InvitationsService {
     return invitation;
   }
 
-  private async verifyInvitationRecipient(
-    invitation: Invitation,
-    userId: string,
-    authenticatedEmail: string | undefined,
-    tx: TransactionClient,
-  ) {
-    const user = await tx.user.findUnique({ where: { id: userId } });
-    if (!user) {
+  private async verifyInvitationRecipient(invitation: Invitation, userId: string, authenticatedEmail: string, tx: TransactionClient) {
+    const user = await this.usersService.findById(userId);
+    if (user.email !== invitation.email) {
       throw new InvitationRecipientException();
     }
-    const recipient = invitation.email.trim().toLowerCase();
-    if (user.email.trim().toLowerCase() !== recipient) {
-      throw new InvitationRecipientException();
-    }
-    if (authenticatedEmail !== undefined && authenticatedEmail.trim().toLowerCase() !== recipient) {
+    if (authenticatedEmail !== invitation.email) {
       throw new InvitationRecipientException();
     }
   }
@@ -352,10 +342,6 @@ export class InvitationsService {
   async listForManagement(tenantId: string): Promise<InvitationManagementDto[]> {
     const invitations = await this.invitationsRepository.findPending(tenantId);
     return invitations.map(toInvitationManagementDto);
-  }
-
-  async findPendingByProfessionalId(tenantId: string, professionalId: string, tx?: TransactionClient) {
-    return this.invitationsRepository.findPendingByProfessionalId(tenantId, professionalId, tx);
   }
 
   async findPending(tenantId: string) {

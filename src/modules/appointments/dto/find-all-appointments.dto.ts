@@ -1,5 +1,5 @@
-import { IsOptional, IsString, IsInt, IsIn, Min, IsDate, IsEnum, IsUUID } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsOptional, IsString, IsInt, IsIn, Min, IsEnum, IsUUID, ValidateBy, isISO8601 } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
 import { AppointmentStatus } from 'src/generated/prisma/enums';
 
 export class FindAllAppointmentsParamsDto {
@@ -36,7 +36,16 @@ export class FindAllAppointmentsParamsDto {
   state?: AppointmentStatus;
 
   @IsOptional()
-  @Type(() => Date)
-  @IsDate()
-  date?: Date;
+  @Transform(({ value }) => (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : new Date(value)))
+  @ValidateBy({
+    name: 'appointmentDate',
+    validator: {
+      validate: (value: unknown) =>
+        value instanceof Date
+          ? Number.isFinite(value.getTime())
+          : typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && isISO8601(value, { strict: true }),
+      defaultMessage: () => 'date must be a valid calendar date or timestamp',
+    },
+  })
+  date?: string | Date;
 }

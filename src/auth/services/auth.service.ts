@@ -92,7 +92,7 @@ export class AuthService {
       );
 
       if (invitation && dto.token) {
-        await this.invitationsService.acceptWithTx(tx, invitation, createdUser.id);
+        await this.invitationsService.acceptWithTx(tx, invitation, createdUser.id, createdUser.email);
       }
 
       return createdUser;

@@ -1,12 +1,11 @@
 import { PERMISSIONS } from 'src/common/security/constants/permissions.constant';
 import { Permissions } from 'src/common/security/decorators/permissions.decorator';
-import { Controller, Get, Param, Post, Body, Put, Patch, Delete, Req, UseInterceptors, UploadedFiles, Query } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Put, Patch, Delete, Req, UseInterceptors, UploadedFiles, Query, ParseUUIDPipe } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { AuthenticatedRequest } from 'src/common/security/types/authenticated-request.type';
-import { ParseUUIDv7Pipe } from 'src/common/pipes/validate-uuidv7.pipe';
 import { GetServicesQueryDto } from './dto/get-services-query.dto';
 import { GetTenantId } from 'src/common/security/decorators/current-tenant.decorator';
 
@@ -22,7 +21,7 @@ export class ServicesController {
 
   @Permissions(PERMISSIONS.SERVICE_READ)
   @Get(':id')
-  findById(@Param('id', ParseUUIDv7Pipe) id: string, @GetTenantId() tenantId: string) {
+  findById(@Param('id', ParseUUIDPipe) id: string, @GetTenantId() tenantId: string) {
     return this.servicesService.findById(tenantId, id);
   }
 
@@ -53,7 +52,7 @@ export class ServicesController {
 
   @Permissions(PERMISSIONS.SERVICE_READ)
   @Get('/:id/professionals')
-  async getAllProfessionals(@Param('id', ParseUUIDv7Pipe) id: string, @GetTenantId() tenantId: string) {
+  async getAllProfessionals(@Param('id', ParseUUIDPipe) id: string, @GetTenantId() tenantId: string) {
     return this.servicesService.findAllProfessionals(tenantId, id);
   }
 }

@@ -17,18 +17,29 @@ export class AppointmentsController {
 
   @Get('')
   @Permissions(PERMISSIONS.APPOINTMENT_READ)
-  async findAll(@GetTenantId() tenantId: string, @Query() params: FindAllAppointmentsParamsDto) {
-    return this.appointmentsService.findAll(tenantId, params);
+  async findAll(
+    @GetTenantId() tenantId: string, @Query() params: FindAllAppointmentsParamsDto,
+    @CurrentUser() user: AuthenticatedUser, @CurrentTenant() tenant: TenantContext,
+  ) {
+    return this.appointmentsService.findAll(tenantId, params, user, tenant.permissions);
   }
 
   @Get(':id')
   @Permissions(PERMISSIONS.APPOINTMENT_READ)
-  async findById(@GetTenantId() tenantId: string) {}
+  async findById(
+    @GetTenantId() tenantId: string, @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser, @CurrentTenant() tenant: TenantContext,
+  ) {
+    return this.appointmentsService.findById(tenantId, id, user, tenant.permissions);
+  }
 
   @Post('')
   @Permissions(PERMISSIONS.APPOINTMENT_CREATE)
-  async create(@GetTenantId() tenantId: string, @Body() dto: CreateAppointmentDto) {
-    return this.appointmentsService.create(tenantId, dto);
+  async create(
+    @GetTenantId() tenantId: string, @Body() dto: CreateAppointmentDto,
+    @CurrentUser() user: AuthenticatedUser, @CurrentTenant() tenant: TenantContext,
+  ) {
+    return this.appointmentsService.create(tenantId, dto, user, tenant.permissions);
   }
 
   @Patch(':id/reschedule')

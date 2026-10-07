@@ -93,7 +93,7 @@ describe('Invited signup and Google authentication', () => {
     const f = setup();
     const result = await f.auth.signup({ ...signup });
     expect(result).toMatchObject({ requiresEmailVerification: false, tenantId: 'target', session: { accessToken: 'access' } });
-    expect(f.invitations.acceptWithTx).toHaveBeenCalledWith(f.tx, expect.objectContaining({ token: 'token' }), 'u');
+    expect(f.invitations.acceptWithTx).toHaveBeenCalledWith(f.tx, expect.objectContaining({ token: 'token' }), 'u', 'invite@example.com');
     expect(f.state.users[0]).toMatchObject({ email: 'invite@example.com', emailVerifiedAt: expect.any(Date) });
     expect(f.verifications.requestVerification).not.toHaveBeenCalled();
   });

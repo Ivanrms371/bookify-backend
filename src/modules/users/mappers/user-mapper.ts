@@ -1,3 +1,5 @@
+import { ROLE_PERMISSIONS } from 'src/common/security/constants/role-permissions.constants';
+import type { Permission } from 'src/common/security/constants/permissions.constant';
 import { MembershipRole, OnboardingStatus, SubscriptionStatus } from 'src/generated/prisma/enums';
 
 export interface RawUserContextResponse {
@@ -34,6 +36,7 @@ export interface ActiveTenant {
   role: MembershipRole;
   onboardingStatus: OnboardingStatus;
   professionalId: string | null;
+  permissions: readonly Permission[];
   timeZone: string | null;
   subscription: {
     status: SubscriptionStatus;
@@ -73,6 +76,7 @@ export class MeUserMapper {
         role,
         onboardingStatus: tenant.onboardingStatus,
         professionalId,
+        permissions: ROLE_PERMISSIONS[role],
         timeZone: tenant.settings?.timeZone ?? null,
         subscription: tenant.subscription
           ? {

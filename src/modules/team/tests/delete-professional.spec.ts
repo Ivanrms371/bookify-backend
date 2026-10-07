@@ -112,7 +112,7 @@ describe('Professional deletion', () => {
     await new ProfessionalDeletionController(f.team).delete('t', 'p', user, tenant);
     expect(deletion).toHaveBeenNthCalledWith(1, 't', 'p', viewer);
     expect(deletion).toHaveBeenNthCalledWith(2, 't', 'p', viewer);
-    expect(Reflect.getMetadata(PERMISSIONS_KEY, TeamController.prototype.deleteProfessional)).toEqual([PERMISSIONS.TEAM_DELETE]);
+    expect(Reflect.getMetadata(PERMISSIONS_KEY, TeamController.prototype.deleteProfessional)).toEqual([PERMISSIONS.PROFESSIONAL_DELETE]);
     expect(Reflect.getMetadata(PERMISSIONS_KEY, ProfessionalDeletionController.prototype.delete)).toEqual([
       PERMISSIONS.PROFESSIONAL_DELETE,
     ]);

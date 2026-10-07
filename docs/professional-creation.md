@@ -1,6 +1,6 @@
 # Professional creation, editing and invitations
 
-The dashboard’s “Nuevo Profesional” modal creates professionals through authenticated `POST /api/team/professionals`. The route requires `TEAM_INVITE`, available to OWNER and ADMIN; STAFF cannot create through this flow. The selected tenant comes from the existing membership-checked tenant context.
+The dashboard’s “Nuevo Profesional” modal creates professionals through authenticated `POST /api/team/professionals`. The route requires `PROFESSIONAL_CREATE`, available to OWNER and ADMIN; STAFF cannot create through this flow. The selected tenant comes from the existing membership-checked tenant context.
 
 ## Request and response
 
@@ -26,7 +26,7 @@ Professional lists, calendar options, details and service-professional assignmen
 
 Create and edit use the same modal and contact/service/access form. Editing first loads tenant-scoped details; loading and retry states never mount an empty editable form. The loaded details are retained as an immutable form snapshot, including access state. Contact fields in listing/details always come from the professional record. Linked account email is separate access metadata; changing the business email does not modify or relink the account.
 
-`PUT /api/team/professionals/:id` requires `TEAM_UPDATE` and an active OWNER/ADMIN membership checked again inside the transaction. It accepts optional normalized `name`, `email`, `phoneNumber`, `phoneCountryCode`, `serviceIds`, `giveAccess` and `accessStatus`. Omitted fields remain unchanged. The shared DTO field validators reject null contact values and out-of-scope fields, including role changes. The response remains `{ success: true }`.
+`PUT /api/team/professionals/:id` requires `PROFESSIONAL_UPDATE` and an active OWNER/ADMIN membership checked again inside the transaction. It accepts optional normalized `name`, `email`, `phoneNumber`, `phoneCountryCode`, `serviceIds`, `giveAccess` and `accessStatus`. Omitted fields remain unchanged. The shared DTO field validators reject null contact values and out-of-scope fields, including role changes. The response remains `{ success: true }`.
 
 Access intent must include the loaded `accessStatus` (`NONE`, `PENDING`, `EXPIRED`, `ACTIVE`, `DISABLED`). A mismatch returns HTTP 409 and rolls back all writes. Changing a pending invitation's recipient also requires this snapshot, even when `giveAccess` is omitted. Detail metadata includes `accountEmail`, `role`, `invitationEmail`, `expiresAt`, and `canChange`; it never includes invitation tokens.
 
@@ -82,7 +82,7 @@ The dashboard previews a local file and uploads it through `useMediaUpload` with
 
 ## Professional deletion
 
-The dashboard confirmation now calls `DELETE /api/team/professionals/:id`. The existing `DELETE /api/professionals/:id` route delegates to the same Team transaction through a compatibility controller; the routes retain their respective TEAM_DELETE and PROFESSIONAL_DELETE permissions. Both require an active OWNER/ADMIN actor and recheck tenant-scoped access protections. Nobody may delete their own linked professional or an OWNER-linked professional; only OWNER may delete an ADMIN-linked professional. Pending invitation roles have the same protections.
+The dashboard confirmation now calls `DELETE /api/team/professionals/:id`. The existing `DELETE /api/professionals/:id` route delegates to the same Team transaction through a compatibility controller; the routes retain the PROFESSIONAL_DELETE permission. Both require an active OWNER/ADMIN actor and recheck tenant-scoped access protections. Nobody may delete their own linked professional or an OWNER-linked professional; only OWNER may delete an ADMIN-linked professional. Pending invitation roles have the same protections.
 
 Deletion sets `Professional.deletedAt`, revokes outstanding invitations, and deletes the linked user's membership row for the selected tenant if one exists. It retains the professional record, user link, photo, service assignments, working hours, and all existing appointments, including upcoming appointments. The user account and other tenant memberships remain intact. No media deletion or appointment cancellation occurs. Membership removal and soft deletion roll back together on failure and use the same row-lock ordering as invitation acceptance. Old accepted invitation tokens cannot restore the removed access.
 

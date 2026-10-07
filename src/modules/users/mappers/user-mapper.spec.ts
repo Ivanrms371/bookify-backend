@@ -33,3 +33,17 @@ describe('session active tenant timezone', () => {
     expect(MeUserMapper.toDomain(user([])).activeTenant).toBeNull();
   });
 });
+
+describe('session permission contract', () => {
+  it.each([MembershipRole.OWNER, MembershipRole.ADMIN, MembershipRole.STAFF])('returns authoritative permissions for %s', (role) => {
+    const selected = { ...membership('tenant', null), role };
+    const permissions = MeUserMapper.toDomain(user([selected])).activeTenant?.permissions ?? [];
+    expect(permissions).toContain('customer:create');
+    expect(permissions.includes('billing:read')).toBe(role === MembershipRole.OWNER);
+    expect(permissions.includes('professional:create')).toBe(role !== MembershipRole.STAFF);
+    expect(permissions.includes('customer:update')).toBe(role !== MembershipRole.STAFF);
+    expect(permissions.includes('appointment:read_others')).toBe(role !== MembershipRole.STAFF);
+    expect(permissions.includes('appointment:create_others')).toBe(role !== MembershipRole.STAFF);
+    expect(permissions.includes('tenant:update')).toBe(role !== MembershipRole.STAFF);
+  });
+});

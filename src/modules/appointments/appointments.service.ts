@@ -1,3 +1,4 @@
+import { AppointmentOwnershipException } from './exceptions/appointment-ownership.exception';
 import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AppointmentsRepository } from './appointments.repository';
@@ -33,8 +34,14 @@ export class AppointmentsService {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  async findAll(tenantId: string, params: FindAllAppointmentsParamsDto) {
-    const { data, meta } = await this.appointmentsRepository.findMany(tenantId, params);
+  async findAll(tenantId: string, params: FindAllAppointmentsParamsDto, currentUser: AuthenticatedUser, permissions: readonly Permission[]) {
+    let scopedParams = params;
+    if (!permissions.includes(PERMISSIONS.APPOINTMENT_READ_OTHERS)) {
+      const professional = await this.professionalsService.findByUserId(tenantId, currentUser.id);
+      // Caller-supplied filters must never widen the authenticated professional scope.
+      scopedParams = { ...params, professionalId: professional.id };
+    }
+    const { data, meta } = await this.appointmentsRepository.findMany(tenantId, scopedParams);
 
     return {
       data: AppointmentsMapper.toResponseList(data),
@@ -42,10 +49,23 @@ export class AppointmentsService {
     };
   }
 
-  async findById() {}
+  async findById(tenantId: string, id: string, currentUser: AuthenticatedUser, permissions: readonly Permission[]) {
+    const appointment = await this.appointmentsRepository.findById(tenantId, id);
+    if (!appointment) throw new NotFoundException('No hemos encontrado la cita.');
+    if (!permissions.includes(PERMISSIONS.APPOINTMENT_READ_OTHERS) && appointment.professional.userId !== currentUser.id) {
+      throw new AppointmentOwnershipException();
+    }
+    return AppointmentsMapper.toResponse(appointment);
+  }
 
-  async create(tenantId: string, dto: CreateAppointmentDto) {
+  async create(tenantId: string, dto: CreateAppointmentDto, currentUser: AuthenticatedUser, permissions: readonly Permission[]) {
     const { customerId, professionalId, serviceId } = dto;
+    if (!permissions.includes(PERMISSIONS.APPOINTMENT_CREATE_OTHERS)) {
+      const ownProfessional = await this.professionalsService.findByUserId(tenantId, currentUser.id);
+      if (ownProfessional.id !== professionalId) {
+        throw new AppointmentOwnershipException();
+      }
+    }
 
     const [customer, professional, service] = await Promise.all([
       customerId ? this.customersService.findById(tenantId, customerId) : null,

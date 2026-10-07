@@ -73,7 +73,7 @@ describe('Invitation consumption', () => {
     const f = fixture();
     const original = structuredClone(f.state.invitations[0]);
     f.state.invitations[0].revokedAt = new Date();
-    await expect(f.prisma.$transaction((tx: any) => f.invitations.acceptWithTx(tx, original, 'u'))).rejects.toMatchObject({ status: 409 });
+    await expect(f.prisma.$transaction((tx: any) => f.invitations.acceptWithTx(tx, original, 'u', original.email))).rejects.toMatchObject({ status: 409 });
   });
   it('rolls back consumption and membership if linking fails', async () => {
     const f = fixture();

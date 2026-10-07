@@ -23,13 +23,13 @@ export class TeamController {
     return this.teamService.getTeam(tenantId);
   }
 
-  @Permissions(PERMISSIONS.TEAM_INVITE)
+  @Permissions(PERMISSIONS.PROFESSIONAL_CREATE)
   @Post('professionals')
   async createProfessional(@GetTenantId() tenantId: string, @Body() dto: CreateTeamProfessionalDto) {
     return this.teamService.createProfessional(tenantId, dto);
   }
 
-  @Permissions(PERMISSIONS.TEAM_UPDATE)
+  @Permissions(PERMISSIONS.PROFESSIONAL_UPDATE)
   @Put('professionals/:id')
   async updateProfessional(
     @GetTenantId() tenantId: string,
@@ -41,7 +41,7 @@ export class TeamController {
     return this.teamService.updateProfessional(tenantId, id, dto, { id: user.id, role: tenant.role });
   }
 
-  @Permissions(PERMISSIONS.TEAM_DELETE)
+  @Permissions(PERMISSIONS.PROFESSIONAL_DELETE)
   @Delete('professionals/:id')
   async deleteProfessional(
     @GetTenantId() tenantId: string,

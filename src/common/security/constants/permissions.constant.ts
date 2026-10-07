@@ -1,6 +1,7 @@
 export const PERMISSIONS = {
   // Bookings
   APPOINTMENT_CREATE: 'appointment:create',
+  APPOINTMENT_CREATE_OTHERS: 'appointment:create_others',
   APPOINTMENT_READ: 'appointment:read',
   APPOINTMENT_UPDATE: 'appointment:update',
   APPOINTMENT_DELETE: 'appointment:delete',

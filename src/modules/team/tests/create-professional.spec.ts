@@ -28,6 +28,8 @@ function setup() {
   const services = [{ id: serviceId, tenantId: 'tenant', isActive: true, deletedAt: null as Date | null }];
   const tx = {
     $queryRaw: jest.fn().mockResolvedValue([]),
+    $executeRaw: jest.fn(),
+    subscription: { findUnique: jest.fn().mockResolvedValue(null) },
     service: {
       findMany: jest.fn(async ({ where }) =>
         services.filter(
@@ -40,6 +42,7 @@ function setup() {
       ),
     },
     professional: {
+      count: jest.fn().mockResolvedValue(0),
       findUnique: jest.fn(async ({ where }) => state.professionals.find((p) => p.id === where.id && p.tenantId === where.tenantId) ?? null),
       findFirst: jest.fn().mockResolvedValue(null),
       create: jest.fn(async ({ data }) => {
@@ -119,6 +122,14 @@ function setup() {
 }
 
 describe('Nuevo profesional', () => {
+  it('rolls back professional and invitation creation at the Free professional cap', async () => {
+    const s = setup();
+    s.tx.subscription.findUnique.mockResolvedValue({ planId: 'pro', pendingPlanId: 'free', deletedAt: null } as never);
+    s.tx.professional.count.mockResolvedValue(1);
+    await expect(s.team.createProfessional('tenant', { ...dto, giveAccess: true })).rejects.toMatchObject({ status: 409 });
+    expect(s.state).toEqual({ professionals: [], invitations: [], assignments: [] });
+    expect(s.emitter.emitAsync).not.toHaveBeenCalled();
+  });
   it('creates a normalized, active unlinked professional without access or services', async () => {
     const s = setup();
     const result = await s.team.createProfessional('tenant', dto);
@@ -224,11 +235,11 @@ describe('Nuevo profesional', () => {
     await expect(s.team.createProfessional('tenant', { ...dto, role: 'ADMIN' })).rejects.toMatchObject({ status: 400 });
     expect(s.prisma.$transaction).not.toHaveBeenCalled();
   });
-  it('requires TEAM_INVITE, granted to OWNER/ADMIN but not STAFF', () => {
-    expect(Reflect.getMetadata(PERMISSIONS_KEY, TeamController.prototype.createProfessional)).toEqual([PERMISSIONS.TEAM_INVITE]);
-    expect(ROLE_PERMISSIONS.OWNER).toContain(PERMISSIONS.TEAM_INVITE);
-    expect(ROLE_PERMISSIONS.ADMIN).toContain(PERMISSIONS.TEAM_INVITE);
-    expect(ROLE_PERMISSIONS.STAFF).not.toContain(PERMISSIONS.TEAM_INVITE);
+  it('requires PROFESSIONAL_CREATE, granted to OWNER/ADMIN but not STAFF', () => {
+    expect(Reflect.getMetadata(PERMISSIONS_KEY, TeamController.prototype.createProfessional)).toEqual([PERMISSIONS.PROFESSIONAL_CREATE]);
+    expect(ROLE_PERMISSIONS.OWNER).toContain(PERMISSIONS.PROFESSIONAL_CREATE);
+    expect(ROLE_PERMISSIONS.ADMIN).toContain(PERMISSIONS.PROFESSIONAL_CREATE);
+    expect(ROLE_PERMISSIONS.STAFF).not.toContain(PERMISSIONS.PROFESSIONAL_CREATE);
   });
 });
 
