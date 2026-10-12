@@ -5,6 +5,8 @@ import { CustomerCreateInput, CustomerUpdateInput } from 'src/generated/prisma/m
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { FindAllCustomersParams } from './types/customer-find-all.params';
 import type { CustomerListingRow } from './types/customer-listing-row.type';
+import type { CreateCustomerDto } from './dto/create-customer.dto';
+import type { UpdateCustomerDto } from './dto/update-customer.dto';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 
 @Injectable()
@@ -16,6 +18,79 @@ export class CustomersRepository extends BaseRepository {
   async findByPhone(tenantId: string, phoneCountryCode: string, phoneNumber: string, tx?: TransactionClient) {
     return this.db(tx).customer.findUnique({
       where: { tenantId_phoneCountryCode_phoneNumber: { tenantId, phoneCountryCode, phoneNumber } },
+    });
+  }
+
+  async findOrCreatePublic(tenantId: string, data: CreateCustomerDto) {
+    // Historical contacts may include punctuation; identity uses normalized digits.
+    // Prisma cannot express regexp_replace filters.
+    const [existing] = await this.prisma.$queryRaw<{ id: string }[]>`
+      SELECT id FROM customers WHERE tenant_id = ${tenantId}::uuid
+      AND regexp_replace(phone_country_code, '[^0-9]', '', 'g') = ${data.phoneCountryCode}
+      AND regexp_replace(phone_number, '[^0-9]', '', 'g') = ${data.phoneNumber} LIMIT 1`;
+    if (existing) return this.prisma.customer.findUniqueOrThrow({ where: { id: existing.id } });
+    // Empty update preserves the winner's details under the existing unique key.
+    try {
+      return await this.prisma.customer.upsert({
+        where: {
+          tenantId_phoneCountryCode_phoneNumber: { tenantId, phoneCountryCode: data.phoneCountryCode, phoneNumber: data.phoneNumber },
+        },
+        create: { ...data, tenantId },
+        update: {},
+      });
+    } catch (error) {
+      if (!(error instanceof Prisma.PrismaClientKnownRequestError) || error.code !== 'P2002') throw error;
+      return this.prisma.customer.findUniqueOrThrow({
+        where: {
+          tenantId_phoneCountryCode_phoneNumber: {
+            tenantId,
+            phoneCountryCode: data.phoneCountryCode,
+            phoneNumber: data.phoneNumber,
+          },
+        },
+      });
+    }
+  }
+
+  async updateContacts(tenantId: string, id: string, data: UpdateCustomerDto) {
+    return this.prisma.$transaction(async (tx) => {
+      await tx.$queryRaw`SELECT id FROM customers WHERE id = ${id}::uuid AND tenant_id = ${tenantId}::uuid FOR UPDATE`;
+      const customer = await tx.customer.findUniqueOrThrow({ where: { id, tenantId, deletedAt: null } });
+      const phoneChanged =
+        (data.phoneNumber !== undefined && data.phoneNumber !== customer.phoneNumber) ||
+        (data.phoneCountryCode !== undefined && data.phoneCountryCode !== customer.phoneCountryCode);
+      const emailChanged = data.email !== undefined && data.email !== customer.email;
+      if (phoneChanged || emailChanged) {
+        await tx.verification.updateMany({
+          where: {
+            recipientId: id,
+            recipientType: 'CUSTOMER',
+            tenantId,
+            type: { in: ['CUSTOMER_VERIFICATION_EMAIL', 'CUSTOMER_VERIFICATION_PHONE'] },
+            verifiedAt: null,
+            OR: [
+              ...(phoneChanged
+                ? [
+                    {
+                      channel: 'WHATSAPP' as const,
+                      destination: `+${`${customer.phoneCountryCode}${customer.phoneNumber}`.replace(/\D/g, '')}`,
+                    },
+                  ]
+                : []),
+              ...(emailChanged ? [{ channel: 'EMAIL' as const }] : []),
+            ],
+          },
+          data: { lockedAt: new Date(), expiresAt: new Date() },
+        });
+      }
+      return tx.customer.update({
+        where: { id, tenantId, deletedAt: null },
+        data: {
+          ...data,
+          ...(phoneChanged ? { phoneVerifiedAt: null, whatsappOptInAt: null } : {}),
+          ...(emailChanged ? { emailVerifiedAt: null } : {}),
+        },
+      });
     });
   }
 
@@ -74,9 +149,10 @@ export class CustomersRepository extends BaseRepository {
       // Keep email/phone substring searches literal; names use accent-insensitive similarity.
       const search = `%${query.replace(/[\\%_]/g, '\\$&')}%`;
       const phoneDigits = query.replace(/\D/g, '');
-      const fullPhoneSearch = phoneDigits && /^[+\d\s().-]+$/.test(query)
-        ? Prisma.sql`OR regexp_replace(c.phone_country_code || c.phone_number, '[^0-9]', '', 'g') ILIKE ${`%${phoneDigits}%`}`
-        : Prisma.empty;
+      const fullPhoneSearch =
+        phoneDigits && /^[+\d\s().-]+$/.test(query)
+          ? Prisma.sql`OR regexp_replace(c.phone_country_code || c.phone_number, '[^0-9]', '', 'g') ILIKE ${`%${phoneDigits}%`}`
+          : Prisma.empty;
       conditions.push(Prisma.sql`(
         similarity(unaccent(${query}), unaccent(c.name)) > 0.1
         OR c.email ILIKE ${search}

@@ -68,7 +68,7 @@ Listing is an offer, not a reservation or proof the mutation validator will acce
 
 | Operation | Authenticated | Public/token-based |
 | --- | --- | --- |
-| Create | Optional customer; CONFIRMED; ignores minimum notice and allows past booking | Validates slot before transactional customer write; CONFIRMED; normal minimum notice |
+| Create | Optional customer; CONFIRMED; ignores minimum notice and allows past booking | Creates/reuses customer before verification; checks stored customer and effective paid-plan verification at confirmation; CONFIRMED; normal minimum notice |
 | Reschedule | Tenant-scoped lookup; PENDING/CONFIRMED only; changed start, including past times; own/others authorization; excludes original appointment | Token lookup; CONFIRMED only; at most one reschedule; normal minimum notice; excludes original appointment |
 | Cancel | Rejects COMPLETED; already-cancelled returns existing response; removes blocks | CONFIRMED only; repeated cancellation returns existing record; removes blocks |
 | Events | Create/reschedule/cancel emitted only when a customer is present | Create/reschedule/cancel emitted after commit |
@@ -81,7 +81,7 @@ Both cancellation paths remove blocks and retain the cancelled appointment for h
 
 ### Transactions and overlap limits
 
-All active appointment mutations use a tenant-row lock and shared transaction for appointment/customer writes and statistics. Availability reads retain their existing client. Events are emitted after commit. See [appointment lifecycle and stats](appointment-lifecycle-and-stats.md) for metric definitions and limitations.
+All active appointment mutations use a tenant-row lock and shared transaction for appointment writes and statistics. Public customer identity is committed earlier; stored-customer eligibility and paid-plan verification are checked in the appointment transaction. Availability reads retain their existing client. Events are emitted after commit. See [appointment lifecycle and stats](appointment-lifecycle-and-stats.md) for metric definitions and limitations.
 
 **Current limit:** appointment writers share a tenant-row lock; no database exclusion constraint was added. A transaction wrapper or repository comment about atomic verification does not establish race-safe collision prevention. Actual deployed database constraints were not inspected. Slots can change between query, validation and persistence.
 
@@ -117,8 +117,8 @@ This is a conceptual feedback loop through persisted appointment state, not a Ne
 
 | Event consumer | Direct consequence |
 | --- | --- |
-| Created listener | Public-created appointment can notify the linked professional user; staff-created appointment can notify the customer. Schedules customer reminders 24h/2h before the appointment when those times remain future |
-| Rescheduled listener | Cancels pending reminder deliveries, creates customer reschedule notification and schedules replacement reminders |
+| Created listener | Customer-created appointment queues a customer acknowledgment and an assigned-professional notice; staff-created appointment queues a customer notice. Schedules customer reminders 24h/2h before the appointment when those times remain future |
+| Rescheduled listener | Cancels pending reminder deliveries, notifies the professional for customer actions or the customer for staff actions, and schedules replacement customer reminders |
 | Cancelled listener | Cancels pending reminders and notifies the opposite recipient according to who cancelled |
 
 Listeners are asynchronous and persistence uses `emit`, not an awaited atomic notification transaction. Notifications create persisted deliveries; immediate processing events and the scheduler continue into configured gateways. Event emission is not proof of successful delivery or exactly-once behavior. Public reschedule/cancel now emit the matching events after commit; completion/no-show also cancels pending reminders.
@@ -134,7 +134,7 @@ Listeners are asynchronous and persistence uses `emit`, not an awaited atomic no
 | Configuration validation | Interval ordering/overlap enforcement is absent in inspected hours paths; administrative professional replacement does not start its own transaction; same-tenant related-ID checks are incomplete |
 | Global exception representation | Query supports exceptions with no professional links, but create/update DTOs require a nonempty list |
 | Persisted settings versus booking enforcement | Cancellation window, pending-booking cap, confirmation requirement, holiday auto-apply and passive-time setting are not enforced by the inspected appointment mutations |
-| Customer eligibility | Booking paths do not check customer blocking; public lookup by phone can update existing customer data after slot validation, within the booking transaction |
+| Customer eligibility | Public booking rejects blocked/deleted customers and never updates an existing profile; see [public booking](public-booking.md). Authenticated customer-blocking policy is unchanged |
 | Occupancy meaning | All non-cancelled appointment statuses contribute busy time. Full appointment intervals plus full-duration blocks are redundant today; passive-time intent is unestablished |
 | Snapshot duration | Rescheduling uses current service duration and updates stored appointment duration |
 | Time boundaries | Overnight intervals, DST transitions and exception date-boundary intent are not covered by located tests; mutation's local-minute containment must not be presented as proven cross-midnight correctness |
@@ -193,3 +193,23 @@ Agenda uses the business timezone for today and displayed appointment times, wit
 ## Appointment outcomes and projections
 
 New bookings are automatically CONFIRMED; existing PENDING bookings have a Confirm action. `PATCH /appointments/:id/status` supports confirmation, completion and no-show with own/others permissions, start-time checks and repeat-safe requests. Stats write ownership is `appointments/stats`, not `common/stats`; tenant/professional/customer appointment summaries are replaced atomically from source records. See [appointment lifecycle and stats](appointment-lifecycle-and-stats.md) for correction rules, scheduled-day timezone grouping, first completed visits, revenue and performance limits.
+
+
+### Notification dates and links
+
+Appointment notification listeners format current and previous dates/times in the tenant settings timezone, defaulting to America/Montevideo only when absent. Reminder execution remains an absolute UTC instant. Professional email links use the actual dashboard calendar deep link and require a linked active tenant member; customer public management buttons are omitted until public management pages exist. Appointment mutation events no longer generate placeholder `/appointments` links. Notification delivery does not modify appointment lifecycle or require public-web API changes.
+
+
+### Professional morning agenda notification
+
+Appointments owns the five-minute morning/evening summary planner; Notifications renders and delivers its occurrences. It shares availability's weekly-hours inheritance, exception and interval-normalization helpers; stored hour integers remain local minutes. Send time is one elapsed hour before the effective earliest work interval, adjusted into 08:00–21:00 local. Appointment reads supply the count and first start, not the shift start. Only PENDING/CONFIRMED appointments are counted, including customerless records, within local-day UTC boundaries. No summary is generated after its first eligible appointment begins. Summary snapshots do not mutate appointments or replace their event listeners; retries retain the original snapshot. See notifications.md for persistence, expiry, rollout prerequisites and scope.
+
+
+### Professional evening agenda notification
+
+The notification planner also generates a day-end summary one elapsed hour after the last effective work interval, delayed further until one hour after the latest non-cancelled appointment end. It uses the original appointment-start business date for all states, includes customerless appointments, and totals completed-service value after discount with Decimal arithmetic. Cancelled, no-show and unresolved outcomes are explicit; appointment lifecycle state is not changed. Late shifts defer to the next allowed 08:00 opening, retaining the original date, with no generation after the following noon. Dated dashboard actions open that date/professional's live agenda. Snapshot and retry-window simplifications are documented in notifications.md.
+
+
+### Public booking verification
+
+See [public booking identity and verification](public-booking.md) for the customer OTP API, paid/unpaid policy, contact binding, OTP attempt limits, non-billable purpose-specific OTPs and optional WhatsApp consent, deployment prerequisites and pending public-web integration.

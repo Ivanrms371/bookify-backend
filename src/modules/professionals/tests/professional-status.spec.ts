@@ -26,7 +26,7 @@ describe('professional booking status', () => {
       return { count: 1 };
     });
     const repository = new ProfessionalsRepository({ professional: { updateMany } } as never);
-    const service = new ProfessionalsService({} as never, repository, {} as never);
+    const service = new ProfessionalsService({} as never, repository, {} as never, {} as never);
     return { service, professional, updateMany };
   }
   it('deactivates and reactivates idempotently while preserving account access and appointments', async () => {

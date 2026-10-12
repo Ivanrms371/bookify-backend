@@ -2,7 +2,7 @@ import { CustomersRepository } from './customers.repository';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { FindAllCustomersParams } from './dto/find-all-customers-params.dto';
-import { CustomerNotFoundException, CustomerPhoneAlreadyExistsException } from './exceptions/customer.exceptions';
+import { CustomerInvalidPhoneException, CustomerNotFoundException, CustomerPhoneAlreadyExistsException } from './exceptions/customer.exceptions';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 
@@ -35,6 +35,15 @@ export class CustomersService {
     return { ...newCustomer, isNew: true };
   }
 
+  async findPublicByPhoneOrCreate(tenantId: string, data: CreateCustomerDto) {
+    const phoneCountryCode = data.phoneCountryCode.replace(/\D/g, '');
+    const phoneNumber = data.phoneNumber.replace(/\D/g, '');
+    if (!phoneCountryCode || !phoneNumber || (phoneCountryCode + phoneNumber).length > 15) {
+      throw new CustomerInvalidPhoneException();
+    }
+    return this.customersRepository.findOrCreatePublic(tenantId, { ...data, phoneCountryCode, phoneNumber });
+  }
+
   async search(tenantId: string, query: string) {
     return this.customersRepository.search(tenantId, query);
   }
@@ -52,7 +61,7 @@ export class CustomersService {
     if (!customer) {
       throw new CustomerNotFoundException();
     }
-    if (data.phoneNumber && data.phoneCountryCode) {
+    if (data.phoneNumber !== undefined || data.phoneCountryCode !== undefined) {
       const phoneExists = await this.customersRepository.findByPhone(
         tenantId,
         data.phoneCountryCode || customer.phoneCountryCode,
@@ -62,7 +71,7 @@ export class CustomersService {
         throw new CustomerPhoneAlreadyExistsException();
       }
     }
-    return this.customersRepository.update(tenantId, id, data);
+    return this.customersRepository.updateContacts(tenantId, id, data);
   }
 
   async block(tenantId: string, id: string) {

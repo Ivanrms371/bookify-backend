@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { VerificationsService } from './core/verifications.service';
 import { CreateVerificationDto } from './domain/dto/create-verification.dto';
 import { ResendVerificationDto } from './domain/dto/resend-verification.dto';

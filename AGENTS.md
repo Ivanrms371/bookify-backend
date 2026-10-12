@@ -40,6 +40,8 @@ Global guards in `src/app.module.ts` run `JwtAuthGuard` → `TenantGuard` → `P
 
 Domain modules under `src/modules` commonly use modules, controllers, services, repositories, DTOs and mappers, but their layouts vary. `src/shared` contains infrastructure adapters; `src/common` contains security and other cross-cutting application concerns. Use actual module imports/exports as the dependency map. Repositories exist, but services also use Prisma directly for queries/transactions (for example `appointments-public.service.ts`). Preserve transaction client propagation and inspect which calls actually share the transaction; repository-only access is not an existing invariant.
 
+Prefer Prisma Client for database reads and writes, including conditional `updateMany` operations and filters/orderings that Prisma can express. Use `$queryRaw`/`$executeRaw` only when the required database operation cannot reasonably be expressed through Prisma Client, and explain why near the query. Do not introduce raw SQL merely for convenience or to reproduce an ordinary filter, sort, limit, or atomic conditional update.
+
 Appointments depend on availability, customers, professionals, services and tenant settings. Creation/rescheduling/cancellation paths can emit notification-related events; compare authenticated and public paths rather than assuming equal event behavior. Availability combines timezone conversion, business/professional working hours, exceptions, appointment blocks, buffers and booking limits. Changes require tracing these rules together. `src/modules/portal/portal.module.ts` is commented out and is not registered as an active module.
 
 ## Dependencies, checks and coordination

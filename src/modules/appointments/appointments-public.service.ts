@@ -1,3 +1,6 @@
+import type { WhatsappActivationContact } from './types/whatsapp-activation.type';
+import { WhatsappGateway } from '../notifications/infraestructure/gateways/whatsapp.gateway';
+import { VerificationsService } from '../verifications/core/verifications.service';
 import { AppointmentStatsService } from './stats/appointment-stats.service';
 import type { AppointmentMutationContext } from './stats/types/appointment-stats.types';
 import { AppointmentCancelledEvent } from './domain/events/appointment-cancelled.event';
@@ -14,8 +17,6 @@ import { randomBytes } from 'crypto';
 import { AppointmentsPublicRepository } from './appointments-public.repository';
 import { AppointmentCreatedEvent } from './domain/events/appointment-created.event';
 
-const APP_URL = process.env.APP_URL ?? 'http://localhost:5173';
-
 @Injectable()
 export class AppointmentsPublicService {
   constructor(
@@ -25,6 +26,7 @@ export class AppointmentsPublicService {
     private readonly professionalsService: ProfessionalsService,
     private readonly servicesService: ServicesService,
     private readonly stats: AppointmentStatsService,
+    private readonly verifications: VerificationsService,
   ) {}
 
   async findByToken(token: string) {
@@ -32,7 +34,18 @@ export class AppointmentsPublicService {
     if (!appt) {
       throw new NotFoundException('Cita no encontrada.');
     }
-    return appt;
+    const { customer, ...result } = appt;
+    return { ...result, whatsapp: this.whatsappStatus(customer) };
+  }
+
+  private whatsappStatus(customer: WhatsappActivationContact | null) {
+    return { activated: !!(customer?.phoneVerifiedAt && customer.whatsappOptInAt), available: WhatsappGateway.isOperational() };
+  }
+
+  async requestWhatsappVerification(token: string) {
+    const appointment = await this.appointmentsPublicRepository.findByToken(token);
+    if (!appointment?.customerId) throw new NotFoundException('Cita no encontrada.');
+    return this.verifications.requestCustomerVerification(appointment.tenantId, appointment.customerId, undefined, true);
   }
 
   async create(params: CreatePublicParams) {
@@ -52,7 +65,7 @@ export class AppointmentsPublicService {
   }
 
   private async createInTransaction(context: AppointmentMutationContext, params: CreatePublicParams) {
-    const { tenantId, serviceId, professionalId, customerEmail, customerName, customerPhone, customerPhoneCode } = params;
+    const { tenantId, serviceId, professionalId } = params;
 
     const professional = await this.professionalsService.findById(tenantId, professionalId);
     if (!professional) {
@@ -79,16 +92,7 @@ export class AppointmentsPublicService {
       throw new BadRequestException('El horario seleccionado ya no está disponible.');
     }
 
-    const customer = await this.customersService.findByPhoneOrCreate(
-      params.tenantId,
-      {
-        email: customerEmail,
-        name: customerName,
-        phoneNumber: customerPhone,
-        phoneCountryCode: customerPhoneCode,
-      },
-      context.tx,
-    );
+    const customer = await this.verifications.eligibleCustomer(params.customerId, tenantId, context.tx);
 
     const appointment = await this.appointmentsPublicRepository.create(
       {
@@ -104,7 +108,7 @@ export class AppointmentsPublicService {
         customerPhone: customer.phoneNumber,
         customerEmail: customer.email,
         durationMinutes: service.durationMinutes,
-        notes: customer.notes,
+        notes: params.notes,
         price: service.price,
         blocks: {
           create: {
@@ -118,23 +122,19 @@ export class AppointmentsPublicService {
 
     context.afterCommit('appointment.created', {
       tenantId,
-      userId: professional.userId,
-      professionalId,
-      professionalName: professional.name,
-      serviceId,
-      serviceName: service.name,
-      customerId: customer.id,
-      customerName: customer.name,
-      cancelUrl: `/appointments/${manageToken}/cancel`,
-      rescheduleUrl: `/appointments/${manageToken}/reschedule`,
-      detailsUrl: `${APP_URL}/appointments`,
-      startAppointmentDate: startsAt,
-      endAppointmentDate: endsAt,
       appointmentId: appointment.id,
-      createdBy: CreatedByType.CUSTOMER,
     } satisfies AppointmentCreatedEvent);
 
-    return appointment;
+    return {
+      id: appointment.id,
+      status: appointment.status,
+      startsAt: appointment.startsAt,
+      endsAt: appointment.endsAt,
+      durationMinutes: appointment.durationMinutes,
+      price: appointment.price,
+      manageToken: appointment.manageToken,
+      whatsapp: this.whatsappStatus(customer),
+    };
   }
 
   private async rescheduleInTransaction(context: AppointmentMutationContext, token: string, params: ReschedulePublicParams) {
@@ -193,19 +193,7 @@ export class AppointmentsPublicService {
       context.afterCommit('appointment.rescheduled', {
         appointmentId: appt.id,
         tenantId,
-        userId: appt.professional.userId,
-        professionalId,
-        professionalName: appt.professional.name,
-        serviceId,
-        serviceName: appt.service.name,
-        customerId: appt.customerId,
-        customerName: appt.customerName ?? appt.customer?.name ?? '',
-        cancelUrl: `/appointments/${token}/cancel`,
-        rescheduleUrl: `/appointments/${token}/reschedule`,
         previousStartsAt: appt.startsAt,
-        previousEndsAt: appt.endsAt,
-        startsAt,
-        endsAt,
         rescheduleReason: params.rescheduleReason,
         rescheduledByName: appt.customerName ?? '',
         rescheduledBy: RecipientType.CUSTOMER,
@@ -236,15 +224,6 @@ export class AppointmentsPublicService {
       context.afterCommit('appointment.cancelled', {
         appointmentId: appt.id,
         tenantId: appt.tenantId,
-        userId: appt.professional.userId,
-        professionalId: appt.professionalId,
-        professionalName: appt.professional.name,
-        customerId: appt.customerId,
-        customerName: appt.customerName ?? appt.customer?.name ?? '',
-        serviceId: appt.serviceId,
-        startsAt: appt.startsAt,
-        endsAt: appt.endsAt,
-        status: AppointmentStatus.CANCELLED,
         cancellationReason: params.cancellationReason ?? '',
         cancelledByName: appt.customerName ?? '',
         cancelledBy: RecipientType.CUSTOMER,

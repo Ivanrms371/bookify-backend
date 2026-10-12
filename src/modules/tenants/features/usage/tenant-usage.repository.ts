@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from 'src/common/database/base.repository';
-import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
+import type { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { TenantUsageFindInput, TenantUsageUpsertInput } from './interfaces/tenant-usage.interface';
+import type { NotificationLimits, TenantUsagePeriod } from './types/tenant-usage.types';
 
 @Injectable()
 export class TenantUsageRepository extends BaseRepository {
@@ -10,73 +10,27 @@ export class TenantUsageRepository extends BaseRepository {
     super(prisma);
   }
 
-  upsert(where: TenantUsageFindInput, data: TenantUsageUpsertInput, tx?: TransactionClient) {
-    const { tenantId, periodMonth, periodYear } = where;
-    return this.db(tx).tenantUsage.upsert({
-      where: {
-        tenantId_periodMonth_periodYear: where,
-      },
-      update: {
-        appointmentLimit: data.appointmentLimit,
-        whatsappLimit: data.whatsappLimit,
-        emailLimit: data.emailLimit,
-      },
-      create: {
-        tenant: { connect: { id: where.tenantId } },
-        lastResetAt: new Date(),
-        periodMonth,
-        periodYear,
-        appointmentLimit: data.appointmentLimit,
-        whatsappLimit: data.whatsappLimit,
-        emailLimit: data.emailLimit,
-      },
-    });
+  findSubscription(tenantId: string, tx: TransactionClient) {
+    return this.db(tx).subscription.findUnique({ where: { tenantId } });
   }
 
-  incrementAppointmentsCount(where: TenantUsageFindInput) {
-    return this.db().tenantUsage.update({
-      where: {
-        tenantId_periodMonth_periodYear: where,
-      },
-      data: {
-        appointmentCount: {
-          increment: 1,
-        },
-      },
-    });
+  findPeriod(period: TenantUsagePeriod, tx: TransactionClient) {
+    return this.db(tx).tenantUsage.findUnique({ where: { tenantId_periodMonth_periodYear: period } });
   }
 
-  incrementEmailCount(where: TenantUsageFindInput) {
-    return this.db().tenantUsage.update({
-      where: {
-        tenantId_periodMonth_periodYear: where,
-      },
-      data: {
-        emailCount: {
-          increment: 1,
-        },
-      },
-    });
+  createPeriod(period: TenantUsagePeriod, limits: NotificationLimits, now: Date, tx: TransactionClient) {
+    return this.db(tx).tenantUsage.create({ data: { ...period, ...limits, lastResetAt: now } });
   }
 
-  incrementWhatsappCount(where: TenantUsageFindInput) {
-    return this.db().tenantUsage.update({
-      where: {
-        tenantId_periodMonth_periodYear: where,
-      },
-      data: {
-        whatsappCount: {
-          increment: 1,
-        },
-      },
-    });
+  updateNotificationLimits(period: TenantUsagePeriod, limits: Partial<NotificationLimits>, tx: TransactionClient) {
+    return this.db(tx).tenantUsage.update({ where: { tenantId_periodMonth_periodYear: period }, data: limits });
   }
 
-  async findByTenantId(where: TenantUsageFindInput) {
-    return this.db().tenantUsage.findUnique({
-      where: {
-        tenantId_periodMonth_periodYear: where,
-      },
-    });
+  countProfessionals(tenantId: string, tx?: TransactionClient) {
+    return this.db(tx).professional.count({ where: { tenantId, deletedAt: null } });
+  }
+
+  countServices(tenantId: string, tx?: TransactionClient) {
+    return this.db(tx).service.count({ where: { tenantId, deletedAt: null } });
   }
 }

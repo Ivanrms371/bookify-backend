@@ -1,4 +1,4 @@
-import { ConflictException, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 
 export class CustomerPhoneAlreadyExistsException extends ConflictException {
   constructor() {
@@ -17,4 +17,8 @@ export class CustomerNotFoundException extends NotFoundException {
       message: 'No hemos podido encontrar el cliente',
     });
   }
+}
+
+export class CustomerInvalidPhoneException extends BadRequestException {
+  constructor() { super('El número de teléfono no es válido.'); }
 }

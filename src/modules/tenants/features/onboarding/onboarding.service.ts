@@ -1,3 +1,6 @@
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import type { TenantCreatedEvent } from '../../events/tenant-created.event';
+import { lockEntitlements } from 'src/common/database/entitlements-lock';
 import { resolveLocationSelection, getLocationOptions } from 'src/shared/location/location-catalog';
 import { LocationStepDto } from './dto/location-step.dto';
 import { getLocationCountry, resolveLocationRegion } from 'src/shared/location/location-catalog';
@@ -40,6 +43,7 @@ export class TenantOnboardingService {
     private readonly prisma: PrismaService,
     private readonly tenantOnboardingRepository: TenantOnboardingRepository,
     private readonly subscriptionsService: SubscriptionsService,
+    private readonly events: EventEmitter2,
   ) {}
 
   async getStatus(ownerId: string, tenantId?: string): Promise<TenantOnboardingResponse> {
@@ -174,6 +178,7 @@ export class TenantOnboardingService {
     const tenant = await this.requireTenantByOwnerId(userId);
     if (tenant.onboardingStatus === OnboardingStatus.COMPLETED) return this.getStatus(userId);
     await this.prisma.$transaction(async (tx) => {
+      await lockEntitlements(tx);
       const current = await this.tenantOnboardingRepository.lockTenant(tenant.id, tx);
       if (current.onboardingStatus === OnboardingStatus.COMPLETED) return;
       if (current.onboardingStatus !== OnboardingStatus.CONFIRM) throw new OnboardingConfirmationUnavailableException();
@@ -195,6 +200,9 @@ export class TenantOnboardingService {
         resolveLocationSelection(current.country!, current.province!),
       );
       await this.subscriptionsService.createTrialSubscription(tenant.id, tx);
+      const event: TenantCreatedEvent = { tenantId: tenant.id, completedAt: new Date().toISOString() };
+      // Await transactional listeners; they persist work, never send before commit.
+      await this.events.emitAsync('tenant.created', event, tx);
     });
     return this.getStatus(userId);
   }

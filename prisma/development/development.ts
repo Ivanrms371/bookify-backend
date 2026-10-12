@@ -1,3 +1,4 @@
+import { lockEntitlements } from '../../src/common/database/entitlements-lock';
 import { randomBytes } from 'crypto';
 import { addDays, addMonths, differenceInCalendarDays, endOfDay, getDay, startOfMonth } from 'date-fns';
 import { PrismaClient } from '../../src/generated/prisma/client';
@@ -38,6 +39,7 @@ export async function seedDevelopment(prisma: PrismaClient, now = new Date()) {
   const password = await new PasswordService().hash(DEVELOPMENT_PASSWORD);
   return prisma.$transaction(
     async (tx) => {
+      await lockEntitlements(tx);
       await removeDevelopmentDemo(tx);
       const tenants = await tx.tenant.findMany({ where: { OR: [{ id: TENANT_ID }, { slug: SLUG }] } });
       if (tenants.some((t) => t.id !== TENANT_ID || t.slug !== SLUG))
@@ -310,6 +312,13 @@ export async function seedDevelopment(prisma: PrismaClient, now = new Date()) {
         }
       }
       await reconcileStatistics(tx, TENANT_ID, settings.timeZone, now);
+      const period = { tenantId: TENANT_ID, periodMonth: now.getUTCMonth() + 1, periodYear: now.getUTCFullYear() };
+      const limits = { emailLimit: PLANS.pro_plus.monthlyEmails, whatsappLimit: PLANS.pro_plus.monthlyWhatsapp };
+      await tx.tenantUsage.upsert({
+        where: { tenantId_periodMonth_periodYear: period },
+        create: { ...period, ...limits, lastResetAt: now },
+        update: limits,
+      });
       return plan.days;
     },
     { maxWait: 10000, timeout: 120000 },

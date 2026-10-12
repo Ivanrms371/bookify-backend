@@ -1,4 +1,6 @@
 /// <reference types="jest" />
+import { TenantUsageService } from 'src/modules/tenants/features/usage/tenant-usage.service';
+import { TenantUsageRepository } from 'src/modules/tenants/features/usage/tenant-usage.repository';
 import { TeamService } from '../team.service';
 import { ProfessionalsService } from '../../professionals/professionals.service';
 import { ProfessionalsRepository } from '../../professionals/professionals.repository';
@@ -180,7 +182,12 @@ export function accessFixture(status = 'NONE', role = 'STAFF') {
     }),
   };
   const memberships = new MembershipsService(new MembershipsRepository(prisma));
-  const professionals = new ProfessionalsService(prisma, new ProfessionalsRepository(prisma), {} as never);
+  const professionals = new ProfessionalsService(
+    prisma,
+    new ProfessionalsRepository(prisma),
+    {} as never,
+    new TenantUsageService(new TenantUsageRepository(prisma), prisma),
+  );
   const emitter = { emitAsync: jest.fn().mockResolvedValue([]) };
   const users = {
     findByEmail: jest.fn(async (email: string) => state.users.find((u: any) => u.email.toLowerCase() === email.toLowerCase()) ?? null),

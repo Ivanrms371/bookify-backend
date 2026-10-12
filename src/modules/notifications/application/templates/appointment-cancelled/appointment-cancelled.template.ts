@@ -1,3 +1,4 @@
+import { appointmentLink } from '../_components/appointment-links';
 import { Injectable } from '@nestjs/common';
 import { NotificationChannel } from 'src/generated/prisma/enums';
 import { NotificationTemplate } from 'src/modules/notifications/domain/templates/notification-template.interface';
@@ -27,31 +28,38 @@ export class AppointmentCancelledTemplate implements NotificationTemplate {
 
   private buildEmail(variables: AppointmentCancelledVariables): BuildEmailResponse {
     return {
-      subject: `Cita cancelada - para el ${variables.date}`,
+      subject: `Cita cancelada · ${variables.date} a las ${variables.time}`,
       react: AppointmentCancelledEmailTemplate(variables),
     };
   }
 
   private buildInApp(variables: AppointmentCancelledVariables): BuildInAppResponse {
-    const cancelledByCustomer = variables.cancelledBy === RecipientType.CUSTOMER;
+    const cancelledByCustomer = variables.audience
+      ? variables.audience === 'PROFESSIONAL'
+      : variables.cancelledBy === RecipientType.CUSTOMER;
 
     return {
       title: 'Cita cancelada',
       message: cancelledByCustomer
-        ? `${variables.customerName} canceló la cita para el ${variables.date}`
-        : `Tu cita con ${variables.professionalName} para el ${variables.date} ha sido cancelada`,
+        ? `${variables.customerName} canceló la cita para el ${variables.date} a las ${variables.time}`
+        : `Tu cita con ${variables.professionalName} para el ${variables.date} a las ${variables.time} ha sido cancelada`,
       actionUrl: `/appointments/${variables.appointmentId}`,
+      actionLabel: 'Ver cita cancelada',
+      action: { version: 1, kind: 'APPOINTMENT', appointmentId: variables.appointmentId },
     };
   }
 
   private buildWhatsapp(variables: AppointmentCancelledVariables): BuildWhatsappResponse {
-    const cancelledByCustomer = variables.cancelledBy === RecipientType.CUSTOMER;
+    const cancelledByCustomer = variables.audience
+      ? variables.audience === 'PROFESSIONAL'
+      : variables.cancelledBy === RecipientType.CUSTOMER;
+    const link = appointmentLink(cancelledByCustomer ? 'Ver cita cancelada' : 'Ver mi cita', variables.detailsUrl);
     const reason = variables.cancellationReason ? ` Motivo: ${variables.cancellationReason}.` : '';
 
     return {
       body: cancelledByCustomer
-        ? `Cita cancelada: ${variables.customerName} cancelo la cita con ${variables.professionalName} del ${variables.date} a las ${variables.time}.${reason}`
-        : `Hola ${variables.customerName}. Tu cita con ${variables.professionalName} del ${variables.date} a las ${variables.time} fue cancelada.${reason}`,
+        ? `Cita cancelada: ${variables.customerName} canceló la cita con ${variables.professionalName} del ${variables.date} a las ${variables.time}.${reason}${link}`
+        : `Hola ${variables.customerName}. Tu cita con ${variables.professionalName} del ${variables.date} a las ${variables.time} fue cancelada.${reason}${link}`,
     };
   }
 }

@@ -1,3 +1,4 @@
+import { resolveWorkingHours, resolveScheduleExceptions } from './utils/working-schedule.util';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { AvailabilityRepository } from './availability.repository';
 import { SlotsGenerator } from './slots-generator';
@@ -407,9 +408,7 @@ export class AvailabilityService {
       const currentDateStr = format(currentDayLocal, 'yyyy-MM-dd');
       const dayOfWeek = getDay(currentDayLocal); // 0 (Sun) a 6 (Sat)
 
-      const effectiveWorkingHours = hasCustomSchedule
-        ? timeline.professionalHours.filter((h) => h.dayOfWeek === dayOfWeek)
-        : timeline.tenantHours.filter((h) => h.dayOfWeek === dayOfWeek);
+      const effectiveWorkingHours = resolveWorkingHours(timeline.tenantHours, timeline.professionalHours, dayOfWeek);
 
       if (effectiveWorkingHours.length === 0) {
         days.push({
@@ -541,18 +540,12 @@ export class AvailabilityService {
     const dayOfWeek = getDay(currentDayLocal);
     const currentDateStr = format(currentDayLocal, 'yyyy-MM-dd');
 
-    const hasCustomSchedule = timeline.professionalHours.length > 0;
-    const workingHours = hasCustomSchedule
-      ? timeline.professionalHours.filter((h) => h.dayOfWeek === dayOfWeek)
-      : timeline.tenantHours.filter((h) => h.dayOfWeek === dayOfWeek);
+    const workingHours = resolveWorkingHours(timeline.tenantHours, timeline.professionalHours, dayOfWeek);
 
     const currentDayStartUtc = new Date(startOfDay(currentDayLocal).getTime());
     const currentDayEndUtc = new Date(endOfDay(currentDayLocal).getTime());
 
-    const activeExceptions = timeline.exceptions.filter((e) => e.startDate <= currentDayEndUtc && e.endDate >= currentDayStartUtc);
-
-    const isFullyClosed = activeExceptions.some((e) => e.isClosed);
-    const exceptionBlocks = activeExceptions.flatMap((e) => e.blocks.map((b) => ({ opensAt: b.opensAt, closesAt: b.closesAt })));
+    const { isFullyClosed, exceptionBlocks } = resolveScheduleExceptions(timeline.exceptions, currentDayStartUtc, currentDayEndUtc);
 
     return {
       targetDate: currentDateStr,

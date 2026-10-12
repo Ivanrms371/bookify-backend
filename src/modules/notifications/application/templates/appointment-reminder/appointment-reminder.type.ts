@@ -1,11 +1,12 @@
 export type AppointmentReminderVariables = {
   customerName: string;
   appointmentId: string;
+  detailsUrl?: string;
   serviceName: string;
   professionalName: string;
   date: string;
   time: string;
   reminderType: '24h' | '2h';
-  cancelUrl: string;
-  rescheduleUrl: string;
+  cancelUrl?: string;
+  rescheduleUrl?: string;
 };

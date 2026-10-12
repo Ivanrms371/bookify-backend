@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsEnum, IsIn, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 import { RecipientType, VerificationType } from 'src/generated/prisma/enums';
 
 export class CreateVerificationDto {
@@ -13,7 +13,7 @@ export class CreateVerificationDto {
   @IsNotEmpty()
   recipientId: string;
 
-  @IsEnum(RecipientType)
+  @IsIn([RecipientType.USER, RecipientType.CUSTOMER])
   recipientType: RecipientType;
 
   @IsUUID()

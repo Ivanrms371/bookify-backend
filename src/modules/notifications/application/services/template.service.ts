@@ -1,3 +1,9 @@
+import { CustomerVerificationTemplate } from '../templates/customer-verification/customer-verification.template';
+import { VerificationPhoneTemplate } from '../templates/confirm-phone/confirm-phone.template';
+import { MemberJoinedTemplate } from '../templates/member-joined/member-joined.template';
+import { TrialEnds7dTemplate, TrialEnds3dTemplate, Renewal3dTemplate } from '../templates/billing-notice/billing-notice.template';
+import { ProfessionalDayEndTemplate } from '../templates/professional-day-end/professional-day-end.template';
+import { ProfessionalDayStartTemplate } from '../templates/professional-day-start/professional-day-start.template';
 import { Injectable } from '@nestjs/common';
 import { BuildEmailResponse } from '../../domain/templates/build-email.interface';
 import { BuildInAppResponse } from '../../domain/templates/build-in-app.interface';
@@ -24,7 +30,18 @@ export class TemplateService {
     private readonly verificationEmailTemplate: VerificationEmailTemplate,
     private readonly tenantCreatedTemplate: TenantCreatedTemplate,
     private readonly membershipInvitedTemplate: InvitationCreatedTemplate,
+    private readonly professionalDayStartTemplate: ProfessionalDayStartTemplate,
+    private readonly professionalDayEndTemplate: ProfessionalDayEndTemplate,
+    memberJoined: MemberJoinedTemplate,
+    trial7: TrialEnds7dTemplate,
+    trial3: TrialEnds3dTemplate,
+    renewal: Renewal3dTemplate,
+    phone: VerificationPhoneTemplate,
+    customer: CustomerVerificationTemplate,
   ) {
+    for (const template of [customer, phone, memberJoined, trial7, trial3, renewal]) this.templateMap.set(template.type, template);
+    this.templateMap.set(this.professionalDayEndTemplate.type, this.professionalDayEndTemplate);
+    this.templateMap.set(this.professionalDayStartTemplate.type, this.professionalDayStartTemplate);
     this.templateMap.set(this.appointmentCreatedTemplate.type, this.appointmentCreatedTemplate);
     this.templateMap.set(this.appointmentCancelledTemplate.type, this.appointmentCancelledTemplate);
     this.templateMap.set(this.appointmentRescheduledTemplate.type, this.appointmentRescheduledTemplate);

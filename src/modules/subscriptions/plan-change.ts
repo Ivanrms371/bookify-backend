@@ -1,3 +1,4 @@
+import { renewalProjection } from './utils/renewal-projection';
 import { freeActivation, projectFreeProviderState } from './utils/free-transition';
 import type { SubscriptionPlanState } from './types/plan-change.types';
 import { PLANS } from './plans.config';
@@ -42,6 +43,7 @@ export function projectDuePlanChange(subscription: SubscriptionPlanState, now = 
     return !subscription.planChangeUndoRequestedAt ? { ...subscription, ...freeActivation } : subscription;
   }
   const plan = PLANS[subscription.pendingPlanId as PlanId];
+  if (!plan) return subscription;
   const cycle = subscription.pendingBillingCycle ?? subscription.billingCycle;
   return {
     ...subscription,
@@ -78,7 +80,14 @@ export function projectProviderPlanChange(
   now = new Date(),
 ) {
   if (local.pendingPlanId === 'free' || (local.planId === 'free' && local.status === 'ACTIVE')) {
-    return projectFreeProviderState(local, current, now);
+    const update = projectFreeProviderState(local, current, now);
+    if (!Object.keys(update).length) return update;
+    const resumesPaid = update.status === 'ACTIVE' && update.pendingPlanId === null;
+    return {
+      ...renewalProjection(current),
+      ...update,
+      ...(!resumesPaid ? { nextRenewalAt: null } : {}),
+    };
   }
   const update = toProviderSubscriptionUpdate(current, target, local.cancelledAt);
   const keepCurrentPlan = {

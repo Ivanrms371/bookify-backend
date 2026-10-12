@@ -87,6 +87,10 @@ model Session {
 }
 
 model Verification {
+  channel       NotificationChannel?
+  destination   String?
+  contactWasMissing Boolean @default(false) @map("contact_was_missing")
+
   id            String           @id @default(dbgenerated("uuidv7()")) @db.Uuid
   type          VerificationType
   tokenHash     String?          @unique @map("token_hash")
@@ -109,6 +113,7 @@ model Verification {
 }
 
 model Tenant {
+
   id                          String                      @id @default(dbgenerated("uuidv7()")) @db.Uuid
   slug                        String?                     @unique
   name                        String?
@@ -313,6 +318,7 @@ model ScheduleExceptionBlock {
 }
 
 model Customer {
+
   id                    String        @id @default(dbgenerated("uuidv7()")) @db.Uuid
   tenantId              String        @map("tenant_id") @db.Uuid
   phoneCountryCode      String        @default("598") @map("phone_country_code")
@@ -332,6 +338,7 @@ model Customer {
   name                  String
   emailVerifiedAt       DateTime?     @map("email_verified_at")
   phoneVerifiedAt       DateTime?     @map("phone_verified_at")
+  whatsappOptInAt       DateTime?     @map("whatsapp_opt_in_at")
   notes                 String?
   phoneNumber           String        @map("phone_number")
   appointments          Appointment[]
@@ -473,6 +480,8 @@ model Notification {
   createdAt     DateTime               @default(now()) @map("created_at")
   updatedAt     DateTime               @updatedAt @map("updated_at")
   referenceId   String?                @map("reference_id")
+  occurrenceKey String?                @unique @map("occurrence_key")
+  expiresAt     DateTime?              @map("expires_at")
   inApp         InAppNotification?
   deliveries    NotificationDelivery[]
 
@@ -483,21 +492,36 @@ model Notification {
 }
 
 model NotificationDelivery {
-  id                  String              @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  notificationId      String              @map("notification_id") @db.Uuid
+  id                  String                        @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  notificationId      String                        @map("notification_id") @db.Uuid
   channel             NotificationChannel
-  status              NotificationStatus  @default(PENDING)
-  errorMessage        String?             @map("error_message")
-  sentAt              DateTime?           @map("sent_at")
-  runAt               DateTime?           @map("run_at")
-  retryCount          Int                 @default(0) @map("retry_count")
-  externalReferenceId String?             @map("external_reference_id")
-  notification        Notification        @relation(fields: [notificationId], references: [id])
+  status              NotificationStatus            @default(PENDING)
+  errorMessage        String?                       @map("error_message")
+  sentAt              DateTime?                     @map("sent_at")
+  runAt               DateTime?                     @map("run_at")
+  retryCount          Int                           @default(0) @map("retry_count")
+  externalReferenceId String?                       @map("external_reference_id")
+  claimedAt           DateTime?                     @map("claimed_at")
+  notification        Notification                  @relation(fields: [notificationId], references: [id])
   logs                NotificationLog[]
+  usageReservation    NotificationUsageReservation?
 
   @@unique([notificationId, channel])
   @@index([notificationId])
   @@map("notification_deliveries")
+}
+
+model NotificationUsageReservation {
+  deliveryId String               @id @map("delivery_id") @db.Uuid
+  usageId    String               @map("usage_id") @db.Uuid
+  channel    NotificationChannel
+  state      String               @default("RESERVED")
+  ambiguous  Boolean              @default(false)
+  delivery   NotificationDelivery @relation(fields: [deliveryId], references: [id])
+  usage      TenantUsage          @relation(fields: [usageId], references: [id])
+
+  @@index([usageId])
+  @@map("notification_usage_reservations")
 }
 
 model InAppNotification {
@@ -511,6 +535,8 @@ model InAppNotification {
   type           String
   readAt         DateTime?    @map("read_at")
   createdAt      DateTime     @default(now()) @map("created_at")
+  actionLabel    String?      @map("action_label")
+  action         Json?
   notification   Notification @relation(fields: [notificationId], references: [id])
   tenant         Tenant       @relation(fields: [tenantId], references: [id])
   user           User         @relation(fields: [userId], references: [id])
@@ -532,59 +558,64 @@ model NotificationLog {
 }
 
 model TenantUsage {
-  id               String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenantId         String   @map("tenant_id") @db.Uuid
-  periodMonth      Int      @map("period_month")
-  periodYear       Int      @map("period_year")
-  lastResetAt      DateTime @map("last_reset_at")
-  updatedAt        DateTime @updatedAt @map("updated_at")
-  appointmentCount Int      @default(0) @map("appointment_count")
-  appointmentLimit Int      @default(-1) @map("appointment_limit")
-  whatsappCount    Int      @default(0) @map("whatsapp_count")
-  whatsappLimit    Int      @default(0) @map("whatsapp_limit")
-  whatsappCost     Decimal  @default(0) @map("whatsapp_cost") @db.Decimal(6, 4)
-  emailCount       Int      @default(0) @map("email_count")
-  emailLimit       Int      @default(0) @map("email_limit")
-  emailCost        Decimal  @default(0) @map("email_cost") @db.Decimal(6, 4)
-  tenant           Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id                       String                         @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenantId                 String                         @map("tenant_id") @db.Uuid
+  periodMonth              Int                            @map("period_month")
+  periodYear               Int                            @map("period_year")
+  lastResetAt              DateTime                       @map("last_reset_at")
+  updatedAt                DateTime                       @updatedAt @map("updated_at")
+  appointmentCount         Int                            @default(0) @map("appointment_count")
+  appointmentLimit         Int                            @default(-1) @map("appointment_limit")
+  whatsappCount            Int                            @default(0) @map("whatsapp_count")
+  whatsappLimit            Int                            @default(0) @map("whatsapp_limit")
+  whatsappCost             Decimal                        @default(0) @map("whatsapp_cost") @db.Decimal(6, 4)
+  emailCount               Int                            @default(0) @map("email_count")
+  emailLimit               Int                            @default(0) @map("email_limit")
+  emailCost                Decimal                        @default(0) @map("email_cost") @db.Decimal(6, 4)
+  notificationReservations NotificationUsageReservation[]
+  tenant                   Tenant                         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@unique([tenantId, periodMonth, periodYear])
   @@map("tenant_usages")
 }
 
 model Subscription {
-  id                  String             @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenantId            String             @unique @map("tenant_id") @db.Uuid
-  planId              String             @map("plan_id")
-  status              SubscriptionStatus @default(TRIAL)
-  amount              Decimal?           @default(0) @db.Decimal(10, 2)
-  billingCycle        BillingCycle?      @map("billing_cycle")
-  currentPeriodStart  DateTime?          @map("current_period_start")
-  currentPeriodEnd    DateTime?          @map("current_period_end")
-  trialEndsAt         DateTime?          @map("trial_ends_at")
-  trialStartedAt      DateTime?          @default(now()) @map("trial_started_at")
-  cancelledAt         DateTime?          @map("cancelled_at")
-  cancelReason        String?            @map("cancel_reason")
-  paymentMethod       String?            @map("payment_method")
-  paymentProvider     String?            @default("LEMON_SQUEEZY") @map("payment_provider")
-  createdAt           DateTime           @default(now()) @map("created_at")
-  updatedAt           DateTime           @updatedAt @map("updated_at")
-  deletedAt           DateTime?          @map("deleted_at")
-  lemonCustomerId     String?            @map("lemon_customer_id")
-  lemonSubscriptionId String?            @unique @map("lemon_subscription_id")
-  endsAt              DateTime?          @map("ends_at")
-  currency            Currency           @default(USD)
-  pendingBillingCycle BillingCycle?      @map("pending_billing_cycle")
-  planChangeUndoRequestedAt DateTime? @map("plan_change_undo_requested_at")
-  pendingPlanId       String?            @map("pending_plan_id")
-  planChangesAt       DateTime?          @map("plan_changes_at")
-  payments            Payment[]
-  tenant              Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  id                        String             @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenantId                  String             @unique @map("tenant_id") @db.Uuid
+  planId                    String             @map("plan_id")
+  status                    SubscriptionStatus @default(TRIAL)
+  amount                    Decimal?           @default(0) @db.Decimal(10, 2)
+  billingCycle              BillingCycle?      @map("billing_cycle")
+  currentPeriodStart        DateTime?          @map("current_period_start")
+  currentPeriodEnd          DateTime?          @map("current_period_end")
+  trialEndsAt               DateTime?          @map("trial_ends_at")
+  trialStartedAt            DateTime?          @default(now()) @map("trial_started_at")
+  cancelledAt               DateTime?          @map("cancelled_at")
+  cancelReason              String?            @map("cancel_reason")
+  paymentMethod             String?            @map("payment_method")
+  paymentProvider           String?            @default("LEMON_SQUEEZY") @map("payment_provider")
+  createdAt                 DateTime           @default(now()) @map("created_at")
+  updatedAt                 DateTime           @updatedAt @map("updated_at")
+  deletedAt                 DateTime?          @map("deleted_at")
+  lemonCustomerId           String?            @map("lemon_customer_id")
+  lemonSubscriptionId       String?            @unique @map("lemon_subscription_id")
+  endsAt                    DateTime?          @map("ends_at")
+  currency                  Currency           @default(USD)
+  pendingBillingCycle       BillingCycle?      @map("pending_billing_cycle")
+  pendingPlanId             String?            @map("pending_plan_id")
+  planChangesAt             DateTime?          @map("plan_changes_at")
+  planChangeUndoRequestedAt DateTime?          @map("plan_change_undo_requested_at")
+  nextRenewalAt             DateTime?          @map("next_renewal_at")
+  renewalCheckedAt          DateTime?          @map("renewal_checked_at")
+  renewalCheckAttemptedAt   DateTime?          @map("renewal_check_attempted_at")
+  payments                  Payment[]
+  tenant                    Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
   @@index([tenantId, status])
   @@index([planChangesAt])
   @@index([status, currentPeriodEnd])
   @@index([status, trialEndsAt])
+  @@index([status, nextRenewalAt])
   @@index([lemonCustomerId])
   @@map("subscriptions")
 }
@@ -677,8 +708,8 @@ enum AuthProvider {
 }
 
 enum VerificationType {
-  CUSTOMER_PHONE_VERIFICATION
-  CUSTOMER_EMAIL_VERIFICATION
+  CUSTOMER_VERIFICATION_EMAIL
+  CUSTOMER_VERIFICATION_PHONE
   USER_EMAIL_VERIFICATION
   USER_PHONE_VERIFICATION
   PASSWORD_RESET
@@ -712,7 +743,6 @@ enum TenantType {
 }
 
 enum OnboardingStatus {
-  LOCATION
   WORKSPACE_TYPE
   BUSINESS_DETAILS
   SCHEDULE
@@ -722,6 +752,7 @@ enum OnboardingStatus {
   CONFIRM
   COMPLETED
   PROFESSIONAL_PROFILE
+  LOCATION
 }
 
 enum Currency {
@@ -776,6 +807,7 @@ enum NotificationChannel {
 enum RecipientType {
   CUSTOMER
   USER
+  PROFESSIONAL
 }
 
 enum NotificationStatus {

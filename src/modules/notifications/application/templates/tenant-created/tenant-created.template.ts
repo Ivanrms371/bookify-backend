@@ -1,29 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { NotificationTemplate } from 'src/modules/notifications/domain/templates/notification-template.interface';
-import { TenantCreatedVariables } from './tenant-created.type';
-import { NotificationChannel } from 'src/generated/prisma/enums';
+import type { NotificationChannel } from 'src/generated/prisma/enums';
+import type { NotificationTemplate } from '../../../domain/templates/notification-template.interface';
+import type { TenantCreatedVariables } from './tenant-created.type';
+import { TenantCreatedEmail } from './email.template';
 
 @Injectable()
 export class TenantCreatedTemplate implements NotificationTemplate {
-  type = 'tenant.created';
-
-  build(channel: NotificationChannel, payload: TenantCreatedVariables) {
-    switch (channel) {
-      case NotificationChannel.EMAIL:
-        throw new Error(`Channel not supported fot ${this.type}`);
-      case NotificationChannel.IN_APP:
-        return this.buildInApp(payload);
-      case NotificationChannel.WHATSAPP:
-        throw new Error(`Channel not supported fot ${this.type}`);
-      default:
-        throw new Error(`Unknown channel: ${channel}`);
-    }
-  }
-
-  private buildInApp(variables: TenantCreatedVariables) {
-    return {
-      title: `Bienvenido ${variables.userName}, ya eres parte de Bookify! 👋`,
-      message: `Empieza ahora a configurar ${variables.tenantName} y a gestionar tus citas y clientes de manera eficiente.`,
-    };
+  readonly type = 'tenant.created';
+  build(channel: NotificationChannel, v: TenantCreatedVariables) {
+    const title = '¡Bienvenido a Bookify!';
+    const message = 'Tu negocio ya está listo. Entrá y empezá a organizar tu agenda y gestionar tus citas desde un solo lugar.';
+    if (channel === 'EMAIL') return { subject: title, react: TenantCreatedEmail(v, message) };
+    if (channel === 'IN_APP')
+      return {
+        title,
+        message: 'Qué bueno tenerte acá. Todo listo para empezar a gestionar tu agenda y tus citas.',
+      };
+    throw new Error(`Unsupported channel for ${this.type}: ${channel}`);
   }
 }

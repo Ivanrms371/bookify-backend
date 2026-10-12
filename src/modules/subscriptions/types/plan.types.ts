@@ -16,6 +16,8 @@ export interface Plan {
   compatibleWorkspaces: WorkspaceType[];
   maxProfessionals: number;
   maxServices: number;
+  monthlyEmails: number;
+  monthlyWhatsapp: number;
   features: string[];
   sortOrder: number;
   isPopular: boolean;

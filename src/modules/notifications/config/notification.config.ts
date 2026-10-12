@@ -2,6 +2,44 @@ import { NotificationChannel } from 'src/generated/prisma/enums';
 import { NotificationConfigMap } from './notification.config.type';
 
 export const NotificationConfig: NotificationConfigMap = {
+  'customer.verification': {
+    retry: { retryable: true, maxRetries: 1, backoffDelays: [10_000] },
+    channels: {
+      CUSTOMER: [
+        { channel: NotificationChannel.WHATSAPP, billable: false },
+        { channel: NotificationChannel.EMAIL, billable: false, fallbackOnly: true },
+      ],
+    },
+  },
+  'member.joined': {
+    retry: { retryable: true, maxRetries: 3, backoffDelays: [60_000, 300_000, 900_000] },
+    channels: { USER: [{ channel: NotificationChannel.IN_APP }] },
+  },
+  'billing.trial.ends.7d': {
+    retry: { retryable: true, maxRetries: 3, backoffDelays: [60_000, 300_000, 900_000] },
+    channels: { USER: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL, billable: false }] },
+  },
+  'billing.trial.ends.3d': {
+    retry: { retryable: true, maxRetries: 3, backoffDelays: [60_000, 300_000, 900_000] },
+    channels: { USER: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL, billable: false }] },
+  },
+  'billing.renewal.3d': {
+    retry: { retryable: true, maxRetries: 3, backoffDelays: [60_000, 300_000, 900_000] },
+    channels: { USER: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL, billable: false }] },
+  },
+
+  'professional.day-end': {
+    retry: { retryable: true, maxRetries: 3, backoffDelays: [60_000, 300_000, 900_000] },
+    channels: {
+      PROFESSIONAL: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL, billable: true }],
+    },
+  },
+  'professional.day-start': {
+    retry: { retryable: true, maxRetries: 3, backoffDelays: [60_000, 300_000, 900_000] },
+    channels: {
+      PROFESSIONAL: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL, billable: true }],
+    },
+  },
   'appointment.created': {
     retry: {
       retryable: true,
@@ -9,12 +47,15 @@ export const NotificationConfig: NotificationConfigMap = {
       backoffDelays: [60_000, 300_000, 900_000],
     },
     channels: {
-      USER: [{ channel: NotificationChannel.EMAIL }],
+      PROFESSIONAL: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL, billable: true }],
+      USER: [{ channel: NotificationChannel.EMAIL, billable: true }],
       CUSTOMER: [
         {
           channel: NotificationChannel.WHATSAPP,
+          billable: true,
           fallback: [NotificationChannel.EMAIL],
         },
+        { channel: NotificationChannel.EMAIL, billable: true, fallbackOnly: true },
       ],
     },
   },
@@ -26,8 +67,7 @@ export const NotificationConfig: NotificationConfigMap = {
       backoffDelays: [10_000],
     },
     channels: {
-      USER: [{ channel: NotificationChannel.EMAIL }],
-      CUSTOMER: [{ channel: NotificationChannel.EMAIL }],
+      USER: [{ channel: NotificationChannel.EMAIL, billable: false }],
     },
   },
 
@@ -38,8 +78,7 @@ export const NotificationConfig: NotificationConfigMap = {
       backoffDelays: [10_000],
     },
     channels: {
-      USER: [{ channel: NotificationChannel.WHATSAPP }],
-      CUSTOMER: [{ channel: NotificationChannel.WHATSAPP }],
+      USER: [{ channel: NotificationChannel.WHATSAPP, billable: false }],
     },
   },
 
@@ -49,7 +88,10 @@ export const NotificationConfig: NotificationConfigMap = {
       maxRetries: 3,
     },
     channels: {
-      CUSTOMER: [{ channel: NotificationChannel.WHATSAPP, fallback: [NotificationChannel.EMAIL] }],
+      CUSTOMER: [
+        { channel: NotificationChannel.WHATSAPP, billable: true, fallback: [NotificationChannel.EMAIL] },
+        { channel: NotificationChannel.EMAIL, billable: true, fallbackOnly: true },
+      ],
     },
   },
 
@@ -67,12 +109,15 @@ export const NotificationConfig: NotificationConfigMap = {
       maxRetries: 3,
     },
     channels: {
-      USER: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL }],
+      PROFESSIONAL: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL, billable: true }],
+      USER: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL, billable: true }],
       CUSTOMER: [
         {
           channel: NotificationChannel.WHATSAPP,
+          billable: true,
           fallback: [NotificationChannel.EMAIL],
         },
+        { channel: NotificationChannel.EMAIL, billable: true, fallbackOnly: true },
       ],
     },
   },
@@ -83,23 +128,21 @@ export const NotificationConfig: NotificationConfigMap = {
       maxRetries: 3,
     },
     channels: {
+      PROFESSIONAL: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL, billable: true }],
       CUSTOMER: [
         {
           channel: NotificationChannel.WHATSAPP,
+          billable: true,
           fallback: [NotificationChannel.EMAIL],
         },
+        { channel: NotificationChannel.EMAIL, billable: true, fallbackOnly: true },
       ],
     },
   },
 
   'tenant.created': {
-    retry: {
-      retryable: true,
-      maxRetries: 3,
-    },
-    channels: {
-      USER: [{ channel: NotificationChannel.IN_APP }],
-    },
+    retry: { retryable: true, maxRetries: 3, backoffDelays: [60_000, 300_000, 900_000] },
+    channels: { USER: [{ channel: NotificationChannel.IN_APP }, { channel: NotificationChannel.EMAIL, billable: false }] },
   },
 
   'appointment.booked.by_professional': {
@@ -111,8 +154,10 @@ export const NotificationConfig: NotificationConfigMap = {
       CUSTOMER: [
         {
           channel: NotificationChannel.EMAIL,
+          billable: true,
           fallback: [NotificationChannel.WHATSAPP],
         },
+        { channel: NotificationChannel.WHATSAPP, billable: true, fallbackOnly: true },
       ],
     },
   },
@@ -123,7 +168,7 @@ export const NotificationConfig: NotificationConfigMap = {
       maxRetries: 3,
     },
     channels: {
-      USER: [{ channel: NotificationChannel.EMAIL }],
+      USER: [{ channel: NotificationChannel.EMAIL, billable: true }],
     },
   },
 
@@ -133,7 +178,7 @@ export const NotificationConfig: NotificationConfigMap = {
       maxRetries: 3,
     },
     channels: {
-      USER: [{ channel: NotificationChannel.EMAIL }],
+      USER: [{ channel: NotificationChannel.EMAIL, billable: false }],
     },
   },
 };

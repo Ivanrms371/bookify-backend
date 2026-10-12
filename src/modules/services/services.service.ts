@@ -1,3 +1,7 @@
+import { TenantUsageService } from '../tenants/features/usage/tenant-usage.service';
+import { PrismaService } from 'src/shared/prisma/prisma.service';
+import type { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
+import type { ServiceCreateManyArgs } from 'src/generated/prisma/models';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ServicesRepository } from './services.repository';
 import { CreateServiceDto } from './dto/create-service.dto';
@@ -6,7 +10,11 @@ import { GetServicesQueryDto } from './dto/get-services-query.dto';
 
 @Injectable()
 export class ServicesService {
-  constructor(private readonly servicesRepository: ServicesRepository) {}
+  constructor(
+    private readonly servicesRepository: ServicesRepository,
+    private readonly prisma: PrismaService,
+    private readonly tenantUsageService: TenantUsageService,
+  ) {}
 
   async findAll(tenantId: string, query: GetServicesQueryDto) {
     return await this.servicesRepository.findMany(tenantId, query);
@@ -20,20 +28,34 @@ export class ServicesService {
     return service;
   }
 
-  async create(tenantId: string, data: CreateServiceDto) {
+  async create(tenantId: string, data: CreateServiceDto, tx?: TransactionClient) {
+    if (!tx) return this.prisma.$transaction((transaction) => this.create(tenantId, data, transaction));
+    await this.tenantUsageService.assertCanAddServices(tenantId, 1, tx);
     const { professionalIds, ...serviceData } = data;
-    return this.servicesRepository.create({
-      ...serviceData,
-      ...(professionalIds &&
-        professionalIds.length > 0 && {
-          assignments: {
-            createMany: {
-              data: professionalIds.map((professionalId) => ({ professionalId })),
+    return this.servicesRepository.create(
+      {
+        ...serviceData,
+        ...(professionalIds &&
+          professionalIds.length > 0 && {
+            assignments: {
+              createMany: {
+                data: professionalIds.map((professionalId) => ({ professionalId })),
+              },
             },
-          },
-        }),
-      tenant: { connect: { id: tenantId } },
-    });
+          }),
+        tenant: { connect: { id: tenantId } },
+      },
+      tx,
+    );
+  }
+
+  async createMany(data: ServiceCreateManyArgs, tx?: TransactionClient) {
+    if (!tx) return this.prisma.$transaction((transaction) => this.createMany(data, transaction));
+    const rows = Array.isArray(data.data) ? data.data : [data.data];
+    const additions = new Map<string, number>();
+    for (const row of rows) additions.set(row.tenantId, (additions.get(row.tenantId) ?? 0) + 1);
+    for (const [tenantId, quantity] of additions) await this.tenantUsageService.assertCanAddServices(tenantId, quantity, tx);
+    return this.servicesRepository.createMany(data, tx);
   }
 
   async update(tenantId: string, id: string, data: UpdateServiceDto) {

@@ -64,10 +64,10 @@ export class InvitationsRepository extends BaseRepository {
     });
   }
 
-  async consume(id: string, token: string, tx: TransactionClient) {
+  async consume(id: string, token: string, tx: TransactionClient, acceptedAt = new Date()) {
     const result = await tx.invitation.updateMany({
       where: { id, token, revokedAt: null, acceptedAt: null, expiresAt: { gt: new Date() } },
-      data: { acceptedAt: new Date() },
+      data: { acceptedAt },
     });
     return result.count === 1;
   }

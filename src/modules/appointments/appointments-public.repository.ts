@@ -17,6 +17,7 @@ export class AppointmentsPublicRepository extends BaseRepository {
     return this.prisma.appointment.findUnique({
       where: { manageToken: token },
       select: {
+        customer: { select: { phoneVerifiedAt: true, whatsappOptInAt: true } },
         status: true,
         durationMinutes: true,
         price: true,

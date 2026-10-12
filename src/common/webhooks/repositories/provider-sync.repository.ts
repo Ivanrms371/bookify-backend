@@ -1,4 +1,4 @@
-import { lockBilling } from 'src/common/database/billing-lock';
+import { lockEntitlements } from 'src/common/database/entitlements-lock';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from 'src/generated/prisma/client';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
@@ -23,7 +23,7 @@ export class ProviderSyncRepository {
   }
 
   acquireLock(tx: Prisma.TransactionClient) {
-    return lockBilling(tx);
+    return lockEntitlements(tx);
   }
 
   markVersion(resource: string, updatedAt: string, tx: Prisma.TransactionClient) {

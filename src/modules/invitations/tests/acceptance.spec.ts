@@ -147,3 +147,82 @@ describe('Invitation consumption', () => {
     expect(await f.invitations.verify('old')).toMatchObject({ status, valid: false });
   });
 });
+
+
+describe('Member notice producer', () => {
+  it('emits invitation.accepted with the caller transaction only after membership and linking succeed', async () => {
+    const f = fixture();
+    f.emitter.emitAsync.mockImplementation(async (name, event, tx) => {
+      expect(name).toBe('invitation.accepted');
+      expect(tx).toBe(f.tx);
+      expect(f.state.professional.userId).toBe('u');
+      expect(f.state.memberships[1].id).toBe(event.membershipId);
+      expect(event.acceptedAt).toBe(f.state.invitations[0].acceptedAt.toISOString());
+      expect(event).not.toHaveProperty('token');
+      return [];
+    });
+    await f.invitations.accept('old', 'u', 'business@example.com');
+    expect(f.emitter.emitAsync).toHaveBeenCalledTimes(1);
+    await f.invitations.accept('old', 'u', 'business@example.com');
+    expect(f.emitter.emitAsync).toHaveBeenCalledTimes(1);
+    expect(f.tx.user.findUnique).toHaveBeenCalledWith({ where: { id: 'u' }, select: { email: true } });
+  });
+  it('emits once for concurrent acceptance and also supports members without professionals', async () => {
+    const f = fixture();
+    f.state.invitations[0].professionalId = null;
+    await Promise.all([f.invitations.accept('old', 'u', 'business@example.com'), f.invitations.accept('old', 'u', 'business@example.com')]);
+    expect(f.emitter.emitAsync).toHaveBeenCalledTimes(1);
+    expect(f.state.professional.userId).toBeNull();
+  });
+  it('rolls back acceptance when transactional notice persistence fails', async () => {
+    const f = fixture();
+    f.emitter.emitAsync.mockRejectedValue(new Error('notice persistence failed'));
+    const before = structuredClone(f.state);
+    await expect(f.invitations.accept('old', 'u', 'business@example.com')).rejects.toThrow('notice persistence failed');
+    expect(f.state).toEqual(before);
+  });
+  it('does not emit on rejected acceptance or failed professional linking', async () => {
+    const f = fixture();
+    await expect(f.invitations.accept('old', 'u', 'wrong@example.com')).rejects.toMatchObject({ status: 403 });
+    f.tx.professional.update.mockRejectedValue(new Error('link failed'));
+    await expect(f.invitations.accept('old', 'u', 'business@example.com')).rejects.toThrow('link failed');
+    expect(f.emitter.emitAsync).not.toHaveBeenCalled();
+  });
+});
+
+it.each(['signup', 'google'] as const)('queues the member notice inside the real %s acceptance flow', async (path) => {
+  const f = fixture();
+  f.state.users = [];
+  const { AuthService } = await import('src/auth/services/auth.service');
+  const authUsers = {
+    ...f.users,
+    create: jest.fn(async (data, tx) => {
+      expect(tx).toBe(f.tx);
+      const user = { ...data, id: 'u', tokenVersion: 0 };
+      f.state.users.push(user);
+      return user;
+    }),
+    updateLastLogin: jest.fn(),
+    findMeById: jest.fn().mockResolvedValue({ activeTenant: { id: 't', slug: 'target' } }),
+  };
+  const auth = new AuthService(
+    f.prisma, authUsers as never,
+    { createOrRefreshSession: jest.fn().mockResolvedValue({ jti: 'jti', deviceId: 'device' }) } as never,
+    { signAccessToken: () => 'access', signRefreshToken: () => 'refresh' } as never,
+    { hash: async () => 'hash' } as never, {} as never, f.invitations,
+  );
+  f.emitter.emitAsync.mockImplementation(async (name, event, tx) => {
+    expect(name).toBe('invitation.accepted');
+    expect(tx).toBe(f.tx);
+    expect(event).toMatchObject({ userId: 'u', membershipId: 'new', invitationId: 'i', tenantId: 't' });
+    expect(f.state.users[0].name).toBe('Alex');
+    expect(f.state.professional.userId).toBe('u');
+    return [];
+  });
+  if (path === 'signup') {
+    await auth.signup({ name: 'Alex', email: 'business@example.com', password: 'secret', token: 'old' } as never);
+  } else {
+    await auth.loginOrCreateFromGoogle({ name: 'Alex', email: 'business@example.com', googleId: 'google', emailVerifiedAt: new Date() }, 'device', 'old');
+  }
+  expect(f.emitter.emitAsync).toHaveBeenCalledTimes(1);
+});

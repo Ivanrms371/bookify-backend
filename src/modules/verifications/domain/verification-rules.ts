@@ -15,19 +15,17 @@ export const OTP_TTL_MS = 10 * MINUTE_MS;
 export type VerificationChallengeKind = 'MAGIC_LINK' | 'OTP';
 
 const CHALLENGE_KIND_BY_TYPE: Record<VerificationType, VerificationChallengeKind> = {
-  CUSTOMER_EMAIL_VERIFICATION: 'MAGIC_LINK',
+  CUSTOMER_VERIFICATION_EMAIL: 'OTP',
+  CUSTOMER_VERIFICATION_PHONE: 'OTP',
   USER_EMAIL_VERIFICATION: 'MAGIC_LINK',
   PASSWORD_RESET: 'MAGIC_LINK',
-  CUSTOMER_PHONE_VERIFICATION: 'OTP',
   USER_PHONE_VERIFICATION: 'OTP',
 };
 
 // Mapeo exhaustivo de tipo a canal de transporte
-const CHANNEL_BY_TYPE: Record<VerificationType, NotificationChannel> = {
-  CUSTOMER_EMAIL_VERIFICATION: NotificationChannel.EMAIL,
+const CHANNEL_BY_TYPE: Partial<Record<VerificationType, NotificationChannel>> = {
   USER_EMAIL_VERIFICATION: NotificationChannel.EMAIL,
   PASSWORD_RESET: NotificationChannel.EMAIL,
-  CUSTOMER_PHONE_VERIFICATION: NotificationChannel.WHATSAPP,
   USER_PHONE_VERIFICATION: NotificationChannel.WHATSAPP,
 };
 
@@ -40,7 +38,7 @@ export function getVerificationChallengeKind(type: VerificationType): Verificati
   return CHALLENGE_KIND_BY_TYPE[type];
 }
 
-export function getVerificationChannel(type: VerificationType): NotificationChannel {
+export function getVerificationChannel(type: VerificationType): NotificationChannel | undefined {
   return CHANNEL_BY_TYPE[type];
 }
 

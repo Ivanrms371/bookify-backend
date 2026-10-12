@@ -1,52 +1,48 @@
+import { AppointmentNotificationRepository } from '../../infraestructure/repositories/appointment-notification.repository';
+import { appointmentDate } from '../../application/utils/appointment-date';
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { AppointmentCancelledEvent } from 'src/modules/appointments/domain/events/appointment-cancelled.event';
 import { NotificationsService } from '../../application/services/notifications.service';
 import { RecipientType } from 'src/generated/prisma/enums';
-import { AppointmentCancelledVariables } from '../../application/templates/appointment-cancelled/appointment-cancelled.type';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
 
 @Injectable()
 export class AppointmentCancelledListener {
-  constructor(private readonly notificationsService: NotificationsService) {}
+  constructor(
+    private readonly notificationsService: NotificationsService,
+    private readonly appointments: AppointmentNotificationRepository,
+  ) {}
 
   @OnEvent('appointment.cancelled', { async: true })
   async handle(event: AppointmentCancelledEvent) {
+    await this.notificationsService.cancelScheduledDeliveries(event.appointmentId, 'appointment.reminder');
+    const appointment = await this.appointments.findById(event.tenantId, event.appointmentId);
+    if (!appointment) return;
+    if (appointment.status !== 'CANCELLED') return;
     const payload = {
       appointmentId: event.appointmentId,
-      professionalName: event.professionalName,
-      customerName: event.customerName,
-      date: format(event.startsAt, "dd 'de' MMMM 'de' yyyy", { locale: es }),
-      time: format(event.startsAt, 'HH:mm'),
+      professionalName: appointment.professionalName,
+      customerName: appointment.customerName,
+      ...appointmentDate(appointment.startsAt, appointment.timeZone),
       cancelledBy: event.cancelledBy,
       cancelledByName: event.cancelledByName,
       cancellationReason: event.cancellationReason,
     };
 
-    await this.notificationsService.cancelScheduledDeliveries(event.appointmentId, 'appointment.reminder');
-
-    if (event.cancelledBy === RecipientType.CUSTOMER) {
-      if (!event.userId) return;
-      // Professional xxx your customer has cancelled your appointment.
-      // In this case we send the notification to the professional
-      await this.notificationsService.create({
-        tenantId: event.tenantId,
-        payload,
-        recipientId: event.userId,
-        recipientType: RecipientType.USER,
-        type: 'appointment.cancelled',
-      });
-    } else {
-      // Customer xxx your professional has cancelled your appointent.
-      // In this case we send the notifications to the customer
-      await this.notificationsService.create({
-        tenantId: event.tenantId,
-        payload,
-        recipientId: event.customerId,
-        recipientType: RecipientType.CUSTOMER,
-        type: 'appointment.cancelled',
-      });
-    }
+    const customerActed = event.cancelledBy === RecipientType.CUSTOMER;
+    const recipientId = customerActed ? appointment.professionalId : appointment.customerId;
+    if (!recipientId) return;
+    await this.notificationsService.create({
+      tenantId: event.tenantId,
+      payload: {
+        ...payload,
+        audience: customerActed ? 'PROFESSIONAL' : 'CUSTOMER',
+        ...(customerActed ? { detailsUrl: appointment.professionalDetailsUrl } : {}),
+      },
+      recipientId,
+      recipientType: customerActed ? RecipientType.PROFESSIONAL : RecipientType.CUSTOMER,
+      type: 'appointment.cancelled',
+      referenceId: event.appointmentId,
+    });
   }
 }

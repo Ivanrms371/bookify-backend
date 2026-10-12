@@ -1,3 +1,5 @@
+import { VerificationsService } from '../verifications/core/verifications.service';
+import { CustomerVerificationDto, VerifyCustomerVerificationDto } from './dto/customer-verification.dto';
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { PublicService } from './public.service';
 import { GetSlotsQueryDto } from './dto/get-slots-query.dto';
@@ -11,7 +13,20 @@ import { Public } from 'src/common/security/decorators/public.decorator';
 @Public()
 @Controller('public')
 export class PublicController {
-  constructor(private readonly publicService: PublicService) {}
+  constructor(
+    private readonly publicService: PublicService,
+    private readonly verifications: VerificationsService,
+  ) {}
+
+  @Post('customer-verification')
+  requestCustomerVerification(@Body() dto: CustomerVerificationDto) {
+    return this.publicService.requestCustomerVerification(dto);
+  }
+
+  @Post('customer-verification/verify')
+  verifyCustomerVerification(@Body() dto: VerifyCustomerVerificationDto) {
+    return this.verifications.verifyCustomerCode(dto.verificationId, dto.code);
+  }
 
   @Get('tenants/:slug')
   async getTenantBySlug(@Param('slug') slug: string) {
@@ -51,6 +66,11 @@ export class PublicController {
   @Get('availability/validate')
   async checkSlotAvailability(@Query() dto: ValidateSlotAvailabilityDto) {
     return this.publicService.checkSlotAvailability(dto);
+  }
+
+  @Post('appointment/:token/whatsapp-verification')
+  requestWhatsappVerification(@Param('token') token: string) {
+    return this.publicService.requestWhatsappVerification(token);
   }
 
   @Get('appointment/:token')

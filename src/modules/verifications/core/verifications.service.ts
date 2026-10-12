@@ -1,7 +1,12 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import type { Customer, Verification } from 'src/generated/prisma/client';
+import type { OtpVerificationFailure } from '../types/otp-verification.type';
+import { WhatsappGateway } from 'src/modules/notifications/infraestructure/gateways/whatsapp.gateway';
+import { CustomerEmailConflictException } from '../exceptions/customer-email-conflict.exception';
+import { CustomerVerificationException } from '../exceptions/customer-verification.exception';
+import { requiresCustomerVerification, hasVerifiedCustomerEmail, customerDestination } from '../domain/customer-verification-policy';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import * as crypto from 'crypto';
-import { VerificationsRepository } from '../verifications.repository';
 import { CreateVerificationDto } from '../domain/dto/create-verification.dto';
 import { VerifyOtpDto } from '../domain/dto/verify-otp.dto';
 import {
@@ -14,35 +19,161 @@ import { VerifyTokenDto } from '../domain/dto/verify-token.dto';
 import { ResendVerificationDto } from '../domain/dto/resend-verification.dto';
 import { RecipientType, VerificationType } from 'src/generated/prisma/enums';
 import { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
-import { CustomersService } from 'src/modules/customers/customers.service';
 import { UsersService } from 'src/modules/users/users.service';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 
 @Injectable()
 export class VerificationsService {
+  private readonly logger = new Logger(VerificationsService.name);
   constructor(
     private readonly prisma: PrismaService,
-    private readonly repository: VerificationsRepository,
     private readonly usersService: UsersService,
-    private readonly customersService: CustomersService,
     private readonly eventEmitter: EventEmitter2,
   ) {}
+
+  async eligibleCustomer(customerId: string, tenantId: string, tx: TransactionClient) {
+    const customer = await this.lockCustomer(tenantId, customerId, tx);
+    if (!customer) throw new CustomerVerificationException();
+    const subscription = await tx.subscription.findUnique({ where: { tenantId } });
+    if (requiresCustomerVerification(subscription) && !hasVerifiedCustomerEmail(customer)) {
+      throw new CustomerVerificationException('Debes verificar tu email antes de reservar.');
+    }
+    const future = await tx.appointment.count({
+      where: { tenantId, customerId, createdBy: 'CUSTOMER', status: { in: ['PENDING', 'CONFIRMED'] }, startsAt: { gt: new Date() } },
+    });
+    if (future >= 5) this.logger.warn(`PUBLIC_BOOKING_FUTURE_LIMIT tenant=${tenantId} customer=${customerId} count=${future + 1}`);
+    return customer;
+  }
+
+  async requestCustomerVerification(tenantId: string, customerId: string, email?: string, phone = false) {
+    return this.prisma.$transaction(async (tx) => {
+      const customer = await this.lockCustomer(tenantId, customerId, tx);
+      if (!customer) throw new CustomerVerificationException();
+      const destinationEmail = email?.trim().toLowerCase() || customerDestination(customer, 'EMAIL');
+      if (!phone && customer.email && destinationEmail !== customerDestination(customer, 'EMAIL')) {
+        throw new CustomerEmailConflictException();
+      }
+      const subscription = await tx.subscription.findUnique({ where: { tenantId } });
+      if (
+        phone
+          ? !!(customer.phoneVerifiedAt && customer.whatsappOptInAt)
+          : !requiresCustomerVerification(subscription) || hasVerifiedCustomerEmail(customer)
+      ) {
+        return { customerId, verificationRequired: false };
+      }
+      if (phone && !WhatsappGateway.isOperational())
+        throw new CustomerVerificationException('La activación de WhatsApp no está disponible.');
+      const type = phone ? VerificationType.CUSTOMER_VERIFICATION_PHONE : VerificationType.CUSTOMER_VERIFICATION_EMAIL;
+      const channel = phone ? 'WHATSAPP' : 'EMAIL';
+      const destination = phone ? customerDestination(customer, channel) : destinationEmail;
+      if (!destination) throw new CustomerVerificationException('No hay un contacto disponible para verificar.');
+      const code = crypto.randomInt(100000, 1000000).toString();
+      const record = await tx.verification.create({
+        data: {
+          type,
+          recipientType: 'CUSTOMER',
+          recipientId: customerId,
+          tenantId,
+          channel,
+          destination,
+          contactWasMissing: !phone && !customer.email,
+          codeHash: this.sha256(code),
+          expiresAt: getVerificationExpiresAt(type),
+          maxAttempts: VERIFICATION_MAX_ATTEMPTS,
+        },
+      });
+      // Await durable outbox creation in this transaction. The worker sends after commit.
+      await this.eventEmitter.emitAsync('verification.created', {
+        verificationId: record.id,
+        type: record.type,
+        recipientId: customerId,
+        recipientType: 'CUSTOMER',
+        tenantId,
+        code,
+        expiresAt: record.expiresAt,
+        channel,
+        phone: customerDestination(customer, 'WHATSAPP'),
+        email: channel === 'EMAIL' ? destination : null,
+        tx,
+      });
+      return { customerId, verificationRequired: true, verificationId: record.id };
+    });
+  }
+
+  async verifyCustomerCode(verificationId: string, code: string) {
+    await this.verifyCode({ verificationId, code });
+    return { success: true };
+  }
+
+  private matchesCustomerDestination(customer: Customer, record: Verification) {
+    if (!record.destination) return false;
+    if (record.type === VerificationType.CUSTOMER_VERIFICATION_PHONE) {
+      return record.channel === 'WHATSAPP' && customerDestination(customer, 'WHATSAPP') === record.destination;
+    }
+    return (
+      record.channel === 'EMAIL' &&
+      (record.contactWasMissing ? !customer.email : customerDestination(customer, 'EMAIL') === record.destination)
+    );
+  }
+
+  private async consumeOtp(record: Verification | null, code: string, tx: TransactionClient): Promise<OtpVerificationFailure | null> {
+    if (!record?.codeHash) return 'not-found';
+    if (record.verifiedAt) return 'used';
+    if (record.expiresAt <= new Date()) return 'expired';
+    if (record.lockedAt || record.attempts >= record.maxAttempts) return 'locked';
+    const inputHash = Buffer.from(this.sha256(code), 'hex');
+    const targetHash = Buffer.from(record.codeHash, 'hex');
+    if (!/^\d{6}$/.test(code) || inputHash.length !== targetHash.length || !crypto.timingSafeEqual(inputHash, targetHash)) {
+      await this.registerFailedAttempt(record.id, record.attempts, record.maxAttempts, tx);
+      return 'wrong-code'; // Return so attempts commit before the HTTP exception.
+    }
+    await tx.verification.update({ where: { id: record.id }, data: { verifiedAt: new Date() } });
+    return null;
+  }
+
+  private async lockCustomer(tenantId: string, id: string, tx: TransactionClient) {
+    // Prisma cannot express FOR UPDATE; contact edits and OTP completion share this lock.
+    await tx.$queryRaw`SELECT id FROM customers WHERE id = ${id}::uuid AND tenant_id = ${tenantId}::uuid FOR UPDATE`;
+    return tx.customer.findFirst({ where: { id, tenantId, deletedAt: null, blockedAt: null } });
+  }
+
+  private async lockVerification(id: string, tx: TransactionClient) {
+    // Serialize attempts and completion after taking the customer lock.
+    await tx.$queryRaw`SELECT id FROM verifications WHERE id = ${id}::uuid FOR UPDATE`;
+    return tx.verification.findUnique({ where: { id } });
+  }
+
+  private findLatestActive(recipientId: string, recipientType: RecipientType, type: VerificationType) {
+    return this.prisma.verification.findFirst({
+      where: { recipientId, recipientType, type, verifiedAt: null, expiresAt: { gt: new Date() } },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  private registerFailedAttempt(id: string, attempts: number, maxAttempts: number, tx?: TransactionClient) {
+    return (tx ?? this.prisma).verification.update({
+      where: { id },
+      data: { attempts: { increment: 1 }, ...(attempts + 1 >= maxAttempts ? { lockedAt: new Date() } : {}) },
+    });
+  }
 
   private sha256(val: string): string {
     return crypto.createHash('sha256').update(val).digest('hex');
   }
 
-  private async emitVerificationCompleted(
-    record: { id: string; type: string; recipientId: string; recipientType: string },
-    tx: TransactionClient,
-  ) {
-    const verifiedAt = new Date();
+  private async emitVerificationCompleted(record: Verification, tx: TransactionClient) {
     switch (record.type) {
-      case VerificationType.CUSTOMER_PHONE_VERIFICATION:
-        await this.customersService.markPhoneAsVerified(record.recipientId, tx);
+      case VerificationType.CUSTOMER_VERIFICATION_EMAIL:
+        await tx.customer.update({
+          where: { id: record.recipientId, tenantId: record.tenantId! },
+          data: { ...(record.contactWasMissing ? { email: record.destination } : {}), emailVerifiedAt: new Date() },
+        });
         break;
-      case VerificationType.CUSTOMER_EMAIL_VERIFICATION:
-        await this.customersService.markEmailAsVerified(record.recipientId, tx);
+      case VerificationType.CUSTOMER_VERIFICATION_PHONE:
+        await tx.customer.update({
+          where: { id: record.recipientId, tenantId: record.tenantId! },
+          data: { phoneVerifiedAt: new Date(), whatsappOptInAt: new Date() },
+        });
         break;
       case VerificationType.USER_EMAIL_VERIFICATION:
         await this.usersService.markEmailAsVerified(record.recipientId, tx);
@@ -53,26 +184,12 @@ export class VerificationsService {
       case VerificationType.PASSWORD_RESET:
         break;
       default:
-        throw new BadRequestException(`Type of verification doesn't supported: ${record.type}`);
+        throw new BadRequestException('Tipo de verificación no soportado');
     }
   }
 
-  private async checkIfAlreadyVerified(type: VerificationType, recipientId: string, tenantId?: string): Promise<boolean> {
+  private async checkIfAlreadyVerified(type: VerificationType, recipientId: string): Promise<boolean> {
     switch (type) {
-      case VerificationType.CUSTOMER_PHONE_VERIFICATION: {
-        if (!tenantId) {
-          throw new NotFoundException('Customer cannot be found.');
-        }
-        const customer = await this.customersService.findById(tenantId, recipientId);
-        return !!customer?.phoneVerifiedAt;
-      }
-      case VerificationType.CUSTOMER_EMAIL_VERIFICATION: {
-        if (!tenantId) {
-          throw new NotFoundException('Customer cannot be found.');
-        }
-        const customer = await this.customersService.findById(tenantId, recipientId);
-        return !!customer?.emailVerifiedAt;
-      }
       case VerificationType.USER_EMAIL_VERIFICATION: {
         const user = await this.usersService.findById(recipientId);
         return !!user?.emailVerifiedAt;
@@ -141,6 +258,9 @@ export class VerificationsService {
 
   async requestVerification(dto: CreateVerificationDto) {
     const { type, recipientId, recipientType, tenantId } = dto;
+    if (recipientType === RecipientType.CUSTOMER || type.startsWith('CUSTOMER_')) {
+      throw new BadRequestException('Usa la verificación pública de clientes.');
+    }
     await this.verifyInvitationEmailContext(dto);
     const isOtp = isOtpVerification(type);
     const isMagic = isMagicLinkVerification(type);
@@ -149,13 +269,13 @@ export class VerificationsService {
       throw new BadRequestException('Tipo de verificación no soportado');
     }
 
-    const isAlreadyVerified = await this.checkIfAlreadyVerified(type, recipientId, tenantId);
+    const isAlreadyVerified = await this.checkIfAlreadyVerified(type, recipientId);
     if (isAlreadyVerified) {
       throw new BadRequestException('Ya se encuentra verificado');
     }
 
     // Protección anti-spam: Cooldown de 60s y tope de envíos
-    const latest = await this.repository.findLatestActive(recipientId, recipientType, type);
+    const latest = await this.findLatestActive(recipientId, recipientType, type);
     if (latest) {
       const elapsedSeconds = (Date.now() - latest.createdAt.getTime()) / 1000;
       if (elapsedSeconds < 60) {
@@ -181,23 +301,27 @@ export class VerificationsService {
       codeHash = this.sha256(code);
     }
 
-    await this.repository.invalidateActive(recipientId, recipientType, type);
+    await this.prisma.verification.deleteMany({ where: { recipientId, recipientType, type, verifiedAt: null } });
 
     const expiresAt = getVerificationExpiresAt(type);
 
-    const record = await this.repository.create({
-      type,
-      recipientId,
-      recipientType,
-      tokenHash,
-      codeHash,
-      expiresAt,
-      maxAttempts: VERIFICATION_MAX_ATTEMPTS,
-      sentCount: (latest?.sentCount ?? 0) + 1,
+    const record = await this.prisma.verification.create({
+      data: {
+        type,
+        recipientId,
+        recipientType,
+        ...(tenantId ? { tenant: { connect: { id: tenantId } } } : {}),
+        tokenHash,
+        codeHash,
+        expiresAt,
+        maxAttempts: VERIFICATION_MAX_ATTEMPTS,
+        sentCount: (latest?.sentCount ?? 0) + 1,
+      },
     });
 
     this.eventEmitter.emit('verification.created', {
       invitationToken: dto.invitationToken,
+      tenantId,
       verificationId: record.id,
       type: record.type,
       recipientId: record.recipientId,
@@ -214,8 +338,11 @@ export class VerificationsService {
     const { token, type } = dto;
     const tokenHash = this.sha256(token);
 
-    const record = await this.repository.findByTokenHash(tokenHash);
+    const record = await this.prisma.verification.findUnique({ where: { tokenHash } });
 
+    if (record?.recipientType === RecipientType.CUSTOMER) {
+      throw new BadRequestException('Usa la verificación pública de clientes.');
+    }
     if (!record || record.type !== type) {
       throw new NotFoundException('Verificación no encontrada o inválida');
     }
@@ -233,7 +360,7 @@ export class VerificationsService {
     }
 
     await this.prisma.$transaction(async (tx) => {
-      await this.repository.markAsVerified(record.id, tx);
+      await tx.verification.update({ where: { id: record.id }, data: { verifiedAt: new Date() } });
       await this.emitVerificationCompleted(record, tx);
     });
 
@@ -241,40 +368,57 @@ export class VerificationsService {
   }
 
   async verifyCode(dto: VerifyOtpDto) {
-    const { recipientId, recipientType, type, code } = dto;
-    const record = await this.repository.findLatestActive(recipientId, recipientType, type);
-
-    if (!record || !record.codeHash) {
-      throw new NotFoundException('No hay una verificación activa para esta dirección');
+    const { verificationId, recipientId, recipientType, type, code } = dto;
+    if (
+      !verificationId &&
+      (!recipientId || !recipientType || !type || recipientType === RecipientType.CUSTOMER || type.startsWith('CUSTOMER_'))
+    ) {
+      throw new BadRequestException('Usa la verificación pública de clientes.');
     }
-
-    if (record.verifiedAt !== null) {
-      throw new BadRequestException('El código ya fue utilizado');
-    }
-
-    if (record.expiresAt < new Date()) {
-      throw new BadRequestException('El código de verificación ha expirado');
-    }
-
-    if (record.lockedAt !== null) {
-      throw new BadRequestException('El código está bloqueado por demasiados intentos fallidos');
-    }
-
-    const inputHash = Buffer.from(this.sha256(code), 'hex');
-    const targetHash = Buffer.from(record.codeHash, 'hex');
-
-    const isValid = inputHash.length === targetHash.length && crypto.timingSafeEqual(inputHash, targetHash);
-
-    if (!isValid) {
-      await this.repository.registerFailedAttempt(record.id, record.attempts, record.maxAttempts);
-      throw new BadRequestException('Código de verificación incorrecto');
-    }
-
-    await this.prisma.$transaction(async (tx) => {
-      await this.repository.markAsVerified(record.id, tx);
-      await this.emitVerificationCompleted(record, tx);
+    const result = await this.prisma.$transaction(async (tx) => {
+      const initial = verificationId
+        ? await tx.verification.findUnique({ where: { id: verificationId } })
+        : await tx.verification.findFirst({
+            where: { recipientId, recipientType, type, verifiedAt: null, expiresAt: { gt: new Date() } },
+            orderBy: { createdAt: 'desc' },
+          });
+      if (!initial) return { failure: 'not-found' as const, record: null };
+      let customer: Customer | null = null;
+      if (verificationId) {
+        if (
+          !initial.tenantId ||
+          initial.recipientType !== RecipientType.CUSTOMER ||
+          (initial.type !== VerificationType.CUSTOMER_VERIFICATION_EMAIL && initial.type !== VerificationType.CUSTOMER_VERIFICATION_PHONE)
+        ) {
+          return { failure: 'not-found' as const, record: null };
+        }
+        // Customer before challenge, matching contact edits and dispatch.
+        customer = await this.lockCustomer(initial.tenantId, initial.recipientId, tx);
+        if (!customer) return { failure: 'not-found' as const, record: null };
+      }
+      const record = await this.lockVerification(initial.id, tx);
+      if (customer && (!record || !this.matchesCustomerDestination(customer, record))) {
+        return { failure: 'not-found' as const, record: null };
+      }
+      const failure = await this.consumeOtp(record, code, tx);
+      if (!failure && record) await this.emitVerificationCompleted(record, tx);
+      return { failure, record };
     });
-
-    return { success: true, recipientId: record.recipientId, recipientType: record.recipientType };
+    if (result.failure || !result.record) {
+      if (verificationId) throw new CustomerVerificationException();
+      switch (result.failure) {
+        case 'used':
+          throw new BadRequestException('El código ya fue utilizado');
+        case 'expired':
+          throw new BadRequestException('El código de verificación ha expirado');
+        case 'locked':
+          throw new BadRequestException('El código está bloqueado por demasiados intentos fallidos');
+        case 'wrong-code':
+          throw new BadRequestException('Código de verificación incorrecto');
+        default:
+          throw new NotFoundException('No hay una verificación activa para esta dirección');
+      }
+    }
+    return { success: true, recipientId: result.record.recipientId, recipientType: result.record.recipientType };
   }
 }

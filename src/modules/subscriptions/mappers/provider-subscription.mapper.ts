@@ -1,3 +1,4 @@
+import { renewalProjection } from '../utils/renewal-projection';
 import { BadRequestException } from '@nestjs/common';
 import type { SubscriptionStatus } from 'src/generated/prisma/enums';
 import type { LemonSqueezySubscriptionStatus } from 'src/shared/integrations/lemon-squeezy/types/lemon-squeezy.types';
@@ -25,6 +26,7 @@ export function toProviderSubscriptionUpdate(
     throw new BadRequestException('Unknown provider subscription status.');
   }
   return {
+    ...renewalProjection(subscription),
     lemonCustomerId: String(attrs.customer_id),
     status,
     planId: plan.planId,

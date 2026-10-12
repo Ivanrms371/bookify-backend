@@ -1,3 +1,4 @@
+import { PLANS } from '../../src/modules/subscriptions/plans.config';
 import { TZDate } from '@date-fns/tz';
 import { format } from 'date-fns';
 import { Prisma } from '../../src/generated/prisma/client';
@@ -105,14 +106,14 @@ export async function reconcileStatistics(tx: TransactionClient, tenantId: strin
   // Usage counts the creation month, not the service-delivery month.
   const periods = new Map<string, { periodMonth: number; periodYear: number; appointmentCount: number }>();
   for (const date of [now, ...appointments.map((a) => a.createdAt)]) {
-    // Match existing usage service conventions, which use the process-local calendar.
-    const periodMonth = date.getMonth() + 1,
-      periodYear = date.getFullYear();
+    // Match existing usage service conventions, which use the UTC calendar.
+    const periodMonth = date.getUTCMonth() + 1,
+      periodYear = date.getUTCFullYear();
     const id = `${periodYear}-${periodMonth}`;
     if (!periods.has(id)) periods.set(id, { periodMonth, periodYear, appointmentCount: 0 });
   }
   for (const appointment of appointments)
-    periods.get(`${appointment.createdAt.getFullYear()}-${appointment.createdAt.getMonth() + 1}`)!.appointmentCount++;
+    periods.get(`${appointment.createdAt.getUTCFullYear()}-${appointment.createdAt.getUTCMonth() + 1}`)!.appointmentCount++;
   const existingUsage = await tx.tenantUsage.findMany({ where: { tenantId } });
   for (const period of existingUsage)
     if (!periods.has(`${period.periodYear}-${period.periodMonth}`)) {
@@ -122,8 +123,14 @@ export async function reconcileStatistics(tx: TransactionClient, tenantId: strin
     const where = { tenantId, periodMonth: period.periodMonth, periodYear: period.periodYear };
     await tx.tenantUsage.upsert({
       where: { tenantId_periodMonth_periodYear: where },
-      create: { ...where, appointmentCount: period.appointmentCount, lastResetAt: now, emailLimit: 1200, whatsappLimit: 500 },
-      update: { appointmentCount: period.appointmentCount, emailLimit: 1200, whatsappLimit: 500 },
+      create: {
+        ...where,
+        appointmentCount: period.appointmentCount,
+        lastResetAt: now,
+        emailLimit: PLANS.pro_plus.monthlyEmails,
+        whatsappLimit: PLANS.pro_plus.monthlyWhatsapp,
+      },
+      update: { appointmentCount: period.appointmentCount },
     });
   }
 }

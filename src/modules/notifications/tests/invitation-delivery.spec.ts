@@ -1,8 +1,10 @@
 /// <reference types="jest" />
+import { DeliveryRejectedError } from '../errors/delivery-rejected.error';
 import { Logger } from '@nestjs/common';
 import { NotificationProcessorService } from '../application/services/notification-processor.service';
 import { ConfigService } from '@nestjs/config';
 import { NotificationGatewaysService } from '../infraestructure/gateways/notification-gateways.service';
+import { NotificationRecipientResolver } from '../application/services/notification-recipient-resolver.service';
 import { EmailGateway } from '../infraestructure/gateways/email.gateway';
 import { InvitationCreatedListener } from '../listeners/invitations/invitation-created.listener';
 import { InvitationCreatedEvent } from '../../tenants/events/invitation-created.event';
@@ -16,6 +18,8 @@ const send = jest.fn();
 jest.mock('resend', () => ({ Resend: jest.fn().mockImplementation(() => ({ emails: { send } })) }));
 
 const notification: Notification = {
+  occurrenceKey: null,
+  expiresAt: null,
   id: 'notification',
   tenantId: 'tenant',
   createdAt: new Date(),
@@ -31,9 +35,17 @@ function gateway(environment: string) {
   const values = { RESEND_API_KEY: 'test', NODE_ENV: environment, RESEND_SANDBOX: 'sandbox@example.com' };
   const config = { getOrThrow: (key: string) => values[key] } as unknown as ConfigService;
   const users = { findById: jest.fn().mockRejectedValue(new Error('No user exists')) };
-  const emailGateway = new EmailGateway(config, users as never, {} as never);
-  const gateways = new NotificationGatewaysService(emailGateway, {} as never, {} as never);
-  return { service: { send: (notification: Notification, template: any) => gateways.send('EMAIL', notification, template) }, users };
+  const emailGateway = new EmailGateway(config);
+  const gateways = new NotificationGatewaysService(
+    emailGateway,
+    {} as never,
+    {} as never,
+    new NotificationRecipientResolver(users as never, {} as never, {} as never),
+  );
+  return {
+    service: { send: (notification: Notification, template: any) => gateways.send('EMAIL', notification, template, 'delivery') },
+    users,
+  };
 }
 
 beforeEach(() => {
@@ -55,14 +67,26 @@ it('registers server-generated invitation email for queued delivery', async () =
 it('sends to the invitation email without resolving an invitation ID as a user ID', async () => {
   const { service, users } = gateway('production');
   await expect(service.send(notification, template)).resolves.toBe('delivery-id');
-  expect(send).toHaveBeenCalledWith(expect.objectContaining({ to: 'new@example.com' }));
+  expect(send).toHaveBeenCalledWith(expect.objectContaining({ to: 'new@example.com' }), {
+    idempotencyKey: 'notification-delivery/delivery',
+  });
   expect(users.findById).not.toHaveBeenCalled();
 });
 it('preserves the development sandbox recipient', async () => {
   const { service, users } = gateway('development');
   await service.send(notification, template);
-  expect(send).toHaveBeenCalledWith(expect.objectContaining({ to: 'sandbox@example.com' }));
+  expect(send).toHaveBeenCalledWith(expect.objectContaining({ to: 'sandbox@example.com' }), {
+    idempotencyKey: 'notification-delivery/delivery',
+  });
   expect(users.findById).not.toHaveBeenCalled();
+});
+it('reuses the delivery key across repeated provider requests', async () => {
+  const { service } = gateway('production');
+  await service.send(notification, template);
+  await service.send(notification, template);
+  expect(send).toHaveBeenCalledTimes(2);
+  expect(send.mock.calls[0][1]).toEqual({ idempotencyKey: 'notification-delivery/delivery' });
+  expect(send.mock.calls[1]).toEqual(send.mock.calls[0]);
 });
 it('propagates delivery failure to the existing processor retry mechanism', async () => {
   const { service } = gateway('production');
@@ -81,10 +105,11 @@ it('does not silently fall back to a user lookup when the invitation email is mi
   expect(users.findById).not.toHaveBeenCalled();
 });
 
-it('queues a failed email for retry independently of professional creation', async () => {
+it('holds an uncertain email for reconciliation independently of professional creation', async () => {
   const { service } = gateway('production');
   send.mockRejectedValue(new Error('mail unavailable'));
   const deliveries = {
+    claim: jest.fn().mockResolvedValue(true),
     findPendingByNotification: jest.fn().mockResolvedValue([{ id: 'delivery', notification, channel: 'EMAIL', retryCount: 0 }]),
     incrementRetries: jest.fn().mockResolvedValue(undefined),
     markAsFailed: jest.fn(),
@@ -96,12 +121,16 @@ it('queues a failed email for retry independently of professional creation', asy
     getChannelConfig: jest.fn().mockReturnValue({}),
   };
   const processor = new NotificationProcessorService(
-    { canSend: jest.fn().mockResolvedValue(true) } as never,
+    { reserve: jest.fn().mockResolvedValue(true), retain: jest.fn(), release: jest.fn() } as never,
     { build: jest.fn().mockReturnValue(template) } as never,
-    { send: (_channel, value, emailTemplate) => service.send(value, emailTemplate) } as never,
+    {
+      prepare: jest.fn().mockResolvedValue('new@example.com'),
+      send: (_channel, value, emailTemplate) => service.send(value, emailTemplate),
+    } as never,
     deliveries as never,
     logs as never,
     config as never,
+    { recordAcceptance: jest.fn(), resolve: jest.fn() } as never,
   );
   const log = jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
   try {
@@ -109,10 +138,29 @@ it('queues a failed email for retry independently of professional creation', asy
   } finally {
     log.mockRestore();
   }
-  expect(deliveries.incrementRetries).toHaveBeenCalledWith(
-    'delivery',
-    expect.objectContaining({ errorMessage: 'mail unavailable', runAt: expect.any(Date) }),
-  );
+  expect(deliveries.incrementRetries).not.toHaveBeenCalled();
+  expect(logs.createErrorLog).toHaveBeenCalledWith('delivery', expect.stringContaining('RECONCILIATION_REQUIRED'));
   expect(deliveries.markAsFailed).not.toHaveBeenCalled();
   expect(deliveries.markAsSent).not.toHaveBeenCalled();
+});
+
+it.each([400, 401, 403, 422, 429])('classifies explicit provider rejection %s as non-delivery', async (statusCode) => {
+  const { service } = gateway('production');
+  send.mockResolvedValue({ data: null, error: { statusCode } });
+  const log = jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
+  try {
+    await expect(service.send(notification, template)).rejects.toBeInstanceOf(DeliveryRejectedError);
+  } finally {
+    log.mockRestore();
+  }
+});
+it.each([408, 409, 500, undefined])('keeps provider result %s ambiguous', async (statusCode) => {
+  const { service } = gateway('production');
+  send.mockResolvedValue({ data: null, error: { statusCode } });
+  const log = jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
+  try {
+    await expect(service.send(notification, template)).rejects.toThrow('Ambiguous result');
+  } finally {
+    log.mockRestore();
+  }
 });

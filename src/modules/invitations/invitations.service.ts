@@ -9,6 +9,7 @@ import { MembershipsService } from '../memberships/memberships.service';
 import { ProfessionalsService } from '../professionals/professionals.service';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import type { InvitationAcceptedEvent } from './events/invitation-accepted.event';
 import { InvitationCreatedEvent } from 'src/modules/tenants/events/invitation-created.event';
 import type { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
 import type { Invitation } from 'src/generated/prisma/client';
@@ -240,14 +241,20 @@ export class InvitationsService {
     }
 
     await this.verifyNewAcceptance(invitation, access, userId, tx);
-    const consumed = await this.invitationsRepository.consume(invitation.id, invitation.token, tx);
+    const acceptedAt = new Date();
+    const consumed = await this.invitationsRepository.consume(invitation.id, invitation.token, tx, acceptedAt);
     if (!consumed) {
       throw new InvitationUnavailableException('changed');
     }
-    await this.membershipsService.create(invitation.tenantId, userId, invitation.role, tx);
+    const membership = await this.membershipsService.create(invitation.tenantId, userId, invitation.role, tx);
     if (invitation.professionalId) {
       await this.professionalsService.linkToUser(invitation.tenantId, invitation.professionalId, userId, tx);
     }
+    const event: InvitationAcceptedEvent = {
+      tenantId: invitation.tenantId, invitationId: invitation.id, membershipId: membership.id,
+      userId, role: invitation.role, acceptedAt: acceptedAt.toISOString(),
+    };
+    await this.eventEmitter.emitAsync('invitation.accepted', event, tx);
     return this.acceptedResponse(invitation);
   }
 
@@ -285,8 +292,9 @@ export class InvitationsService {
   }
 
   private async verifyInvitationRecipient(invitation: Invitation, userId: string, authenticatedEmail: string, tx: TransactionClient) {
-    const user = await this.usersService.findById(userId);
-    if (user.email !== invitation.email) {
+    // Invited signup creates the user in this same transaction.
+    const user = await tx.user.findUnique({ where: { id: userId }, select: { email: true } });
+    if (!user || user.email !== invitation.email) {
       throw new InvitationRecipientException();
     }
     if (authenticatedEmail !== invitation.email) {

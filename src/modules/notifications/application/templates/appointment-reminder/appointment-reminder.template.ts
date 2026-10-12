@@ -1,3 +1,4 @@
+import { appointmentLink } from '../_components/appointment-links';
 import { Injectable } from '@nestjs/common';
 import { NotificationChannel } from 'src/generated/prisma/enums';
 import { NotificationTemplate } from 'src/modules/notifications/domain/templates/notification-template.interface';
@@ -31,13 +32,13 @@ export class AppointmentReminderTemplate implements NotificationTemplate {
   }
 
   private buildWhatsapp(variables: AppointmentReminderVariables): BuildWhatsappResponse {
-    const timing = variables.reminderType === '24h' ? 'manana' : 'en 2 horas';
-
     return {
       body:
-        `Hola ${variables.customerName}. Te recordamos que tienes una cita ${timing} con ${variables.professionalName} ` +
+        `Hola ${variables.customerName}. Te recordamos que tienes una cita con ${variables.professionalName} ` +
         `por ${variables.serviceName}, el ${variables.date} a las ${variables.time}. ` +
-        `Cancelar: ${variables.cancelUrl}. Reprogramar: ${variables.rescheduleUrl}.`,
+        appointmentLink('Ver mi cita', variables.detailsUrl) +
+        appointmentLink('Reprogramar cita', variables.rescheduleUrl) +
+        appointmentLink('Cancelar cita', variables.cancelUrl),
     };
   }
 }

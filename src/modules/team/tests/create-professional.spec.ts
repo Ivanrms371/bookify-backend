@@ -1,4 +1,6 @@
 /// <reference types="jest" />
+import { TenantUsageService } from 'src/modules/tenants/features/usage/tenant-usage.service';
+import { TenantUsageRepository } from 'src/modules/tenants/features/usage/tenant-usage.repository';
 import 'reflect-metadata';
 import { Logger } from '@nestjs/common';
 import { TeamService } from '../team.service';
@@ -107,7 +109,12 @@ function setup() {
   };
   const tenants = { findById: jest.fn().mockResolvedValue({ name: 'Business' }) };
   const professionalRepository = new ProfessionalsRepository(prisma as never);
-  const professionals = new ProfessionalsService(prisma as never, professionalRepository, {} as never);
+  const professionals = new ProfessionalsService(
+    prisma as never,
+    professionalRepository,
+    {} as never,
+    new TenantUsageService(new TenantUsageRepository(prisma as never), prisma as never),
+  );
   const invitations = new InvitationsService(
     repository as never,
     tenants as never,
@@ -297,4 +304,10 @@ it('awaits assignment deletion before insertion and propagates deletion failure'
   deleteMany.mockRejectedValue(new Error('delete failed'));
   await expect(repository.replaceServices('professional', [])).rejects.toThrow('delete failed');
   expect(createMany).not.toHaveBeenCalled();
+});
+
+it('acquires the entitlements lock before tenant row locks during professional creation', async () => {
+  const f = setup();
+  await f.team.createProfessional('tenant', dto);
+  expect(f.tx.$executeRaw.mock.invocationCallOrder[0]).toBeLessThan(f.tx.$queryRaw.mock.invocationCallOrder[0]);
 });

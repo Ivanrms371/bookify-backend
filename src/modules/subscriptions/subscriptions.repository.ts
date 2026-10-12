@@ -1,4 +1,6 @@
-import { lockBilling } from 'src/common/database/billing-lock';
+import { invalidateRenewalForPendingChange } from './utils/renewal-projection';
+import { TenantUsageService } from '../tenants/features/usage/tenant-usage.service';
+import { lockEntitlements } from 'src/common/database/entitlements-lock';
 import { freeActivation } from './utils/free-transition';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from 'src/common/database/base.repository';
@@ -11,7 +13,7 @@ import { PrismaService } from 'src/shared/prisma/prisma.service';
 
 @Injectable()
 export class SubscriptionsRepository extends BaseRepository {
-  constructor(prisma: PrismaService) {
+  constructor(prisma: PrismaService, private readonly tenantUsageService: TenantUsageService) {
     super(prisma);
   }
 
@@ -20,15 +22,11 @@ export class SubscriptionsRepository extends BaseRepository {
   }
 
   async ensureTrial(tenantId: string, data: SubscriptionCreateInput, tx?: TransactionClient) {
-    return this.db(tx).subscription.upsert({ where: { tenantId }, create: data, update: {} });
+    return this.writeWithUsage(tenantId, tx, (db) => db.subscription.upsert({ where: { tenantId }, create: data, update: {} }));
   }
 
   async getResourceUsage(tenantId: string, tx?: TransactionClient) {
-    const [professionals, services] = await Promise.all([
-      this.db(tx).professional.count({ where: { tenantId, deletedAt: null } }),
-      this.db(tx).service.count({ where: { tenantId, deletedAt: null } }),
-    ]);
-    return { professionals, services, countBasis: 'non_deleted' as const };
+    return this.tenantUsageService.getResourceUsage(tenantId, tx);
   }
 
   async findByTenantId(tenantId: string, tx?: TransactionClient) {
@@ -49,10 +47,12 @@ export class SubscriptionsRepository extends BaseRepository {
     data: SubscriptionUpdateManyMutationInput,
     tx?: TransactionClient,
   ) {
-    return this.db(tx).subscription.updateMany({
-      where: { tenantId, deletedAt: null, lemonSubscriptionId: previousProviderId },
-      data,
-    });
+    return this.writeWithUsage(tenantId, tx, (db) =>
+      db.subscription.updateMany({
+        where: { tenantId, deletedAt: null, lemonSubscriptionId: previousProviderId },
+        data,
+      }),
+    );
   }
 
   reservePlanChange(
@@ -62,32 +62,41 @@ export class SubscriptionsRepository extends BaseRepository {
     at: Date | null,
     tx: TransactionClient,
   ) {
-    return this.db(tx).subscription.updateMany({
-      where: {
-        id: local.id,
-        deletedAt: null,
-        planId: local.planId,
-        pendingPlanId: local.pendingPlanId ?? null,
-        updatedAt: local.updatedAt,
-      },
-      data: { pendingPlanId: targetPlanId, pendingBillingCycle: cycle, planChangesAt: at },
-    });
+    return this.writeWithUsage(local.tenantId, tx, (db) =>
+      db.subscription.updateMany({
+        where: {
+          id: local.id,
+          deletedAt: null,
+          planId: local.planId,
+          pendingPlanId: local.pendingPlanId ?? null,
+          updatedAt: local.updatedAt,
+        },
+        data: { pendingPlanId: targetPlanId, pendingBillingCycle: cycle, planChangesAt: at, nextRenewalAt: null, renewalCheckedAt: null },
+      }),
+    );
   }
 
   restorePlanChange(local: SubscriptionPlanState, targetPlanId: string, at: Date | null) {
-    return this.db().subscription.updateMany({
-      where: { id: local.id, pendingPlanId: targetPlanId, planChangesAt: at },
-      data: {
-        pendingPlanId: local.pendingPlanId ?? null,
-        pendingBillingCycle: local.pendingBillingCycle ?? null,
-        planChangesAt: local.planChangesAt ?? null,
-      },
-    });
+    return this.writeWithUsage(local.tenantId, undefined, (db) =>
+      db.subscription.updateMany({
+        where: { id: local.id, pendingPlanId: targetPlanId, planChangesAt: at },
+        data: {
+          pendingPlanId: local.pendingPlanId ?? null,
+          pendingBillingCycle: local.pendingBillingCycle ?? null,
+          planChangesAt: local.planChangesAt ?? null,
+        },
+      }),
+    );
   }
 
-  async applyDuePlanChanges(tenantId?: string, tx?: TransactionClient, now = new Date()) {
+  async applyDuePlanChanges(tenantId?: string, tx?: TransactionClient, now?: Date) {
     if (!tx) return this.prisma.$transaction((transaction) => this.applyDuePlanChanges(tenantId, transaction, now));
-    await lockBilling(tx);
+    await lockEntitlements(tx);
+    now ??= new Date();
+    const due = await tx.subscription.findMany({
+      where: { tenantId, deletedAt: null, planChangesAt: { lte: now } },
+      select: { tenantId: true },
+    });
     await this.db(tx).subscription.updateMany({
       where: { tenantId, deletedAt: null, pendingPlanId: 'free', planChangeUndoRequestedAt: null, planChangesAt: { lte: now } },
       data: freeActivation,
@@ -118,13 +127,18 @@ export class SubscriptionsRepository extends BaseRepository {
         });
       }
     }
+    for (const id of new Set(tenantId ? [tenantId] : due.map((item) => item.tenantId))) {
+      await this.tenantUsageService.ensureCurrentUsage(id, tx, now);
+    }
   }
 
   async updateByTenantId(tenantId: string, data: SubscriptionUpdateInput, tx?: TransactionClient): Promise<Subscription> {
-    return this.db(tx).subscription.update({
-      where: { tenantId },
-      data,
-    });
+    return this.writeWithUsage(tenantId, tx, (db) =>
+      db.subscription.update({
+        where: { tenantId },
+        data: invalidateRenewalForPendingChange(data),
+      }),
+    );
   }
 
   async updateByLemonSubscriptionId(
@@ -132,9 +146,23 @@ export class SubscriptionsRepository extends BaseRepository {
     data: SubscriptionUpdateInput,
     tx?: TransactionClient,
   ): Promise<Subscription> {
-    return this.db(tx).subscription.update({
-      where: { lemonSubscriptionId },
-      data,
-    });
+    if (!tx) return this.prisma.$transaction((db) => this.updateByLemonSubscriptionId(lemonSubscriptionId, data, db));
+    await lockEntitlements(tx);
+    const now = new Date();
+    const updated = await tx.subscription.update({ where: { lemonSubscriptionId }, data: invalidateRenewalForPendingChange(data) });
+    await this.tenantUsageService.ensureCurrentUsage(updated.tenantId, tx, now);
+    return updated;
+  }
+  private async writeWithUsage<T>(
+    tenantId: string,
+    tx: TransactionClient | undefined,
+    write: (db: TransactionClient) => Promise<T>,
+  ): Promise<T> {
+    if (!tx) return this.prisma.$transaction((db) => this.writeWithUsage(tenantId, db, write));
+    await lockEntitlements(tx);
+    const now = new Date();
+    const result = await write(tx);
+    await this.tenantUsageService.ensureCurrentUsage(tenantId, tx, now);
+    return result;
   }
 }

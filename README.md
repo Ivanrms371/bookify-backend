@@ -4,6 +4,10 @@ Backend API for **Bookify**, a multi-tenant SaaS platform for appointment-based 
 
 Bookify provides businesses with tools to manage appointments, customers, professionals, services, schedules, availability, and team access, while also supporting a public booking experience for customers.
 
+## Domain guides
+
+- [Notifications: product design and implementation plan](docs/notifications.md) — notification catalog, message layouts and buttons, recipient/timing rules, listeners, cron jobs and acceptance criteria. Target behavior is distinguished from current implementation.
+
 ## Features
 
 - Multi-tenant architecture with tenant isolation

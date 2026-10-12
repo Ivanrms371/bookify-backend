@@ -1,4 +1,8 @@
 export type TenantCreatedVariables = {
-  userName: string;
+  userName?: string;
   tenantName: string;
+  completedAt?: string;
+  timeZone?: string;
+  businessPath?: string;
+  businessUrl?: string;
 };

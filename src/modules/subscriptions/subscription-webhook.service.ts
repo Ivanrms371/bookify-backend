@@ -169,6 +169,7 @@ export class SubscriptionWebhookService {
       (local.planId === 'free' && local.status === 'ACTIVE') ||
       local.status === 'EXPIRED' ||
       (local.status === 'CANCELLED' && local.endsAt && local.endsAt <= new Date());
+      
     if (local.lemonSubscriptionId && local.lemonSubscriptionId !== current.id && !canReplace) {
       throw new ConflictException('Conflicting provider subscription.');
     }

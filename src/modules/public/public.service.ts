@@ -1,3 +1,6 @@
+import { CustomersService } from '../customers/customers.service';
+import { VerificationsService } from '../verifications/core/verifications.service';
+import type { CustomerVerificationDto } from './dto/customer-verification.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { AvailabilityService } from '../availability/availability.service';
 import { ServicesService } from '../services/services.service';
@@ -13,12 +16,30 @@ import { CancelPublicParams, CreatePublicParams, ReschedulePublicParams } from '
 @Injectable()
 export class PublicService {
   constructor(
+    private readonly customers: CustomersService,
+    private readonly verifications: VerificationsService,
     private readonly tenantsService: TenantsService,
     private readonly servicesService: ServicesService,
     private readonly professionalsService: ProfessionalsService,
     private readonly availabilityService: AvailabilityService,
     private readonly appointmentsPublicService: AppointmentsPublicService,
   ) {}
+
+  async requestCustomerVerification(dto: CustomerVerificationDto) {
+    // Commit identity first, even when verification is abandoned or delivery fails.
+    const customer = await this.customers.findPublicByPhoneOrCreate(dto.tenantId, {
+      name: dto.name,
+      email: dto.email,
+      phoneCountryCode: dto.phoneCountryCode,
+      phoneNumber: dto.phoneNumber,
+      notes: dto.notes,
+    });
+    return this.verifications.requestCustomerVerification(dto.tenantId, customer.id, dto.email);
+  }
+
+  async requestWhatsappVerification(token: string) {
+    return this.appointmentsPublicService.requestWhatsappVerification(token);
+  }
 
   async getTenantBySlug(slug: string) {
     const tenant = await this.tenantsService.findPublicBySlug(slug);

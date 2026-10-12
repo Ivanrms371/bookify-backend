@@ -9,6 +9,8 @@ export const freeActivation = {
   billingCycle: null,
   currentPeriodStart: null,
   currentPeriodEnd: null,
+  nextRenewalAt: null,
+  renewalCheckedAt: null,
   endsAt: null,
   cancelledAt: null,
   cancelReason: null,

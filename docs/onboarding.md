@@ -45,3 +45,8 @@ After initialization the dashboard refreshes the session before tenant-scoped wr
 
 
 `20261003220000_business_first_onboarding` adds the PROFESSIONAL_PROFILE enum value and nullable JSON draft field, changes the initial status default to BUSINESS_DETAILS, and resets non-deleted unfinished tenants to BUSINESS_DETAILS. Saved business details, services, hours, branding and workspace values are retained for review. Completed tenants are unchanged. Legacy enum values remain valid; dashboard welcome/team URLs redirect to the new flow. Apply the migration and regenerate Prisma with explicit authorization before running the changed backend, and deploy backend/frontend together. Existing completed owners are not automatically made professionals.
+
+
+## Completion welcome
+
+The first successful confirmation awaits the reused tenant.created event inside the completion transaction. Its notification listener persists owner welcome occurrences through the same transaction; duplicate/concurrent confirmations do not create another welcome and notification-persistence failures roll back confirmation. The existing worker sends only committed work. In-app is available on the next worker cycle; email follows business-local delivery hours and does not consume business quota. See [notification implementation](notifications.md#onboarding-welcome-implementation). No welcome is emitted when initializing a draft tenant.

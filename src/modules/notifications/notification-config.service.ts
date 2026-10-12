@@ -11,12 +11,16 @@ export class NotificationConfigService {
 
   getChannels(type: string, recipientType: RecipientType) {
     const config = NotificationConfig[type] ?? NotificationConfig['DEFAULT'];
-    return config.channels[recipientType] ?? [];
+    return (config.channels[recipientType] ?? []).filter((channel) => !channel.fallbackOnly);
   }
 
   getChannelConfig(type: string, recipientType: RecipientType, channel: NotificationChannel) {
-    const channels = this.getChannels(type, recipientType);
+    const channels = this.getConfig(type).channels[recipientType] ?? [];
     return channels.find((c) => c.channel === channel);
+  }
+
+  isBillable(type: string, recipientType: RecipientType, channel: NotificationChannel): boolean {
+    return channel !== NotificationChannel.IN_APP && this.getChannelConfig(type, recipientType, channel)?.billable === true;
   }
 
   getRetryPolicy(type: string, recipientType: RecipientType, channel: NotificationChannel): RetryConfig {

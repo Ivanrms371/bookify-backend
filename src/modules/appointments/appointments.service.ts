@@ -27,8 +27,6 @@ import { RescheduleAppointmentDto } from './dto/reschedule-appointment.dto';
 import { Permission, PERMISSIONS } from 'src/common/security/constants/permissions.constant';
 import { AppointmentRescheduledEvent } from './domain/events/appointment-rescheduled.event';
 
-const APP_URL = process.env.APP_URL ?? 'http://localhost:5173';
-
 @Injectable()
 export class AppointmentsService {
   constructor(
@@ -221,20 +219,7 @@ export class AppointmentsService {
     if (customer) {
       context.afterCommit('appointment.created', {
         tenantId,
-        userId: professional.userId,
-        professionalId,
-        professionalName: professional.name,
-        serviceId,
-        serviceName: service.name,
-        customerId: customer.id,
-        customerName: customer.name,
-        cancelUrl: `/appointments/${manageToken}/cancel`,
-        rescheduleUrl: `/appointments/${manageToken}/reschedule`,
-        detailsUrl: `${APP_URL}/appointments`,
-        startAppointmentDate: startsAt,
-        endAppointmentDate: endsAt,
         appointmentId: appointment.id,
-        createdBy: CreatedByType.STAFF,
       } satisfies AppointmentCreatedEvent);
     }
 
@@ -316,20 +301,7 @@ export class AppointmentsService {
       context.afterCommit('appointment.rescheduled', {
         appointmentId: appointment.id,
         tenantId,
-        userId: appointment.professional.userId,
-        professionalId: appointment.professionalId,
-        professionalName: appointment.professional.name,
-        serviceId: appointment.serviceId,
-        serviceName: appointment.service.name,
-        customerId: appointment.customerId,
-        customerName: appointment.customer.name,
-        cancelUrl: `/appointments/${appointment.manageToken}/cancel`,
-        rescheduleUrl: `/appointments/${appointment.manageToken}/reschedule`,
-        detailsUrl: `${APP_URL}/appointments`,
         previousStartsAt: appointment.startsAt,
-        previousEndsAt: appointment.endsAt,
-        startsAt,
-        endsAt,
         rescheduleReason: dto.rescheduleReason,
         rescheduledByName: currentUser.name,
         rescheduledBy: RecipientType.USER,
@@ -385,15 +357,6 @@ export class AppointmentsService {
       context.afterCommit('appointment.cancelled', {
         appointmentId: appointment.id,
         tenantId,
-        userId: appointment.professional.userId ?? currentUser.id,
-        professionalId: appointment.professionalId,
-        professionalName: appointment.professional.name,
-        customerId: appointment.customerId,
-        customerName: appointment.customer.name,
-        serviceId: appointment.serviceId,
-        startsAt: appointment.startsAt,
-        endsAt: appointment.endsAt,
-        status: AppointmentStatus.CANCELLED,
         cancellationReason: cancellationReason ?? '',
         cancelledByName: currentUser.name,
         cancelledBy: RecipientType.USER,

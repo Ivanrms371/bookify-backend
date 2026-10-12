@@ -39,7 +39,7 @@ describe('Professional contact and access detail contracts', () => {
       findByIdWithDetails: jest.fn().mockResolvedValue(professional),
       findMany: jest.fn().mockResolvedValue({ data: [professional], meta: {} }),
     };
-    const service = new ProfessionalsService({} as never, repository as never, {} as never);
+    const service = new ProfessionalsService({} as never, repository as never, {} as never, {} as never);
     return { service, viewer: { id: viewerId, role: viewerRole } as any };
   }
   it.each(['NONE', 'PENDING', 'EXPIRED', 'ACTIVE', 'DISABLED'])(

@@ -42,6 +42,7 @@ describe('Dashboard comparisons', () => {
     const result = await service.getOverview('tenant-1');
     expect(result.stats.appointmentsToday.current).toBe(3);
     expect(result.stats.totalCustomers.current).toBe(12);
+    expect(result.chart.at(-1)?.date).toBe('2026-10-06');
     expect(repository.findAppointmentsByDateRange).toHaveBeenLastCalledWith('tenant-1', new Date('2026-10-06T00:00:00Z'), new Date('2026-10-06T00:00:00Z'), 'America/Montevideo');
   });
 
@@ -60,7 +61,8 @@ describe('Dashboard comparisons', () => {
     const result = await service.getOverview('tenant-1');
     expect(result.stats.revenue).toEqual({ current, trend });
     // October 1 is outside the last 30 days on October 31, but counts toward monthly revenue.
-    expect(result.chart).toEqual([]);
+    expect(result.chart).toHaveLength(30);
+    expect(result.chart.every((entry) => entry.revenue === 0)).toBe(true);
     expect(repository.findDailyStatsByDateRange).toHaveBeenCalledWith(
       'tenant-1',
       new Date(Date.UTC(2026, 8, 1)),
@@ -75,8 +77,8 @@ describe('Dashboard comparisons', () => {
     ]);
     const result = await service.getOverview('tenant-1');
     expect(result.stats.revenue).toEqual({ current: 300, trend: '+50.00%' });
-    expect(result.chart).toHaveLength(1);
-    expect(result.chart[0].revenue).toBe(300);
+    expect(result.chart).toHaveLength(30);
+    expect(result.chart.at(-1)).toMatchObject({ date: '2026-10-31', revenue: 300 });
   });
 
   it('compares appointments against yesterday and new customers against the previous month', async () => {
@@ -123,4 +125,23 @@ describe('Dashboard comparisons', () => {
     const result = await service.getOverview('tenant-1');
     expect(result.stats.appointmentsToday).toEqual({ current, trend });
   });
+});
+
+it('fills missing chart days through October 10 without changing recorded metrics', async () => {
+  const repository = {
+    findSettings: jest.fn().mockResolvedValue({ timeZone: 'America/Montevideo' }),
+    findDailyStatsByDateRange: jest.fn().mockResolvedValue([
+      { date: new Date('2026-10-08T00:00:00Z'), revenue: 150, appointments: 2, confirmed: 1, cancelled: 0, completed: 1, noShow: 0, newCustomers: 1 },
+    ]),
+    findRegisteredCustomerCount: jest.fn().mockResolvedValue(1),
+  };
+  const service = new ReportMetricsService(repository as never);
+  const result = await service.getDashboardMetrics('tenant', new Date('2026-10-10T15:00:00Z'));
+  expect(result.chart).toHaveLength(30);
+  expect(result.chart[0].date).toBe('2026-09-11');
+  expect(result.chart.slice(-3)).toEqual([
+    { date: '2026-10-08', revenue: 150, appointments: 2, confirmed: 1, cancelled: 0, completed: 1, noShow: 0, newCustomers: 1 },
+    { date: '2026-10-09', revenue: 0, appointments: 0, confirmed: 0, cancelled: 0, completed: 0, noShow: 0, newCustomers: 0 },
+    { date: '2026-10-10', revenue: 0, appointments: 0, confirmed: 0, cancelled: 0, completed: 0, noShow: 0, newCustomers: 0 },
+  ]);
 });

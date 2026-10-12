@@ -31,19 +31,24 @@ export class ReportMetricsService {
       this.repository.findRegisteredCustomerCount(tenantId),
     ]);
 
-    // ── Chart: map all 30-day rows ────────────────────────────────────────
-    const chart: DashboardChartEntry[] = dailyStats
-      .filter((row) => row.date >= last30Start)
-      .map((row) => ({
-        date: formatInTimeZone(row.date, 'UTC', 'yyyy-MM-dd'),
-        revenue: Number(row.revenue),
-        appointments: row.appointments,
-        confirmed: row.confirmed,
-        cancelled: row.cancelled,
-        completed: row.completed,
-        noShow: row.noShow,
-        newCustomers: row.newCustomers,
-      }));
+    // Include every business calendar day, even when no projection row exists.
+    const rowsByDay = new Map(dailyStats.map((row) => [formatInTimeZone(row.date, 'UTC', 'yyyy-MM-dd'), row]));
+    const chart: DashboardChartEntry[] = Array.from({ length: 30 }, (_, index) => {
+      const day = new Date(last30Start);
+      day.setUTCDate(day.getUTCDate() + index);
+      const date = formatInTimeZone(day, 'UTC', 'yyyy-MM-dd');
+      const row = rowsByDay.get(date);
+      return {
+        date,
+        revenue: Number(row?.revenue ?? 0),
+        appointments: row?.appointments ?? 0,
+        confirmed: row?.confirmed ?? 0,
+        cancelled: row?.cancelled ?? 0,
+        completed: row?.completed ?? 0,
+        noShow: row?.noShow ?? 0,
+        newCustomers: row?.newCustomers ?? 0,
+      };
+    });
 
     // Aggregate complete calendar-month ranges independently of the chart window.
     const monthStart_ms = monthStart.getTime();

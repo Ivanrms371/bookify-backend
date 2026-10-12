@@ -1,6 +1,8 @@
 import { WebSocketGateway, OnGatewayConnection, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import * as cookie from 'cookie'; // Importante para leer las cookies
+import * as cookie from 'cookie';
+import { isUUID } from 'class-validator';
+import { MembershipsService } from 'src/modules/memberships/memberships.service';
 import { JwtService } from 'src/auth/infrastructure/jwt/jwt.service';
 import { OnEvent } from '@nestjs/event-emitter';
 import { InAppNotificationCreatedEvent } from '../../domain/events/in-app-notification.event';
@@ -13,7 +15,10 @@ import { corsOptions } from 'src/config/cors.config';
 export class NotificationsWsGateway implements OnGatewayConnection {
   @WebSocketServer() server: Server;
 
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly membershipsService: MembershipsService,
+  ) {}
 
   async handleConnection(client: Socket) {
     try {
@@ -27,28 +32,27 @@ export class NotificationsWsGateway implements OnGatewayConnection {
 
       const payload = this.jwtService.validateAccessToken(accessToken);
 
-      client.data.userId = payload.sub;
-      await client.join(`user_${payload.sub}`);
+      const tenantId = client.handshake.auth?.tenantId;
+      if (typeof tenantId !== 'string' || !isUUID(tenantId)) throw new Error('Invalid tenant');
+      const membership = await this.membershipsService.findByUserId(tenantId, payload.sub);
+      if (!membership?.isActive) throw new Error('Active membership required');
+      if (!client.connected) return;
 
-      console.log(`✅ Socket autenticado vía Cookie: Usuario ${payload.sub}`);
+      client.data.userId = payload.sub;
+      client.data.tenantId = tenantId;
+      await client.join(this.room(tenantId, payload.sub));
     } catch (error) {
-      console.log('❌ Fallo de autenticación en Socket:', error.message);
       client.disconnect();
     }
   }
 
   @OnEvent('in_app_notification.created')
   handleInAppMessage(event: InAppNotificationCreatedEvent) {
-    const { userId, tenantId, title, message, actionUrl, type, readAt, createdAt } = event;
-    this.server.to(`user_${userId}`).emit('in_app_notification.created', {
-      userId,
-      tenantId,
-      title,
-      message,
-      actionUrl,
-      type,
-      readAt,
-      createdAt,
-    });
+    const { userId, tenantId } = event;
+    this.server.to(this.room(tenantId, userId)).emit('notifications.changed', { tenantId });
+  }
+
+  private room(tenantId: string, userId: string) {
+    return `tenant_${tenantId}:user_${userId}`;
   }
 }

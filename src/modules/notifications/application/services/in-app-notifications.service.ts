@@ -11,37 +11,44 @@ export class InAppNotificationsService {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  async countUnread(userId: string) {
-    return this.inAppRepository.countUnread(userId);
+  async countTotal(tenantId: string, userId: string) {
+    return this.inAppRepository.countTotal(tenantId, userId);
   }
 
-  async findLatest(userId: string) {
-    return this.inAppRepository.findMany(userId, 10);
+  async countUnread(tenantId: string, userId: string) {
+    return this.inAppRepository.countUnread(tenantId, userId);
   }
 
-  async markAsRead(id: string, userId: string) {
-    return this.inAppRepository.markAsRead(id, userId);
+  async findPage(tenantId: string, userId: string, limit: number, cursor?: string) {
+    return this.inAppRepository.findPage(tenantId, userId, limit, cursor);
   }
 
-  async markAllAsRead(userId: string) {
-    return this.inAppRepository.markAllAsRead(userId);
+  async markAsRead(id: string, tenantId: string, userId: string) {
+    return this.inAppRepository.markAsRead(id, tenantId, userId);
   }
 
-  async send(notification: Notification, content: BuildInAppResponse) {
-    if (!notification.tenantId || !notification.recipientId) {
+  async markAllAsRead(tenantId: string, userId: string) {
+    return this.inAppRepository.markAllAsRead(tenantId, userId);
+  }
+
+  async send(notification: Notification, content: BuildInAppResponse, userId: string) {
+    if (!notification.tenantId || !userId) {
       throw new Error('Tenant ID or recipient ID is required for in-app notifications');
     }
     const data = await this.inAppRepository.create({
-      user: { connect: { id: notification.recipientId } },
+      user: { connect: { id: userId } },
       tenant: { connect: { id: notification.tenantId } },
       notification: { connect: { id: notification.id } },
       type: notification.type,
       title: content.title,
       message: content.message,
+      actionUrl: content.actionUrl,
+      actionLabel: content.actionLabel,
+      action: content.action,
     });
 
     this.eventEmitter.emit('in_app_notification.created', {
-      userId: notification.recipientId,
+      userId,
       tenantId: notification.tenantId,
       title: content.title,
       message: content.message,

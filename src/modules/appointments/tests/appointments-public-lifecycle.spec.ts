@@ -4,6 +4,7 @@ import { AppointmentsPublicRepository } from '../appointments-public.repository'
 
 describe('public appointment lifecycle', () => {
   const params = {
+    customerId: 'c',
     tenantId: 'tenant',
     serviceId: 's',
     professionalId: 'p',
@@ -38,6 +39,11 @@ describe('public appointment lifecycle', () => {
       findByPhoneOrCreate: jest.fn().mockResolvedValue({ id: 'c', name: 'Client', email: 'client@example.test', phoneNumber: '123456' }),
     };
     const availability = { isSlotAvailable: jest.fn().mockResolvedValue(true) };
+    const booking = {
+      eligibleCustomer: jest
+        .fn()
+        .mockResolvedValue({ id: 'c', name: 'Client', email: 'client@example.test', phoneNumber: '123456', notes: 'PRIVATE' }),
+    };
     const emit = jest.fn();
     const service = new AppointmentsPublicService(
       repository as never,
@@ -46,16 +52,35 @@ describe('public appointment lifecycle', () => {
       { findById: jest.fn().mockResolvedValue({ name: 'Barber', userId: 'u' }) } as never,
       { findByIdAndProfessional: jest.fn().mockResolvedValue({ durationMinutes: 30, price: 100, name: 'Cut' }) } as never,
       mutationFixture(emit) as never,
+      booking as never,
     );
-    return { service, repository, customer, availability, emit, appointment };
+    return { service, repository, customer, availability, emit, appointment, booking };
   }
 
   it('creates confirmed with customer and booking writes on the mutation transaction', async () => {
     const f = fixture();
     await f.service.create(params);
     expect(f.repository.create).toHaveBeenCalledWith(expect.objectContaining({ status: 'CONFIRMED' }), mutationTx);
-    expect(f.customer.findByPhoneOrCreate).toHaveBeenCalledWith('tenant', expect.any(Object), mutationTx);
-    expect(f.emit).toHaveBeenCalledWith('appointment.created', expect.objectContaining({ appointmentId: 'a' }));
+    expect(f.booking.eligibleCustomer).toHaveBeenCalledWith('c', 'tenant', mutationTx);
+    expect(f.customer.findByPhoneOrCreate).not.toHaveBeenCalled();
+    expect(f.repository.create.mock.calls[0][0].notes).toBeUndefined();
+    expect(f.emit).toHaveBeenCalledWith('appointment.created', { appointmentId: 'a', tenantId: 'tenant' });
+  });
+
+  it('returns only the new booking fields and its own management token', async () => {
+    const f = fixture();
+    f.repository.create.mockResolvedValue({
+      ...f.appointment,
+      manageToken: 'own-token',
+      notes: 'PRIVATE',
+      customer: { notes: 'PRIVATE', appointments: [{ manageToken: 'historical-token' }] },
+    } as never);
+    const result = await f.service.create(params);
+    expect(result.manageToken).toBe('own-token');
+    expect(result).not.toHaveProperty('customer');
+    expect(result).not.toHaveProperty('customerId');
+    expect(result).not.toHaveProperty('notes');
+    expect(JSON.stringify(result)).not.toContain('historical-token');
   });
 
   it('does not create/update customer data for an unavailable booking', async () => {
@@ -84,7 +109,10 @@ describe('public appointment lifecycle', () => {
     f.repository.findByToken.mockResolvedValue({ ...f.appointment, professional: { name: 'Barber', userId: null } });
     await f.service.cancel('token', {});
     expect(f.repository.cancel).toHaveBeenCalledWith('token', expect.any(Object), mutationTx);
-    expect(f.emit).toHaveBeenCalledWith('appointment.cancelled', expect.objectContaining({ userId: null, cancelledBy: 'CUSTOMER' }));
+    expect(f.emit).toHaveBeenCalledWith(
+      'appointment.cancelled',
+      expect.objectContaining({ appointmentId: 'a', tenantId: 'tenant', cancelledBy: 'CUSTOMER' }),
+    );
     f.repository.findByToken.mockResolvedValue({ ...f.appointment, status: 'CANCELLED' });
     await f.service.cancel('token', {});
     expect(f.repository.cancel).toHaveBeenCalledTimes(1);
@@ -100,4 +128,45 @@ describe('public appointment lifecycle', () => {
       expect.objectContaining({ data: expect.objectContaining({ status: 'CANCELLED', blocks: { deleteMany: {} } }) }),
     );
   });
+});
+
+it('resolves WhatsApp activation from the appointment token without mutating the reservation', async () => {
+  const appointment = { tenantId: 'tenant', customerId: 'customer', status: 'CONFIRMED' };
+  const repository = { findByToken: jest.fn().mockResolvedValue(appointment) };
+  const verification = { requestCustomerVerification: jest.fn().mockResolvedValue({ verificationRequired: true }) };
+  const service = new AppointmentsPublicService(
+    repository as never,
+    {} as never,
+    {} as never,
+    {} as never,
+    {} as never,
+    {} as never,
+    verification as never,
+  );
+  await expect(service.requestWhatsappVerification('token')).resolves.toEqual({ verificationRequired: true });
+  expect(repository.findByToken).toHaveBeenCalledWith('token');
+  expect(verification.requestCustomerVerification).toHaveBeenCalledWith('tenant', 'customer', undefined, true);
+  verification.requestCustomerVerification.mockRejectedValue(new Error('unavailable'));
+  await expect(service.requestWhatsappVerification('token')).rejects.toThrow('unavailable');
+  expect(appointment.status).toBe('CONFIRMED');
+  repository.findByToken.mockResolvedValue(null as never);
+  await expect(service.requestWhatsappVerification('invalid')).rejects.toThrow('Cita no encontrada');
+});
+
+it('exposes WhatsApp activation and availability without exposing the customer record', async () => {
+  const repository = {
+    findByTokenForPublic: jest
+      .fn()
+      .mockResolvedValue({ status: 'CONFIRMED', customer: { phoneVerifiedAt: new Date(), whatsappOptInAt: new Date() } }),
+  };
+  const service = new AppointmentsPublicService(
+    repository as never,
+    {} as never,
+    {} as never,
+    {} as never,
+    {} as never,
+    {} as never,
+    {} as never,
+  );
+  await expect(service.findByToken('token')).resolves.toEqual({ status: 'CONFIRMED', whatsapp: { activated: true, available: false } });
 });

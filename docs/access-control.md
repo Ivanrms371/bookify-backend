@@ -101,7 +101,7 @@ Authenticated appointment listing forces the tenant-linked professional ID for c
 
 Invitation acceptance can create membership and link a professional. Professional deletion through either authenticated delete route coordinates soft deletion, outstanding invitation revocation, and removal of the linked membership row for the selected tenant in one transaction. OWNER-linked and self-linked professionals are protected; only OWNER may delete an ADMIN-linked professional. User accounts, other tenant memberships, and appointment history remain intact. These lifecycle paths affect subsequent tenant access independently of JWT validity.
 
-Notification WebSocket connections validate the access JWT directly and join a user room. They do not run the HTTP session, membership or permission guards. Do not transfer HTTP revocation/tenant guarantees to that transport.
+Notification WebSocket connections require an access-token cookie and a UUID `handshake.auth.tenantId`, validate the access JWT, and check active membership through MembershipsService at connection time. They join only a tenant/user room and emit `notifications.changed` with `{ tenantId }`, never notification content. They do not continuously revalidate membership or run HTTP session/permission guards. Protected HTTP notification reads and updates recheck membership through the existing guards and filter by both selected tenant and recipient; an individual out-of-scope update returns zero rows.
 
 ## Edge cases, inconsistencies and uncertainties
 
@@ -174,3 +174,13 @@ The authenticated session's `activeTenant.permissions` is derived from the same 
 Session permissions refresh on startup and in the background every minute / on focus after one minute. The API rechecks active membership on each protected request, so a stale client never grants server access. Permission/professional changes cancel and discard tenant caches; appointment keys also include the permission/professional scope and disallow placeholders across scope changes. Public-web booking uses its existing public/token endpoints and does not consume this session contract.
 
 Targeted tests cover the role/session contract, STAFF appointment listing/creation/ID ownership, missing links, and dashboard action/area/overlay visibility against the backend role map. These are mocked unit checks, not a live multi-user browser or database authorization audit.
+
+
+## Member-joined notification visibility
+
+First invitation acceptance now emits `invitation.accepted` within the existing acceptance transaction. A transactional notification listener queues in-app notices for active TEAM_READ recipients, excluding the joining member. The same method handles ordinary acceptance, invited signup and Google, and reads the invited user through the transaction client. Notice persistence failure rolls back acceptance. Delivery eligibility and retained member-notice history are checked against current active membership and TEAM_READ, including list/count/cursor/read operations; losing team access hides this history. Invitation tokens are excluded from these notices. See [notifications](notifications.md) for lifecycle and expiry.
+
+
+## Public customer verification
+
+Public routes create or reuse a customer before requesting an OTP. Effective paid Pro/Pro+ access requires a current verified contact at booking; Free and trial-only access permit unverified customers. Customer verification is bound directly to a Verification ID and exact saved contact, with customer/verification row locks and three wrong attempts. Existing profiles remain immutable through public requests; blocked/deleted customers cannot proceed. Customer and verification IDs grant no appointment-management rights. Independent appointment management tokens remain private capabilities. User verification and password recovery preserve their contracts. See [public booking](public-booking.md) for OTP attempts, fallback and rollout requirements.

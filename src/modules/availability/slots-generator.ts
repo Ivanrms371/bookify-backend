@@ -1,3 +1,4 @@
+import { normalizeWorkingRanges } from './utils/working-schedule.util';
 import { Injectable } from '@nestjs/common';
 import { TZDate } from '@date-fns/tz';
 import { addDays, addMinutes, differenceInMinutes, endOfDay, parseISO, startOfDay, format } from 'date-fns';
@@ -298,21 +299,6 @@ export class SlotsGenerator {
    * Sorts and merges contiguous or overlapping intervals
    */
   private normalizeRanges(ranges: TimeRange[]): TimeRange[] {
-    if (ranges.length <= 1) return ranges;
-    const sorted = [...ranges].sort((a, b) => a.opensAt - b.opensAt);
-    const merged: TimeRange[] = [sorted[0]];
-
-    for (let i = 1; i < sorted.length; i++) {
-      const current = sorted[i];
-      const prev = merged[merged.length - 1];
-
-      if (current.opensAt <= prev.closesAt) {
-        prev.closesAt = Math.max(prev.closesAt, current.closesAt);
-      } else {
-        merged.push(current);
-      }
-    }
-
-    return merged;
+    return normalizeWorkingRanges(ranges);
   }
 }

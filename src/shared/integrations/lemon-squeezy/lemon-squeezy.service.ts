@@ -233,7 +233,7 @@ export class LemonSqueezyService {
     if (!this.apiKey) throw new InternalServerErrorException('Lemon Squeezy API key is missing.');
     if (!/^\d+$/.test(id)) throw new BadRequestException('Invalid provider resource ID.');
     try {
-      const response = await this.http.get<{ data: LemonSqueezyWebhookPayload['data'] }>(`/${type}/${id}`);
+      const response = await this.http.get<{ data: LemonSqueezyWebhookPayload['data'] }>(`/${type}/${id}`, { timeout: 10_000 });
       const data = response.data.data;
       if (data?.type !== type || data.id !== id) throw new BadRequestException('Provider resource mismatch.');
       this.validateResource(data);

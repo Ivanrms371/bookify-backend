@@ -8,6 +8,8 @@ export type RetryConfig = {
 
 export type ChannelConfig = {
   channel: NotificationChannel;
+  billable?: boolean;
+  fallbackOnly?: boolean;
   fallback?: NotificationChannel[];
   retry?: Partial<RetryConfig>;
 };

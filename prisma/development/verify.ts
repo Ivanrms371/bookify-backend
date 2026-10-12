@@ -67,7 +67,7 @@ export async function verifyDevelopment(prisma: PrismaService, now = new Date())
   for (const period of usage)
     assert.equal(
       period.appointmentCount,
-      appointments.filter((a) => a.createdAt.getFullYear() === period.periodYear && a.createdAt.getMonth() + 1 === period.periodMonth)
+      appointments.filter((a) => a.createdAt.getUTCFullYear() === period.periodYear && a.createdAt.getUTCMonth() + 1 === period.periodMonth)
         .length,
     );
   for (const customer of customers)

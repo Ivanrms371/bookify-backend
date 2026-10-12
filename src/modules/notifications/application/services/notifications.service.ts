@@ -1,3 +1,5 @@
+import type { TransactionClient } from 'src/generated/prisma/internal/prismaNamespace';
+import type { NotificationOccurrenceInput } from '../../types/notification-occurrence.type';
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { NotificationChannel, RecipientType } from 'src/generated/prisma/enums';
@@ -63,6 +65,17 @@ export class NotificationsService {
     return notification;
   }
 
+  async createOccurrence(params: NotificationOccurrenceInput, tx?: TransactionClient, initialChannel?: NotificationChannel) {
+    const channels =
+      params.type === 'customer.verification' && initialChannel
+        ? [initialChannel]
+        : this.resolveChannels(params.type, params.recipientType);
+    const notification = await this.notificationRepository.createOccurrence(params, channels, tx);
+    // Transactional occurrences are picked up by the worker only after commit.
+    if (notification && !tx) this.eventEmitter.emit('notification.process', notification.id);
+    return notification;
+  }
+
   async cancelScheduledDeliveries(referenceId: string, type: string) {
     await this.deliveryRepository.cancelByReferenceAndType(referenceId, type);
   }
@@ -76,7 +89,7 @@ export class NotificationsService {
         throw new Error('Template not found');
       }
 
-      await this.emailGateway.sendDirectly(to, template);
+      await this.emailGateway.send(to, template);
     } catch (error) {
       console.log(error);
     }

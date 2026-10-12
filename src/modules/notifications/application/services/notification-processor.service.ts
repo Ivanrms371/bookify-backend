@@ -1,14 +1,19 @@
+import { WhatsappGateway } from '../../infraestructure/gateways/whatsapp.gateway';
+import { NotificationFinalizationService } from './notification-finalization.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { TemplateService } from './template.service';
 import { NotificationGatewaysService } from '../../infraestructure/gateways/notification-gateways.service';
 import { NotificationLogsRepository } from '../../infraestructure/repositories/notification-logs.repository';
 import { NotificationDeliveryRepository } from '../../infraestructure/repositories/notification-delivery.repository';
 import { NotificationConfigService } from '../../notification-config.service';
-import { NotificationProcessorInput } from '../../types/notification-processor.type';
+import type { NotificationProcessorInput } from '../../types/notification-processor.type';
 import { NotificationChannel, RecipientType } from 'src/generated/prisma/enums';
 import { NotificationUsageService } from './notification-usage.service';
 import { CostProtectionError } from '../../errors/cost-protection.error';
+import { DeliveryRejectedError } from '../../errors/delivery-rejected.error';
 import { NotImplementedError } from '../../errors/not-implemented.error';
+import { SimulatedDeliveryError } from '../../errors/simulated-delivery.error';
+import { DeliverySkippedError } from '../../errors/delivery-skipped.error';
 
 @Injectable()
 export class NotificationProcessorService {
@@ -22,29 +27,85 @@ export class NotificationProcessorService {
     private readonly deliveryRepository: NotificationDeliveryRepository,
     private readonly logRepository: NotificationLogsRepository,
     private readonly configService: NotificationConfigService,
+    private readonly finalization: NotificationFinalizationService,
   ) {}
 
   private async process(delivery: NotificationProcessorInput) {
     const { channel, notification, retryCount, id: deliveryId } = delivery;
-    const { payload, type, id: notificationId } = notification;
+    const { type, id: notificationId } = notification;
 
+    if (!(await this.deliveryRepository.claim(deliveryId, retryCount))) return;
+    let providerAttempted = false;
+    let providerAccepted = false;
     try {
-      const canSend = await this.usageService.canSend(notification.tenantId, channel);
+      if (notification.expiresAt && notification.expiresAt <= new Date()) {
+        await this.deliveryRepository.markAsExpired(deliveryId);
+        return;
+      }
+      const template = this.templateService.build(type, channel, notification.payload as Record<string, any>);
+      // Resolve channel eligibility before reserving quota or attempting a provider send.
+      const recipient = await this.gateways.prepare(channel, notification);
+      // The current WhatsApp adapter only logs payloads; it consumes no paid capacity.
+      const canSend =
+        (channel === NotificationChannel.WHATSAPP && !WhatsappGateway.isOperational()) || (await this.usageService.reserve(delivery));
       if (!canSend) {
         throw new CostProtectionError();
       }
 
-      const template = this.templateService.build(type, channel, payload as Record<string, any>);
-      const referenceId = await this.gateways.send(channel, notification, template);
+      if (notification.expiresAt && notification.expiresAt <= new Date()) {
+        await this.usageService.release(deliveryId);
+        await this.deliveryRepository.markAsExpired(deliveryId);
+        return;
+      }
+      providerAttempted = true;
+      const referenceId = await this.gateways.send(channel, notification, template, deliveryId, recipient);
 
-      await this.deliveryRepository.markAsSent(delivery.id, referenceId);
-      await this.usageService.incrementUsage(notification.tenantId, channel);
-      await this.logRepository.createSuccessLog(delivery.id);
+      providerAccepted = true;
+      await this.finalization.recordAcceptance(deliveryId, referenceId, notification.tenantId);
+      await this.finalization.resolve({
+        deliveryId,
+        tenantId: notification.tenantId,
+        outcome: 'accepted',
+        source: 'worker',
+        operator: 'notification-worker',
+        evidence: 'Gateway accepted send',
+        providerId: referenceId,
+      });
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
       this.logger.error(`Delivery ${deliveryId} failed: ${err.message}`, err.stack);
 
+      // Never retry an accepted send because local persistence/logging failed.
+      // Keep its claim for reconciliation if marking SENT failed.
+      if (providerAccepted) return;
+      if (
+        !providerAttempted ||
+        err instanceof DeliveryRejectedError ||
+        err instanceof NotImplementedError ||
+        err instanceof SimulatedDeliveryError
+      ) {
+        await this.usageService.release(deliveryId);
+      } else {
+        await this.usageService.retain(deliveryId);
+        // Keep the claim and reservation until provider evidence resolves the outcome.
+        // Never blindly retry outside the provider's idempotency retention window.
+        await this.logRepository.createErrorLog(deliveryId, 'RECONCILIATION_REQUIRED: uncertain provider acceptance');
+        return;
+      }
       await this.logRepository.createErrorLog(deliveryId, err.message);
+
+      if (err instanceof SimulatedDeliveryError || err instanceof DeliverySkippedError) {
+        await this.deliveryRepository.markAsFailed(deliveryId, err.message);
+        if (
+          err instanceof DeliverySkippedError ||
+          notification.type.startsWith('appointment.') ||
+          notification.type === 'customer.verification'
+        ) {
+          const fallback = this.configService.getChannelConfig(type, notification.recipientType, channel)?.fallback;
+          if (fallback?.length) await this.createFallback(notificationId, fallback);
+        }
+        return;
+      }
 
       const retryPolicy = this.configService.getRetryPolicy(type, notification.recipientType, channel);
       const channelConfig = this.configService.getChannelConfig(type, notification.recipientType, channel);
@@ -97,13 +158,7 @@ export class NotificationProcessorService {
 
   private async createFallback(notificationId: string, fallbackChannels: NotificationChannel[]) {
     for (const channel of fallbackChannels) {
-      const exists = await this.deliveryRepository.exists(notificationId, channel);
-      if (exists) continue;
-      await this.deliveryRepository.create({
-        notification: { connect: { id: notificationId } },
-        runAt: new Date(),
-        channel,
-      });
+      await this.deliveryRepository.ensureFallback(notificationId, channel);
     }
   }
 

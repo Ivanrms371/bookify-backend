@@ -1,3 +1,8 @@
+import { NotificationsModule } from '../notifications/notifications.module';
+import { BillingNoticePlanner } from './schedulers/billing-notice-planner.service';
+import { BillingNoticeRepository } from './repositories/billing-notice.repository';
+import { BillingNoticeStateService } from './billing-notice-state.service';
+import { TenantUsageModule } from '../tenants/features/usage/tenant-usage.module';
 import { PlanChangeService } from './plan-change.service';
 import { PlanChangeScheduler } from './plan-change.scheduler';
 import { SubscriptionWebhookService } from './subscription-webhook.service';
@@ -11,9 +16,12 @@ import { PlansService } from './plans.service';
 import { LemonSqueezyModule } from 'src/shared/integrations/lemon-squeezy/lemon-squeezy.module';
 
 @Module({
-  imports: [PaymentsModule, LemonSqueezyModule, WebhookModule],
+  imports: [NotificationsModule, TenantUsageModule, PaymentsModule, LemonSqueezyModule, WebhookModule],
   controllers: [SubscriptionsController],
   providers: [
+    BillingNoticePlanner,
+    BillingNoticeRepository,
+    BillingNoticeStateService,
     PlanChangeService,
     PlanChangeScheduler,
     SubscriptionWebhookService,
@@ -21,6 +29,6 @@ import { LemonSqueezyModule } from 'src/shared/integrations/lemon-squeezy/lemon-
     PlansService,
     SubscriptionsRepository,
   ],
-  exports: [SubscriptionsService],
+  exports: [SubscriptionsService, BillingNoticeStateService],
 })
 export class SubscriptionsModule {}

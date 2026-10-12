@@ -1,12 +1,9 @@
 export interface CreatePublicParams {
+  customerId: string;
   tenantId: string;
   serviceId: string;
   professionalId: string;
   startsAt: string;
-  customerName: string;
-  customerPhoneCode: string;
-  customerPhone: string;
-  customerEmail: string;
   notes?: string;
 }
 

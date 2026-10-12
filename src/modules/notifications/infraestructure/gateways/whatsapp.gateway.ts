@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Notification } from 'src/generated/prisma/client';
 import { BuildWhatsappResponse } from '../../domain/templates/build-whatsapp.interface';
+import { SimulatedDeliveryError } from '../../errors/simulated-delivery.error';
 
 @Injectable()
 export class WhatsappGateway {
-  async send(notification: Notification, template: BuildWhatsappResponse) {
-    console.log({ notification, template });
-    return 'whatsapp-reference-id';
+  static isOperational() { return false; }
+  async send(phoneNumber: string, template: BuildWhatsappResponse): Promise<string> {
+    console.log('WhatsApp simulation', { to: phoneNumber, payload: template });
+    throw new SimulatedDeliveryError();
   }
 }

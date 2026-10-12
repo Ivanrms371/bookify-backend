@@ -25,6 +25,7 @@ const setup = (status = 'CONFIRM', draft: ProfessionalDraft | null = { attendsCl
     onboardingProfessionalDraft: draft,
   };
   const tx = {
+    $executeRaw: jest.fn(),
     service: {
       count: jest.fn().mockResolvedValue(1),
       findMany: jest.fn().mockResolvedValue([{ id: 'service' }]),
@@ -58,12 +59,14 @@ const setup = (status = 'CONFIRM', draft: ProfessionalDraft | null = { attendsCl
     getTrialDetails: jest.fn().mockReturnValue({ planName: 'Pro+', durationDays: 14 }),
   };
   const prisma = { $transaction: jest.fn(async (callback) => callback(tx)) };
+  const events = { emitAsync: jest.fn().mockResolvedValue([]) };
   const service = new TenantOnboardingService(
     prisma as unknown as PrismaService,
     repo as unknown as TenantOnboardingRepository,
     subscriptions as unknown as SubscriptionsService,
+    events as never,
   );
-  return { tenant, tx, repo, subscriptions, prisma, service };
+  return { tenant, tx, repo, subscriptions, prisma, service, events };
 };
 
 describe('business-first onboarding', () => {
@@ -389,5 +392,38 @@ describe('separate address onboarding step', () => {
     await expect(service.confirm('owner')).rejects.toThrow('dirección');
     expect(repo.claimConfirmation).not.toHaveBeenCalled();
     expect(subscriptions.createTrialSubscription).not.toHaveBeenCalled();
+  });
+});
+
+describe('transactional onboarding completion event', () => {
+  it('emits only after completion and trial creation, using the same transaction', async () => {
+    const f = setup();
+    f.events.emitAsync.mockImplementation(async (name, event, transaction) => {
+      expect(f.repo.completeOnboarding).toHaveBeenCalled();
+      expect(f.subscriptions.createTrialSubscription).toHaveBeenCalled();
+      expect(name).toBe('tenant.created');
+      expect(event).toEqual({ tenantId: 'tenant', completedAt: expect.any(String) });
+      expect(transaction).toBe(f.tx);
+      return [];
+    });
+    await f.service.confirm('owner');
+    expect(f.events.emitAsync).toHaveBeenCalledTimes(1);
+  });
+  it.each(['already completed', 'concurrent completion', 'lost claim', 'trial failure'])(
+    'does not produce another welcome: %s',
+    async (scenario) => {
+      const f = setup(scenario === 'already completed' ? 'COMPLETED' : 'CONFIRM');
+      if (scenario === 'concurrent completion') f.repo.lockTenant.mockResolvedValue({ ...f.tenant, onboardingStatus: 'COMPLETED' });
+      if (scenario === 'lost claim') f.repo.claimConfirmation.mockResolvedValue(false);
+      if (scenario === 'trial failure') f.subscriptions.createTrialSubscription.mockRejectedValue(new Error('failed trial'));
+      if (scenario === 'trial failure') await expect(f.service.confirm('owner')).rejects.toThrow('failed trial');
+      else await f.service.confirm('owner');
+      expect(f.events.emitAsync).not.toHaveBeenCalled();
+    },
+  );
+  it('propagates listener persistence failure so completion can roll back', async () => {
+    const f = setup();
+    f.events.emitAsync.mockRejectedValue(new Error('welcome persistence failed'));
+    await expect(f.service.confirm('owner')).rejects.toThrow('welcome persistence failed');
   });
 });

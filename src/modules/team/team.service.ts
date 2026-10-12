@@ -1,3 +1,4 @@
+import { lockEntitlements } from 'src/common/database/entitlements-lock';
 import { ProfessionalDeletionForbiddenException } from './exceptions/professional-deletion-forbidden.exception';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { MembershipsService } from '../memberships/memberships.service';
@@ -59,6 +60,7 @@ export class TeamService {
     const { giveAccess, role, ...profile } = dto;
     const contact = normalizeProfessionalContact(profile);
     const result = await this.prisma.$transaction(async (tx) => {
+      await lockEntitlements(tx);
       await lockTenantAccess(tx, tenantId);
       await verifyAssignableServices(tenantId, profile.serviceIds ?? [], tx);
       const professional = await this.professionalsService.create(tenantId, contact, tx);
